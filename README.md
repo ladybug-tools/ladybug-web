@@ -11,9 +11,9 @@ value='You are now in the home page view - Click this button to view the read me
 _Ladybug for web provides solar and weather data visualization and analysis on the web_
 
 
-## [Suncalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/suncalc-sandbox/ )
+## [SunCalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/suncalc-sandbox/ )
 
-Embedded description: _Display sun times and position, moon position, illumination and times, select locations from a gazetteer_
+Embedded description: _Display sun times and position, moon position, illumination and times. Set date, time and location or select locations from a gazetteer. Permalinks created on the fly._
 
 Latest update: 2016-03-05
 
