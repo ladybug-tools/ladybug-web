@@ -21,12 +21,12 @@ Latest update: 2016-03-05
 * Built on [SunCalc]( https://github.com/mourner/suncalc )
 * Displays Sun times and position
 * Displays Moon position, illumination and times
+* Set the date and time
 * Select locations from a gazetteer of with lat/lon of over 2,000 places names
+* API that creates and accepts permalinks
 
 ### Things to Do / Road Map
 
-* API that creates and accepts permalinks
-* Select the time
 * Select lat/lon by clicking on a map or globe
 * Click on each item of Sun times to update Sun position. Ditto Moon
 * Highlight currently selected location
