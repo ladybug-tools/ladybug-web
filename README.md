@@ -11,11 +11,26 @@ value='You are now in the home page view - Click this button to view the read me
 _Ladybug for web provides solar and weather data visualization and analysis on the web_
 
 
-## [Suncalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/suncalc-sandbox/ )
+## [Suncalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/suncalc-sandbox/suncalc-sandbox-r1.html )
 
-* Work-in-progress
+* Built on [SunCalc]( https://github.com/mourner/suncalc )
+* Display sun times and position
+* Display moon position, illumination and times
+* Select locations from a gazetteer of with lat/lon of over 2,000 places names
+
+### Road Map
+
+* API that creates and accepts permalingks
+* Select lat/lon by clicking on a map or globe
+
 
 ## [Sun Azimuth Altitude]( http://ladybug-analysis-tools.github.io/ladybug-web/sun-azimuth-altitude/sun-azimuth-altitude-r1.html )
 
 * Work-in-progress
 
+
+## Links of Interest
+
+[SunCalc]( https://github.com/mourner/suncalc )
+
+[Astronomy Answers ~ Position of the Sun]( http://aa.quae.nl/en/reken/zonpositie.html )
