@@ -11,6 +11,9 @@ value='You are now in the home page view - Click this button to view the read me
 _Ladybug for web provides solar and weather data visualization and analysis on the web_
 
 
+## [Suncalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/suncalc-sandbox/ )
+
+* Work-in-progress
 
 ## [Sun Azimuth Altitude]( http://ladybug-analysis-tools.github.io/ladybug-web/sun-azimuth-altitude/sun-azimuth-altitude-r1.html )
 
