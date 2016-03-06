@@ -38,7 +38,7 @@ Latest update: 2016-03-05
 
 ## [Sun Azimuth Altitude]( http://ladybug-analysis-tools.github.io/ladybug-web/sun-azimuth-altitude/ )
 
-Embedded description: _Set date and time. Set the location to any lat/lon. Adjust the view. View the Sun azimuth, alitude and shadows for that place and time. Permalinks created on the fly._
+Embedded description: _Set date and time. Set the location to any lat/lon. Adjust the view. View the Sun azimuth, altitude and shadows for that place and time. Permalinks created on the fly._
 
 Latest update: 2016-03-05
 
@@ -82,4 +82,8 @@ Latest update: 2016-03-05
 
 [Solar Path]( http://bl.ocks.org/mbostock/7784f4b2c7838b893e9b#solar-calculator.js )
 
+***
 
+<center title="dingbat" >
+# <a href=javascript:window.scrollTo(0,0); > ❦ </a>
+</center>
