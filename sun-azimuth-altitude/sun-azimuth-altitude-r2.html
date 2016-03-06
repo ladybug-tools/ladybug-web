@@ -26,10 +26,21 @@
 	var geometry, material, mesh;
 	var lightAmbient, lightDirectional, lightPoint;
 
-	var lat = 32.63; // 'alt' is in use by img
+	var lat = 32.63;
 	var lon = 51.65;
 
-	
+	var date = new Date();
+	var year = date.getUTCFullYear();
+	var month = date.getUTCMonth() + 1;
+	var day = date.getDate();
+	var hour = date.getHours();
+	var minute = date.getMinutes();
+
+	var hashDefault = '#yr=' + year + '#mo=' + month + '#da=' + day + '#hr=' + hour + '#mn=' + minute + '#la=' + lat + '#lo=' + lon;
+
+	var camX = camY = camZ = '100.0';
+	var tarX = tarY = tarZ = '0.0';
+
 	var size = 100;
 
 	init();
@@ -45,6 +56,11 @@
 			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
 			'h2, a { margin: 0; }' +
 			'a { text-decoration: none; }' +
+
+			'.inpTim { width: 40px; text-align: right; }' +
+			'.inpPos { width: 65px; text-align: right; }' +
+
+
 			'#menu { margin: 0 20px; position: absolute; }' +
 
 			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
@@ -60,10 +76,19 @@
 
 			'<h2>' +
 			'	<a href="" >' + document.title + '</a>' +
-			'	<a href=http://jaanga.github.io/demo/ms >❦</a>' +
+			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
 			'</h2>' +
-			'<p>Alitude: <input type=range id=inpLat max=90 min=0 step=1 value=' + lat + ' oninput=lat=inpLat.valueAsNumber;updateHash(); title="0 to 90: OK" > <output id=outLat >value</output></p>' +
-			'<p>Aximuth: <input type=range id=inpLon max=180 min=0 step=1 value=' + lon + ' oninput=lon=inpLon.valueAsNumber;updateHash(); title="0 to 180: OK" > <output id=outLon >value</output></p>' +
+
+			'<p>' +
+				' Year:<input id=inpYear class=inpTim onchange=updateHash(); >' +
+				' Month:<input id=inpMonth class=inpTim onchange=updateHash(); >' +
+				' Day:<input id=inpDay class=inpTim onchange=updateHash(); >' +
+				' Hour:<input id=inpHour class=inpTim onchange=updateHash(); >' +
+				' Minute:<input id=inpMinute class=inpTim onchange=updateHash(); >' +
+			'</p>' +
+
+			'<p>Latitude: <input type=range id=inpLat max=90 min=0 step=1 value=' + lat + ' oninput=updateHash(); title="0 to 90: OK" > <output id=outLat >value</output></p>' +
+			'<p>Longitude: <input type=range id=inpLon max=180 min=0 step=1 value=' + lon + ' oninput=updateHash(); title="0 to 180: OK" > <output id=outLon >value</output></p>' +
 
 			'<div id=info ></div>' +
 
@@ -116,92 +141,119 @@
 		toggleStonehenge();
 
 		addLights( size );
-		addShadows();
+//		addShadows();
+
+		if ( location.hash === '' ) {
+
+			location.hash = hashDefault;
+
+		}
 
 		parseHash();
 
 	}
 
-	function updateHash() { 
+	function updateHash() {
+
 //console.log( '', lon, lat );
 
-		location.hash = 
+		text = '';
 
-			'lon=' + lon +
-			'#lat=' + lat +
+		text += inpYear.value !== year ? '#yr=' + inpYear.value : '';
+		text += inpMonth.value !== month ? '#mo=' + inpMonth.value : '';
+		text += inpDay.value !== day ? '#da=' + inpDay.value : '';
+		text += inpHour.value !== hour ? '#hr=' + inpHour.value : '';
+		text += inpMinute.value !== minute ? '#mn=' + inpMinute.value : '';
 
-			'#cpx=' + camera.position.x.toFixed(1) +
-			'#cpy=' + camera.position.y.toFixed(1) +
-			'#cpz=' + camera.position.z.toFixed(1) +
+		text += inpLat.value !== lat ? '#la=' + inpLat.valueAsNumber : '';
+		text += inpLon.value !== lon ? '#lo=' + inpLon.valueAsNumber : '';
 
-			'#ctx=' + controls.target.x.toFixed(1) +
-			'#cty=' + controls.target.y.toFixed(1) +
-			'#ctz=' + controls.target.z.toFixed(1) +
- 
-		''; 
+		text += camera.position.x.toFixed(1) !== camX ? '#cx=' + camera.position.x.toFixed(1) : '';
+		text += camera.position.y.toFixed(1) !== camY ? '#cy=' + camera.position.y.toFixed(1) : '';
+		text += camera.position.z.toFixed(1) !== camZ ? '#cz=' + camera.position.z.toFixed(1) : '';
 
-		outLat.value = lon;
-		outLon.value = lat;
+		text += controls.target.x.toFixed(1) !== tarZ ? '#tx=' + controls.target.x.toFixed(1) : '';
+		text += controls.target.y.toFixed(1) !== tarZ ? '#ty=' + controls.target.y.toFixed(1) : '';
+		text += controls.target.z.toFixed(1) !== tarZ ? '#tz=' + controls.target.z.toFixed(1) : '';
+
+		location.hash = text;
+
+		outLat.value = inpLat.value;
+		outLon.value = inpLon.value;
 
 	}
 
 	function parseHash() {
 
-		if ( location.hash ) {
+		hashes = location.hash.split( '#' );
 
-			hashes = location.hash.split( '#' );
+		for ( var i = 0; i < hashes.length; i++ ) {
 
-			for ( var i = 0; i < hashes.length; i++ ) {
+			hash = hashes[ i ];
 
-				hash = hashes[ i ];
+			parameter = hash.slice( 0, 2 );
+			value = parseFloat( hash.slice( 3 ) );
 
-				parameter = hash.slice( 0, 3 );
-				value = parseFloat( hash.slice( 4 ) );
+			if ( parameter === 'yr' ) { inpYear.value = value;
 
-				if ( parameter === 'lat' ) { lat = value;
+				} else if ( parameter === 'mo' ) { inpMonth.value = parseInt( value, 10 );
+				} else if ( parameter === 'da' ) { inpDay.value = parseInt( value, 10 );;
 
-					} else if ( parameter === 'lon' ) { lon = value;
+				} else if ( parameter === 'hr' ) { inpHour.value = parseInt( value, 10 );
+				} else if ( parameter === 'mn' ) { inpMinute.value = parseInt( value, 10 );
 
-					} else if ( parameter === 'cpx' ) { camera.position.x = value;
-					} else if ( parameter === 'cpy' ) { camera.position.y = value;
-					} else if ( parameter === 'cpz' ) { camera.position.z = value;
+				} else if ( parameter === 'la' ) { inpLat.value = value;
+				} else if ( parameter === 'lo' ) { inpLon.value = value;
 
-					} else if ( parameter === 'ctx' ) { controls.target.x = value;
-					} else if ( parameter === 'cty' ) { controls.target.y = value;
-					} else if ( parameter === 'ctz' ) { controls.target.z = value;
+				} else if ( parameter === 'cx' ) { camera.position.x = value;
+				} else if ( parameter === 'cy' ) { camera.position.y = value;
+				} else if ( parameter === 'cz' ) { camera.position.z = value;
 
-				}
+				} else if ( parameter === 'tx' ) { controls.target.x = value;
+				} else if ( parameter === 'ty' ) { controls.target.y = value;
+				} else if ( parameter === 'tz' ) { controls.target.z = value;
 
 			}
 
-			inpLat.value = lat;
-			inpLon.value = lon;
-
-		} else {
-
-			lat = inpLat.valueAsNumber
-			lon = inpLon.valueAsNumber;
-
-			updateHash();
-
 		}
 
-		outLat.value = lat;
-		outLon.value = lon;
+		outLat.value = inpLat.value;
+		outLon.value = inpLon.value;
 
-		updatePosition( lat, lon )
+		var time = new Date(
+			inpYear.value,
+			( '0' + inpMonth.value ).slice( -2 ),
+			( '0' + inpDay.value ).slice( -2 ),
+			( '0' + inpHour.value ).slice( -2 ),
+			( '0' + inpMinute.value ).slice( -2 )
+		);
+
+		updatePosition( time, inpLat.value, inpLon.value );
 
 	}
 
-	function updatePosition( lat, lon ) {
+	function updatePosition( time, lat, lon ) {
+
+		sunPosition = SunCalc.getPosition( time, lat, lon );
+		az = sunPosition.azimuth;
+		al = sunPosition.altitude;
 
 		var radius = size;
 		var d2r =  Math.PI / 180;
-		var rc = radius * Math.cos( inpLat.valueAsNumber * d2r );
+		var rc = radius * Math.cos( al );
 
-		lightDirectional.position.set( rc * Math.cos( lon * d2r ), radius * Math.sin( lat * d2r ), rc * Math.sin( lon * d2r ) );
+		lightDirectional.position.set( rc * Math.cos( az ), radius * Math.sin( al ), rc * Math.sin( az ) );
 		sunBand.lookAt( lightDirectional.position )
+
+		info.innerHTML = 
+
+			'Azimuth - radians:' + az.toFixed( 3 ) + ' degrees: ' + ( az * 180 / Math.PI ).toFixed( 1 ) + '<br>' +
+			'Altitude - radians: ' + al.toFixed( 3 ) + ' degrees: ' + ( al * 180 / Math.PI ).toFixed( 1 ) +
+
+		'';
+
 	}
+
 
 
 	function drawHelpers() {
@@ -212,8 +264,8 @@
 
 		mesh = new THREE.Mesh( geometry, material );
 		mesh.position.set( 0, -1, 0 );
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
 		scene.add( mesh );
 
 		helper = new THREE.EdgesHelper( mesh );
@@ -226,7 +278,6 @@
 		var helper = new THREE.GridHelper( 50, 10 );
 		helper.position.set( 0, 0, 0 );
 		scene.add( helper );
-
 
 	}
 
@@ -330,7 +381,7 @@
 		lightDirectional.castShadow = true;
 		scene.add( lightDirectional );
 
-//		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
 
 // attach to camera
 		lightPoint = new THREE.PointLight( 0xffffff, 0.5 );
@@ -339,31 +390,6 @@
 		scene.add( camera );
 
 	}
-
-
-	function addShadows() {
-
-		renderer.shadowMap.enabled = true;
-		renderer.shadowMap.cullFace = THREE.CullFaceBack;
-		renderer.gammaInput = true;
-		renderer.gammaOutput = true;
-		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-/*
-		scene.traverse( function ( child ) {
-
-			if ( child instanceof THREE.Mesh ) {
-
-				child.castShadow = true
-				child.receiveShadow = true;
-
-			}
-
-		} );
-*/
-
-	}
-
-
 
 	function onWindowResize() {
 
@@ -381,7 +407,7 @@
 		controls.update();
 		stats.update();
 		renderer.render( scene, camera );
-//		updateHash();
+
 	}
 
 </script>

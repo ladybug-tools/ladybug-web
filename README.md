@@ -38,7 +38,17 @@ Latest update: 2016-03-05
 
 ## [Sun Azimuth Altitude]( http://ladybug-analysis-tools.github.io/ladybug-web/sun-azimuth-altitude/ )
 
-* Work-in-progress
+Embedded description: _Set date and time. Set the location to any lat/lon. Adjust the view. View the Sun azimuth, alitude and shadows for that place and time. Permalinks created on the fly._
+
+Latest update: 2016-03-05
+
+## Features
+
+* Set date and time
+* Set latitude and longitude
+* View Sun azimuth and altitude
+* View shadow simulation
+* API that creates and accepts permalinks
 
 
 ## Links of Interest
@@ -46,3 +56,6 @@ Latest update: 2016-03-05
 [SunCalc]( https://github.com/mourner/suncalc ) ~ Thank you Vladimir Agafonkin!
 
 [Astronomy Answers ~ Position of the Sun]( http://aa.quae.nl/en/reken/zonpositie.html )
+
+
+
