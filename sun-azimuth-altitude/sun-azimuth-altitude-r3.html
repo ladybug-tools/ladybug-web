@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Sun Altitude Azimuth R2</title>
+<title>Sun Altitude Azimuth R3</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='Set date and time. Set the location to any lat/lon. Adjust the view. View the Sun azimuth, alitude and shadows for that place and time. Permalinks created on the fly.' >
 <meta name=keywords content='solar analysis,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
@@ -29,6 +29,9 @@
 	var lat = 32.63;
 	var lon = 51.65;
 
+	var lat = 37.8;
+	var lon = -122.4;
+
 	var date = new Date();
 	var year = date.getUTCFullYear();
 	var month = date.getUTCMonth() + 1;
@@ -40,6 +43,9 @@
 
 	var camX = camY = camZ = '100.0';
 	var tarX = tarY = tarZ = '0.0';
+
+	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
+	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
 
 	var size = 100;
 

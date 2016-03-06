@@ -15,12 +15,12 @@ _Ladybug for web provides solar and weather data visualization and analysis on t
 
 Embedded description: _Display sun times and position, moon position, illumination and times. Set date, time and location or select locations from a gazetteer. Permalinks created on the fly._
 
-Latest update: 2016-03-05
+Latest update: 2016-03-06 / R4
 
 ## Features
 * Built on [SunCalc]( https://github.com/mourner/suncalc )
-* Displays Sun times and position
-* Displays Moon position, illumination and times
+* Displays Sun times and position in radians and degree
+* Displays Moon illumination, times and pistions in radians and degrees
 * Set the date and time
 * Select locations from a gazetteer of with lat/lon of over 2,000 places names
 * API that creates and accepts permalinks
@@ -29,7 +29,8 @@ Latest update: 2016-03-05
 
 * Select lat/lon by clicking on a map or globe
 * Click on each item of Sun times to update Sun position. Ditto Moon
-* Highlight currently selected location
+* Highlight with color currently selected location
+* Adapt Google Maps API gazetteer
 
 ### Notes / Remarks
 
@@ -55,10 +56,11 @@ Latest update: 2016-03-05
 * Select lat/lon by clicking on a map or globe
 * Add gazetteer?
 * Insert OBJ, JSON and other files into the scene
+* Pick up 3D data from Google Street View - follow Callum Prentice
 
 ### Notes / Remarks
 
-* Definitely issues going on with the math. ;-)
+
 
 
 ## Links of Interest
@@ -72,9 +74,10 @@ Latest update: 2016-03-05
 
 [Sunlight Hours Ladybug Dynamo]( http://hydrashare.github.io/hydra/viewer?owner=mostaphaRoudsari&fork=hydra_1&id=Sunlighthours_Ladybug_Dynamo&slide=0&scale=2.7215798676177987&offset=-765.8096117029108,-203.1389988323118 )
 
-[SunCalc.net]( http://suncalc.net/#/37.352,-121.952,12/2016.02.29/09:53 )
+[SunCalc.net]( http://suncalc.net/ )
 
-[SunCalc.org]( http://www.suncalc.org/#/40.7537,-73.9992,15/2015.08.23/13:35/1 )
+[SunCalc.org]( http://www.suncalc.org/ )
+[MoonCalc.org]( http://www.mooncalc.org )
 
 [Sun Earth Tools]( http://www.sunearthtools.com/dp/tools/pos_sun.php )
 
