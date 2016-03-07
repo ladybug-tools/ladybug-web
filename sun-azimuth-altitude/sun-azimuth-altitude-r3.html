@@ -5,9 +5,8 @@
 <title>Sun Altitude Azimuth R3</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='Set date and time. Set the location to any lat/lon. Adjust the view. View the Sun azimuth, alitude and shadows for that place and time. Permalinks created on the fly.' >
-<meta name=keywords content='solar analysis,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-03-05' >
-
+<meta name=keywords content='Suncalc.js,solar analysis,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-06' >
 </head>
 <body>
 
@@ -22,29 +21,32 @@
 -->
 <script>
 
+// https://github.com/mourner/suncalc
+
+
 	var stats, renderer, scene, camera, controls;
 	var geometry, material, mesh;
 	var lightAmbient, lightDirectional, lightPoint;
 
-	var lat = 32.63;
-	var lon = 51.65;
+//	var lat = 32.63;
+//	var lon = 51.65;
 
 	var lat = 37.8;
 	var lon = -122.4;
 
 	var date = new Date();
-	var year = date.getUTCFullYear();
-	var month = date.getUTCMonth() + 1;
-	var day = date.getDate();
-	var hour = date.getHours();
-	var minute = date.getMinutes();
+	var year = date.getFullYear();
+	var month = 1 + date.getMonth(); // 0 - 11
+	var day = date.getDate(); // 1 - 31
+	var hour = date.getHours(); // 0 - 23
+	var minute = date.getMinutes(); // 0 - 59
 
-	var hashDefault = '#yr=' + year + '#mo=' + month + '#da=' + day + '#hr=' + hour + '#mn=' + minute + '#la=' + lat + '#lo=' + lon;
+	var hashDefault = '#yr=' + year + '#mo=' + month + '#da=' + day + '#hr=' + hour + '#mn=' + minute + '#la=' + lat + '#lo=' + lon + '#';
 
 	var camX = camY = camZ = '100.0';
 	var tarX = tarY = tarZ = '0.0';
 
-	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
+	var pi = Math.PI, pi2 = pi + pi, pi05 = pi * 0.5;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
 
 	var size = 100;
@@ -66,8 +68,7 @@
 			'.inpTim { width: 40px; text-align: right; }' +
 			'.inpPos { width: 65px; text-align: right; }' +
 
-
-			'#menu { margin: 0 20px; position: absolute; }' +
+			'#menu { margin: 0 20px; max-width: 310px; position: absolute; }' +
 
 			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
 			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
@@ -86,15 +87,18 @@
 			'</h2>' +
 
 			'<p>' +
-				' Year:<input id=inpYear class=inpTim onchange=updateHash(); >' +
-				' Month:<input id=inpMonth class=inpTim onchange=updateHash(); >' +
-				' Day:<input id=inpDay class=inpTim onchange=updateHash(); >' +
-				' Hour:<input id=inpHour class=inpTim onchange=updateHash(); >' +
-				' Minute:<input id=inpMinute class=inpTim onchange=updateHash(); >' +
+				' Year <input id=inpYear class=inpTim onchange=updateHash(); >' +
+				' Month <input id=inpMonth class=inpTim onchange=updateHash(); >' +
+				' Day <input id=inpDay class=inpTim onchange=updateHash(); >' +
 			'</p>' +
 
-			'<p>Latitude: <input type=range id=inpLat max=90 min=0 step=0.1 value=' + lat + ' oninput=updateHash(); title="0 to 90: OK" > <output id=outLat >value</output></p>' +
-			'<p>Longitude: <input type=range id=inpLon max=180 min=0 step=0.1 value=' + lon + ' oninput=updateHash(); title="0 to 180: OK" > <output id=outLon >value</output></p>' +
+			'<p>' +
+				' Hour <input id=inpHour class=inpTim onchange=updateHash(); >' +
+				' Minute <input id=inpMinute class=inpTim onchange=updateHash(); >' +
+			'</p>' +
+
+			'<p>Latitude <input type=range id=inpLat max=90 min=-90 step=0.1 oninput=updateHash(); title="-90 to 90: OK" ><output id=outLat ></output></p>' +
+			'<p>Longitude<input type=range id=inpLon max=180 min=-180 step=0.1 oninput=updateHash(); title="-180 to 180: OK" ><output id=outLon ></output></p>' +
 
 			'<div id=info ></div>' +
 
@@ -137,10 +141,10 @@
 
 		drawHelpers();
 
-		var pi = Math.PI, pi2 = pi * 2;
+		texture = canvasDraw();
 		geometry = new THREE.SphereBufferGeometry( 70, 50, 25, pi2, pi2, 1.2, 0.8 );
 		var color = 0xffff00;
-		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.15, side: 2, transparent: true });
+		material = new THREE.MeshPhongMaterial( { color: color, map: texture, opacity: 0.15, side: 2, transparent: true });
 		sunBand = new THREE.Mesh( geometry, material );
 		scene.add( sunBand );
 
@@ -208,8 +212,8 @@
 				} else if ( parameter === 'hr' ) { inpHour.value = parseInt( value, 10 );
 				} else if ( parameter === 'mn' ) { inpMinute.value = parseInt( value, 10 );
 
-				} else if ( parameter === 'la' ) { inpLat.value = value;
-				} else if ( parameter === 'lo' ) { inpLon.value = value;
+				} else if ( parameter === 'la' ) { inpLat.value = parseFloat( value );
+				} else if ( parameter === 'lo' ) { inpLon.value = parseFloat( value );
 
 				} else if ( parameter === 'cx' ) { camera.position.x = value;
 				} else if ( parameter === 'cy' ) { camera.position.y = value;
@@ -227,11 +231,13 @@
 		outLon.value = inpLon.value;
 
 		var time = new Date(
+
 			inpYear.value,
 			( '0' + inpMonth.value ).slice( -2 ),
 			( '0' + inpDay.value ).slice( -2 ),
 			( '0' + inpHour.value ).slice( -2 ),
 			( '0' + inpMinute.value ).slice( -2 )
+
 		);
 
 		updatePosition( time, inpLat.value, inpLon.value );
@@ -241,7 +247,7 @@
 	function updatePosition( time, lat, lon ) {
 
 		sunPosition = SunCalc.getPosition( time, lat, lon );
-		az = sunPosition.azimuth;
+		az = sunPosition.azimuth + pi;
 		al = sunPosition.altitude;
 
 		var radius = size;
@@ -253,14 +259,55 @@
 
 		info.innerHTML = 
 
-			'Azimuth &nbsp;- radians: ' + az.toFixed( 3 ) + ' degrees: ' + ( az * 180 / Math.PI ).toFixed( 1 ) + '<br>' +
-			'Altitude - radians: ' + al.toFixed( 3 ) + ' degrees: ' + ( al * 180 / Math.PI ).toFixed( 1 ) +
-
+			'<p>' +
+				'Azimuth radians: &nbsp;' + az.toFixed( 3 ) + '<br>' +
+				'Altitude radians: ' + al.toFixed( 3 ) + '<br>' +
+			'<p>' +
+			'</p>' +
+				'Azimuth degrees: &nbsp;' + ( az * r2d ).toFixed( 1 ) + '<br>' +
+				'Altitude degrees: &nbsp;' + ( al * r2d ).toFixed( 1 ) + '<br>' +
+			'</p>' +
 		'';
 
 	}
 
+		function canvasDraw( parameters ) {
 
+		parameters = parameters || {} ;
+
+		var canvas = document.createElement( 'canvas' );
+		var context = canvas.getContext( '2d' );
+		var color = parameters.backgroundColor ? parameters.backgroundColor : 60 ;
+		canvas.width = parameters.width ? parameters.width : 2048;
+		canvas.height =  parameters.height ? parameters.height : 512;
+
+		context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
+		context.fillRect( 0, 0, canvas.width, canvas.height );
+
+		context.lineWidth = 3 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 1, 2, canvas.width - 0, canvas.height - 5 );
+
+		context.lineWidth = 2 ;
+		context.fillStyle = '#f00' ;
+
+		delta = canvas.width / 24;
+		for ( i = 0; i < 24; i++ ) {
+
+		context.beginPath();
+			context.moveTo( delta * i, 0 );
+			context.lineTo( delta * i, canvas.height );
+		context.stroke();
+
+		}
+
+		var texture = new THREE.Texture( canvas );
+		texture.minFilter = texture.magFilter = THREE.NearestFilter;
+		texture.needsUpdate = true;
+
+		return texture;
+
+	}
 
 	function drawHelpers() {
 

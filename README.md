@@ -41,7 +41,7 @@ Latest update: 2016-03-06 / R4
 
 Embedded description: _Set date and time. Set the location to any lat/lon. Adjust the view. View the Sun azimuth, altitude and shadows for that place and time. Permalinks created on the fly._
 
-Latest update: 2016-03-05
+Latest update: 2016-03-06 / R3
 
 ## Features
 
@@ -53,6 +53,7 @@ Latest update: 2016-03-05
 
 ### Things to Do / Road Map
 
+* Menu works on mobiles
 * Select lat/lon by clicking on a map or globe
 * Add gazetteer?
 * Insert OBJ, JSON and other files into the scene
