@@ -153,8 +153,8 @@ API that creates, updates and accepts permalinks using date, time, latitude and 
 			( '0' + inpMinute.value ).slice( -2 )
 		);
 
-//		updateCalculations( time, inpLat.value, inpLon.value );
-		updateCalculations( new Date(), inpLat.value, inpLon.value );
+		updateCalculations( time, inpLat.value, inpLon.value );
+//		updateCalculations( new Date(), inpLat.value, inpLon.value );
 	}
 
 	function updateCalculations( time, lat, lon ) {
@@ -187,6 +187,7 @@ console.log( 'update', time, lat, lon );
 		'<tr><td> Altitude in radians </td><td> ' + sunPosition.altitude.toFixed( 3 ) + '</td></tr>' +
 		'<tr><td> Azimuth in degrees </td><td> ' + ( ( pi + sunPosition.azimuth ) * r2d ).toFixed( 2 ) + '</td></tr>' +
 		'<tr><td> Altitude in degrees </td><td> ' + ( sunPosition.altitude * r2d ).toFixed( 2 ) + '</td></tr>';
+
 
 		moonPosition = SunCalc.getMoonPosition( time, lat, lon );
 
