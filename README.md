@@ -18,9 +18,10 @@ Latest update: 2016-03-06 / R1
 
 ## Features
 * Built on [SunCalc]( https://github.com/mourner/suncalc )
+* Creates a 3D Sun path
 * Displays Sun times and position in radians and degree
 * Set the date and time
-* Loads and displays OBJ files
+* Loads and displays OBJ files - with shade and shadow
 	* Includes five samples
 * API that creates and accepts permalinks
 
