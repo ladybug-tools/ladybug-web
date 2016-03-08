@@ -11,6 +11,27 @@ value='You are now in the home page view - Click this button to view the read me
 _Ladybug for web provides solar and weather data visualization and analysis on the web_
 
 
+## [Sun Azimuth Altitude OBJ Viewer]( http://ladybug-analysis-tools.github.io/ladybug-web/sun-azimuth-altitude-obj/ )
+
+
+Latest update: 2016-03-06 / R1
+
+## Features
+* Built on [SunCalc]( https://github.com/mourner/suncalc )
+* Displays Sun times and position in radians and degree
+* Set the date and time
+* Loads and displays OBJ files
+	* Includes five samples
+* API that creates and accepts permalinks
+
+### Things to Do / Road Map
+
+* Rotate default buildings to correct orientation
+* Fix azimuth/altitude error
+* Allow for updates that don't reset parameters
+* Faster ways for setting data and time
+
+
 ## [SunCalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/suncalc-sandbox/ )
 
 Embedded description: _Display sun times and position, moon position, illumination and times. Set date, time and location or select locations from a gazetteer. Permalinks created on the fly._
@@ -20,7 +41,7 @@ Latest update: 2016-03-06 / R4
 ## Features
 * Built on [SunCalc]( https://github.com/mourner/suncalc )
 * Displays Sun times and position in radians and degree
-* Displays Moon illumination, times and pistions in radians and degrees
+* Displays Moon illumination, times and positions in radians and degrees
 * Set the date and time
 * Select locations from a gazetteer of with lat/lon of over 2,000 places names
 * API that creates and accepts permalinks
