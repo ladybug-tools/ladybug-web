@@ -24,6 +24,7 @@
 
 // https://github.com/mourner/suncalc
 
+	var obj;
 	var parameters = new THREE.Object3D();
 
 	var stats, renderer, scene, camera, controls;
@@ -46,8 +47,11 @@
 	var fileName, fileNameHash = 'http://mrdoob.github.io/three.js/examples/obj/female02/female02.obj';
  
 	var hashDefault = '#yr=' + year + '#mo=' + month + '#da=' + day + '#hr=' + hour + '#mn=' + minute + '#la=' + lat + '#lo=' + lon + 
-		'#ob=' + fileNameHash +
-		'#sx=0.3#sy=0.3#sz=0.3'
+//		'#ob=' + fileNameHash +
+//		'#sx=0.3#sy=0.3#sz=0.3'
+
+		'#ob=http://jaanga.github.io/3d-models//obj/architecture/schroder-house/schroder-house.obj#sx=5#sy=5#sz=5#la=52.0853#lo=5.1472' +
+
 	'';
 
 	var camX = camY = camZ = '100.0';
@@ -133,6 +137,24 @@
 
 		window.addEventListener ( 'hashchange', parseHash, false );
 
+
+// helpers
+
+		geometry = new THREE.BoxGeometry( 200, 2, 200 );
+		material = new THREE.MeshPhongMaterial();
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		mesh.position.set( 0, -1, 0 );
+		scene.add( mesh );
+
+		var gridHelper = new THREE.GridHelper( 100, 10 );
+		gridHelper.position.set( 0, 0, 0 );
+		scene.add( gridHelper );
+
+		var axisHelper = new THREE.AxisHelper( 100 );
+		scene.add( axisHelper );
+
 // assets
 
 		texture = canvasDraw();
@@ -157,7 +179,21 @@
 //		var hashes, hash, pud, parameter, value;
 
 		hashes = location.hash.split( '#' );
+		parameters = new THREE.Object3D();
 		pud = parameters.userData;
+
+		pud.year = year;
+		pud.month = month;
+		pud.day = day;
+
+		pud.hour = hour;
+		pud.minute = minute;
+
+		pud.lat = lat;
+		pud.lon = lon;
+
+		controls.reset();
+
 
 		for ( var i = 0; i < hashes.length; i++ ) {
 
@@ -242,15 +278,15 @@
 
 	}
 
-	function canvasDraw( parameters ) {
+	function canvasDraw( params ) {
 
-		parameters = parameters || {} ;
+		var params = params || {} ;
 
 		var canvas = document.createElement( 'canvas' );
 		var context = canvas.getContext( '2d' );
-		var color = parameters.backgroundColor ? parameters.backgroundColor : 60 ;
-		canvas.width = parameters.width ? parameters.width : 2048;
-		canvas.height =  parameters.height ? parameters.height : 512;
+		var color = params.backgroundColor ? params.backgroundColor : 60 ;
+		canvas.width = params.width ? params.width : 2048;
+		canvas.height =  params.height ? params.height : 512;
 
 		context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
 		context.fillRect( 0, 0, canvas.width, canvas.height );
@@ -263,14 +299,16 @@
 		context.fillStyle = '#f00' ;
 
 		delta = canvas.width / 24;
+
 		for ( i = 0; i < 24; i++ ) {
 
-		context.beginPath();
 			context.moveTo( delta * i, 0 );
 			context.lineTo( delta * i, canvas.height );
-		context.stroke();
+
 
 		}
+
+		context.stroke();
 
 		var texture = new THREE.Texture( canvas );
 		texture.minFilter = texture.magFilter = THREE.NearestFilter;
@@ -289,12 +327,12 @@
 
 				addObject( object );
 
-//				info.innerHTML = 'File name: ' + fileName.split('/').pop() + '<br>' + '';
+				if ( parent.info ) { parent.updateInfo(); }
 
 			},
 			function( event ) {
 
-				parent.progress.innerHTML = 'Loaded: ' + ( ( 100 * event.loaded / event.total ).toFixed() ) + '%'; 
+				if ( parent.progress ) { parent.progress.innerHTML = 'Loaded: ' + ( ( 100 * event.loaded / event.total ).toFixed() ) + '%';  }
 
 			}
 
@@ -304,13 +342,15 @@
 
 	function addObject( object ) {
 
+		scene.remove( obj );
+
 		object.traverse( function ( child ) {
 
 			if ( child instanceof THREE.Mesh ) {
 
 				child.castShadow = true;
 				child.receiveShadow = true;
-				child.material = new THREE.MeshPhongMaterial();
+				child.material = new THREE.MeshPhongMaterial( { side: 2 } );
 
 			}
 
@@ -320,7 +360,9 @@
 		object.rotation.copy( parameters.rotation );
 		object.position.copy( parameters.position );
 
-		scene.add( object );
+		obj = new THREE.Object3D();
+		obj.add( object )
+		scene.add( obj );
 
 	}
 
