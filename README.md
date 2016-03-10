@@ -10,7 +10,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 _Ladybug for web provides solar and weather data visualization and analysis on the web_
 
-[Analemma Sandbox R1]( ladybug-web/analemma-sandbox/analemma-sandbox-r1.html )
+[Analemma Sandbox R1]( http://ladybug-web/analemma-sandbox/ )
 
 Latest update: 2016-03-09 / R1
 
