@@ -10,6 +10,14 @@ value='You are now in the home page view - Click this button to view the read me
 
 _Ladybug for web provides solar and weather data visualization and analysis on the web_
 
+[Analemma Sandbox R1]( ladybug-web/analemma-sandbox/analemma-sandbox-r1.html )
+
+Latest update: 2016-03-09 / R1
+
+
+* First Pass
+* 2D plot of Sun azimuth and altitude once an hour at the first of the month plus solstices and equinoxes. 
+* Lat/lon of San Francisco
 
 ## [Sun Azimuth Altitude OBJ Viewer]( http://ladybug-analysis-tools.github.io/ladybug-web/sun-azimuth-altitude-obj/ )
 
