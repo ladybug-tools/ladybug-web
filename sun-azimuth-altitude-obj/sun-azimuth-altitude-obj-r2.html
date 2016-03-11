@@ -1,0 +1,392 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Sun Altitude Azimuth OBJ R1</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='Set date and time. Set the location to any lat/lon. Adjust the view. View the Sun azimuth, alitude and shadows for that place and time. Permalinks created on the fly.' >
+<meta name=keywords content='Suncalc.js,solar analysis,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-06' >
+</head>
+<body>
+
+<script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/loaders/OBJLoader.js ></script>
+<script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
+<!--
+<script src=http://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+-->
+<script>
+
+// https://github.com/mourner/suncalc
+
+	var obj;
+	var parameters = new THREE.Object3D();
+
+	var stats, renderer, scene, camera, controls;
+	var geometry, material, mesh;
+	var lightAmbient, lightDirectional, lightPoint;
+
+//	var lat = 32.63;
+//	var lon = 51.65;
+
+	var lat = 37.8;
+	var lon = -122.4;
+
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = 1 + date.getMonth(); // 0 - 11
+	var day = date.getDate(); // 1 - 31
+	var hour = date.getHours(); // 0 - 23
+	var minute = date.getMinutes(); // 0 - 59
+
+	var fileName, fileNameHash = 'http://mrdoob.github.io/three.js/examples/obj/female02/female02.obj';
+ 
+	var hashDefault = '#yr=' + year + '#mo=' + month + '#da=' + day + '#hr=' + hour + '#mn=' + minute +
+//		'#ob=' + fileNameHash +
+//		'#sx=0.3#sy=0.3#sz=0.3'
+
+		'#ob=http://jaanga.github.io/3d-models//obj/architecture/schroder-house/schroder-house.obj#sx=5#sy=5#sz=5#la=52.0853#lo=5.1472' +
+
+	'';
+
+	var camX = camY = camZ = '100.0';
+	var tarX = tarY = tarZ = '0.0';
+
+	var size = 100;
+	var pi = Math.PI, pi2 = pi + pi, pi05 = pi * 0.5;
+	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
+
+	init();
+	animate();
+
+
+	function init() {
+
+//DOM
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML = 'body { font: 12pt monospace; margin: 0; overflow: hidden; }';
+
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; bottom: 0; z-index: 100; ';
+		document.body.appendChild( stats.domElement );
+
+		window.addEventListener( 'resize', onWindowResize, false );
+
+// three.js
+		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
+		renderer.setClearColor( 0xf0f0f0 );
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.cullFace = THREE.CullFaceBack;
+
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.cullFace = THREE.CullFaceBack;
+		renderer.gammaInput = true;
+		renderer.gammaOutput = true;
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+		document.body.appendChild( renderer.domElement );
+
+		scene = new THREE.Scene();
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
+		camera.position.set( 100, 100, 100 );
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.minDistance = 5;
+		controls.maxDistance = 500;
+
+		size = size ? size : 100;
+
+		lightAmbient = new THREE.AmbientLight( 0x444444 );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+		lightDirectional.position.set( -size, size, size );
+
+		var d = size;
+		lightDirectional.shadow.camera.left = -d;
+		lightDirectional.shadow.camera.right = d;
+		lightDirectional.shadow.camera.top = d;
+		lightDirectional.shadow.camera.bottom = -d;
+
+		lightDirectional.shadow.camera.near = 0;
+		lightDirectional.shadow.camera.far = 2 * size;
+
+// helps stop appearance of grid lines in objects
+		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		scene.add( lightDirectional );
+
+		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+
+// attach to camera
+		lightPoint = new THREE.PointLight( 0xffffff, 0.5 );
+		camera.add( lightPoint );
+		lightPoint.position = new THREE.Vector3( 0, 0, 1 );
+		scene.add( camera );
+
+		window.addEventListener ( 'hashchange', parseHash, false );
+
+
+// helpers
+
+		geometry = new THREE.BoxGeometry( 200, 2, 200 );
+		material = new THREE.MeshPhongMaterial();
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		mesh.position.set( 0, -1, 0 );
+		scene.add( mesh );
+
+		var gridHelper = new THREE.GridHelper( 100, 10 );
+		gridHelper.position.set( 0, 0, 0 );
+		scene.add( gridHelper );
+
+		var axisHelper = new THREE.AxisHelper( 100 );
+		scene.add( axisHelper );
+
+// assets
+
+		texture = canvasDraw();
+		geometry = new THREE.SphereBufferGeometry( 70, 50, 25, pi2, pi2, 1.2, 0.8 );
+		var color = 0xffff00;
+		material = new THREE.MeshPhongMaterial( { color: color, map: texture, opacity: 0.15, side: 2, transparent: true });
+		sunBand = new THREE.Mesh( geometry, material );
+		scene.add( sunBand );
+
+		if ( location.hash === '' ) {
+
+			location.hash = hashDefault;
+
+		}
+
+		parseHash();
+
+	}
+
+	function parseHash() {
+
+//		var hashes, hash, pud, parameter, value;
+
+		hashes = location.hash.split( '#' );
+		parameters = new THREE.Object3D();
+		pud = parameters.userData;
+
+		pud.year = year;
+		pud.month = month;
+		pud.day = day;
+
+		pud.hour = hour;
+		pud.minute = minute;
+
+		pud.lat = lat;
+		pud.lon = lon;
+
+		controls.reset();
+
+
+		for ( var i = 0; i < hashes.length; i++ ) {
+
+			hash = hashes[ i ];
+
+			parameter = hash.slice( 0, 2 );
+			value = hash.slice( 3 );
+
+			if ( parameter === 'yr' ) { pud.year = value;
+
+				} else if ( parameter === 'mo' ) { pud.month = parseInt( value, 10 );
+				} else if ( parameter === 'da' ) { pud.day = parseInt( value, 10 );;
+
+				} else if ( parameter === 'hr' ) { pud.hour = parseInt( value, 10 );
+				} else if ( parameter === 'mn' ) { pud.minute = parseInt( value, 10 );
+
+				} else if ( parameter === 'la' ) { pud.lat = parseFloat( value );
+				} else if ( parameter === 'lo' ) { pud.lon = parseFloat( value );
+
+				} else if ( parameter === 'cx' ) { camera.position.x = value;
+				} else if ( parameter === 'cy' ) { camera.position.y = value;
+				} else if ( parameter === 'cz' ) { camera.position.z = value;
+
+				} else if ( parameter === 'tx' ) { controls.target.x = value;
+				} else if ( parameter === 'ty' ) { controls.target.y = value;
+				} else if ( parameter === 'tz' ) { controls.target.z = value;
+
+				} else if ( parameter === 'ry' ) { parameters.rotation.x = parseFloat( value * d2r );
+				} else if ( parameter === 'ry' ) { parameters.rotation.x = parseFloat( value * d2r );
+				} else if ( parameter === 'rz' ) { parameters.rotation.y = parseFloat( value * d2r );
+
+				} else if ( parameter === 'px' ) { parameters.position.x = parseFloat( value );
+				} else if ( parameter === 'py' ) { parameters.position.y = parseFloat( value );
+				} else if ( parameter === 'pz' ) { parameters.position.z = parseFloat( value );
+
+				} else if ( parameter === 'sx' ) { parameters.scale.x = parseFloat( value );
+				} else if ( parameter === 'sy' ) { parameters.scale.y = parseFloat( value );
+				} else if ( parameter === 'sz' ) { parameters.scale.z = parseFloat( value );
+
+				} else if ( parameter === 'ob' ) { fileNameHash = value;
+
+			}
+
+		}
+
+		timeString = 
+
+			pud.year + '-' +
+			( '0' + pud.month ).slice( -2 ) + '-' +
+			( '0' + pud.day ).slice( -2 ) + 'T' +
+			( '0' + pud.hour ).slice( -2 ) + ':' +
+			( '0' + pud.minute ).slice( -2 ) + ':00';
+
+		updatePosition( timeString, pud.lat, pud.lon );
+
+		if ( fileNameHash !== pud.fileName  ) {
+
+			pud.fileName = fileNameHash;
+			loadOBJFileByURL( pud.fileName );
+
+		}
+
+	}
+
+
+	function updatePosition( timeString, lat, lon ) {
+
+console.log( 'update', timeString, lat, lon );
+
+		time = new Date( timeString );
+
+		sunPosition = SunCalc.getPosition( time, lat, lon );
+
+		az = sunPosition.azimuth + pi;
+		al = sunPosition.altitude;
+
+		var radius = size;
+		var rc = radius * Math.cos( al );
+
+		lightDirectional.position.set( rc * Math.cos( az ), radius * Math.sin( al ), rc * Math.sin( az ) );
+		sunBand.lookAt( lightDirectional.position )
+
+		parameters.userData.sunPosition = sunPosition;
+
+	}
+
+	function canvasDraw( params ) {
+
+		var params = params || {} ;
+
+		var canvas = document.createElement( 'canvas' );
+		var context = canvas.getContext( '2d' );
+		var color = params.backgroundColor ? params.backgroundColor : 60 ;
+		canvas.width = params.width ? params.width : 2048;
+		canvas.height =  params.height ? params.height : 512;
+
+		context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
+		context.fillRect( 0, 0, canvas.width, canvas.height );
+
+		context.lineWidth = 3 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 1, 2, canvas.width - 0, canvas.height - 5 );
+
+		context.lineWidth = 2 ;
+		context.fillStyle = '#f00' ;
+
+		delta = canvas.width / 24;
+
+		for ( i = 0; i < 24; i++ ) {
+
+			context.moveTo( delta * i, 0 );
+			context.lineTo( delta * i, canvas.height );
+
+
+		}
+
+		context.stroke();
+
+		var texture = new THREE.Texture( canvas );
+		texture.minFilter = texture.magFilter = THREE.NearestFilter;
+		texture.needsUpdate = true;
+
+		return texture;
+
+	}
+
+	function loadOBJFileByURL( fileName ) {
+
+		var loader = new THREE.OBJLoader();
+		loader.crossOrigin = 'anonymous';
+		loader.load( fileName,
+			function ( object ) {
+
+				addObject( object );
+
+				if ( parent.info ) { parent.updateInfo(); }
+
+			},
+			function( event ) {
+
+				if ( parent.progress ) { parent.progress.innerHTML = 'Loaded: ' + ( ( 100 * event.loaded / event.total ).toFixed() ) + '%';  }
+
+			}
+
+		);
+
+	}
+
+	function addObject( object ) {
+
+		scene.remove( obj );
+
+		object.traverse( function ( child ) {
+
+			if ( child instanceof THREE.Mesh ) {
+
+				child.castShadow = true;
+				child.receiveShadow = true;
+				child.material = new THREE.MeshPhongMaterial( { side: 2 } );
+
+			}
+
+		} );
+
+		object.scale.copy( parameters.scale );
+		object.rotation.copy( parameters.rotation );
+		object.position.copy( parameters.position );
+
+		obj = new THREE.Object3D();
+		obj.add( object )
+		scene.add( obj );
+
+	}
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+	}
+
+
+	function animate() {
+
+		requestAnimationFrame( animate );
+		controls.update();
+		stats.update();
+		renderer.render( scene, camera );
+
+	}
+
+</script>
+</body>
+</html>

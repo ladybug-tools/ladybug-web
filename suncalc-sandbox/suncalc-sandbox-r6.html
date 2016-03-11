@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Suncalc Sandbox R5</title>
+<title>Suncalc Sandbox R6</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Calculates and reports Sun times and position in radians and degrees.
@@ -10,7 +10,7 @@ Calculates and reports Moon illumination, times and positions in radians and deg
 API that creates, updates and accepts permalinks using date, time, latitude and longitude.
 ' >
 <meta name=keywords content='Suncalc.js,solar analysis,JavaScript,GitHub,FOSS,STEM' >
-<meta name=date content='2016-03-08' >
+<meta name=date content='2016-03-10' >
 </head>
 <body>
 <script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
@@ -145,22 +145,22 @@ API that creates, updates and accepts permalinks using date, time, latitude and 
 
 	function updateData() {
 
-		var time = new Date(
-			inpYear.value,
-			( '0' + ( parseInt( inpMonth.value, 10 ) - 1 ) ).slice( -2 ),
-			( '0' + inpDay.value ).slice( -2 ),
-			( '0' + inpHour.value ).slice( -2 ),
-			( '0' + inpMinute.value ).slice( -2 )
-		);
+		timeString = 
+			inpYear.value + '-' +
+			( '0' + inpMonth.value ).slice( -2 ) + '-' +
+			( '0' + inpDay.value ).slice( -2 ) + 'T' +
+			( '0' + inpHour.value ).slice( -2 ) + ':' +
+			( '0' + inpMinute.value ).slice( -2 ) + ':00';
 
-		updateCalculations( time, inpLat.value, inpLon.value );
-//		updateCalculations( new Date(), inpLat.value, inpLon.value );
+		updateCalculations( timeString, inpLat.value, inpLon.value );
 
 	}
 
-	function updateCalculations( time, lat, lon ) {
+	function updateCalculations( timetimeString, lat, lon ) {
 
-console.log( 'update', time, lat, lon );
+console.log( 'update', timeString, lat, lon );
+
+		time = new Date( timeString );
 
 		var keys, txt;
 
@@ -173,7 +173,7 @@ console.log( 'update', time, lat, lon );
 
 		for ( var i = 0; i < keys.length; i++ ) {
 
-			txt += '<tr><td>' + keys[ i ] + ' </td><td> ' + sunTimes[ keys[ i ] ].toLocaleTimeString() + '</td></tr>';
+			txt += '<tr><td>' + keys[ i ] + ' </td><td> ' + sunTimes[ keys[ i ] ].toUTCString() + '</td></tr>';
 
 		}
 
@@ -216,8 +216,8 @@ console.log( 'update', time, lat, lon );
 
 		txt += '<tr><th colspan=2 > Moon Times </th></tr>' +
 
-		'<tr><td> Rise </td><td> ' + moonTimes.rise.toLocaleTimeString() + '</td></tr>' +
-		'<tr><td> Set </td><td> ' + moonTimes.set.toLocaleTimeString() + '</td></tr>' +
+		'<tr><td> Rise </td><td> ' + moonTimes.rise.toUTCString() + '</td></tr>' +
+		'<tr><td> Set </td><td> ' + moonTimes.set.toUTCString() + '</td></tr>' +
 		'<tr><td> Always Up </td><td> ' + moonTimes.alwaysUp + '</td></tr>' +
 		'<tr><td> Always Down </td><td> ' + moonTimes.alwaysDown + '</td></tr>';
 

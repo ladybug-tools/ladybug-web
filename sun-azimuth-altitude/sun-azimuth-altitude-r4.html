@@ -1,0 +1,469 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Sun Altitude Azimuth R4</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='Set date and time. Set the location to any lat/lon. Adjust the view. View the Sun azimuth, alitude and shadows for that place and time. Permalinks created on the fly.' >
+<meta name=keywords content='Suncalc.js,solar analysis,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-10' >
+</head>
+<body>
+
+<script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+<script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
+<!--
+<script src=http://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+-->
+<script>
+
+// https://github.com/mourner/suncalc
+
+
+	var stats, renderer, scene, camera, controls;
+	var geometry, material, mesh;
+	var lightAmbient, lightDirectional, lightPoint;
+
+//	var lat = 32.63;
+//	var lon = 51.65;
+
+	var lat = 37.8;
+	var lon = -122.4;
+
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = 1 + date.getMonth(); // 0 - 11
+	var day = date.getDate(); // 1 - 31
+	var hour = date.getHours(); // 0 - 23
+	var minute = date.getMinutes(); // 0 - 59
+
+	var hashDefault = '#yr=' + year + '#mo=' + month + '#da=' + day + '#hr=' + hour + '#mn=' + minute + '#la=' + lat + '#lo=' + lon + '#';
+
+	var camX = camY = camZ = '100.0';
+	var tarX = tarY = tarZ = '0.0';
+
+	var pi = Math.PI, pi2 = pi + pi, pi05 = pi * 0.5;
+	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
+
+	var size = 100;
+
+	init();
+	animate();
+
+
+	function init() {
+
+//DOM
+		css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+			'h2, a { margin: 0; }' +
+			'a { text-decoration: none; }' +
+
+			'.inpTim { width: 40px; text-align: right; }' +
+			'.inpPos { width: 65px; text-align: right; }' +
+
+			'#menu { margin: 0 20px; max-width: 310px; position: absolute; }' +
+
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
+			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+
+		'';
+
+
+		menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+			'	<a href="" >' + document.title + '</a>' +
+			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
+			'</h2>' +
+
+			'<p>' +
+				' Year <input id=inpYear class=inpTim onchange=updateHash(); >' +
+				' Month <input id=inpMonth class=inpTim onchange=updateHash(); >' +
+				' Day <input id=inpDay class=inpTim onchange=updateHash(); >' +
+			'</p>' +
+
+			'<p>' +
+				' Hour <input id=inpHour class=inpTim onchange=updateHash(); >' +
+				' Minute <input id=inpMinute class=inpTim onchange=updateHash(); >' +
+			'</p>' +
+
+			'<p>Latitude <input type=range id=inpLat max=90 min=-90 step=0.1 oninput=updateHash(); title="-90 to 90: OK" ><output id=outLat ></output></p>' +
+			'<p>Longitude<input type=range id=inpLon max=180 min=-180 step=0.1 oninput=updateHash(); title="-180 to 180: OK" ><output id=outLon ></output></p>' +
+
+			'<div id=info ></div>' +
+
+		'';
+
+
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; bottom: 0; z-index: 100; ';
+		document.body.appendChild( stats.domElement );
+
+		window.addEventListener( 'resize', onWindowResize, false );
+
+// three.js
+		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
+		renderer.setClearColor( 0xf0f0f0 );
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.cullFace = THREE.CullFaceBack;
+
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.cullFace = THREE.CullFaceBack;
+		renderer.gammaInput = true;
+		renderer.gammaOutput = true;
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+		document.body.appendChild( renderer.domElement );
+
+		scene = new THREE.Scene();
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
+		camera.position.set( 100, 100, 100 );
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.minDistance = 5;
+		controls.maxDistance = 500;
+
+		window.addEventListener ( 'hashchange', parseHash, false );
+
+// assets
+
+		drawHelpers();
+
+		texture = canvasDraw();
+		geometry = new THREE.SphereBufferGeometry( 70, 50, 25, pi2, pi2, 1.2, 0.8 );
+		var color = 0xffff00;
+		material = new THREE.MeshPhongMaterial( { color: color, map: texture, opacity: 0.15, side: 2, transparent: true });
+		sunBand = new THREE.Mesh( geometry, material );
+		scene.add( sunBand );
+
+		toggleStonehenge();
+
+		addLights( size );
+
+		if ( location.hash === '' ) {
+
+			location.hash = hashDefault;
+
+		}
+
+		parseHash();
+
+	}
+
+	function updateHash() {
+
+//console.log( '', lon, lat );
+
+		text = '';
+
+		text += inpYear.value !== year ? '#yr=' + inpYear.value : '';
+		text += inpMonth.value !== month ? '#mo=' + inpMonth.value : '';
+		text += inpDay.value !== day ? '#da=' + inpDay.value : '';
+		text += inpHour.value !== hour ? '#hr=' + inpHour.value : '';
+		text += inpMinute.value !== minute ? '#mn=' + inpMinute.value : '';
+
+		text += inpLat.value !== lat ? '#la=' + inpLat.valueAsNumber : '';
+		text += inpLon.value !== lon ? '#lo=' + inpLon.valueAsNumber : '';
+
+		text += camera.position.x.toFixed(1) !== camX ? '#cx=' + camera.position.x.toFixed(1) : '';
+		text += camera.position.y.toFixed(1) !== camY ? '#cy=' + camera.position.y.toFixed(1) : '';
+		text += camera.position.z.toFixed(1) !== camZ ? '#cz=' + camera.position.z.toFixed(1) : '';
+
+		text += controls.target.x.toFixed(1) !== tarZ ? '#tx=' + controls.target.x.toFixed(1) : '';
+		text += controls.target.y.toFixed(1) !== tarZ ? '#ty=' + controls.target.y.toFixed(1) : '';
+		text += controls.target.z.toFixed(1) !== tarZ ? '#tz=' + controls.target.z.toFixed(1) : '';
+
+		location.hash = text;
+
+		outLat.value = inpLat.value;
+		outLon.value = inpLon.value;
+
+	}
+
+	function parseHash() {
+
+		hashes = location.hash.split( '#' );
+
+		for ( var i = 0; i < hashes.length; i++ ) {
+
+			hash = hashes[ i ];
+
+			parameter = hash.slice( 0, 2 );
+			value = parseFloat( hash.slice( 3 ) );
+
+			if ( parameter === 'yr' ) { inpYear.value = value;
+
+				} else if ( parameter === 'mo' ) { inpMonth.value = parseInt( value, 10 );
+				} else if ( parameter === 'da' ) { inpDay.value = parseInt( value, 10 );;
+
+				} else if ( parameter === 'hr' ) { inpHour.value = parseInt( value, 10 );
+				} else if ( parameter === 'mn' ) { inpMinute.value = parseInt( value, 10 );
+
+				} else if ( parameter === 'la' ) { inpLat.value = parseFloat( value );
+				} else if ( parameter === 'lo' ) { inpLon.value = parseFloat( value );
+
+				} else if ( parameter === 'cx' ) { camera.position.x = value;
+				} else if ( parameter === 'cy' ) { camera.position.y = value;
+				} else if ( parameter === 'cz' ) { camera.position.z = value;
+
+				} else if ( parameter === 'tx' ) { controls.target.x = value;
+				} else if ( parameter === 'ty' ) { controls.target.y = value;
+				} else if ( parameter === 'tz' ) { controls.target.z = value;
+
+			}
+
+		}
+
+		outLat.value = inpLat.value;
+		outLon.value = inpLon.value;
+
+		timeString = 
+
+			inpYear.value + '-' +
+			( '0' + inpMonth.value ).slice( -2 ) + '-' +
+			( '0' + inpDay.value ).slice( -2 ) + 'T' +
+			( '0' + inpHour.value ).slice( -2 ) + ':' +
+			( '0' + inpMinute.value ).slice( -2 ) + ':00';
+
+		updatePosition( timeString, inpLat.value, inpLon.value );
+
+	}
+
+	function updatePosition( timeString, lat, lon ) {
+
+console.log( 'update', timeString, lat, lon );
+
+		time = new Date( timeString );
+
+		sunPosition = SunCalc.getPosition( time, lat, lon );
+		az = sunPosition.azimuth + pi;
+		al = sunPosition.altitude;
+
+		var radius = size;
+		var d2r =  Math.PI / 180;
+		var rc = radius * Math.cos( al );
+
+		lightDirectional.position.set( rc * Math.cos( az ), radius * Math.sin( al ), rc * Math.sin( az ) );
+		sunBand.lookAt( lightDirectional.position )
+
+		info.innerHTML = 
+
+			'<p>' +
+				'Azimuth radians: &nbsp;' + az.toFixed( 3 ) + '<br>' +
+				'Altitude radians: ' + al.toFixed( 3 ) + '<br>' +
+			'<p>' +
+			'</p>' +
+				'Azimuth degrees: &nbsp;' + ( az * r2d ).toFixed( 1 ) + '<br>' +
+				'Altitude degrees: &nbsp;' + ( al * r2d ).toFixed( 1 ) + '<br>' +
+			'</p>' +
+		'';
+
+	}
+
+		function canvasDraw( parameters ) {
+
+		parameters = parameters || {} ;
+
+		var canvas = document.createElement( 'canvas' );
+		var context = canvas.getContext( '2d' );
+		var color = parameters.backgroundColor ? parameters.backgroundColor : 60 ;
+		canvas.width = parameters.width ? parameters.width : 2048;
+		canvas.height =  parameters.height ? parameters.height : 512;
+
+		context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
+		context.fillRect( 0, 0, canvas.width, canvas.height );
+
+		context.lineWidth = 3 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 1, 2, canvas.width - 0, canvas.height - 5 );
+
+		context.lineWidth = 2 ;
+		context.fillStyle = '#f00' ;
+
+		delta = canvas.width / 24;
+		for ( i = 0; i < 24; i++ ) {
+
+		context.beginPath();
+			context.moveTo( delta * i, 0 );
+			context.lineTo( delta * i, canvas.height );
+		context.stroke();
+
+		}
+
+		var texture = new THREE.Texture( canvas );
+		texture.minFilter = texture.magFilter = THREE.NearestFilter;
+		texture.needsUpdate = true;
+
+		return texture;
+
+	}
+
+	function drawHelpers() {
+
+		geometry = new THREE.BoxGeometry( 100, 2, 100 );
+
+		var material = new THREE.MeshPhongMaterial();
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( 0, -1, 0 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		scene.add( mesh );
+
+		helper = new THREE.EdgesHelper( mesh );
+		helper.material.color.setRGB( 1, 0, 1 );
+		scene.add( helper );
+
+		var axisHelper = new THREE.AxisHelper( 50 );
+		scene.add( axisHelper );
+
+		var helper = new THREE.GridHelper( 50, 10 );
+		helper.position.set( 0, 0, 0 );
+		scene.add( helper );
+
+	}
+
+
+	function toggleStonehenge() {
+
+		var stonehenge = scene.getObjectByName( 'stonehenge' );
+		var stonehengeHelpers = scene.getObjectByName( 'stonehengeHelpers' );
+
+		if ( stonehenge === undefined ) {
+
+			stonehenge = new THREE.Object3D();
+			stonehengeHelpers = new THREE.Object3D();
+
+			stonehenge.name = 'stonehenge';
+			stonehengeHelpers.name = 'stonehengeHelpers';
+
+			number = 20;
+			angle = 6.283 / number;
+			radius = 200;
+
+			for ( var i = 0; i < number; i++ ) {
+
+					var geometry = new THREE.BoxGeometry( 15, 100, 30 );
+					var color = 0xffffff * Math.random();
+					var material = new THREE.MeshPhongMaterial( { color: color, side: 2 });
+					var mesh = new THREE.Mesh( geometry, material );
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
+					mesh.rotation.y = - angle * i;
+					mesh.position.set( radius * Math.cos( angle * i ) , 50, radius * Math.sin( angle * i )  );
+
+					stonehenge.add( mesh );
+
+					helper = new THREE.EdgesHelper( mesh );
+					stonehengeHelpers.add( helper );
+
+			}
+
+			number = 9;
+			angle = 6.283 / number;
+			radius = 200;
+
+			for ( var i = 0; i < number; i++ ) {
+
+				var geometry = new THREE.BoxGeometry( 15, 20, 100 );
+				var color = 0xffffff * Math.random();
+				var material = new THREE.MeshPhongMaterial( { color: color, side: 2 });
+				var mesh = new THREE.Mesh( geometry, material );
+				mesh.castShadow = true;
+				mesh.receiveShadow = true;
+
+				mesh.rotation.y = -angle * i;
+				delta = 0.01 *  Math.random();
+				mesh.position.set( radius * Math.cos( ( delta + angle ) * i ) , 110, radius * Math.sin( ( delta + angle ) * i )  );
+
+				stonehenge.add( mesh );
+
+				helper = new THREE.EdgesHelper( mesh );
+				stonehengeHelpers.add( helper );
+
+			}
+
+			stonehenge.scale.set( 0.2, 0.2, 0.2 );
+			scene.add( stonehenge, stonehengeHelpers );
+
+		} else {
+
+			scene.remove( stonehenge, stonehengeHelpers );
+
+		}
+
+	}
+
+
+	function addLights( size ) {
+
+		size = size ? size : 10;
+
+		lightAmbient = new THREE.AmbientLight( 0x444444 );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+		lightDirectional.position.set( -size, size, size );
+
+		var d = size;
+		lightDirectional.shadow.camera.left = -d;
+		lightDirectional.shadow.camera.right = d;
+		lightDirectional.shadow.camera.top = d;
+		lightDirectional.shadow.camera.bottom = -d;
+
+		lightDirectional.shadow.camera.near = 0;
+		lightDirectional.shadow.camera.far = 2 * size;
+
+// helps stop appearance of grid lines in objects
+		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		scene.add( lightDirectional );
+
+		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+
+// attach to camera
+		lightPoint = new THREE.PointLight( 0xffffff, 0.5 );
+		camera.add( lightPoint );
+		lightPoint.position = new THREE.Vector3( 0, 0, 1 );
+		scene.add( camera );
+
+	}
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+	}
+
+
+	function animate() {
+
+		requestAnimationFrame( animate );
+		controls.update();
+		stats.update();
+		renderer.render( scene, camera );
+
+	}
+
+</script>
+</body>
+</html>
