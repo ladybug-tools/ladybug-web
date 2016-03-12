@@ -10,6 +10,21 @@ value='You are now in the home page view - Click this button to view the read me
 
 _Ladybug for web provides solar and weather data visualization and analysis on the web_
 
+## [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
+
+Features
+
+* 3D plot of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
+* Default latitude and longitude is San Francisco
+* Sliders update latitude and longitude of analemma in realtime
+* Midnight highlighted is red. Noon highlighted in green
+
+Latest update: 2016-03-12 /R1
+
+* Has math error: noon and midnight analemmas are not opposite each other. 
+	* Observe this error when viewing latitudes near Equator
+* First commit
+
 ## [Analemma Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-sandbox/ )
 
 Features
@@ -17,7 +32,7 @@ Features
 * 2D plot of Sun azimuth and altitude once an hour at the 21st of each month. 
 * Default is lat/lon of San Francisco
 * Buttons to display data for New York, Isfahan, San Francisco and Sydney
-* Midnight highlighted i red. Noon highlighted in green
+* Midnight highlighted in red. Noon highlighted in green
 
 Latest update: 2016-03-10 /R2
 
