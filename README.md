@@ -51,7 +51,7 @@ Latest update: 2016-03-10 /R2
 
 Latest update: 2016-03-06 / R1
 
-## Features
+### Features
 * Built on [SunCalc]( https://github.com/mourner/suncalc )
 * Creates a 3D Sun path
 * Displays Sun times and position in radians and degree
@@ -74,7 +74,7 @@ Embedded description: _Display sun times and position, moon position, illuminati
 
 Latest update: 2016-03-08 / R5
 
-## Features
+### Features
 
 * Built on [SunCalc.js]( https://github.com/mourner/suncalc )
 * Calculates and reports Sun times and position in radians and degrees
@@ -119,7 +119,7 @@ Embedded description: _Set date and time. Set the location to any lat/lon. Adjus
 
 Latest update: 2016-03-06 / R3
 
-## Features
+### Features
 
 * Set date and time
 * Set latitude and longitude
@@ -134,9 +134,6 @@ Latest update: 2016-03-06 / R3
 * Add gazetteer?
 * Insert OBJ, JSON and other files into the scene
 * Pick up 3D data from Google Street View - follow Callum Prentice
-
-### Notes / Remarks
-
 
 
 
