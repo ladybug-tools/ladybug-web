@@ -1,0 +1,235 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Suncalc Sandbox R7</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='
+Calculates and reports Sun times and position in radians and degrees.
+Calculates and reports Moon illumination, times and positions in radians and degrees.
+API that creates, updates and accepts permalinks using date, time, latitude and longitude.
+' >
+<meta name=keywords content='SunCalc.js,solar analysis,JavaScript,GitHub,FOSS,STEM' >
+<meta name=date content='2016-03-10' >
+</head>
+<body>
+<script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
+<script>
+// https://github.com/mourner/suncalc
+
+	var lat = 37.796
+	var lon = -122.398;
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = 1 + date.getMonth(); // 0 - 11
+	var day = date.getDate(); // 1 - 31
+	var hour = date.getHours(); // 0 - 23
+	var minute = date.getMinutes(); // 0 - 59
+
+	var hashDefault = '#yr=' + year + '#mo=' + month + '#da=' + day + '#hr=' + hour + '#mn=' + minute + '#la=' + lat + '#lo=' + lon;
+
+	var sunTimes, sunPosition, moonPosition, moonIllumination, moonTimes;
+
+	var pi = Math.PI, pi2 = pi + pi, pi05 = pi * 0.5;
+	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
+
+	init();
+
+	function init() {
+
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; margin: 0; }' +
+			'a { text-decoration: none; }' +
+			'th { padding-top: 10px; }' +
+
+			'.inpTim { width: 40px; text-align: right; }' +
+			'.inpPos { width: 65px; text-align: right; }' +
+
+			'#menu { margin: 0 20px; max-width: 800px; position: absolute; }' +
+
+		'';
+
+		date = new Date();
+		dateString = date.getFullYear() + '-' + ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) + '-' + ( '0' + date.getDate() ).slice( -2 );
+		timeString = date.getHours() + ':' + ( '0' + date.getMinutes() ).slice( -2 );
+
+		var menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+			'	<a href="" >' + document.title + '</a>' +
+			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
+			'</h2>' +
+
+			'<p>' +
+				' Year <input id=inpYear class=inpTim onchange=updateHash(); >' +
+				' Month <input id=inpMonth class=inpTim onchange=updateHash(); >' +
+				' Day <input id=inpDay class=inpTim onchange=updateHash(); >' +
+			'</p>' +
+			'<p>' +
+				' Hour <input id=inpHour class=inpTim onchange=updateHash(); >' +
+				' Minute <input id=inpMinute class=inpTim onchange=updateHash(); >' +
+			'</p>' +
+
+			'<p>' +
+				' Lat <input id=inpLat class=inpPos onchange=updateHash(); >' +
+				' Lon <input id=inpLon class=inpPos onchange=updateHash(); >' +
+			'<p>' +
+
+			'<div id=info ></div>' +
+
+		'';
+
+		window.addEventListener ( 'hashchange', parseHash, false );
+
+		if ( location.hash === '' ) {
+
+			location.hash = hashDefault;
+
+		}
+
+		parseHash();
+
+	}
+
+	function parseHash() {
+
+		hashes = location.hash.split( '#' );
+
+		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon ];
+
+		for ( var i = 0; i < hashes.length; i++ ) {
+
+			hash = hashes[ i ];
+
+			parameter = hash.slice( 0, 2 );
+			value = hash.slice( 3 );
+
+			if ( parameter === 'yr' ) { inpYear.value = value;
+
+				} else if ( parameter === 'mo' ) { inpMonth.value = parseInt( value, 10 );
+				} else if ( parameter === 'da' ) { inpDay.value = parseInt( value, 10 );;
+
+				} else if ( parameter === 'hr' ) { inpHour.value = parseInt( value, 10 );
+				} else if ( parameter === 'mn' ) { inpMinute.value = parseInt( value, 10 );
+
+				} else if ( parameter === 'la' ) { inpLat.value = parseFloat( value );
+				} else if ( parameter === 'lo' ) { inpLon.value = parseFloat( value );
+
+			}
+
+		}
+
+		updateData();
+
+	}
+
+	function updateHash() {
+
+		location.hash =
+
+			'#yr=' + parseInt( inpYear.value, 10 ) +
+			'#mo=' + parseInt( inpMonth.value, 10 ) +
+			'#da=' + parseInt( inpDay.value, 10 ) +
+			'#hr=' + parseInt( inpHour.value, 10 ) +
+			'#mn=' + parseInt( inpMinute.value, 10 ) +
+			'#la=' + parseFloat( inpLat.value ) +
+			'#lo=' + parseFloat( inpLon.value ) +
+
+		'';
+
+		updateData();
+
+	}
+
+	function updateData() {
+
+		timeString = 
+			inpYear.value + '-' +
+			( '0' + inpMonth.value ).slice( -2 ) + '-' +
+			( '0' + inpDay.value ).slice( -2 ) + 'T' +
+			( '0' + inpHour.value ).slice( -2 ) + ':' +
+			( '0' + inpMinute.value ).slice( -2 ) + ':00';
+
+		updateCalculations( timeString, inpLat.value, inpLon.value );
+
+	}
+
+	function updateCalculations( timetimeString, lat, lon ) {
+
+console.log( 'update', timeString, lat, lon );
+
+		time = new Date( timeString );
+
+		var keys, txt;
+
+		sunTimes = SunCalc.getTimes( time, lat, lon );
+
+		keys = Object.keys( sunTimes );
+
+		txt = '<table>' +
+			'<tr><th colspan=2 >Sun Times </th></tr>';
+
+		for ( var i = 0; i < keys.length; i++ ) {
+
+			txt += '<tr><td>' + keys[ i ] + ' </td><td> ' + sunTimes[ keys[ i ] ].toUTCString() + '</td></tr>';
+
+		}
+
+
+		sunPosition = SunCalc.getPosition( time, lat, lon );
+
+		txt += '<tr><th colspan=2 > Sun Position </th></tr>' +
+
+// azimuth: sun azimuth in radians (direction along the horizon, measured from south to west), e.g. 0 is south and Math.PI * 3/4 is northwest
+
+		'<tr><td> Azimuth in radians </td><td> ' + ( pi + sunPosition.azimuth ).toFixed( 3 ) + '</td></tr>' +
+		'<tr><td> Altitude in radians </td><td> ' + sunPosition.altitude.toFixed( 3 ) + '</td></tr>' +
+		'<tr><td> Azimuth in degrees </td><td> ' + ( ( pi + sunPosition.azimuth ) * r2d ).toFixed( 2 ) + '</td></tr>' +
+		'<tr><td> Altitude in degrees </td><td> ' + ( sunPosition.altitude * r2d ).toFixed( 2 ) + '</td></tr>';
+
+
+		moonPosition = SunCalc.getMoonPosition( time, lat, lon );
+
+		txt += '<tr><th colspan=2 ><br>Moon Position </th></tr>' +
+
+		'<tr><td> Altitude in radians </td><td> ' + ( pi + moonPosition.altitude ).toFixed( 3 ) + '</td></tr>' +
+		'<tr><td> Azimuth in radians </td><td> ' + moonPosition.azimuth.toFixed( 3 ) + '</td></tr>' +
+		'<tr><td> Azimuth in degrees </td><td> ' + ( ( pi + moonPosition.azimuth ) * r2d ).toFixed( 2 ) + '</td></tr>' +
+		'<tr><td> Altitude in degrees </td><td> ' + ( moonPosition.altitude * r2d ).toFixed( 2 ) + '</td></tr>';
+
+		'<tr><td> Distance in km </td><td> ' + moonPosition.distance + '</td></tr>' +
+		'<tr><td> Parallactic Angle in radians </td><td> ' + moonPosition.parallacticAngle + '</td></tr>';
+
+
+		moonIllumination = SunCalc.getMoonIllumination( time );
+
+		txt += '<tr><th colspan=2 > Moon Illumination </th></tr>' +
+
+		'<tr><td> Fraction  from 0.0 to 1.0 &nbsp;</td><td> ' + moonIllumination.fraction.toFixed( 3 ) + '</td></tr>' +
+		'<tr><td> Phase from 0.0 to 1.0 </td><td> ' + moonIllumination.phase.toFixed( 3 ) + '</td></tr>' +
+		'<tr><td> Angle in radians </td><td> ' + moonIllumination.angle.toFixed( 3 ) + '</td></tr>';
+
+
+		moonTimes = SunCalc.getMoonTimes( time, lat, lon );
+
+		txt += '<tr><th colspan=2 > Moon Times </th></tr>' +
+
+		'<tr><td> Rise </td><td> ' + moonTimes.rise.toUTCString() + '</td></tr>' +
+		'<tr><td> Set </td><td> ' + moonTimes.set.toUTCString() + '</td></tr>' +
+		'<tr><td> Always Up </td><td> ' + moonTimes.alwaysUp + '</td></tr>' +
+		'<tr><td> Always Down </td><td> ' + moonTimes.alwaysDown + '</td></tr>';
+
+		info.innerHTML = txt + '</table>';
+
+	}
+
+</script>
+</body>
+</html>

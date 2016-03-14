@@ -73,12 +73,13 @@ Sliders update lat/lon. Buttons for selected cities. Data output in degrees. Per
 			'<p><button onclick=lat=32.6333;lon=51.6500;drawAnalemma(); >Isfahan</button></p>' +
 			'<p><button onclick=lat=37.796;lon=-122.398;drawAnalemma(); >San Francisco</button></p>' +
 			'<p><button onclick=lat=-33.8650;lon=151.2094;drawAnalemma(); >Sydney</button></p>' +
+
 			'<div id=info ></div>' +
 
 		'';
 
-		inpLat.value = lat;
-		inpLon.value = lon;
+//		inpLat.value = lat;
+//		inpLon.value = lon;
 
 		inpLat.oninput = function () {
 
@@ -98,14 +99,12 @@ Sliders update lat/lon. Buttons for selected cities. Data output in degrees. Per
 		canvas.id = 'canvas';
 		context = canvas.getContext( '2d' );
 
-
-
 		drawAnalemma();
 
 	}
 
 
-	function drawAnalemma( parameters ) {
+	function drawAnalemma() {
 
 		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon ];
 
