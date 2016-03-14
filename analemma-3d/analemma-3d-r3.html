@@ -5,9 +5,9 @@
 <title>Analemma 3D R3</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
-* 3D plot of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
+* 3D plot = oa analemma - of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
 * Default latitude and longitude is San Francisco
-* Sliders update latitude and longitude of analemma in realtime
+* Sliders update latitude and longitude of analemma in real-time
 * Displays map of location
 	* Nine maps styles to choose from
 * Buttons available for selected cities
@@ -159,13 +159,9 @@
 
 // assets
 
-
-
 		getMapOverlays();
 
 		selMap.selectedIndex = 0;
-
-
 
 		drawAnalemma();
 
@@ -174,9 +170,16 @@
 	function drawAnalemma() {
 
 		var radius = 50;
-		var lat, lon, txt;
 		var geometry, vertices, sunPosition, material, color, line;
-		var placard;
+		var placard, txt;
+
+		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon ];
+
+		inpLat.value = hashes[ 1 ];
+		inpLon.value = hashes[ 2 ];
+
+		lat = outLat.value = inpLat.valueAsNumber;
+		lon = outLon.value = inpLon.valueAsNumber;
 
 		scene.remove( analemma );
 
@@ -260,14 +263,6 @@
 	}
 
 	function setMapOverlay() {
-
-		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon ];
-
-		inpLat.value = hashes[ 1 ];
-		inpLon.value = hashes[ 2 ];
-
-		lat = outLat.value = inpLat.valueAsNumber;
-		lon = outLon.value = inpLon.valueAsNumber;
 
 		tileX = lon2tile( lon, zoom  );
 		tileY = lat2tile( lat, zoom  );
