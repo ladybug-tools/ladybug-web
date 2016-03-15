@@ -5,9 +5,13 @@
 <title>Suncalc Sandbox R7</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
-Calculates and reports Sun times and position in radians and degrees.
-Calculates and reports Moon illumination, times and positions in radians and degrees.
-API that creates, updates and accepts permalinks using date, time, latitude and longitude.
+* Built on [SunCalc.js]( https://github.com/mourner/suncalc )
+* Calculates and reports Sun times and position in radians and degrees
+* Calculates and reports Moon illumination, times and positions in radians and degrees
+* API that creates, updates and accepts permalinks
+	* Accept date, time, latitude and longitude
+* Buttons provide data for selected cities
+
 ' >
 <meta name=keywords content='SunCalc.js,solar analysis,JavaScript,GitHub,FOSS,STEM' >
 <meta name=date content='2016-03-10' >
@@ -21,6 +25,14 @@ API that creates, updates and accepts permalinks using date, time, latitude and 
 	var lon = -122.398;
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+
+
+	var utcYear, utcMonth, utcDate;
+
+	var utcHours;
+	var utcMinutes;
+
+	var offset;
 
 	var date = new Date();
 	var year = date.getFullYear();
@@ -45,12 +57,13 @@ API that creates, updates and accepts permalinks using date, time, latitude and 
 
 			'body { font: 12pt monospace; margin: 0; }' +
 			'a { text-decoration: none; }' +
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
 			'th { padding-top: 10px; }' +
 
 			'.inpTim { width: 40px; text-align: right; }' +
 			'.inpPos { width: 65px; text-align: right; }' +
 
-			'#menu { margin: 0 20px; max-width: 800px; position: absolute; }' +
+			'#menu { margin: 0 20px; max-width: 1250px; position: absolute; }' +
 
 		'';
 
@@ -68,100 +81,174 @@ API that creates, updates and accepts permalinks using date, time, latitude and 
 			'</h2>' +
 
 			'<p>' +
-				' Year <input id=inpYear class=inpTim onchange=updateHash(); >' +
-				' Month <input id=inpMonth class=inpTim onchange=updateHash(); >' +
-				' Day <input id=inpDay class=inpTim onchange=updateHash(); >' +
-			'</p>' +
+				' Lat <input id=inpLat class=inpPos onchange=getTime(); >' +
+				' Lon <input id=inpLon class=inpPos onchange=getTime(); >' +
 			'<p>' +
-				' Hour <input id=inpHour class=inpTim onchange=updateHash(); >' +
-				' Minute <input id=inpMinute class=inpTim onchange=updateHash(); >' +
-			'</p>' +
 
 			'<p>' +
-				' Lat <input id=inpLat class=inpPos onchange=updateHash(); >' +
-				' Lon <input id=inpLon class=inpPos onchange=updateHash(); >' +
+				' Year <input id=inpYear class=inpTim onchange=getTime(); >' +
+				' Month <input id=inpMonth class=inpTim onchange=getTime(); >' +
+				' Day <input id=inpDate class=inpTim onchange=getTime(); >' +
+			'</p>' +
 			'<p>' +
+				' Hour <input id=inpHours class=inpTim onchange=getTime(); >' +
+				' Minute <input id=inpMinutes class=inpTim onchange=getTime(); >' +
+			'</p>' +
+
+			'<p><button onclick=offset="";lat=21.3;lon=-157.8167;getTime(); >Honolulu</button></p>' +
+			'<p><button onclick=offset="";lat=51.5072;lon=-0.1275;getTime(); >London</button></p>' +
+			'<p><button onclick=offset="";lat=40.712;lon=-74.0059;getTime(); >New York</button></p>' +
+			'<p><button onclick=offset="";lat=32.6333;lon=51.6500;getTime(); >Isfahan</button></p>' +
+			'<p><button onclick=offset="";lat=-22.9068;lon=-43.1729;getTime(); >Rio de Janeiro </button></p>' +
+			'<p><button onclick=offset="";lat=37.796;lon=-122.398;getTime(); >San Francisco</button></p>' +
+			'<p><button onclick=offset="";lat=-33.8650;lon=151.2094;getTime(); >Sydney</button></p>' +
 
 			'<div id=info ></div>' +
 
 		'';
 
-		window.addEventListener ( 'hashchange', parseHash, false );
+//		parseHash();
 
-		if ( location.hash === '' ) {
-
-			location.hash = hashDefault;
-
-		}
-
-		parseHash();
+		getTime();
 
 	}
 
-	function parseHash() {
+	function getTime() {
 
-		hashes = location.hash.split( '#' );
+		var request;
 
-		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon ];
+		if ( utcYear === undefined ) {
 
-		for ( var i = 0; i < hashes.length; i++ ) {
+			var date = new Date();
+			utcYear = date.getUTCFullYear();
+			utcMonth = date.getUTCMonth();
+			utcDate = date.getUTCDate();
+			utcHours = date.getUTCHours();
+			utcMinutes = date.getUTCMinutes();
+		}
 
-			hash = hashes[ i ];
+		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon, utcYear, utcMonth, utcDate, utcHours, utcMinutes ];
 
-			parameter = hash.slice( 0, 2 );
-			value = hash.slice( 3 );
+		lat = hashes[ 1 ];
+		lon = hashes[ 2 ];
+		utcYear = hashes[ 3 ];
+		utcMonth = hashes[ 4 ];
+		utcDate = hashes[ 5 ]; 
+		utcHours = hashes[ 6 ];
+		utcMinutes = hashes[ 7 ];
 
-			if ( parameter === 'yr' ) { inpYear.value = value;
+		inpLat.value = lat;
+		inpLon.value = lon;
 
-				} else if ( parameter === 'mo' ) { inpMonth.value = parseInt( value, 10 );
-				} else if ( parameter === 'da' ) { inpDay.value = parseInt( value, 10 );;
+		inpYear.value = utcYear;
+		inpMonth.value = utcMonth + 1;
+		inpDate.value = utcDate;
 
-				} else if ( parameter === 'hr' ) { inpHour.value = parseInt( value, 10 );
-				} else if ( parameter === 'mn' ) { inpMinute.value = parseInt( value, 10 );
+		inpHours.value = utcHours;
+		inpMinutes.value = utcMinutes;
 
-				} else if ( parameter === 'la' ) { inpLat.value = parseFloat( value );
-				} else if ( parameter === 'lo' ) { inpLon.value = parseFloat( value );
+		if ( !offset ) {
+
+			timeStamp = Date.now().toFixed();
+
+			request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + timeStamp.substr( 0, 10 );
+
+			requestFile( request );
+
+		} else {
+
+			calculateLocalTime( offset );
+
+		}
+
+	}
+
+	function requestFile( fileName ) {
+
+		var xhr = new XMLHttpRequest();
+		xhr.open( 'GET', fileName, true );
+		xhr.onreadystatechange = callback;
+		xhr.send( null );
+
+			function callback() {
+
+				if ( xhr.readyState !== 4  ) { return; }
+
+				time = JSON.parse( xhr.responseText );
+
+				updateInfo( time );
+
+//console.log( 'time ', time, utcHours, utcMinutes );
 
 			}
 
-		}
+	}
 
-		updateData();
+	function updateInfo( time ) {
+
+		if ( time.status === 'OK' ) {
+
+			offset = time.rawOffset + time.dstOffset;
+
+			remoteTime = calculateLocalTime( offset );
+
+console.log( 'time ', remoteTime );
+
+			info.innerHTML = 
+				'<h2>Time ZoneID:<br>' + time.timeZoneId + '</h2>' +
+
+				'<p> Given a UTC time of ' + utcHours + ':' + utcMinutes + '</p>' +
+				'<p> The date and time in this time zone is:<br>' + remoteTime.toLocaleString() + '</p>' +
+				'<p>The offset is: ' + offset / 3600 + '</p>' +
+				'<p> The universal time is:<br>' + remoteTime.getTime() + '</p>' +
+				'<p>Time zone: ' + time.timeZoneName + '</p>' +
+				'<p>Thanks Google...</p>' +
+			'';
+
+			updateData();
+
+		} else {
+
+			info.innerHTML = 'the location is timeless';
+
+		}
 
 	}
 
-	function updateHash() {
+	function calculateLocalTime( offset ) {
 
-		location.hash =
+		var date = new Date( utcYear + '-' + ( '0' + ( utcMonth + 1 ) ).slice( -2 ) + '-' + ( '0' + utcDate ).slice( -2 ) + 'T' + ( '0' + utcHours ).slice( -2 ) + ':' + ( '0' + utcMinutes ).slice( -2 ) + ':00' );
+		var utc = date.getTime() + ( date.getTimezoneOffset() * 60000 );
+		var newDate = new Date( utc + ( 1000 * offset ) );
 
-			'#yr=' + parseInt( inpYear.value, 10 ) +
-			'#mo=' + parseInt( inpMonth.value, 10 ) +
-			'#da=' + parseInt( inpDay.value, 10 ) +
-			'#hr=' + parseInt( inpHour.value, 10 ) +
-			'#mn=' + parseInt( inpMinute.value, 10 ) +
-			'#la=' + parseFloat( inpLat.value ) +
-			'#lo=' + parseFloat( inpLon.value ) +
+		return newDate;
 
-		'';
+	}
 
-		updateData();
+	function calculateLocalTime2( offset, yr, mo, da, hr, mn ) {
+
+		var date = new Date( yr + '-' + ( '0' + ( mo + 1 ) ).slice( -2 ) + '-' + ( '0' + da ).slice( -2 ) + 'T' + ( '0' + hr ).slice( -2 ) + ':' + ( '0' + mn ).slice( -2 ) + ':00' );
+		var utc = date.getTime() + ( date.getTimezoneOffset() * 60000 );
+		var newDate = new Date( utc + ( 1000 * offset ) );
+
+		return newDate;
 
 	}
 
 	function updateData() {
 
 		timeString = 
-			inpYear.value + '-' +
-			( '0' + inpMonth.value ).slice( -2 ) + '-' +
-			( '0' + inpDay.value ).slice( -2 ) + 'T' +
-			( '0' + inpHour.value ).slice( -2 ) + ':' +
-			( '0' + inpMinute.value ).slice( -2 ) + ':00';
+			utcYear + '-' +
+			( '0' + utcMonth ).slice( -2 ) + '-' +
+			( '0' + utcDate ).slice( -2 ) + 'T' +
+			( '0' + utcHours ).slice( -2 ) + ':' +
+			( '0' + utcMinutes ).slice( -2 ) + ':00';
 
-		updateCalculations( timeString, inpLat.value, inpLon.value );
+		updateCalculations( timeString, lat, lon );
 
 	}
 
-	function updateCalculations( timetimeString, lat, lon ) {
+	function updateCalculations( timeString, lat, lon ) {
 
 console.log( 'update', timeString, lat, lon );
 
@@ -178,7 +265,11 @@ console.log( 'update', timeString, lat, lon );
 
 		for ( var i = 0; i < keys.length; i++ ) {
 
-			txt += '<tr><td>' + keys[ i ] + ' </td><td> ' + sunTimes[ keys[ i ] ].toUTCString() + '</td></tr>';
+			time = calculateLocalTime2( offset, utcYear, utcMonth, utcDate, sunTimes[ keys[ i ] ].getUTCHours(), sunTimes[ keys[ i ] ].getUTCMinutes() ) 
+			txt += '<tr><td>' + keys[ i ] + ' </td>' +
+				'<td> ' + sunTimes[ keys[ i ] ].toISOString() + ' ~ </td>' +
+				'<td> ' + ( '0' + time.getHours() ).slice( -2 ) + ':' + ( '0' + time.getMinutes() ).slice( -2 ) + '</td>' +
+		'</tr>';
 
 		}
 
@@ -219,14 +310,17 @@ console.log( 'update', timeString, lat, lon );
 
 		moonTimes = SunCalc.getMoonTimes( time, lat, lon );
 
+		rise = calculateLocalTime2( offset, utcYear, utcMonth, utcDate, moonTimes.rise.getUTCHours(), moonTimes.rise.getUTCMinutes() )
+		set = moonTimes.set ?  moonTimes.set.toUTCString() : 'undefined';
+
 		txt += '<tr><th colspan=2 > Moon Times </th></tr>' +
 
-		'<tr><td> Rise </td><td> ' + moonTimes.rise.toUTCString() + '</td></tr>' +
-		'<tr><td> Set </td><td> ' + moonTimes.set.toUTCString() + '</td></tr>' +
+		'<tr><td> Rise </td><td></td><td> ' + rise + '</td></tr>' +
+		'<tr><td> Set </td><td> ' + set + '</td></tr>' +
 		'<tr><td> Always Up </td><td> ' + moonTimes.alwaysUp + '</td></tr>' +
 		'<tr><td> Always Down </td><td> ' + moonTimes.alwaysDown + '</td></tr>';
 
-		info.innerHTML = txt + '</table>';
+		info.innerHTML += txt + '</table>';
 
 	}
 

@@ -10,6 +10,11 @@ value='You are now in the home page view - Click this button to view the read me
 
 _Ladybug for web provides solar and weather data visualization and analysis on the web_
 
+Genarally the following scripts
+
+* Built using entry level JavaScript with no dependencies other than Three.js and/or SunCalc.js
+
+
 ## [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
 
 
@@ -88,24 +93,24 @@ Latest update: 2016-03-06 / R1
 
 ## [SunCalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/suncalc-sandbox/ )
 
-Embedded description: _Display sun times and position, moon position, illumination and times. Set date, time and location. Permalinks created on the fly._
-
-
-
 ### Features
 
 * Built on [SunCalc.js]( https://github.com/mourner/suncalc )
 * Calculates and reports Sun times and position in radians and degrees
 * Calculates and reports Moon illumination, times and positions in radians and degrees
-* Built using entry level JavaScript with no dependencies other than SunCalc.js
 * API that creates, updates and accepts permalinks
-	* Acept date, time, latitude and longitude
+	* Accept date, time, latitude and longitude
+* Buttons provide data for selected cities
+
 
 ### Latest update: 2016-03-14 / R7
 
 * Code clean-up
+* Display data in UTC plus in the time zone of the remote location
+* Redesign permalinks
+* Add buttons
 
-
+<!--
 ### Permalinks
 
 * [Barcelona Pavilion]( ./suncalc-sandbox/index.html#yr=2016#mo=1#da=1#hr=12#mn=0#la=41.3706#lo=2.1500 )
@@ -123,6 +128,11 @@ Embedded description: _Display sun times and position, moon position, illuminati
 * [Villa Savoye, Poissy]( ./suncalc-sandbox/index.html#yr=2016#mo=1#da=1#hr=12#mn=0#la=48.9231#lo=2.02658 )
 	* [SunCalc.net]( http://suncalc.net/#/48.9231,2.02658,12/2016.01.01/12:00/1 )
 	* [SunCalc.org]( http://suncalc.org/#/48.9231,2.02658,12/2016.01.01/12:00/1 )
+-->
+
+### Issues
+
+* More testing need to confirm times are correct
 
 
 ### Things to Do / Road Map
