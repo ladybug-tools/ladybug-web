@@ -142,7 +142,7 @@ Latest update: 2016-03-06 / R1
 * Select lat/lon by clicking on a map or globe
 * Click on each item of Sun times to update Sun position. Ditto Moon
 * Highlight with color currently selected location
-* Adapt Google Maps API gazetteer
+
 
 ### Notes / Remarks
 
