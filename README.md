@@ -172,24 +172,35 @@ Latest update: 2016-03-06 / R3
 * Pick up 3D data from Google Street View - follow Callum Prentice
 
 
+## Issues of Interest
+
+https://github.com/ladybug-analysis-tools/ladybug-web/issues/1
 
 ## Links of Interest
 
 
-[Sun Path in WebGL]( http://www.pycheung.com/weblog/?p=1394 ) ~ Shows how Analemma are created ~ [PY Cheung]( http://www.pycheung.com/weblog/ )
+[Sun Path in WebGL]( http://www.pycheung.com/weblog/?p=1394 ) 
+* Shows how Analemma are created ~ [PY Cheung]( http://www.pycheung.com/weblog/ )
+* No code or explanation
 
 [Sunlight Hours Ladybug Dynamo]( http://hydrashare.github.io/hydra/viewer?owner=mostaphaRoudsari&fork=hydra_1&id=Sunlighthours_Ladybug_Dynamo&slide=0&scale=2.7215798676177987&offset=-765.8096117029108,-203.1389988323118 )
-
+* Here it is in Python. Can we do it in JavaScript?
 
 [SunCalc]( https://github.com/mourner/suncalc ) ~ Thank you [Vladimir Agafonkin]( http://agafonkin.com/en/ )!
+
 
 [Astronomy Answers ~ Position of the Sun]( http://aa.quae.nl/en/reken/zonpositie.html )
 
 
 [SunCalc.net]( http://suncalc.net/ ) ~ Vladimir Agafonkin!
+* You must use the time of the local computer location. 
+	* In order to see sunrise in Europe from a computer in San Francisco, you must set time as, say, 23:50
+ 
 
 [SunCalc.org]( http://www.suncalc.org/ ) ~ [Torsten Hoffman]( http://www.torsten-hoffmann.de/ )  
 [MoonCalc.org]( http://www.mooncalc.org ) ~ [Torsten Hoffman]( http://www.torsten-hoffmann.de/ )  
+* These apps also use the time at you current location
+	* But also displays local time at the location being viewed
 
 
 
@@ -209,6 +220,8 @@ Latest update: 2016-03-06 / R3
 http://www.metafilter.com/130877/SunCalc-a-solar-azimuth-calculator
 
 http://www.analemma.com/Pages/indexPage.html
+
+
 
 
 ***

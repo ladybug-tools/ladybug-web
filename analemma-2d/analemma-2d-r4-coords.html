@@ -1,0 +1,278 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Analemma Sandbox R2</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='2D plot of Sun azimuth and altitude once an hour at the first of the month plus solstices and equinoxes. 
+Lat/lon of San Francisco' >
+<meta name=keywords content='SunCalc.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-10' >
+</head>
+<body>
+<script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
+<script>
+
+	var lat = 37.8;
+	var lon = -122.4;
+
+
+	var canvas, context;
+	var canvasWidth = 1000;
+	var canvasHeight = 600;
+
+	var
+    sin  = Math.sin,
+    cos  = Math.cos,
+    tan  = Math.tan,
+    asin = Math.asin,
+    atan = Math.atan2,
+    acos = Math.acos;
+
+	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
+	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
+
+	var e = d2r * 23.4397; // obliquity of the Earth
+
+	init();
+
+	function init() {
+
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; margin: 0; }' +
+			'h2 { margin: 0; }' +
+			'a { text-decoration: none; }' +
+
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
+
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
+			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+
+			'#menu { margin: 0 20px; max-width: 300px; position: absolute; }' +
+			'canvas { border: 1px solid red; left: 0; margin: auto; position: absolute; right: 0; }' +
+
+		'';
+
+		var menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+			'	<a href="" >' + document.title + '</a>' +
+			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
+			'</h2>' +
+			'<p>red = midnight - green = noon</p>' +
+			'<p><button onclick=lat=40.712;lon=-74.0059;drawAnelemma(); >New York</button></p>' +
+			'<p><button onclick=lat=32.6333;lon=51.6500;drawAnelemma(); >Isfahan</button></p>' +
+			'<p><button onclick=lat=37.8;lon=-122.4;drawAnelemma(); >San Francisco</button></p>' +
+			'<p><button onclick=lat=-33.8650;lon=151.2094;drawAnelemma(); >Sydney</button></p>' +
+			'<div id=info ></div>' +
+
+		'';
+
+		canvas = document.body.appendChild( document.createElement( 'canvas' ) );
+		canvas.id = 'canvas';
+		context = canvas.getContext( '2d' );
+
+		drawAnalemma();
+
+	}
+
+
+	function drawAnelemmaxxx( parameters ) {
+
+//		var dates;
+		dates = [ 
+
+			'2016-01-21',
+			'2016-02-21',
+			'2016-03-21',
+			'2016-04-21',
+			'2016-05-21',
+			'2016-06-21',
+			'2016-07-21',
+			'2016-08-21',
+			'2016-09-21',
+			'2016-10-21',
+			'2016-11-21',
+			'2016-12-21',
+
+		]
+
+		parameters = parameters || {} ;
+		canvas.width = parameters.width ? parameters.width : 1000;
+
+		var color = parameters.backgroundColor ? parameters.backgroundColor : 60 ;
+
+		canvas.height =  parameters.height ? parameters.height : 600;
+
+		context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
+		context.fillRect( 0, 0, canvas.width, canvas.height);
+
+		context.lineWidth = 3 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 0, 0, canvas.width, canvas.height );
+
+		txt = '<h3>lat: ' + lat + ' lon: ' + lon + '</h3>';
+
+		for ( var i = 0; i < 24; i++ ) {
+
+			context.beginPath();
+
+			if ( i === 0 ) {
+
+				context.strokeStyle = '#f00' ;
+
+			} else if ( i === 12 ) {
+
+				context.strokeStyle = '#0f0' ;
+
+			} else {
+
+				context.strokeStyle = '#000' ;
+
+			}
+
+			var scale = 30;
+			time = new Date( dates[ dates.length - 1 ] + 'T' + ( '0' + i ).slice( -2 ) + ':00:00' )
+//			time = new Date( '2016-03-15T' + ( '0' + i ).slice( -2 ) + ':00:00' );
+			sunCoordinates = sunCoords( time.getTime() );
+
+			context.moveTo( 500 + scale * sunCoordinates.ra,  300 + scale * sunCoordinates.dec );
+
+			txt += 'Hour: ' + i + '<br>';
+
+			for ( j = 0; j < dates.length; j++ ) {
+
+//				sunPosition = SunCalc.getPosition( new Date( dates[ j ] + 'T' + ( '0' + i ).slice( -2 ) + ':00:00' ), lat, lon  );
+
+				sunCoordinates = sunCoords(  time.getTime() );
+
+				context.lineTo( 500 + scale * sunCoordinates.ra,  300 + scale * sunCoordinates.dec );
+
+				txt += sunCoordinates.ra.toFixed( 3 ) + ' ' + sunCoordinates.dec.toFixed( 3 ) + '<br>';
+
+			}
+
+			info.innerHTML = txt;
+
+			context.stroke();
+
+		}
+
+	}
+
+	function drawAnalemma() {
+
+		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon ];
+
+		lat = hashes[ 1 ];
+		lon = hashes[ 2 ];
+
+//		inpLat.valueAsNumber = lat;
+//		inpLon.valueAsNumber = lon;
+
+		width05 = 0.5 * canvasWidth;
+		height05 = 0.5 * canvasHeight;
+
+		canvas.width = canvasWidth;
+
+		var color = 60 ;
+
+		canvas.height =  canvasHeight;
+
+		context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
+		context.fillRect( 0, 0, canvas.width, canvas.height );
+
+		context.lineWidth = 3 ;
+		context.strokeStyle = '#000';
+		context.strokeRect( 0, 0, canvas.width, canvas.height );
+
+		txt = '<h3>lat: ' + lat + ' lon: ' + lon + '</h3>';
+
+		for ( var i = 0; i < 24; i++ ) {
+
+			context.beginPath();
+
+			if ( i === 0 ) {
+
+				context.strokeStyle = '#f00' ;
+
+			} else if ( i === 12 ) {
+
+				context.strokeStyle = '#0f0' ;
+
+			} else {
+
+				context.strokeStyle = '#000' ;
+
+			}
+
+			var scale = 80;
+//			time = new Date( dates[ dates.length - 1 ] + 'T' + ( '0' + i ).slice( -2 ) + ':00:00' )
+//			time = new Date( '2016-03-15T' + ( '0' + i ).slice( -2 ) + ':00:00' );
+//			sunCoordinates = sunCoords( time.getTime() );
+
+
+//			sunPosition = SunCalc.getPosition( time.getTime(), lat, lon );
+//			context.moveTo( width05 + scale * ( sunPosition.azimuth * r2d ),  height05 + scale * ( sunPosition.altitude * r2d ) );
+
+			txt += 'Hour: ' + i + '<br>Azimuth ~ Altitude<br>';
+
+			for ( j = 1; j < 13; j++ ) {
+
+
+				time =  new Date( '2016-' + ( '0' + j ).slice( -2 ) + '-21T' + ( '0' + i ).slice( -2 ) + ':00:00' );
+
+				sunCoordinates = sunCoords(  time.getTime() );
+
+				context.lineTo( 500 + scale * sunCoordinates.ra,  300 + scale * sunCoordinates.dec );
+
+				txt += sunCoordinates.ra.toFixed( 3 ) + ' ' + sunCoordinates.dec.toFixed( 3 ) + '<br>';
+
+			}
+			info.innerHTML = txt;
+
+			context.stroke();
+
+		}
+
+
+
+
+	}
+
+	function solarMeanAnomaly( date ) { return d2r * ( 357.5291 + 0.98560028 * date ); }
+
+	function eclipticLongitude( M ) {
+
+		var C = d2r * ( 1.9148 * sin( M ) + 0.02 * sin( 2 * M ) + 0.0003 * sin( 3 * M ) ); // equation of center
+		var P = d2r * 102.9372; // perihelion of the Earth
+
+		return M + C + P + pi;
+
+	}
+
+	function rightAscension( l, b ) { return atan( sin( l ) * cos( e ) - tan( b ) * sin( e ), cos( l ) ); }
+	function declination( l, b ) { return asin( sin( b ) * cos(e) + cos(b) * sin(e) * sin(l)); }
+
+
+	function sunCoords( date ) {
+
+		var M = solarMeanAnomaly( date );
+		var L = eclipticLongitude( M );
+
+		return {
+
+			dec: declination( L, 0 ),
+			ra: rightAscension( L, 0 )
+
+		};
+	}
+
+</script>
+</body>
+</html>

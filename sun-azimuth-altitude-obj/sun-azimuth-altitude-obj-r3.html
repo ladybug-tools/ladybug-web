@@ -51,10 +51,11 @@
 
 	'';
 
-
 	var size = 100;
 	var pi = Math.PI, pi2 = pi + pi, pi05 = pi * 0.5;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
+
+	var declination = d2r * 23.439281;
 
 	init();
 	animate();
@@ -199,7 +200,7 @@
 // assets
 
 		texture = canvasDraw();
-		geometry = new THREE.SphereBufferGeometry( 70, 50, 25, pi2, pi2, 1.2, 0.8 );
+		geometry = new THREE.SphereBufferGeometry( 70, 50, 25, pi2, pi2, pi05 - declination, 2 * declination );
 		var color = 0xffff00;
 		material = new THREE.MeshPhongMaterial( { color: color, map: texture, opacity: 0.15, side: 2, transparent: true });
 		sunBand = new THREE.Mesh( geometry, material );

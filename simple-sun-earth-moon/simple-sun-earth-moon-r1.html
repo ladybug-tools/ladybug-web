@@ -1,0 +1,124 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Template Three.js Basic R2</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='' >
+<meta name=keywords content='WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='' >
+</head>
+<body>
+<!--
+<script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+-->
+<script src=http://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+
+<script>
+// http://stackoverflow.com/questions/21120885/rotating-earth-around-sun
+// http://jsfiddle.net/Qn7cL/3/
+
+	var renderer, scene, camera;
+	var theSun,
+		theEarthAndMoon,
+		theEarth,
+		theMoon;
+
+
+	var earthOrbitRadius = 100,
+		earthOrbitAngle = 0,
+		earthOrbitSpeed = 0.5,
+
+		moonOrbitRadius = 10,
+		moonOrbitAngle = 0,
+		moonOrbitSpeed = 4;
+
+	init();
+	animate();
+
+	function init() {
+
+		// dom
+		var container = document.getElementById( 'container' );
+
+		// renderer
+		renderer = new THREE.WebGLRenderer( { clearColor: 0x000000, clearAlpha: 1 } );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+
+		// scene
+		scene = new THREE.Scene();
+
+		//camera
+		camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+		camera.position.z = 400;
+		//
+		var ambientLight = new THREE.AmbientLight(0x222222);
+			scene.add(ambientLight);
+
+		var light = new THREE.PointLight(0xFFFFFF, 1, 0);
+			light.position.set(0, 0, 0);
+			scene.add(light);
+		//
+		theSun = new THREE.Mesh(new THREE.SphereGeometry(30, 16, 15), new THREE.MeshBasicMaterial({
+			color: 'yellow'
+		}));
+		scene.add(theSun);
+
+		//this is the object that will have its position changed to orbit around the sun
+		theEarthAndMoon = new THREE.Object3D();
+		theEarthAndMoon.rotation.z = 23.439281 * Math.PI / 180; //tilt of earth in radians;
+		scene.add(theEarthAndMoon);
+		var axes = new THREE.AxisHelper(10);
+		theEarthAndMoon.add(axes);
+
+		theEarth = new THREE.Mesh(new THREE.SphereGeometry(5, 16, 15),  new THREE.MeshLambertMaterial({
+			color:"blue"
+		}));
+
+		theEarthAndMoon.add(theEarth);
+
+		theMoon = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 15),  new THREE.MeshLambertMaterial({
+			color:"white"
+		}));
+
+		theEarthAndMoon.add(theMoon);
+
+	}
+
+	function animate() {
+
+		requestAnimationFrame( animate );
+
+		render();
+
+	}
+
+	function render() {
+
+		//run the earth's orbit around the Sun
+		earthOrbitAngle += earthOrbitSpeed;
+		var radians = earthOrbitAngle * Math.PI / 180;
+
+		theEarthAndMoon.position.x = Math.cos(radians) * earthOrbitRadius;
+		theEarthAndMoon.position.z = Math.sin(radians) * earthOrbitRadius;
+
+		//run the Moon's orbit around the Earth
+		moonOrbitAngle += moonOrbitSpeed;
+		var moonRadians = moonOrbitAngle * Math.PI / 180;
+
+		theMoon.position.x = Math.cos(moonRadians) * moonOrbitRadius;
+		theMoon.position.z = Math.sin(moonRadians) * moonOrbitRadius;
+
+		// render
+		renderer.render( scene, camera );
+
+	}
+
+</script>
+</body>
+</html>
