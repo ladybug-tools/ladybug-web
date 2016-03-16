@@ -185,12 +185,12 @@ https://github.com/ladybug-analysis-tools/ladybug-web/issues/1
 
 [Sunlight Hours Ladybug Dynamo]( http://hydrashare.github.io/hydra/viewer?owner=mostaphaRoudsari&fork=hydra_1&id=Sunlighthours_Ladybug_Dynamo&slide=0&scale=2.7215798676177987&offset=-765.8096117029108,-203.1389988323118 )
 * Here it is in Python. Can we do it in JavaScript?
+* [Source]( https://github.com/ladybug-analysis-tools/ladybug-core/blob/master/ladybug/sunpath.py#L97-L138 )
+
 
 [SunCalc]( https://github.com/mourner/suncalc ) ~ Thank you [Vladimir Agafonkin]( http://agafonkin.com/en/ )!
 
-
 [Astronomy Answers ~ Position of the Sun]( http://aa.quae.nl/en/reken/zonpositie.html )
-
 
 [SunCalc.net]( http://suncalc.net/ ) ~ Vladimir Agafonkin!
 * You must use the time of the local computer location. 
@@ -202,6 +202,11 @@ https://github.com/ladybug-analysis-tools/ladybug-web/issues/1
 * These apps also use the time at you current location
 	* But also displays local time at the location being viewed
 
+[NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html )
+* [Main JavaScript routine]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
+* Main page fairly easy to update
+* Calls them 'azimuth' and 'elevation'
+* Does not give negative elevations
 
 
 [Sun Earth Tools]( http://www.sunearthtools.com/dp/tools/pos_sun.php ) ~ no API ~ UK app - no authors listed
@@ -220,6 +225,7 @@ https://github.com/ladybug-analysis-tools/ladybug-web/issues/1
 http://www.metafilter.com/130877/SunCalc-a-solar-azimuth-calculator
 
 http://www.analemma.com/Pages/indexPage.html
+* Old and has issues
 
 
 
