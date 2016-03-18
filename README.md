@@ -31,15 +31,14 @@ Genarally the following scripts
 * Permalink support
 * Slide-out menu support
 
-### Latest update: 2016-03-14 / R3
+### Latest update: 2016-03-14 / R5
 
-* Code clean-up
+* Mostapha's Magic
+
 
 ### Issues
 
-* Has math error: noon and midnight analemmas are not opposite each other. 
-	* Observe this error when viewing latitudes near Equator
-* Map not positioning correctly
+
 
 
 ## [Analemma 2D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-2d/ )
