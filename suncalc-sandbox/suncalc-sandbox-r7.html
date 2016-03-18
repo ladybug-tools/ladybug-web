@@ -125,15 +125,18 @@
 			utcDate = date.getUTCDate();
 			utcHours = date.getUTCHours();
 			utcMinutes = date.getUTCMinutes();
+
 		}
 
 		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon, utcYear, utcMonth, utcDate, utcHours, utcMinutes ];
 
 		lat = hashes[ 1 ];
 		lon = hashes[ 2 ];
+
 		utcYear = hashes[ 3 ];
 		utcMonth = hashes[ 4 ];
 		utcDate = hashes[ 5 ]; 
+
 		utcHours = hashes[ 6 ];
 		utcMinutes = hashes[ 7 ];
 
@@ -147,11 +150,16 @@
 		inpHours.value = utcHours;
 		inpMinutes.value = utcMinutes;
 
+// https://developers.google.com/maps/documentation/timezone/intro
+
 		if ( !offset ) {
 
-			timeStamp = Date.now().toFixed();
+			timeStamp = Date.now().toFixed().substr( 0, 10 );
 
-			request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + timeStamp.substr( 0, 10 );
+			request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + timeStamp;
+console.log( 'req', request );
+//			request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + timeStamp;
+
 
 			requestFile( request );
 
@@ -311,11 +319,11 @@ console.log( 'update', timeString, lat, lon );
 		moonTimes = SunCalc.getMoonTimes( time, lat, lon );
 
 		rise = calculateLocalTime2( offset, utcYear, utcMonth, utcDate, moonTimes.rise.getUTCHours(), moonTimes.rise.getUTCMinutes() )
-		set = moonTimes.set ?  moonTimes.set.toUTCString() : 'undefined';
+		set = moonTimes.set ?  moonTimes.set.toISOString() : 'undefined';
 
 		txt += '<tr><th colspan=2 > Moon Times </th></tr>' +
 
-		'<tr><td> Rise </td><td></td><td> ' + rise + '</td></tr>' +
+		'<tr><td> Rise </td><td> ' + rise.toISOString() + '</td></tr>' +
 		'<tr><td> Set </td><td> ' + set + '</td></tr>' +
 		'<tr><td> Always Up </td><td> ' + moonTimes.alwaysUp + '</td></tr>' +
 		'<tr><td> Always Down </td><td> ' + moonTimes.alwaysDown + '</td></tr>';

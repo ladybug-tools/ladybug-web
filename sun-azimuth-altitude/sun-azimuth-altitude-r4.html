@@ -256,8 +256,8 @@ console.log( 'update', timeString, lat, lon );
 		time = new Date( timeString );
 
 		sunPosition = SunCalc.getPosition( time, lat, lon );
-		az = sunPosition.azimuth + pi;
-		al = sunPosition.altitude;
+		al = sunPosition.azimuth + pi;
+		az = sunPosition.altitude;
 
 		var radius = size;
 		var d2r =  Math.PI / 180;

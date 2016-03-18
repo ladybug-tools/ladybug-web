@@ -2,10 +2,10 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R4</title>
+<title>Analemma 3D R3</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
-* 3D plot - or analemma - of Sun azimuth and altitude once an hour for days 1 through 28 of each month.
+* 3D plot - or analemma - of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
 * Default latitude and longitude is San Francisco
 * Sliders update latitude and longitude of analemma in real-time
 * Displays map of location
@@ -29,7 +29,6 @@
 <script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
 <script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
 <script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
-<!-- <script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script> -->
 
 <script>
 
@@ -82,7 +81,7 @@
 
 		var menu = hamburger.appendChild( document.createElement( 'div' ) );
 		menu.id = 'menu';
-		menu.innerHTML =
+		menu.innerHTML = 
 
 			'<h2>' +
 			'	<a href="" >' + document.title + '</a>' +
@@ -189,33 +188,20 @@
 		lat = outLat.value = inpLat.valueAsNumber;
 		lon = outLon.value = inpLon.valueAsNumber;
 
-		// TODO: we need to get the timezone from google service
-		// here I just hard-code it for california
-		tz = -8;
-
 		txt = '<h3>lat: ' + lat + ' lon: ' + lon + '</h3>';
 
-		// every hour
-		for ( var h = 0; h < 24; h++ ) {
+		for ( var i = 0; i < 24; i++ ) {
 
 			geometry = new THREE.Geometry();
 			vertices = geometry.vertices;
 
-			// every month between 0-11 as javascript starts from 0 to 11
-			for ( m = 0; m < 12; m++ ) {
 
-				for ( var d = 1; d < 28; d++ ) {
+			for ( j = 1; j < 13; j++ ) {
 
-					// create UTC time for this hour
-					var dt = new Date(Date.UTC(2016, m, d, h, 0, 0))
+				for ( var k = 1; k < 28; k++ ) {
 
-					// adjust time based on timezone
-					dt.setUTCHours(dt.getUTCHours() - tz);
-
-					// latitude and longitude values are in degrees
-					sunPosition = SunCalc.getPosition( dt, lat, lon);
-
-					vertices.push( convertPosition(radius, sunPosition.altitude, sunPosition.azimuth));
+					sunPosition = SunCalc.getPosition( new Date( '2016-' + ( '0' + j ).slice( -2 ) + '-' + ( '0' + k ).slice( -2 ) + 'T' + ( '0' + i ).slice( -2 ) + ':00:00' ), lat, lon  );
+					vertices.push( convertPosition( radius, sunPosition.azimuth, sunPosition.altitude  ) );
 
 				}
 
@@ -224,22 +210,21 @@
 //			sunPosition = SunCalc.getPosition( new Date( '2016-01-01T' + ( '0' + i ).slice( -2 )  + ':00:00' ), lat, lon  );
 //			vertices.push( convertPosition( radius, sunPosition.azimuth, sunPosition.altitude  ) );
 
-			// change colors for noon
-			color = h === 0 ? 0xff0000 : 0x000000;
-			color = h === 12 ? 0x00ff00 : color;
+			color = i === 0 ? 0xff0000 : 0x000000;
+			color = i === 12 ? 0x00ff00 : color;
 
 			material = new THREE.LineBasicMaterial( { color: color } );
 			line = new THREE.Line( geometry, material );
 			analemma.add( line );
 
-			placard = drawPlacard( '' + h, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
+			placard = drawPlacard( '' + i, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
 			analemma.add( placard );
 
 			info.innerHTML = txt;
 
 		}
 
-		// analemma.rotation.y = pi05;
+		analemma.rotation.y = pi05;
 		scene.add( analemma );
 
 		setMapOverlay();
@@ -409,12 +394,14 @@
 
 	}
 
-	function convertPosition( radius, altitude, azimuth) {
-        // calculate sun position based on altitude and azimuth.
-		x = radius * Math.cos(altitude) * Math.sin(azimuth)
-		y = radius * Math.cos(altitude) * Math.cos(azimuth)
-		z = radius * Math.sin(altitude)
-		return v(x, y, z);
+	function convertPosition( radius, theta, phi ) {
+
+		x = radius * Math.sin( theta ) * Math.cos( phi )
+		y = radius * Math.sin( theta ) * Math.sin( phi )
+		z = radius * Math.cos( theta )
+
+		return v( x, y, z );
+
 	}
 
 	function lon2tile( lon, zoom ) {

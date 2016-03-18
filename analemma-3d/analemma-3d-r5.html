@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R4</title>
+<title>Analemma 3D R5</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 * 3D plot - or analemma - of Sun azimuth and altitude once an hour for days 1 through 28 of each month.
@@ -36,12 +36,28 @@
 	var lat = 37.796;
 	var lon = -122.398;
 
+	var locations = [
+
+//		[ , , ''],
+		[ 21.3, -157.8167, 'Honolulu'],
+		[ 32.6333, 51.6500, 'Isfahan' ],
+		[ 51.5072, -0.1275, 'London' ],
+		[ 18.975, 72.8258, 'Mumbai'],
+		[ 40.712, -74.0059, 'New York' ],
+		[ -22.9068, -43.1729, 'Rio de Janeiro' ],
+		[ 37.796, -122.398, 'San Francisco' ],
+		[ 31.2, 121.5, 'Shanghai'],
+		[ -33.8650, 151.2094, 'Sydney' ]
+
+	];
+
 	var analemma;
 
 	var mapOverlay, contextMapOverlay;
+
 	var zoom = 12;
-	var tile = 256;
-	var size = 2048;
+	var pixelsPerTile = 256;
+	var tilesPerSide = 3;
 
 	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
@@ -90,35 +106,57 @@
 			'</h2>' +
 
 			'<p>red = midnight ~ green = noon</p>' +
-			'<p>Lat <input type=range id=inpLat max=90 min=-90 step=0.001 title="-90 to 90: OK" ><output id=outLat ></output></p>' +
-			'<p>Lon <input type=range id=inpLon max=180 min=-180 step=0.001 title="-180 to 180: OK" ><output id=outLon ></output></p>' +
+			'<p>Latitude<br><input type=range id=inpLat max=90 min=-90 step=0.001 title="-90 to 90: OK" ><output id=outLat ></output></p>' +
+			'<p>Longitude<br><input type=range id=inpLon max=180 min=-180 step=0.001 title="-180 to 180: OK" ><output id=outLon ></output></p>' +
 
-			'<p>Map overlay: <select id=selMap onchange=setMapOverlay() /></select></p>' +
+			'<p>Map overlay<br><select id=selMap onchange=setMapOverlay(); size=9 /></select></p>' +
 
-			'<p><button onclick=lat=51.5072;lon=-0.1275;drawAnalemma(); >London</button></p>' +
-			'<p><button onclick=lat=40.712;lon=-74.0059;drawAnalemma(); >New York</button></p>' +
-			'<p><button onclick=lat=32.6333;lon=51.6500;drawAnalemma(); >Isfahan</button></p>' +
-			'<p><button onclick=lat=37.8;lon=-122.4;drawAnalemma(); >San Francisco</button></p>' +
-			'<p><button onclick=lat=-33.8650;lon=151.2094;drawAnalemma(); >Sydney</button></p>' +
+			'<p>Zoom<br><input type=range id=inpZoom max=20 min=3 step=1 value=12 oninput=zoom=this.value;setMapOverlay(); title="1 to 18: OK" ><output id=outZoom ></output></p>' +
+
+			'<p>City<br><select id=selLocation size=10 ></select></p>' +
 
 			'<div id=info ></div>' +
 
 		'';
 
-		inpLat.value = lat;
-		inpLon.value = lon;
+		getMapOverlays();
 
-		inpLat.oninput = function () {
+		for ( var i = 0; i < locations.length; i++ ) {
 
-			lat = inpLat.valueAsNumber;
-			drawAnalemma();
+			item = locations[ i ];
+			selLocation.appendChild( document.createElement( 'option' ) );
+			selLocation.children[ i ].text = item[2];
 
 		}
 
-		inpLon.oninput = function () {
+		inpLon.oninput = inpLat.oninput = function() {
 
+			lat = inpLat.valueAsNumber;
 			lon = inpLon.valueAsNumber;
-			drawAnalemma();
+			zoom = inpZoom.valueAsNumber;
+
+			offset='';
+
+			loc = [ lat, lon, 'somewhere' ];
+
+			getTime( loc );
+
+			drawAnalemma( loc );
+
+			setMapOverlay();
+
+		}
+
+		selLocation.selectedIndex = 6;
+
+		selLocation.onchange = function() {
+
+			offset="";
+			loc = locations[ selLocation.selectedIndex ];
+
+			getTime( loc );
+
+			drawAnalemma( loc );
 
 		}
 
@@ -160,27 +198,101 @@
 
 // assets
 
-		getMapOverlays();
-
-		selMap.selectedIndex = 0;
-
-		drawAnalemma();
+		selLocation.onchange();
 
 	}
 
-	function drawAnalemma() {
+	function getTime( loc ) {
+
+		date = new Date();
+
+		localOffset = date.getTimezoneOffset();
+
+		utc = date.getTime() + localOffset * 60000;
+
+		dateUTC = new Date( utc );
+
+		timeStamp = dateUTC.getTime() / 1000;
+
+		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc[ 0 ] + ',' + loc[ 1 ] + '&timestamp=' + timeStamp;
+
+		requestFile( request, loc );
+
+	}
+
+	function requestFile( fileName, locate ) {
+
+		var xhr = new XMLHttpRequest();
+		xhr.open( 'GET', fileName, true );
+		xhr.onreadystatechange = callback;
+		xhr.send( null );
+
+			function callback() {
+
+				if ( xhr.readyState !== 4  ) { return; }
+
+				time = JSON.parse( xhr.responseText );
+
+				updateInfo( time, locate );
+
+//console.log( 'time ', time );
+
+			}
+
+	}
+
+	function updateInfo( time, locate ) {
+
+		if ( time.status === 'OK' ) {
+
+			offset = time.rawOffset + time.dstOffset;
+
+			remoteTime = calculateLocalTime( dateUTC.getTime(), offset );
+
+			info.innerHTML = 
+
+				'<h3>' + locate[ 2 ] + '</h3>' +
+				'<p>Given a UTC time of ' + dateUTC.getHours() + ':' + dateUTC.getMinutes() + '</p>' +
+
+				'<p> lat: ' + locate[ 0 ] + ' lon: ' + locate[ 1 ] + '</p>' +
+				'<p>Time ZoneID:' + time.timeZoneId + '</p>' +
+				'<p>Time zone: ' + time.timeZoneName + '</p>' +
+				'<p>Offset in hours: ' + offset / 3600 + '</p>' +
+				'<p>The local date and time is: ' + remoteTime.toLocaleString() + '</p>' +
+				'<p> The local universal time is:' + remoteTime.getTime() + '</p>' +
+
+			'';
+
+		} else {
+
+			info.innerHTML += 'the location is timeless';
+
+		}
+
+	}
+
+	function calculateLocalTime( date, offset ) {
+
+		newDate = new Date( date + ( 1000 * offset ) );
+
+		return  newDate;
+
+	}
+
+
+	function drawAnalemma( locate ) {
 
 		var radius = 50;
 		var geometry, vertices, sunPosition, material, color, line;
 		var placard, txt;
 
-		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon ];
+		hashes = location.hash ? location.hash.split( '#' ) : [ 0, locate[ 0 ], locate[ 1 ] ];
 
-		inpLat.value = hashes[ 1 ];
-		inpLon.value = hashes[ 2 ];
+		lat = hashes[ 1 ];
+		lon = hashes[ 2 ];
 
-		lat = outLat.value = inpLat.valueAsNumber;
-		lon = outLon.value = inpLon.valueAsNumber;
+		inpLat.value = outLat.value = lat;
+		inpLon.value = outLon.value = lon;
 
 		scene.remove( analemma );
 
@@ -189,33 +301,35 @@
 		lat = outLat.value = inpLat.valueAsNumber;
 		lon = outLon.value = inpLon.valueAsNumber;
 
-		// TODO: we need to get the timezone from google service
-		// here I just hard-code it for california
-		tz = -8;
+		offsetHours = offset / 3600;
 
 		txt = '<h3>lat: ' + lat + ' lon: ' + lon + '</h3>';
 
-		// every hour
-		for ( var h = 0; h < 24; h++ ) {
+// every hour
+		for ( var hour = 0; hour < 24; hour++ ) {
 
 			geometry = new THREE.Geometry();
 			vertices = geometry.vertices;
 
-			// every month between 0-11 as javascript starts from 0 to 11
-			for ( m = 0; m < 12; m++ ) {
+// every month between 0-11 as javascript starts from 0 to 11
 
-				for ( var d = 1; d < 28; d++ ) {
+			for ( month = 0; month < 12; month++ ) {
 
-					// create UTC time for this hour
-					var dt = new Date(Date.UTC(2016, m, d, h, 0, 0))
+				for ( var date = 1; date < 28; date++ ) {
 
-					// adjust time based on timezone
-					dt.setUTCHours(dt.getUTCHours() - tz);
+// create UTC time for this hour
 
-					// latitude and longitude values are in degrees
-					sunPosition = SunCalc.getPosition( dt, lat, lon);
+					var dateUTC = new Date( Date.UTC( 2016, month, date, hour, 0, 0 ) );
 
-					vertices.push( convertPosition(radius, sunPosition.altitude, sunPosition.azimuth));
+// adjust time based on timezone
+
+					dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetHours );
+
+// latitude and longitude values are in degrees
+
+					sunPosition = SunCalc.getPosition( dateUTC, lat, lon );
+
+					vertices.push( convertPosition( radius, sunPosition.altitude, sunPosition.azimuth ) );
 
 				}
 
@@ -224,22 +338,21 @@
 //			sunPosition = SunCalc.getPosition( new Date( '2016-01-01T' + ( '0' + i ).slice( -2 )  + ':00:00' ), lat, lon  );
 //			vertices.push( convertPosition( radius, sunPosition.azimuth, sunPosition.altitude  ) );
 
-			// change colors for noon
-			color = h === 0 ? 0xff0000 : 0x000000;
-			color = h === 12 ? 0x00ff00 : color;
+// change colors for midnight and noon
+			color = hour === 0 ? 0xff0000 : 0x000000;
+			color = hour === 12 ? 0x00ff00 : color;
 
 			material = new THREE.LineBasicMaterial( { color: color } );
 			line = new THREE.Line( geometry, material );
 			analemma.add( line );
 
-			placard = drawPlacard( '' + h, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
+			placard = drawPlacard( '' + hour, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
 			analemma.add( placard );
 
 			info.innerHTML = txt;
 
 		}
 
-		// analemma.rotation.y = pi05;
 		scene.add( analemma );
 
 		setMapOverlay();
@@ -249,9 +362,9 @@
 	function getMapOverlays() {
 
 		mapOverlay = document.createElement( 'canvas' );
-		mapOverlay.width = mapOverlay.height = size;
+		mapOverlay.width = mapOverlay.height = pixelsPerTile * tilesPerSide;
 //		document.body.appendChild( mapOverlay );
-		mapOverlay.style.cssText = 'border: 1px solid gray; position: absolute; top: 0; z-index:-10;';
+		mapOverlay.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:-10;';
 		contextMapOverlay = mapOverlay.getContext( '2d' );
 
 		mapTypes = [
@@ -275,31 +388,42 @@
 
 		}
 
+		selMap.selectedIndex = 0;
+
 	}
 
 	function setMapOverlay() {
 
+		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon, zoom ];
+
+		lat = parseFloat( hashes[ 1 ] );
+		lon = parseFloat( hashes[ 2 ] );
+		zoom = parseInt( hashes[ 3 ], 10 );
+
+		inpLat.value = outLat.value = lat;
+		inpLon.value = outLon.value = lon;
+		inpZoom.value = outZoom.value = zoom;
+
 		tileX = lon2tile( lon, zoom  );
 		tileY = lat2tile( lat, zoom  );
 
-		var dir = mapTypes[ parent.selMap.selectedIndex ][ 1 ];
+		var baseURL = mapTypes[ selMap.selectedIndex ][ 1 ];
 
-		tiles = size / tile;
+		tileOffset = - Math.floor( 0.5 * tilesPerSide );
 
-//		tileOffset = Math.floor( 0.5 * tiles );
 		count = 0;
 
-		for ( var x = 0; x < tiles; x++ ) {
+		for ( var x = 0; x < tilesPerSide; x++ ) {
 
-			for ( var y = 0; y < tiles; y++ ) {
+			for ( var y = 0; y < tilesPerSide; y++ ) {
 
 				if ( parent.selMap.selectedIndex < 4 ) {
 
-					loadImage( ( tiles * tileX + x ) + '&y=' + ( tiles * tileY + y ) + '&z=' + ( zoom + 3 ), tile * x, tile * y );
+					loadImage( ( tileX + x + tileOffset ) + '&y=' + ( tileY + y + tileOffset ) + '&z=' + zoom, pixelsPerTile * x, pixelsPerTile * y );
 
 				} else {
 
-					loadImage( ( zoom + 3 ) + '/' + ( tiles * tileX + x ) + '/' + ( tiles * tileY + y ) + '.png', tile * x, tile * y );
+					loadImage( zoom + '/' + ( tileX + x + tileOffset ) + '/' + ( tileY + y + tileOffset ) + '.png', pixelsPerTile * x, pixelsPerTile * y );
 
 				}
 
@@ -313,24 +437,24 @@
 
 			var img = document.createElement( 'img' );
 			img.crossOrigin = 'anonymous';
-			img.src = dir + fileName;
+			img.src = baseURL + fileName;
 
 			img.onload = function(){
 
-				contextMapOverlay.drawImage( img, 0, 0, tile, tile, x, y, tile, tile );
+				contextMapOverlay.drawImage( img, 0, 0, 256, 256, x, y, pixelsPerTile, pixelsPerTile );
 
-					ll = tiles * tiles;
+				ll = tilesPerSide * tilesPerSide;
+
 					if ( ++count === ll ) {
 
-						var texture = new THREE.Texture( mapOverlay );
-						texture.minFilter = texture.magFilter = THREE.NearestFilter;
-						texture.needsUpdate = true;
+					var texture = new THREE.Texture( mapOverlay );
+					texture.minFilter = texture.magFilter = THREE.NearestFilter;
+					texture.needsUpdate = true;
 
-						map.material = new THREE.MeshBasicMaterial( { map: texture, side: 2, opacity: 0.5 , transparent: true } );
-						map.material.needsUpdate = true;
+					map.material = new THREE.MeshBasicMaterial( { map: texture, side: 2, opacity: 0.85 , transparent: true } );
+					map.material.needsUpdate = true;
 
-					}
-
+				}
 
 			}
 
