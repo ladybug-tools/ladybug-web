@@ -34,7 +34,7 @@ Generally the following scripts
 * Select location
 	* By latitude and longitude sliders
 	* Select city from a gazetteer of over 2,000 places names
-	* Default latitude and longitude is San Francisco
+	* Default latitude and longitude is selected randomly from the gazetteer
 	* Sliders update latitude and longitude of analemma in real-time
 * Select date and time
 	* Sliders for month, date, hour and minutes
