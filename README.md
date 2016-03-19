@@ -28,6 +28,9 @@ Generally the following scripts
 * 3D plot of analemmas of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
 	* Midnight highlighted is red. Noon highlighted in green
 	* Placards indicate the hour of each analemma
+	* Displays current position of sun
+	* Displays shadow and shade
+	* Reference object to indicate shade and shadow coverage
 * Select location
 	* By latitude and longitude sliders
 	* Select city from a gazetteer of over 2,000 places names
@@ -35,12 +38,16 @@ Generally the following scripts
 	* Sliders update latitude and longitude of analemma in real-time
 * Select date and time
 	* Sliders for month, date, hour and minutes
+	* Update Sun position and shadows in real-time
 * Displays map of location
 	* Check boxes to toggle map display - also grid and axis
 	* Nine maps styles to choose from
 	* Sliders for map zoom factor and opacity 
 * Information panel
-	* Display a variety of info
+	* Displays a variety of information including
+	* Latitude and longitude
+	* Local and UTC time
+	* Time zone name, id and offset in hours
 * Full menu system
 	* Accordion menus use HTML5 details and summary element
 	* Works on all recent browsers - though still in beta on FF
@@ -48,19 +55,21 @@ Generally the following scripts
 
 
 
-### Latest update: 2016-03-18 / R4/R5/R6
+### Latest update: 2016-03-19 / R7
 
-
-* Mostapha's magic fixes
-* Many new UI features
-* Gazetteer
-
+* Code clean-up and updates to many variable names
+	* Making variable names more meaningful and consistent
+* Add Sun mesh and direction light
+	* Positions update with each slider movement
+* Add shadows and shade
+* Add trylon and and perisphere reference/demo objects
+* Add more time-updating capabilities
+* Random location at load time
 
 ### Things To Do / Road Map
 
 * Text input for lat and lon
-* Random location at load time
-* Replace/Upgrade AunCalc.js with NOAA/Bostock JavaScript
+* Replace/Upgrade SunCalc.js with NOAA/Bostock JavaScript
 * Translucent ring to indicate full Sun path
 * Animations
 * Add solar times readout - with buttons to display sun position for location, date and time 
@@ -78,6 +87,11 @@ Generally the following scripts
 
 ### Issues
 
+* Errors in logic
+	* Sun high at poles, low at equator
+	* Times reversed below equator
+	* Analemmas upside down
+* Updates time zone data always - even if no lat/lon change
 * Not all sliders working properly
 * Maps not updating properly when using sliders
 * Permalink support (currently broken )

@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R6</title>
+<title>Analemma 3D R7</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 * 3D plot of analemmas of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
@@ -24,10 +24,10 @@
 * Full menu system
 	* Accordion menus use HTML5 details and summary element
 	* Works on all recent browsers - though still in beta on FF
-	* Slide-out 'hamburger' menu support
+	* Slide-out "hamburger" menu support
 ' >
 <meta name=keywords content='SunCalc.js,WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-03-18' >
+<meta name=date content='2016-03-19' >
 </head>
 <body>
 <!--
@@ -45,16 +45,16 @@
 
 	var lat;
 	var lon;
-//	var yearUTC, monthUTC, dateUTC, hoursUTC, minutesUTC;
+	var dateHere, dateUTC, datePlace;
+	var timeZonePlace;
 
 	var gazetteer = 'http://ladybug-analysis-tools.github.io/ladybug-web/gazetteer/places-2000.csv';
-	var cities, city;
-
+	var places, place;
 	var offset;
 
-	var analemma;
-
-	var mapOverlay, contextMapOverlay;
+	var analemma, sun;
+	var analemmaRadius = 50;
+	var placeMap, placeMapCanvas, placeMapContext;
 
 	var zoom = 12;
 	var opacity = 0.85;
@@ -68,6 +68,7 @@
 	var v = function( x, y, z ){ return new THREE.Vector3( x, y, z ); };
 
 	var stats, renderer, scene, camera, controls;
+
 	var geometry, material, mesh;
 
 	init();
@@ -116,14 +117,15 @@
 				'<p>Latitude<br><input type=range id=inpLat max=90 min=-90 step=0.001 title="-90 to 90: OK" ><output id=outLat ></output><br>' +
 				'Longitude<br><input type=range id=inpLon max=180 min=-180 step=0.001 title="-180 to 180: OK" ><output id=outLon ></output></p>' +
 
-				'<p>Gazetteer<br><select id=selCity size="20" ></select></p>' +
+				'<p>Gazetteer<br><select id=selPlace size="20" ></select></p>' +
 
 			'</details>' +
+
 			'<details open >' +
 				'<summary><h3>Date and Time</h3></summary>' +
 				'<p>' +
 					'Month<br><input type=range id=inpMonth min=0 max=11 step=1 value=5 title="1 to 18: OK" ><output id=outMonth ></output><br>' +
-					'Day<br><input type=range id=inpDate min=0 min=31 step=1 value=15 title="1 to 18: OK" ><output id=outDate ></output><br>' +
+					'Day<br><input type=range id=inpDate min=0 max=31 step=1 value=15 title="1 to 18: OK" ><output id=outDate ></output><br>' +
 					'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=10 title="1 to 18: OK" ><output id=outHours ></output><br>' +
 					'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=10 title="1 to 18: OK" ><output id=outMinutes ></output><br>' +
 
@@ -140,45 +142,53 @@
 					'Zoom<br><input type=range id=inpZoom max=20 min=3 step=1 value=12 oninput=zoom=this.value;setMapOverlay(); title="1 to 18: OK" ><output id=outZoom ></output><br>' +
 					'Opacity<br><input type=range id=inpOpacity min=0.05 max=1 step=0.05 value=0.85 oninput=opacity=this.value;setMapOverlay(); title="1 to 18: OK" ><output id=outZoom ></output>' +
 				'</p>' +
-
-
 			'</details>' +
+
 			'<details>' +
 				'<summary><h3>About</h3></summary>' +
 				'<p>red = midnight ~ green = noon</p>' +
 				'<p>Copyright &copy; 2016 Ladybug authors. GPL 3 license.</p>' +
 			'</details>' +
+
 			'<details open >' +
 				'<summary><h3>Information</h3></summary>' +
 				'<div id=info ></div>' +
 			'</details>' +
+
 		'';
 
 		inpMonth.oninput = function() {
 
-			dateRemote.setMonth( inpMonth.valueAsNumber );
-			updateInfo();
+			datePlace.setMonth( inpMonth.valueAsNumber );
+//			updateInfo();
+			updateTime();
 
 		}
 
 		inpDate.oninput = function() {
 
-			dateRemote.setDate( inpDate.valueAsNumber );
-			updateInfo();
+			datePlace.setDate( inpDate.valueAsNumber );
+//			updateInfo();
+			updateTime();
 
 		}
 
 		inpHours.oninput = function() {
 
-			dateRemote.setHours( inpHours.valueAsNumber );
-			updateInfo();
+			datePlace.setHours( inpHours.valueAsNumber );
+			outHours.value = inpHours.valueAsNumber;
+			updateTime();
+
+//			updateInfo();
 
 		}
 
 		inpMinutes.oninput = function() {
 
-			dateRemote.setMinutes( inpMinutes.valueAsNumber );
-			updateInfo();
+			datePlace.setMinutes( inpMinutes.valueAsNumber );
+			outMinutes.value = inpMinutes.valueAsNumber;
+
+			updateTime();
 
 		}
 
@@ -190,7 +200,7 @@
 
 			offset='';
 
-			city = [ 'somewhere', lat, lon  ];
+			place = [ 'somewhere', lat, lon  ];
 
 			getTime();
 
@@ -205,9 +215,14 @@
 		window.addEventListener( 'resize', onWindowResize, false );
 
 		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
-//		renderer.setClearColor( 0xf0f0f0 );
-//		renderer.setPixelRatio( window.devicePixelRatio );
+//		renderer.setPixelRatio( window.devicePixelRatio ); // for iOS?
 		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.cullFace = THREE.CullFaceBack;
+//		renderer.gammaInput = true;
+//		renderer.gammaOutput = true;
+//		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
 		document.body.appendChild( renderer.domElement );
 
 		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -218,79 +233,156 @@
 
 		scene = new THREE.Scene();
 
+		lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+		lightDirectional.position.set( -100, 100, 100 );
+		size = 200;
+		var d = size;
+		lightDirectional.shadow.camera.left = -d;
+		lightDirectional.shadow.camera.right = d;
+		lightDirectional.shadow.camera.top = d;
+		lightDirectional.shadow.camera.bottom = -d;
+
+		lightDirectional.shadow.camera.near = 0;
+		lightDirectional.shadow.camera.far = 3 * size;
+
+// helps stop appearance of grid lines in objects
+		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		scene.add( lightDirectional );
+
 // helpers
 
-		geometry = new THREE.PlaneBufferGeometry( 200, 200 );
+		geometry = new THREE.PlaneBufferGeometry( 150, 150 );
 		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
-		material = new THREE.MeshBasicMaterial();
-		map = new THREE.Mesh( geometry, material );
-		scene.add( map );
+		material = new THREE.MeshLambertMaterial();
+		placeMap = new THREE.Mesh( geometry, material );
+		placeMap.receiveShadow = true;
+		scene.add( placeMap );
 
-		gridHelper = new THREE.GridHelper( 100, 10 );
+		gridHelper = new THREE.GridHelper( 75, 10 );
 		gridHelper.position.set( 0, 0.1, 0 );
 		scene.add( gridHelper );
 
-		axisHelper = new THREE.AxisHelper( 100 );
+		axisHelper = new THREE.AxisHelper( 75 );
 		scene.add( axisHelper );
 
 // assets
 
 		requestGazetteer( gazetteer );
 
+		toggleTrylonPerisphere();
+
 	}
 
-	function requestGazetteer( fileName ) {
+	function updateSunPosition() {
+
+		if ( !sun ) {
+
+			geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
+			material = new THREE.MeshPhongMaterial( { color: 0xffff00, emissive: 0x333333 } );
+			sun = new THREE.Mesh( geometry, material );
+			scene.add( sun );
+
+		}
+
+		var sunPosition = SunCalc.getPosition( dateUTC, lat, lon );
+
+		var x = analemmaRadius * Math.cos( sunPosition.altitude ) * Math.sin( sunPosition.azimuth );
+		var y = analemmaRadius * Math.cos( sunPosition.altitude ) * Math.cos( sunPosition.azimuth );
+		var z = analemmaRadius * Math.sin( sunPosition.altitude );
+
+		sun.position.set( - x, y, z );
+		lightDirectional.position.set( -x, y, z );
+
+	}
+
+	function updateTime() {
+
+		var timestamp, request;
+
+		dateHere = new Date();
+
+		offsetHere = dateHere.getTimezoneOffset();
+
+		dateUTC = dateHere.getTime() + offsetHere * 60000;
+
+//		dateUTC = new Date( dateUTC );
+
+		dateUTC = new Date( Date.UTC( 2016, datePlace.getMonth(), datePlace.getDate(), datePlace.getHours(), datePlace.getMinutes(), 0 ) );
+
+// adjust time based on timezone
+
+		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetHours );
+
+		updateSunPosition();
+
+	}
+
+	function requestGazetteer( gazetteer ) {
 
 		var xhr = new XMLHttpRequest();
-		xhr.open( 'GET', fileName, true );
+		xhr.open( 'GET', gazetteer, true );
 		xhr.onreadystatechange = callback;
 		xhr.send( null );
-
-
 
 		function callback() {
 
 			if ( xhr.readyState != 4  ) { return; }
-			text = xhr.responseText;
+
+			places = [];
+			var text = xhr.responseText;
 			var lines = text.split(/\r\n|\n/);
-			cities = [];
+
 			for ( var i = 1; i < lines.length; i++) {
 
 				line = lines[ i ].split( ';' );
-				selCity.appendChild( document.createElement( 'option' ) );
-				selCity.children[ i - 1 ].text = line[ 0 ];
-				cities.push( line );
+				selPlace.appendChild( document.createElement( 'option' ) );
+				selPlace.children[ i - 1 ].text = line[ 0 ];
+				places.push( line );
 
 			}
 
-			selCity.selectedIndex = 1621;
+			selPlace.selectedIndex = Math.floor( Math.random() * lines.length + 1 );
 
-			selCity.oninput();
+			selPlace.oninput();
 
 		}
 
-		selCity.oninput = function() {
+		selPlace.oninput = function() {
 
-			city = cities[ selCity.selectedIndex ];
+			place = places[ selPlace.selectedIndex ];
+
+			outLat.value = inpLat.value = lat = parseFloat( place[ 1 ] );
+			outLon.value = inpLon.value = lon = parseFloat( place[ 2 ] );
 
 			getTime();
 
 		}
+
 	}
 
 	function getTime() {
 
-		dateLocal = new Date();
+		var timestamp, request;
 
-		localOffset = dateLocal.getTimezoneOffset();
+		dateHere = new Date();
 
-		utc = dateLocal.getTime() + localOffset * 60000;
+		offsetHere = dateHere.getTimezoneOffset();
 
-		dateUTC = new Date( utc );
+		dateUTC = dateHere.getTime() + offsetHere * 60000;
 
-		timeStamp = dateUTC.getTime() / 1000;
+		dateUTC = new Date( dateUTC );
 
-		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + city[ 1 ] + ',' + city[ 2 ] + '&timestamp=' + timeStamp;
+		timestamp = dateUTC.getTime() / 1000;
+
+		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + timestamp;
 
 		requestTimezone( request );
 
@@ -307,15 +399,21 @@
 
 			if ( xhr.readyState !== 4  ) { return; }
 
-				timezoneData = JSON.parse( xhr.responseText );
+			timeZonePlace = JSON.parse( xhr.responseText );
 
-				if ( timezoneData.status === 'OK' ) {
+			if ( timeZonePlace.status === 'OK' ) {
 
-				offset = timezoneData.rawOffset + timezoneData.dstOffset;
+				offsetPlace = timeZonePlace.rawOffset + timeZonePlace.dstOffset;
 
-				dateRemote = calculateLocalTime( dateUTC.getTime(), offset );
+				datePlace = new Date( dateUTC.getTime() + ( 1000 * offsetPlace ) );
+
+				drawAnalemma();
+
+				setMapOverlay();
 
 				updateInfo();
+
+
 
 			} else {
 
@@ -323,80 +421,47 @@
 
 			}
 
-//console.log( 'timezoneData ', timezoneData );
+//console.log( 'timeZonePlace ', timeZonePlace );
 
 		}
-
-		function calculateLocalTime( date, offset ) {
-
-			newDate = new Date( date + ( 1000 * offset ) );
-
-			return  newDate;
-
-		}
-
-	}
-
-	function updateInfo() {
-
-			info.innerHTML = 
-
-				'<h3>lat:' + city[ 1 ] + ' lon:' + city[ 2 ] + '</h3>' +
-				'<p>' + city[ 0 ] + '</p>' +
-				'<p>Given a UTC time of ' + dateUTC.getHours() + ':' + dateUTC.getMinutes() + '</p>' +
-				'<p>Time ZoneID:' + timezoneData.timeZoneId + '</p>' +
-				'<p>Time zone: ' + timezoneData.timeZoneName + '</p>' +
-				'<p>Offset in hours: ' + offset / 3600 + '</p>' +
-				'<p>The local date and time is: ' + dateRemote.toLocaleString() + '</p>' +
-				'<p> The local universal time is:' + dateRemote.getTime() + '</p>' +
-
-			'';
-
-			inpMonth.value = dateRemote.getMonth();
-			outMonth.value = dateRemote.getMonth() + 1;
-			outDate.value = inpDate.value = dateRemote.getDate();
-			outHours.value = inpHours.value = dateRemote.getHours();
-			outMinutes.value = inpMinutes.value = dateRemote.getMinutes();
-
-			drawAnalemma( city );
 
 	}
 
 	function drawAnalemma() {
 
-		var radius = 50;
-		var geometry, vertices, sunPosition, material, color, line;
+		var hashes;
+		var geometry, vertices, sunPosition, material, colorAnalemma, line;
 		var placard;
 
-		hashes = location.hash ? location.hash.split( '#' ) : [ 0, city[ 1 ], city[ 2 ] ];
+//		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon ];
 
-		lat = parseFloat( hashes[ 1 ] );
-		lon = parseFloat( hashes[ 2 ] );
+//		lat = parseFloat( hashes[ 1 ] );
+//		lon = parseFloat( hashes[ 2 ] );
 
-		inpLat.value = outLat.value = lat;
-		inpLon.value = outLon.value = lon;
+//		inpLat.value = outLat.value = lat;
+//		inpLon.value = outLon.value = lon;
 
 		scene.remove( analemma );
 
 		analemma = new THREE.Object3D();
 
-		offsetHours = offset / 3600;
+		offsetHours = offsetPlace / 3600;
 
 // every hour
-		for ( var hour = 0; hour < 24; hour++ ) {
+		for ( var hours = 0; hours < 24; hours++ ) {
 
 			geometry = new THREE.Geometry();
 			vertices = geometry.vertices;
 
 // every month between 0-11 as javascript starts from 0 to 11
 
-			for ( month = 0; month < 12; month++ ) {
+			for ( var month = 0; month < 12; month++ ) {
 
 				for ( var date = 1; date < 28; date++ ) {
 
 // create UTC time for this hour
 
-					var dateUTC = new Date( Date.UTC( 2016, month, date, hour, 0, 0 ) );
+					var dateUTC = new Date( Date.UTC( 2016, month, date, hours, 0, 0 ) );
 
 // adjust time based on timezone
 
@@ -406,61 +471,67 @@
 
 					sunPosition = SunCalc.getPosition( dateUTC, lat, lon );
 
-					vertices.push( convertPosition( radius, sunPosition.altitude, sunPosition.azimuth ) );
+					var x = analemmaRadius * Math.cos( sunPosition.altitude ) * Math.sin( sunPosition.azimuth );
+					var y = analemmaRadius * Math.cos( sunPosition.altitude ) * Math.cos( sunPosition.azimuth );
+					var z = analemmaRadius * Math.sin( sunPosition.altitude );
+
+					vertices.unshift( new THREE.Vector3( - x, y, z ) );
 
 				}
 
 			}
 
-//			sunPosition = SunCalc.getPosition( new Date( '2016-01-01T' + ( '0' + i ).slice( -2 )  + ':00:00' ), lat, lon  );
-//			vertices.push( convertPosition( radius, sunPosition.azimuth, sunPosition.altitude  ) );
+			analemmaColor = hours === 0 ? 0xff0000 : 0x000000;
+			analemmaColor = hours === 12 ? 0x00ff00 : analemmaColor;
 
-// change colors for midnight and noon
-			color = hour === 0 ? 0xff0000 : 0x000000;
-			color = hour === 12 ? 0x00ff00 : color;
-
-			material = new THREE.LineBasicMaterial( { color: color } );
+			material = new THREE.LineBasicMaterial( { color: analemmaColor } );
 			line = new THREE.Line( geometry, material );
 			analemma.add( line );
 
-			placard = drawPlacard( '' + hour, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
+			placard = drawPlacard( '' + hours, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
 			analemma.add( placard );
 
 		}
 
 		scene.add( analemma );
 
-		setMapOverlay();
+	}
 
+	function updateInfo() {
+
+		info.innerHTML = 
+
+			'<h3>lat:' + place[ 1 ] + ' lon:' + place[ 2 ] + '</h3>' +
+			'<p>' + place[ 0 ] + '</p>' +
+			'<p>Given a UTC time of ' + dateUTC.getHours() + ':' + dateUTC.getMinutes() + '</p>' +
+			'<p>Time ZoneID:' + timeZonePlace.timeZoneId + '</p>' +
+			'<p>Time zone: ' + timeZonePlace.timeZoneName + '</p>' +
+			'<p>Offset in hours: ' + offsetPlace / 3600 + '</p>' +
+			'<p>The local date and time is: ' + datePlace.toLocaleString() + '</p>' +
+			'<p> The local universal time is:' + datePlace.getTime() + '</p>' +
+
+		'';
+
+		inpMonth.value = datePlace.getMonth();
+		outMonth.value = datePlace.getMonth() + 1;
+		outDate.value = inpDate.value = datePlace.getDate();
+		outHours.value = inpHours.value = datePlace.getHours();
+		outMinutes.value = inpMinutes.value = datePlace.getMinutes();
+updateTime() 
 	}
 
 	function setMapOverlay() {
 
-		if ( chkMap.checked === false ) {
+		placeMap.visible = chkMap.checked === true ? true : false ;
 
-			map.visible = false;
-			return;
+		if ( chkMap.checked === false ) { return; }
 
-		} else {
-
-			map.visible = true;
-
-		}
-
-		hashes = location.hash ? location.hash.split( '#' ) : [ 0, lat, lon, zoom ];
-
-		lat = parseFloat( hashes[ 1 ] );
-		lon = parseFloat( hashes[ 2 ] );
-		zoom = parseInt( hashes[ 3 ], 10 );
-
-		inpLat.value = outLat.value = lat;
-		inpLon.value = outLon.value = lon;
-		inpZoom.value = outZoom.value = zoom;
+		var tileX, tileY, baseURL, tileOffset, count;
 
 		tileX = lon2tile( lon, zoom  );
 		tileY = lat2tile( lat, zoom  );
 
-		var baseURL = mapTypes[ selMap.selectedIndex ][ 1 ];
+		baseURL = mapTypes[ selMap.selectedIndex ][ 1 ];
 
 		tileOffset = - Math.floor( 0.5 * tilesPerSide );
 
@@ -492,18 +563,18 @@
 			img.crossOrigin = 'anonymous';
 			img.src = baseURL + fileName;
 
+			var texture = new THREE.Texture( placeMapCanvas );
+			texture.minFilter = texture.magFilter = THREE.NearestFilter;
+			texture.needsUpdate = true;
+// , opacity: opacity , transparent: true
 			img.onload = function(){
 
-				contextMapOverlay.drawImage( img, 0, 0, 256, 256, x, y, pixelsPerTile, pixelsPerTile );
+				placeMapContext.drawImage( img, 0, 0, 256, 256, x, y, pixelsPerTile, pixelsPerTile );
 
 				if ( ++count === tilesPerSideSquared ) {
 
-					var texture = new THREE.Texture( mapOverlay );
-					texture.minFilter = texture.magFilter = THREE.NearestFilter;
-					texture.needsUpdate = true;
-
-					map.material = new THREE.MeshBasicMaterial( { map: texture, side: 2, opacity: opacity , transparent: true } );
-					map.material.needsUpdate = true;
+					placeMap.material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: texture, side: 2 } );
+					placeMap.material.needsUpdate = true;
 
 				}
 
@@ -517,11 +588,11 @@
 
 	function getMapOverlays() {
 
-		mapOverlay = document.createElement( 'canvas' );
-		mapOverlay.width = mapOverlay.height = pixelsPerTile * tilesPerSide;
-//		document.body.appendChild( mapOverlay );
-		mapOverlay.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:-10;';
-		contextMapOverlay = mapOverlay.getContext( '2d' );
+		placeMapCanvas = document.createElement( 'canvas' );
+		placeMapCanvas.width = placeMapCanvas.height = pixelsPerTile * tilesPerSide;
+//		document.body.appendChild( placeMapCanvas );  // for debug
+		placeMapCanvas.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:-10;';
+		placeMapContext = placeMapCanvas.getContext( '2d' );
 
 		mapTypes = [
 
@@ -539,12 +610,56 @@
 
 		for ( var i = 0; i < mapTypes.length; i++ ) {
 
-			parent.selMap.appendChild( document.createElement( 'option' ) );
-			parent.selMap.children[ i ].text = mapTypes[ i ][ 0 ];
+			selMap.appendChild( document.createElement( 'option' ) );
+			selMap.children[ i ].text = mapTypes[ i ][ 0 ];
 
 		}
 
 		selMap.selectedIndex = 0;
+
+	}
+
+	function toggleTrylonPerisphere() {
+
+// https://en.wikipedia.org/wiki/Trylon_and_Perisphere
+
+
+		trylonPerisphere = new THREE.Object3D();
+
+		trylonPerisphere.name = 'trylonPerisphere';
+
+// Perisphere
+		var geometry = new THREE.SphereGeometry( 25, 50, 50 );
+		var material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 10
+		} );
+		var mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( 0, 20, 0 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+
+		trylonPerisphere.add( mesh );
+
+// Trylon
+		geometry = new THREE.CylinderGeometry( 0, 8, 100, 3 );
+		material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 1
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( -15, 50, -30 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+
+		trylonPerisphere.add( mesh );
+
+		trylonPerisphere.scale.set( 0.4, 0.4, 0.4 );
+
+		scene.add( trylonPerisphere );
 
 	}
 
@@ -617,17 +732,6 @@
 
 	}
 
-	function convertPosition( radius, altitude, azimuth ) {
-
-// calculate sun position based on altitude and azimuth.
-
-		x = radius * Math.cos( altitude ) * Math.sin( azimuth );
-		y = radius * Math.cos( altitude ) * Math.cos( azimuth );
-		z = radius * Math.sin( altitude )
-		return v( x, y, z );
-
-	}
-
 	function lon2tile( lon, zoom ) {
 
 		return Math.floor( ( lon + 180 ) / 360 * Math.pow( 2, zoom ) );
@@ -636,8 +740,8 @@
 
 	function lat2tile( lat, zoom ) {
 
-		var pi = Math.PI
-		return Math.floor(( 1 - Math.log( Math.tan( lat * pi / 180) + 1 / Math.cos( lat * pi / 180)) / pi )/2 * Math.pow(2, zoom) );
+		var pi = Math.PI;
+		return Math.floor( ( 1 - Math.log( Math.tan( lat * pi / 180 ) + 1 / Math.cos( lat * pi / 180) ) / pi ) / 2 * Math.pow( 2, zoom ) );
 
 	}
 
