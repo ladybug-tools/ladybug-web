@@ -4,40 +4,72 @@ value='You are now in the home page view - Click this button to view the read me
 
 [Ladybug Analysis Tools]( https://github.com/ladybug-analysis-tools ) »
 
-
 [Ladybug Web]( index.html )
 ===
 
-_Ladybug for web provides solar and weather data visualization and analysis on the web_
+_Ladybug for web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), solar and weather data visualization and analysis on the web_
 
-Genarally the following scripts
+Generally the following scripts
 
 * Built using entry level JavaScript with no dependencies other than Three.js and/or SunCalc.js
+* Enable rotation, zoom and pan using one, two or three fingers or left button, scrollwheel or right button on a mouse
 
 
 ## [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
+
+### Mission
+
+* To display one analemma for every hour of the day in 3D at any location on Earth
+* To display the position of the Sun - using azimuth and altitude - at any date and time at any location on Earth
 
 
 ### Features
 
 * 3D plot of analemmas of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
-* Default latitude and longitude is San Francisco
-* Sliders update latitude and longitude of analemma in real-time
+	* Midnight highlighted is red. Noon highlighted in green
+	* Placards indicate the hour of each analemma
+* Select location
+	* By latitude and longitude sliders
+	* Select city from a gazetteer of over 2,000 places names
+	* Default latitude and longitude is San Francisco
+	* Sliders update latitude and longitude of analemma in real-time
+* Select date and time
+	* Sliders for month, date, hour and minutes
 * Displays map of location
+	* Check boxes to toggle map display - also grid and axis
 	* Nine maps styles to choose from
-* Buttons available for selected cities
-* Midnight highlighted is red. Noon highlighted in green
-* Placards indicate the hour of each analemma
-* Permalink support
-* Slide-out menu support
+	* Sliders for map zoom factor and opacity 
+* Information panel
+	* Display a variety of info
+* Full menu system
+	* Accordion menus use HTML5 details and summary element
+	* Works on all recent browsers - though still in beta on FF
+	* Slide-out 'hamburger' menu support
 
-### Latest update: 2016-03-14 / R5
 
-* Mostapha's Magic
+
+### Latest update: 2016-03-18 / R4/R5/R6
+
+
+* Mostapha's magic fixes
+* Many new UI features
+* Gazetteer
+
+
+### Things To Do / Road Map
+
+* Text input for lat and lon
+* Replace/Upgrade AunCalc.js with NOAA/Bostock JavaScript
+* Translucent ring to indicate full Sun path
+* Animations
+* Add solar times readout - with buttons to display sun position for location, date and time 
+* Add access to geolocation - as in [ Google Developers Geolocation API ]( https://developers.google.com/maps/documentation/javascript/examples/map-geolocation
+* Add access to places autocomplete = as in [Google Maps JavaScript API Place Autocomplete]( https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete )
 
 
 ### Issues
 
+* Permalink support (currently broken )
 
 
 
@@ -218,6 +250,10 @@ https://github.com/ladybug-analysis-tools/ladybug-web/issues/1
 * http://www.esrl.noaa.gov/gmd/grad/solcalc/emaps.js
 * Previous version: http://www.esrl.noaa.gov/gmd/grad/solcalc/azel.html
 
+[Motions ofthe Sun Simulator]( http://astro.unl.edu/naap/motion3/animations/sunmotions.html )
+* Uses Flash
+
+
 [Sun Position Calculator]( http://www.pveducation.org/pvcdrom/properties-of-sunlight/sun-position-calculator )
 
 
@@ -226,7 +262,10 @@ http://www.metafilter.com/130877/SunCalc-a-solar-azimuth-calculator
 http://www.analemma.com/Pages/indexPage.html
 * Old and has issues
 
+### Wikipedia
 
+* [Position of the Sun]( https://en.wikipedia.org/wiki/Position_of_the_Sun )
+* [Sun path]( https://en.wikipedia.org/wiki/Sun_path )
 
 
 ***
