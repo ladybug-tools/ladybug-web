@@ -59,13 +59,14 @@ Generally the following scripts
 ### Things To Do / Road Map
 
 * Text input for lat and lon
+* Random location at load time
 * Replace/Upgrade AunCalc.js with NOAA/Bostock JavaScript
 * Translucent ring to indicate full Sun path
 * Animations
 * Add solar times readout - with buttons to display sun position for location, date and time 
-* Add access to geolocation - as in [ Google Developers Geolocation API ]( https://developers.google.com/maps/documentation/javascript/examples/map-geolocation
+* Add access to geolocation - as in [ Google Developers Geolocation API]( https://developers.google.com/maps/documentation/javascript/examples/map-geolocation )
 * Add access to places autocomplete = as in [Google Maps JavaScript API Place Autocomplete]( https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete )
-
+* Open Street gazetteer
 
 ### Issues
 
