@@ -68,6 +68,14 @@ Generally the following scripts
 * Add access to places autocomplete = as in [Google Maps JavaScript API Place Autocomplete]( https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete )
 * Open Street gazetteer
 
+### Goals
+
+* Do everything the following do
+	* Animations from [Sun Position Calculator]( http://www.pveducation.org/pvcdrom/properties-of-sunlight/sun-position-calculator )
+	* Data from [SunCalc.org]( http://www.suncalc.org/ )
+	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
+
+
 ### Issues
 
 * Not all sliders working properly
@@ -210,6 +218,8 @@ Latest update: 2016-03-06 / R3
 
 https://github.com/ladybug-analysis-tools/ladybug-web/issues/1
 
+* [Python Code]( https://github.com/ladybug-analysis-tools/ladybug-core/blob/master/ladybug/sunpath.py#L97-L138 )
+
 ## Links of Interest
 
 
@@ -245,7 +255,7 @@ https://github.com/ladybug-analysis-tools/ladybug-web/issues/1
 
 [Sun Earth Tools]( http://www.sunearthtools.com/dp/tools/pos_sun.php ) ~ no API ~ UK app - no authors listed
 
-[Sun  Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html ) ~ no API ~ [Dr Andrew Marsh]( http://andrewmarsh.com/ )
+[Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html ) ~ no API ~ [Dr Andrew Marsh]( http://andrewmarsh.com/ )
 
 [Solar Path]( http://bl.ocks.org/mbostock/7784f4b2c7838b893e9b#solar-calculator.js ) ~ Mike Bostock
 
@@ -253,7 +263,7 @@ https://github.com/ladybug-analysis-tools/ladybug-web/issues/1
 * http://www.esrl.noaa.gov/gmd/grad/solcalc/emaps.js
 * Previous version: http://www.esrl.noaa.gov/gmd/grad/solcalc/azel.html
 
-[Motions ofthe Sun Simulator]( http://astro.unl.edu/naap/motion3/animations/sunmotions.html )
+[Motions of the Sun Simulator]( http://astro.unl.edu/naap/motion3/animations/sunmotions.html )
 * Uses Flash
 
 
