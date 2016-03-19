@@ -70,6 +70,8 @@ Generally the following scripts
 
 ### Issues
 
+* Not all sliders working properly
+* Maps not updating properly when using sliders
 * Permalink support (currently broken )
 
 
