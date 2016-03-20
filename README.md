@@ -30,10 +30,10 @@ Generally the following scripts
 	* Placards indicate the hour of each analemma
 	* Displays current position of sun
 	* Displays shadow and shade
-	* Reference object to indicate shade and shadow coverage
+	* Reference object (Trylon and Perisphere) to indicate shade and shadow coverage
 * Select location
 	* By latitude and longitude sliders
-	* Select city from a gazetteer of over 2,000 places names
+	* By selecting city from a gazetteer of over 2,000 places names
 	* Default latitude and longitude is selected randomly from the gazetteer
 	* Sliders update latitude and longitude of analemma in real-time
 * Select date and time
@@ -51,9 +51,15 @@ Generally the following scripts
 * Full menu system
 	* Accordion menus use HTML5 details and summary element
 	* Works on all recent browsers - though still in beta on FF
-	* Slide-out 'hamburger' menu support
+	* Slide-out "hamburger" menu support for mobile devices
 
 
+### Latest update: 2016-03-20 / R8
+
+* Code clean-up and updates to many variable names
+	* Always room from improvement
+* Improve action of date sliders
+* Fix updates time zone data always - even if no lat/lon change
 
 ### Latest update: 2016-03-19 / R7
 
@@ -62,16 +68,18 @@ Generally the following scripts
 * Add Sun mesh and direction light
 	* Positions update with each slider movement
 * Add shadows and shade
-* Add trylon and and perisphere reference/demo objects
+* Add Trylon and and Perisphere reference/demo objects
 * Add more time-updating capabilities
 * Random location at load time
 
 ### Things To Do / Road Map
 
-* Text input for lat and lon
+* Calculate analemma for every day of month - not just first 28
+* Text input for lat and lon // or wait for permalinks?
 * Replace/Upgrade SunCalc.js with NOAA/Bostock JavaScript
 * Translucent ring to indicate full Sun path
 * Animations
+* Add reference object choices
 * Add solar times readout - with buttons to display sun position for location, date and time 
 * Add access to geolocation - as in [ Google Developers Geolocation API]( https://developers.google.com/maps/documentation/javascript/examples/map-geolocation )
 * Add access to places autocomplete = as in [Google Maps JavaScript API Place Autocomplete]( https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete )
@@ -79,7 +87,7 @@ Generally the following scripts
 
 ### Goals
 
-* Do everything the following do
+* Do everything the following do:
 	* Animations from [Sun Position Calculator]( http://www.pveducation.org/pvcdrom/properties-of-sunlight/sun-position-calculator )
 	* Data from [SunCalc.org]( http://www.suncalc.org/ )
 	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
@@ -91,9 +99,9 @@ Generally the following scripts
 	* Sun high at poles, low at equator
 	* Times reversed below equator
 	* Analemmas upside down
-* Updates time zone data always - even if no lat/lon change
+
 * Not all sliders working properly
-* Maps not updating properly when using sliders
+* Maps not aways not updating properly when using sliders
 * Permalink support (currently broken )
 
 
