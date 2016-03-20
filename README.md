@@ -58,23 +58,16 @@ Generally the following scripts
 
 * Code clean-up and updates to many variable names
 	* Always room from improvement
+* Analemma and sun position logic mostly - but not all - OK
 * Improve action of date sliders
-* Fix updates time zone data always - even if no lat/lon change
+* Fixed updates time zone data always updating - even if no lat/lon changes
 
-### Latest update: 2016-03-19 / R7
 
-* Code clean-up and updates to many variable names
-	* Making variable names more meaningful and consistent
-* Add Sun mesh and direction light
-	* Positions update with each slider movement
-* Add shadows and shade
-* Add Trylon and and Perisphere reference/demo objects
-* Add more time-updating capabilities
-* Random location at load time
 
 ### Things To Do / Road Map
 
 * Calculate analemma for every day of month - not just first 28
+* Do something when Google API reports no time zone
 * Text input for lat and lon // or wait for permalinks?
 * Replace/Upgrade SunCalc.js with NOAA/Bostock JavaScript
 * Translucent ring to indicate full Sun path
@@ -96,12 +89,10 @@ Generally the following scripts
 ### Issues
 
 * Errors in logic
-	* Sun high at poles, low at equator
-	* Times reversed below equator
-	* Analemmas upside down
+	* Analemmas are upside down
 
-* Not all sliders working properly
-* Maps not aways not updating properly when using sliders
+* Latitude and longitude sliders not working properly
+* Maps not aways not updating properly when using lat/lon sliders
 * Permalink support (currently broken )
 
 
