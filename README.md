@@ -14,7 +14,7 @@ Generally the following scripts
 * Built using entry level JavaScript with no dependencies other than Three.js and/or SunCalc.js
 * Enable rotation, zoom and pan using one, two or three fingers or left button, scrollwheel or right button on a mouse
 
-## [Ladybug GitHub API Explorer]( http://ladybug-web/ladybug-github-api-explorer/ladybug-github-api-explorer-r1.html )
+## [Ladybug GitHub API Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/ladybug-github-api-explorer/ladybug-github-api-explorer-r1.html )
 
 * A first pass at thinking out load about what the home page of a complex GitHub organization should do. Is it some kind of dashboard?
 
