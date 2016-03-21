@@ -6,6 +6,16 @@
 
 See main Read Me for latest updates
 
+### Latest update: 2016-03-20 / R8
+
+* Code clean-up and updates to many variable names
+	* Always room from improvement
+	* Now mostly based on init, set and get paradigm
+* Analemma and sun position logic mostly - but not all - OK
+* Improve action of date sliders
+* Fixed updates time zone data always updating - even if no lat/lon changes
+* Light shadow box included just for debug - zoom out to see it all
+
 
 ### Latest update: 2016-03-19 / R7
 

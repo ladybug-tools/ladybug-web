@@ -19,7 +19,7 @@ Generally the following scripts
 * A first pass at thinking out load about what the home page of a complex GitHub organization should do. Is it some kind of dashboard?
 
 
-## [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
+## Full screen: [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
 
 ### Mission
 
@@ -29,11 +29,12 @@ Generally the following scripts
 
 ### Features
 
-* 3D plot of analemmas of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
+* 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month. 
 	* Midnight highlighted is red. Noon highlighted in green
 	* Placards indicate the hour of each analemma
 	* Displays current position of sun
 	* Displays shadow and shade
+	( Displays a transparent yellow band indicating the total annual sun path 
 	* Reference object (Trylon and Perisphere) to indicate shade and shadow coverage
 * Select location
 	* By latitude and longitude sliders
@@ -58,25 +59,28 @@ Generally the following scripts
 	* Slide-out "hamburger" menu support for mobile devices
 
 
-### Latest update: 2016-03-20 / R8
+### Latest update: 2016-03-21 / R9
 
-* Code clean-up and updates to many variable names
-	* Always room from improvement
-	* Now mostly based on init, set and get paradigm
-* Analemma and sun position logic mostly - but not all - OK
-* Improve action of date sliders
-* Fixed updates time zone data always updating - even if no lat/lon changes
-* Light shadow box included just for debug - zoom out to see it all
+* Analemmas are no longer upside down
+* Calculates analemma for every day of month - not just first 28 as in previous release
+* Add transparent yellow band to indicate full Sun path
 
+
+### Issues
+
+* Sun path band incorrectly positions itself
+	* Tries to be its own algorithm - good for checking errors
+	* Fall back could be to create sun path band from analemma vertices
+* Latitude and longitude sliders not working properly
+* Maps not always not updating properly when using lat/lon sliders
+* Permalink support (currently broken )
 
 
 ### Things To Do / Road Map
 
-* Calculate analemma for every day of month - not just first 28
 * Do something when Google API reports no time zone
 * Text input for lat and lon // or wait for permalinks?
 * Replace/Upgrade SunCalc.js with NOAA/Bostock JavaScript
-* Translucent ring to indicate full Sun path
 * Animations
 * Add reference object choices
 * Add solar times readout - with buttons to display sun position for location, date and time 
@@ -90,15 +94,6 @@ Generally the following scripts
 	* Animations from [Sun Position Calculator]( http://www.pveducation.org/pvcdrom/properties-of-sunlight/sun-position-calculator )
 	* Data from [SunCalc.org]( http://www.suncalc.org/ )
 	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
-
-
-### Issues
-
-* Errors in logic
-	* Analemmas are upside down
-* Latitude and longitude sliders not working properly
-* Maps not always not updating properly when using lat/lon sliders
-* Permalink support (currently broken )
 
 
 
