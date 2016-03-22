@@ -29,12 +29,13 @@ Generally the following scripts
 
 ### Features
 
-* 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month. 
+* 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
+	* Lines connect each hour on the 21st of the month
 	* Midnight highlighted is red. Noon highlighted in green
 	* Placards indicate the hour of each analemma
 	* Displays current position of sun
 	* Displays shadow and shade
-	( Displays a transparent yellow band indicating the total annual sun path 
+	* Displays a transparent yellow band indicating the total annual sun path 
 	* Reference object (Trylon and Perisphere) to indicate shade and shadow coverage
 * Select location
 	* By latitude and longitude sliders
@@ -53,11 +54,18 @@ Generally the following scripts
 	* Latitude and longitude
 	* Local and UTC time
 	* Time zone name, id and offset in hours
+	* 3D arrow shows direction of north
 * Full menu system
 	* Accordion menus use HTML5 details and summary element
 	* Works on all recent browsers - though still in beta on FF
 	* Slide-out "hamburger" menu support for mobile devices
 
+
+
+### Latest update: 2016-03-22 / R10
+
+* Add arcs for 21 of each month
+* Add a north arrow 
 
 ### Latest update: 2016-03-21 / R9
 
@@ -68,6 +76,7 @@ Generally the following scripts
 
 ### Issues
 
+* Sun itself is shaded
 * Sun path band incorrectly positions itself
 	* Tries to be its own algorithm - good for checking errors
 	* Fall back could be to create sun path band from analemma vertices
@@ -78,6 +87,13 @@ Generally the following scripts
 
 ### Things To Do / Road Map
 
+* Add the ability to change the north based on an angle
+* Add sun-path circles
+* Add being able to import json files
+* Add an option to re-scale the sunpath
+* Add ability to add sun positions for a time-range (21 Dec, 9 am - 5 pm)
+* Add a button for top view and also save view to file.
+* Start moving some of the code into libraries 
 * Do something when Google API reports no time zone
 * Text input for lat and lon // or wait for permalinks?
 * Replace/Upgrade SunCalc.js with NOAA/Bostock JavaScript
