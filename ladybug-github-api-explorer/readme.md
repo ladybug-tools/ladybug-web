@@ -17,7 +17,7 @@ And to be able to compose lines of code of arcane complexity - like this on the 
 
 > curl -i -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations
 
-It's like it's written by high priests to be red be even higher priests in some devout fantasy.
+It's like incantations written by high priests to be read by even higher priests in some devout fantasy.
 
 But, thankfully, it doesn't have to be just that way. There are some much simpler ways to access the GitHub API. Yay!
 
