@@ -17,25 +17,24 @@ And to be able to compose lines of code of arcane complexity - like this on the 
 
 > curl -i -u username -d '{"scopes":["public_repo"]}' https://api.github.com/authorizations
 
-It's like it's written bt high priests for high priests in some devout fantasy.
+It's like it's written by high priests to be red be even higher priests in some devout fantasy.
 
-But, thankfully, it is doesn't have to be just that way. There are some much simpler ways to access the GitHub API. Yay!
-
+But, thankfully, it doesn't have to be just that way. There are some much simpler ways to access the GitHub API. Yay!
 
 For example, click on this link
 
 <https://api.github.com/orgs/ladybug-analysis-tools>
 
-The GitHub server replies with text you can decipher fairly easily.
+The GitHub server replies with text you - as a regular human being - may decipher fairly easily.
 For example, you can read the description of the organization or see when it was last updated.
 And with a little bit of JavaScript you can parse and format the text for any purpose.
 
 Using techniques like these, it's not that difficult to snoop around your organization.
 Over on the left menu you can see links to GitHub API call that may be of interest.
-Mostly they display raw data, but the 'Repo' calls do have a formatted version.
+Mostly they display raw data, but the 'Repos' calls do have a formatted version.
 Look for menu items with an asterisk.
 
-The Emojis Gallery page takes a while to load, but it's worth the wait. Who would have thought that GitHub had ssuch Emoji capability?
+The Emojis Gallery page takes a while to load, but it's worth the wait. Who would have thought that GitHub had such Emoji capability?
 
 Here's another cool feature. The GitHub API will convert Markdown text into HTML for you in the blink of an eye.
 In fact the text you are currently reading is one such example. Click on the 'Read Me Cheat Sheet' to view another example.
