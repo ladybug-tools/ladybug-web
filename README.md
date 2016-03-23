@@ -19,6 +19,13 @@ Generally the following scripts
 * A first pass at thinking out load about what the home page of a complex GitHub organization should do. Is it some kind of dashboard?
 
 
+## [Ladybug Web Shadow Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ )
+
+## [Ladybug Web Shadow Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
+
+For details see the Read Me in [Ladybug Web Shadow Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
+
+
 ## Full screen: [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
 
 ### Mission
