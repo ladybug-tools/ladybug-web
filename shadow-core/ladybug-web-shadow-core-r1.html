@@ -23,13 +23,11 @@
 
 <script>
 
-
 	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#py=30';
+	var newFile;
 
-	var parameters;
-	var pud;
-
-	var project, helper;
+	var parameters = new THREE.Object3D();
+	var pud = parameters.userData;
 /*
 	pud.latitude = 37.8;
 	pud.longitude = 122.4;
@@ -40,13 +38,14 @@
 
 	pud.hours = 10;
 	pud.minutes = 10;
-	pud.opacity = 0.75;
+
 	pud.analemmaRadius = 75;
 */
 
+	var project, helper;
+
 	var dateHere, dateUTC, datePlace;
 	var timeZonePlace;
-//	var offset;
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 	var analemma, sun, sunBand;
@@ -70,7 +69,6 @@
 			'a {text-decoration: none; }' +
 			'h2 { margin: 0 }' +
 
-
 			'#menu { background-color: #eee; border: 1px #ccc solid; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
 				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; }' +
 
@@ -82,7 +80,7 @@
 			'<div id=title >' +
 				'<h2>' +
 				'	<a href="" >' + document.title + '</a>' +
-				'	<a href=http://jaanga.github.io/ >&#x24D8;</a>' +
+				'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
 				'</h2>' +
 			'</div>' +
 			'<div id=info ></div>' +
@@ -122,6 +120,7 @@
 		material = new THREE.MeshLambertMaterial( { color: 0xffffff, side: 2, transparent: true } );
 		placeMap = new THREE.Mesh( geometry, material );
 		placeMap.receiveShadow = true;
+		placeMap.material.opacity = 0.75;
 		scene.add( placeMap );
 
 		var gridHelper = new THREE.GridHelper( 75, 10 );
@@ -146,21 +145,6 @@
 //		var hashes, hash, parameter, value;
 		var d2r = Math.PI / 180;
 
-		parameters = new THREE.Object3D();
-		pud = parameters.userData;
-
-		pud.latitude = 37.8;
-		pud.longitude = 122.4;
-
-		pud.year = 2016;
-		pud.month = 1;
-		pud.date = 1;
-
-		pud.hours = 10;
-		pud.minutes = 10;
-		placeMap.material.opacity = 0.75;
-		pud.analemmaRadius = 75;
-
 		hashes = location.hash.length ? location.hash.split( '#' ) : fileNameDefault.split( '#' );
 
 		for ( var i = 1; i < hashes.length; i++ ) {
@@ -169,11 +153,36 @@
 			parameter = hash.slice( 0, 2 );
 			value = hash.slice( 3 );
 
+// best if 'fn' is first parameter in location.hash
+
+			if ( parameter === 'fn' && value !== pud.fileName ) {
+
+				parameters = new THREE.Object3D();
+				pud = parameters.userData;
+
+				pud.latitude = 37.8;
+				pud.longitude = 122.4;
+
+				pud.year = 2016;
+				pud.month = 1;
+				pud.date = 1;
+
+				pud.hours = 10;
+				pud.minutes = 10;
+				placeMap.material.opacity = 0.75;
+				pud.analemmaRadius = 75;
+
+				pud.fileName = value;
+				loadJSONFileByURL( pud.fileName );
+
+			}
+
 			switch( parameter ) {
+
+				case 'fn': break;
 
 				case 'ar': pud.analemmaRadius = parseFloat( value ); break;
 				case 'aa': pud.analemmaColor = value; break;
-
 
 				case 'la': pud.latitude = parseFloat( value ); break;
 				case 'lo': pud.longitude = parseFloat( value ); break;
@@ -185,10 +194,9 @@
 				case 'hr': pud.hours = parseInt( value, 10 ); break;
 				case 'mn': pud.minutes = parseInt( value, 10 ); break;
 
-				case 'fn': pud.fileName = value; break;
 				case 'ti': title.innerHTML = value; break;
 				case 'in': info.innerHTML = value; break;
-	
+
 				case 'op': placeMap.material.opacity = parseFloat( value ); break;
 
 				case 'rx': parameters.rotation.x = parseFloat( value * d2r ); break;
@@ -219,8 +227,6 @@
 
 		getDate();
 
-		loadJSONFileByURL( pud.fileName );
-
 	}
 
 	function loadJSONFileByURL( fileName ) {
@@ -228,7 +234,6 @@
 		var loader = new THREE.JSONLoader();
 		loader.crossOrigin = 'anonymous';
 		loader.load( fileName, function ( geometry ) {
-
 
 			scene.remove( project, helper );
 
@@ -460,6 +465,7 @@
 
 
 // utilities
+
 	function getSunPositionXYZ( dateUTC, latitude, longitude ) {
 
 		var sunPosition = SunCalc.getPosition( dateUTC, latitude, longitude );
@@ -482,12 +488,7 @@
 		var sprite = new THREE.Sprite( spriteMaterial );
 		sprite.position.set( x, y, z ) ;
 		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
-/*
-		var geometry = new THREE.Geometry();
-		geometry.vertices = [ v( 0, 0, 0 ),  v( x, y, z ) ];
-		var material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );
-		var line = new THREE.Line( geometry, material );
-*/
+
 		placard.add( sprite /*,  line */ );
 
 		return placard;
@@ -538,12 +539,6 @@
 			return texture;
 
 		}
-
-	}
-
-	function toggleVisible( mesh ) {
-
-		mesh.visible = mesh.visible === true ? false : true;
 
 	}
 

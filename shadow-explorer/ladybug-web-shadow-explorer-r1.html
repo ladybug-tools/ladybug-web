@@ -19,7 +19,7 @@
 
 		[ 'fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js', '#ar=80#rz=45#py=30', ''  ],
 
-		[ va3c + '3d-warehouse-samples/robie-house/untitled/robie-house.js', '#px=-50#sx=60#sy=60#sz=60#cx=-40#cy=40#cz=70', '1909 - slow but worth it'],
+		[ va3c + '3d-warehouse-samples/robie-house/untitled/robie-house.js', '#ti=Robie-House#px=-50#sx=60#sy=60#sz=60#cx=-40#cy=40#cz=70', '1909 - slow but worth it'],
 		[ va3c + '3d-warehouse-samples/schroder-house/untitled/schroder-house.js', '#sx=5#sy=5#sz=5', '1909'],
 		[ va3c + '3d-warehouse-samples/villa-savoye/untitled/villa-savoye.js', '#px=-30#pz-50#sx=3#sy=3#sz=3', '1929'],
 		[ va3c + '3d-warehouse-samples/barcelona-pavilion/untitled/barcelona-pavilion.js', '#px=-70#pz=50#sx=2#sy=2#sz=2#cx=-50#cy=17#cz=64', '1930' ],
@@ -30,9 +30,10 @@
 		[ va3c + 'three.js/examples/obj/female02/Female02_slim.js','#sx=0.3#sy=0.3#sz=0.3'],
 		[ va3c + 'three.js/examples/obj/leeperrysmith/LeePerrySmith.js','#py=20#sx=5#sy=5#sz=5' ],
 
-
-
 	];
+
+
+
 
 	init();
 
@@ -45,6 +46,10 @@
 			'h2 { margin: 0; }' +
 			'a { text-decoration: none; }' +
 			'iframe { border: 0px solid green; height: 100%; width: 100%; }' +
+
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; }' +
+			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; opacity: 0.85; width: 10px; }' +
 
 			'#menu { background-color: #ccc; height: 100%; max-width: 300px; overflow: auto; padding: 0 0 0 20px; position: absolute; }' +
 			'#contents { border: 0px red solid; height: 100%; left: 350px; overflow: auto; position: absolute; top: 0; width: ' + (window.innerWidth - 350) + 'px; }' +
@@ -60,13 +65,27 @@
 				'<a href="" >' + document.title + '</a> ' +
 				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
 			'</h2>' +
-			'<p><a href="#readme.md"; >Read Me</a></p>' +
-			'<p><a href="#readme-cheat-sheet.md"; >Read Me Cheat Sheet</a></p>' +
+			'<p><a href="#readme.md" >Read Me</a></p>' +
+			'<p><a href="http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/" >Ladybug Web Shadow Core</a></p>' +
+//			'<p><a href="#readme-cheat-sheet.md"; >Read Me Cheat Sheet</a></p>' +
+			'<hr>' +
+			'<p>' + 
+
+					'Month<br><input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" ><output id=outMonth ></output><br>' +
+					'Day<br><input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" ><output id=outDate ></output><br>' +
+					'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" ><output id=outHours ></output><br>' +
+					'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" ><output id=outMinutes ></output><br>' +
+
+			'</p>' +
 			'<hr>' +
 			'<div id=info ></div>' +
 
 		'';
 
+		outMonth.value = inpMonth.value = 0;
+		outDate.value = inpDate.value = 1;
+		outHours.value = inpHours.value = 10;
+		outMinutes.value = inpMinutes.value = 10;
 
 		contents = document.body.appendChild( document.createElement( 'div' ) );
 		contents.id = 'contents';
@@ -78,6 +97,19 @@
 		hashChange();
 
 	}
+
+	function setDate() {
+
+		ifr.contentWindow.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
+			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber ;
+
+		outMonth.value = inpMonth.value;
+		outDate.value = inpDate.value;
+		outHours.value = inpHours.value;
+		outMinutes.value = inpMinutes.value;
+
+	}
+
 
 	function initMenu() {
 
