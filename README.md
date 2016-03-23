@@ -12,7 +12,7 @@ _Ladybug for web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), 
 Generally the following scripts
 
 * Built using entry level JavaScript with no dependencies other than Three.js and/or SunCalc.js
-* Enable rotation, zoom and pan using one, two or three fingers or left button, scrollwheel or right button on a mouse
+* Enable rotation, zoom and pan using one, two or three fingers or left button, scroll wheel and right button on a mouse
 
 ## [Ladybug GitHub API Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/ladybug-github-api-explorer/ladybug-github-api-explorer-r1.html )
 
@@ -21,7 +21,21 @@ Generally the following scripts
 
 ## [Ladybug Web Shadow Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ )
 
+* A basic engine for calculating and displaying analemmas and sun positions
+* Supports any latitude and longitude
+* Supports year, month, date, hour, minute date and time
+* Loads JSON files from a URL
+* Supports permalinks for the above plus
+	* Camera position and camera target
+	* Various other minor settings
+
 ## [Ladybug Web Shadow Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
+
+* Two column menu and contents display
+	* Menu list files that can be displayed
+* Loads Markdown files and converts them to HTML
+* Loads JSON files using [Ladybug Web Shadow Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ )
+* Updates sun position in real-time
 
 For details see the Read Me in [Ladybug Web Shadow Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
 
