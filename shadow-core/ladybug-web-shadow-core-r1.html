@@ -26,9 +26,11 @@
 
 	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#py=30';
 
-	var parameters = new THREE.Object3D();
-	var pud = parameters.userData;
+	var parameters;
+	var pud;
 
+	var project, helper;
+/*
 	pud.latitude = 37.8;
 	pud.longitude = 122.4;
 
@@ -39,7 +41,8 @@
 	pud.hours = 10;
 	pud.minutes = 10;
 	pud.opacity = 0.75;
-	pud.analemmaRadius = 50;
+	pud.analemmaRadius = 75;
+*/
 
 	var dateHere, dateUTC, datePlace;
 	var timeZonePlace;
@@ -116,7 +119,7 @@
 
 		geometry = new THREE.PlaneBufferGeometry( 150, 150 );
 		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
-		material = new THREE.MeshLambertMaterial( { color: 0xffffff, side: 2, opacity: pud.opacity , transparent: true } );
+		material = new THREE.MeshLambertMaterial( { color: 0xffffff, side: 2, transparent: true } );
 		placeMap = new THREE.Mesh( geometry, material );
 		placeMap.receiveShadow = true;
 		scene.add( placeMap );
@@ -143,7 +146,22 @@
 //		var hashes, hash, parameter, value;
 		var d2r = Math.PI / 180;
 
-		hashes = location.hash ? location.hash.split( '#' ) : fileNameDefault.split( '#' );
+		parameters = new THREE.Object3D();
+		pud = parameters.userData;
+
+		pud.latitude = 37.8;
+		pud.longitude = 122.4;
+
+		pud.year = 2016;
+		pud.month = 1;
+		pud.date = 1;
+
+		pud.hours = 10;
+		pud.minutes = 10;
+		placeMap.material.opacity = 0.75;
+		pud.analemmaRadius = 75;
+
+		hashes = location.hash.length ? location.hash.split( '#' ) : fileNameDefault.split( '#' );
 
 		for ( var i = 1; i < hashes.length; i++ ) {
 
@@ -170,6 +188,8 @@
 				case 'fn': pud.fileName = value; break;
 				case 'ti': title.innerHTML = value; break;
 				case 'in': info.innerHTML = value; break;
+	
+				case 'op': placeMap.material.opacity = parseFloat( value ); break;
 
 				case 'rx': parameters.rotation.x = parseFloat( value * d2r ); break;
 				case 'ry': parameters.rotation.y = parseFloat( value * d2r ); break;
@@ -209,16 +229,23 @@
 		loader.crossOrigin = 'anonymous';
 		loader.load( fileName, function ( geometry ) {
 
+
+			scene.remove( project, helper );
+
 			material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
-			mesh = new THREE.Mesh( geometry, material );
-			mesh.castShadow = true;
-			mesh.receiveShadow = true;
 
-			mesh.scale.copy( parameters.scale );
-			mesh.rotation.copy( parameters.rotation );
-			mesh.position.copy( parameters.position );
+			project = new THREE.Mesh( geometry, material );
+			project.castShadow = true;
+			project.receiveShadow = true;
 
-			scene.add( mesh );
+			project.scale.copy( parameters.scale );
+			project.rotation.copy( parameters.rotation );
+			project.position.copy( parameters.position );
+
+//			helper = new THREE.EdgesHelper( project );
+//			helper.material.color.setRGB( 1, 0, 1 );
+
+			scene.add( project );
 
 			info.innerHTML += 'File name: ' + fileName.split('/').pop() + '<br>' + '';
 
@@ -411,7 +438,7 @@
 		lightDirectional.castShadow = true;
 		sun.add( lightDirectional );
 
-		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+//		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
 
 	}
 
@@ -514,18 +541,6 @@
 
 	}
 
-	function lon2tile( longitude, zoom ) {
-
-		return Math.floor( ( longitude + 180 ) / 360 * Math.pow( 2, zoom ) );
-
-	}
-
-	function lat2tile( latitude, zoom ) {
-
-		return Math.floor( ( 1 - Math.log( Math.tan( latitude * pi / 180 ) + 1 / Math.cos( latitude * pi / 180) ) / pi ) / 2 * Math.pow( 2, zoom ) );
-
-	}
-
 	function toggleVisible( mesh ) {
 
 		mesh.visible = mesh.visible === true ? false : true;
@@ -541,19 +556,10 @@
 
 	}
 
-	function onWindowResize() {
-
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
-		renderer.setSize( window.innerWidth, window.innerHeight );
-
-	}
-
 	function animate() {
 
 		requestAnimationFrame( animate );
-//		controls.update();
+		controls.update();
 		stats.update();
 		renderer.render( scene, camera );
 
