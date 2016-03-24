@@ -29,6 +29,24 @@ Generally the following scripts
 	* Camera position and camera target
 	* Various other minor settings
 
+### Mission
+
+* To display one analemma for every hour of the day in 3D at any location on Earth
+* To display the position of the Sun - using azimuth and altitude - at any date and time at any location on Earth
+
+
+### Latest update: 2016-03-24 / R2
+
+* Code clean-up and streamlining variable names
+* added 'ms' parameter for multiplyScalar
+* Menu only displays if not in iframe
+* Date and time set from local date and time - previously was set by defaults
+* Info display parameters now show lat, lon, date and time
+
+### First commit: 2016-03-22 / R1
+
+
+
 ## [Ladybug Web Shadow Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
 
 * Two column menu and contents display

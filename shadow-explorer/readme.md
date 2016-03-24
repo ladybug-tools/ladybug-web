@@ -33,8 +33,6 @@ Any others?
 * date
 * hours
 * minutes
-* title.innerHTML
-* info.innerHTML
 * placeMap.material.opacity
 * project.rotation.x
 * project.rotation.y
