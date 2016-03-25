@@ -128,6 +128,7 @@
 	function setPermalink() {
 
 		txt = core + '#fn=' + fileName + 
+//			'#db=true' +
 			'#la=' + inpLatitude.value + '#lo=' + inpLongitude.value +
 			'#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
 			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber +
@@ -139,13 +140,17 @@
 
 		if ( ifr.contentWindow && ifr.contentWindow.camera ) {
 
-			var p = ifr.contentWindow.camera.position;
+			var c = ifr.contentWindow.camera.position;
 			var t = ifr.contentWindow.controls.target;
-			txt += '#tx=' + t.x.toFixed() + '#ty='+ t.y.toFixed() + '#tz='+ t.z.toFixed() +
+
+
+			txt += 
+				'#cx=' + c.x.toFixed() + '#cy='+ c.y.toFixed() + '#cz='+ c.z.toFixed() +
+				'#tx=' + t.x.toFixed() + '#ty='+ t.y.toFixed() + '#tz='+ t.z.toFixed() +
 
 			'';
 
-			outCamPos.value = p.x.toFixed() + ', ' + p.y.toFixed() + ', ' + p.z.toFixed();
+			outCamPos.value = c.x.toFixed() + ', ' + c.y.toFixed() + ', ' + c.z.toFixed();
 			outCamTar.value = t.x.toFixed() + ', ' + t.y.toFixed() + ', ' + t.z.toFixed();
 
 		}
@@ -162,8 +167,6 @@
 		outPosX.value = inpPosX.value;
 		outPosY.value = inpPosY.value;
 		outPosZ.value = inpPosZ.value;
-
-
 
 	}
 
