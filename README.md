@@ -58,6 +58,10 @@ Generally the following scripts
 For details see the Read Me in [Ladybug Web Shadow Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
 
 
+## [Ladybug Web Shadow opener]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-opener/ladybug-web-shadow-opener-r1.html )
+
+
+
 ## Full screen: [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
 
 ### Mission
