@@ -63,7 +63,11 @@
 
 			'<p>URL:<br><textarea id=taURL cols=35 rows=3 ></textarea></p>' +
 			'<p>Permalink:<br><textarea id=taPermalink cols=35 rows=8 ></textarea></p>' +
-			'<p><button onclick=setPermalink(); >Update</button></p>' +
+			'<p>' +
+
+				'<button onclick=setPermalink(); >Update</button> ' +
+				'<button onclick=openNewTab(); >Open in new tab</button>' +
+			'</p>' +
 			'<p>' + 
 				'Latitude<br><input type=number id=inpLatitude min=-90 max=90 value=1 step=0.001 oninput=setPermalink(); title="0 to 90: OK" ><br>' + // <output id=outLatitude ></output><br>' +
 				'Longitude<br><input type=number id=inpLongitude min=-180 max=180 value=1 step=0.001 oninput=setPermalink(); title="0 to 90: OK" ><br>' + //<output id=outLongitude ></output><br>' +
@@ -173,6 +177,12 @@
 
 	}
 
+	function openNewTab() {
+
+		window.open( taPermalink.value, '_blank' )
+
+
+	}
 
 	function initMenu() {
 
