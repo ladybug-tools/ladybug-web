@@ -79,17 +79,16 @@
 				'Position Z<br><input type=range id=inpPosZ min=-100 max=100 step=1 value=0 oninput=setPermalink(); title="1 to 31: OK" ><output id=outPosZ ></output><br>' +
 			'</p>' +
 			'<p>' + 
-				'Rotation X<br><input type=range id=inpRotX min=0 max= step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=outRotX ></output><br>' +
-				'Position Y<br><input type=range id=inpRotY min=0 max= step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=outRotY ></output><br>' +
-				'Position Z<br><input type=range id=inpRotZ min=0 max= step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=outRotZ ></output><br>' +
+				'Rotation X<br><input type=range id=inpRotX min=-90 max=90 step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=outRotX ></output><br>' +
+				'Rotation Y<br><input type=range id=inpRotY min=-90 max=90 step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=outRotY ></output><br>' +
+				'Rotation Z<br><input type=range id=inpRotZ min=-90 max=90 step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=outRotZ ></output><br>' +
 			'</p>' +
 			'<p>' + 
-				'Scale XYZ<br><input type=range id=inp min=0 max= step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=oute ></output><br>' +
+				'Scale XYZ<br><input type=number id=inpScale min=0.001 max=1000 step=0.001 value=1 oninput=setPermalink(); title="0.001 to 1000: OK" ><output id=outScale ></output><br>' +
 			'</p>' +
 			'<p>' + 
-				'Camera Position<br><input type=range id=inp min=0 max= step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=oute ></output><br>' +
-				'Camera Target<br><input type=range id=inp min=0 max= step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=oute ></output><br>' +
-				'Position Z<br><input type=range id=inp min=0 max= step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=oute ></output><br>' +
+				'Camera Position<br><output id=outCamPos ></output><br>' +
+				'Camera Target<br><output id=outCamTar ></output><br>' +
 			'</p>' +
 			'<hr>' +
 			'<div id=info ></div>' +
@@ -134,8 +133,22 @@
 			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber +
 			'#px=' + inpPosX.value + '#py=' + inpPosY.value + '#pz=' + inpPosZ.value +
 			'#rx=' + inpRotX.value + '#ry=' + inpRotY.value + '#rz=' + inpRotZ.value +
+			'#ms=' + inpScale.value +
 
 		'';
+
+		if ( ifr.contentWindow && ifr.contentWindow.camera ) {
+
+			var p = ifr.contentWindow.camera.position;
+			var t = ifr.contentWindow.controls.target;
+			txt += '#tx=' + t.x.toFixed() + '#ty='+ t.y.toFixed() + '#tz='+ t.z.toFixed() +
+
+			'';
+
+			outCamPos.value = p.x.toFixed() + ', ' + p.y.toFixed() + ', ' + p.z.toFixed();
+			outCamTar.value = t.x.toFixed() + ', ' + t.y.toFixed() + ', ' + t.z.toFixed();
+
+		}
 
 		taPermalink.value = txt;
 
@@ -149,6 +162,8 @@
 		outPosX.value = inpPosX.value;
 		outPosY.value = inpPosY.value;
 		outPosZ.value = inpPosZ.value;
+
+
 
 	}
 

@@ -32,7 +32,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	latitude = 37.8
 	longitude = -122.4;
 
-	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=100#py=30#ms=0.5';
+	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
@@ -151,8 +151,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 			value = hash[ 1 ];
 
 
-
-
 			switch( parameter ) {
 
 				case 'fn': break;
@@ -184,7 +182,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				case 'sy': parameters.scale.y = parseFloat( value ); break;
 				case 'sz': parameters.scale.z = parseFloat( value ); break;
 
-				case 'ms': parameters.scale.multiplyScalar( parseFloat( value ) ); break;
+				case 'ms': parameters.scale.multiplyScalar( parseFloat( value ) || 1 ); break;
 
 				case 'cx': camera.position.x = parseFloat( value ); break;
 				case 'cy': camera.position.y = parseFloat( value ); break;
@@ -229,15 +227,9 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 				}
 
-			} else {
-
-
-
 			}
 
 		}
-
-
 
 		if ( window.self === window.top || debug === true ) {
 
@@ -254,16 +246,27 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				'Minutes: ' + pud.minutes + b +
 
 				'Position X: ' + parameters.position.x + b +
+				'Position Y: ' + parameters.position.y + b +
+				'Position Z: ' + parameters.position.z + b +
 
+				'Rotation X: ' + parameters.rotation.x + b +
+				'Rotation Y: ' + parameters.rotation.y + b +
+				'Rotation Z: ' + parameters.rotation.z + b +
 
+				'Scale: ' + parameters.scale.z + b +
+
+				'Camera position: ' + camera.position.x + ', '+ camera.position.y + ', '+ camera.position.z + ', ' + b +
+				'Camera target: ' + controls.target.x + ', '+ controls.target.y + ', '+ controls.target.z + ', ' + b +
 			'';
 
 		}
 
 		if ( project && parameters ) {
+
 				project.scale.copy( parameters.scale );
 				project.rotation.copy( parameters.rotation );
 				project.position.copy( parameters.position );
+
 		}
 
 		getDate();
