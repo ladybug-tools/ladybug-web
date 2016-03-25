@@ -57,6 +57,12 @@ Generally the following scripts
 
 For details see the Read Me in [Ladybug Web Shadow Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
 
+
+### Latest Update: 2016-03-22 / R2
+
+* Code clean-up
+
+
 ### First commit: 2016-03-22 / R1
 
 
@@ -64,6 +70,13 @@ For details see the Read Me in [Ladybug Web Shadow Explorer]( http://ladybug-ana
 ## [Ladybug Web Shadow Opener]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-opener/ladybug-web-shadow-opener-r1.html )
 
 * Helps you create the 'permalinks' that can be used by Ladybug Web Shadow Explorer and other apps
+* Displays JSON model, analemmas and sun
+* Accepts
+	* Model URL
+	* Latitude and longitude
+	* Date and time
+	* Model position, rotation and scale
+	* Camera position and target
 
 ### First commit: 2016-03-24 / R1
 
