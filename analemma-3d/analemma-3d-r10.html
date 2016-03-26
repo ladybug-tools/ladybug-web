@@ -463,7 +463,7 @@
 
 		sunPosition = getSunPositionXYZ( dateUTC, latitude, longitude );
 
-console.log( '', sunPosition );
+//console.log( '', sunPosition );
 
 		sunBand.lookAt( sunPosition ); // only sets two axes
 
@@ -490,7 +490,7 @@ console.log( '', sunPosition );
 
 			for ( var y = 0; y < tilesPerSide; y++ ) {
 
-				if ( parent.selMap.selectedIndex < 4 ) {
+				if ( selMap.selectedIndex < 4 ) {
 
 					loadImage( ( x + tileX ) + '&y=' + ( y + tileY ) + '&z=' + zoom, x, y );
 
