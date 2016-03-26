@@ -18,7 +18,6 @@
 
 	var core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-r2.html';
 
-
 	var fileName = 'http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js';
 
 
@@ -120,7 +119,7 @@
 
 		contents = document.body.appendChild( document.createElement( 'div' ) );
 		contents.id = 'contents';
-		contents.innerHTML = '<iframe  id=ifr ></iframe>';
+		contents.innerHTML = '<iframe id=ifr ></iframe>';
 
 		window.addEventListener ( 'hashchange', hashChange, false );
 
@@ -133,6 +132,8 @@
 	}
 
 	function setPermalink() {
+
+		var txt;
 
 		txt = core + '#fn=' + fileName + 
 //			'#db=true' +
@@ -211,6 +212,7 @@
 		if ( fileName.slice( -3 ) !== '.md' ) {
 
 //			contents.innerHTML = '<iframe  id=ifr src=' + core + fileName + ' ></iframe>';
+
 ifr.contentWindow.location.hash = txt;
 
 

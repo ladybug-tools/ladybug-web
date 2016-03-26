@@ -42,6 +42,7 @@
 			'a { text-decoration: none; }' +
 
 			'button, input[type=button] { background-color: #ddd; border: 2px #ddd solid; color: #888; }' +
+			'iframe { border: 0px solid green; height: 100%; width: 100%; }' +
 
 			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
 			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
@@ -52,6 +53,7 @@
 			'.inpPos { width: 65px; text-align: right; }' +
 
 			'#menu { margin: 0 20px; max-width: 300px; position: absolute; }' +
+			'#contents { border: 0px red solid; height: 100%; left: 350px; overflow: auto; position: absolute; top: 0; width: ' + (window.innerWidth - 350) + 'px; }' +
 
 		'';
 
@@ -90,10 +92,18 @@
 		'';
 
 
+
+		contents = document.body.appendChild( document.createElement( 'div' ) );
+		contents.id = 'contents';
+		contents.innerHTML = '<iframe id=ifr ></iframe>';
+
+/*
 		var ifr = document.body.appendChild( document.createElement( 'iframe' ) );
 		ifr.id = 'ifr';
 		ifr.width = window.innerWidth;
 		ifr.height = window.innerHeight;
+*/
+
 		ifr.src = 'sun-azimuth-altitude-obj-r1.html';
 
 		ifr.onload = updateMenu;
