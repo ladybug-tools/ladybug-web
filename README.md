@@ -80,7 +80,7 @@ For details see the Read Me in [Ladybug Web Shadow Explorer]( http://ladybug-ana
 
 ### First commit: 2016-03-24 / R1
 
-
+<!--
 
 ## Full screen: [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
 
@@ -202,6 +202,8 @@ For details see the Read Me in [Ladybug Web Shadow Explorer]( http://ladybug-ana
 
 * Funky stuff happens when using latitude slider
 	* Is this our error or a SunCalc.js error?
+
+-->
 
 
 ## [Sun Azimuth Altitude OBJ Viewer]( http://ladybug-analysis-tools.github.io/ladybug-web/sun-azimuth-altitude-obj/ )

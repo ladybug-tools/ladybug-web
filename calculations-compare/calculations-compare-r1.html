@@ -1,0 +1,83 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Calculations Compare R1</title>
+<!--
+<meta name = viewport content = 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0' />
+<meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
+-->
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='' >
+<meta name=keywords content='Mike Bostock,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-26' >
+</head>
+<body>
+<script src=http://d3js.org/d3.v3.js ></script>
+<script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
+<script src=../bostock/solar-calculator-ladybug-r1.js ></script>
+<script>
+
+	var lat = 37.796
+	var lon = -122.398;
+
+	var pi = Math.PI;
+
+	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
+
+// Equations based on NOAA’s Solar Calculator; all angles in radians.
+// http://www.esrl.noaa.gov/gmd/grad/solcalc/
+
+
+	init();
+
+	function init() {
+
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; }' +
+			'a { text-decoration: none; }' +
+
+		'';
+
+		var menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+			'	<a href="" >' + document.title + '</a>' +
+			'	<a href=http://jaanga.github.io/ >&#x24D8;</a>' +
+			'</h2>' +
+
+			'<div id=bostockSolarCalculator ></div>' +
+			'<div id=agafonkinSunCalc ></div>' +
+			'<div id=infosolarCalculatorEquations ></div>' +
+		'';
+
+		var date = new Date();
+
+		var solar = solarCalculator( [ lon, lat ] );
+
+		bostockSolarCalculator.innerHTML += 
+
+			'<h2>Bostock Solar Calculator</h2>' +
+			'<p>Solar > noon: ' + solar.noon( date ) + '</p>' +
+			'<p>Solar > position ( now ): ' + solar.position( date ) + '</p>' +
+			'<p>Solar > centuries: ' + centuries + '</p>' +
+		'';
+
+		var sunPosition = SunCalc.getPosition( date, lat, lon );
+
+		agafonkinSunCalc.innerHTML += 
+
+		'<h2>Agafonkin SunCalc</h2>' +
+		'<p> Azimuth in degrees : ' + ( ( Math.PI + sunPosition.azimuth ) * r2d ).toFixed( 2 ) + '</p>' +
+		'<p> Altitude in degrees: ' + ( sunPosition.altitude * r2d ).toFixed( 2 ) + '</p>';
+
+
+	}
+
+</script>
+</body>
+</html>

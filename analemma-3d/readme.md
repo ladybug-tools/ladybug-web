@@ -1,6 +1,100 @@
 ﻿Analemma 3D Read Me
 ===
 
+## Full screen: [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
+
+### Mission
+
+* To display one analemma for every hour of the day in 3D at any location on Earth
+* To display the position of the Sun - using azimuth and altitude - at any date and time at any location on Earth
+
+
+### Features
+
+* 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
+	* Lines connect each hour on the 21st of the month
+	* Midnight highlighted is red. Noon highlighted in green
+	* Placards indicate the hour of each analemma
+	* Displays current position of sun
+	* Displays shadow and shade
+	* Displays a transparent yellow band indicating the total annual sun path 
+	* Reference object (Trylon and Perisphere) to indicate shade and shadow coverage
+* Select location
+	* By latitude and longitude sliders
+	* By selecting city from a gazetteer of over 2,000 places names
+	* Default latitude and longitude is selected randomly from the gazetteer
+	* Sliders update latitude and longitude of analemma in real-time
+* Select date and time
+	* Sliders for month, date, hour and minutes
+	* Update Sun position and shadows in real-time
+* Displays map of location
+	* Check boxes to toggle map display - also grid and axis
+	* Nine maps styles to choose from
+	* Sliders for map zoom factor and opacity 
+* Information panel
+	* Displays a variety of information including
+	* Latitude and longitude
+	* Local and UTC time
+	* Time zone name, id and offset in hours
+	* 3D arrow shows direction of north
+* Full menu system
+	* Accordion menus use HTML5 details and summary element
+	* Works on all recent browsers - though still in beta on FF
+	* Slide-out "hamburger" menu support for mobile devices
+
+
+
+### Latest update: 2016-03-22 / R10
+
+* Add arcs for 21 of each month
+* Add a north arrow 
+
+### Latest update: 2016-03-21 / R9
+
+* Analemmas are no longer upside down
+* Calculates analemma for every day of month - not just first 28 as in previous release
+* Add transparent yellow band to indicate full Sun path
+
+
+### Issues
+
+* Sun itself is shaded
+* Sun path band incorrectly positions itself
+	* Tries to be its own algorithm - good for checking errors
+	* Fall back could be to create sun path band from analemma vertices
+* Latitude and longitude sliders not working properly
+* Maps not always not updating properly when using lat/lon sliders
+* Permalink support (currently broken )
+
+
+### Things To Do / Road Map
+
+* Add the ability to change the north based on an angle
+* Add sun-path circles
+* Add being able to import json files
+* Add an option to re-scale the sunpath
+* Add ability to add sun positions for a time-range (21 Dec, 9 am - 5 pm)
+* Add a button for top view and also save view to file.
+* Start moving some of the code into libraries 
+* Do something when Google API reports no time zone
+* Text input for lat and lon // or wait for permalinks?
+* Replace/Upgrade SunCalc.js with NOAA/Bostock JavaScript
+* Animations
+* Add reference object choices
+* Add solar times readout - with buttons to display sun position for location, date and time 
+* Add access to geolocation - as in [ Google Developers Geolocation API]( https://developers.google.com/maps/documentation/javascript/examples/map-geolocation )
+* Add access to places autocomplete = as in [Google Maps JavaScript API Place Autocomplete]( https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete )
+* Open Street gazetteer
+
+### Goals
+
+* Do everything the following do:
+	* Animations from [Sun Position Calculator]( http://www.pveducation.org/pvcdrom/properties-of-sunlight/sun-position-calculator )
+	* Data from [SunCalc.org]( http://www.suncalc.org/ )
+	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
+
+
+
 
 ## Previous updates
 
