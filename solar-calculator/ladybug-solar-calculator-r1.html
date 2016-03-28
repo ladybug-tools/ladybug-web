@@ -1,0 +1,231 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Solar Calculator R2</title>
+
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='' >
+<meta name=keywords content='JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-28' >
+</head>
+<body>
+<script>
+
+
+	var lat = 37.796;
+	var lng = -122.398;
+
+	var date = new Date();
+
+	var monthList = [
+
+		{name: "January",   numdays: 31, abbr: "Jan"},
+		{name: "February",  numdays: 28, abbr: "Feb"},
+		{name: "March",     numdays: 31, abbr: "Mar"},
+		{name: "April",     numdays: 30, abbr: "Apr"},
+		{name: "May",       numdays: 31, abbr: "May"},
+		{name: "June",      numdays: 30, abbr: "Jun"},
+		{name: "July",      numdays: 31, abbr: "Jul"},
+		{name: "August",    numdays: 31, abbr: "Aug"},
+		{name: "September", numdays: 30, abbr: "Sep"},
+		{name: "October",   numdays: 31, abbr: "Oct"},
+		{name: "November",  numdays: 30, abbr: "Nov"},
+		{name: "December",  numdays: 31, abbr: "Dec"},
+
+	];
+
+
+
+	init();
+
+	function init() {
+
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; }' +
+//			'h2 { margin: 0; }' +
+			'h2 a { text-decoration: none; }' +
+
+//			'#menu { margin: 0 20px; max-width: 300px; position: absolute; }' +
+
+		'';
+
+		var menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+			'	<a href="" >' + document.title + '</a>' +
+			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web >&#x24D8;</a>' +
+			'</h2>' +
+			'<div id=info ></div>'+
+		'';
+
+		b = '<br>';
+
+		julianDay = getJulianDay( date );
+		localTime = getTimeLocal( date );
+		julianCentury = getJulianCentury( julianDay );
+
+		info.innerHTML = 
+
+			'Julian day: ' + julianDay + b +
+			'Local time in minutes: ' + localTime + b +
+			'Julian century: ' + julianCentury + b +
+
+		'';
+	}
+
+
+	function getJulianDay( date ) {
+
+		var year = date.getFullYear();
+		var month = date.getMonth();
+		var day = date.getDate();
+
+		if ( ( isLeapYear( year ) ) && ( month === 2 ) ) {
+
+			if ( day > 29 ) { day = 29; }
+
+		} else {
+
+			if ( day > monthList[ month - 1 ].numdays ) { day = monthList[ month - 1 ].numdays }
+
+		}
+
+		if ( month <= 2 ) {
+
+			year -= 1;
+			month += 12;
+
+		}
+
+		var A = Math.floor( year / 100 );
+
+		var B = 2 - A + Math.floor( A / 4 );
+
+		var JD = Math.floor( 365.25 * ( year + 4716 ) ) + Math.floor( 30.6001 * ( month + 1 ) ) + day + B - 1524.5;
+
+		return JD;
+
+
+		function isLeapYear( year ) {
+
+			return ( ( year % 4 === 0 && year % 100 !== 0 ) || year % 400 === 0 );
+
+		}
+
+	}
+
+
+	function getTimeLocal( date ) {
+
+		var mins = ( date.getHours() - 1 ) * 60 + date.getMinutes() + date.getSeconds() / 60.0;
+
+		return mins;
+
+	}
+
+	function getJulianCentury( julianDay ) {
+
+		var T = ( julianDay - 2451545.0)/36525.0
+		return T;
+
+	}
+
+	function getAzimuthAltitude( T, localtime, latitude, longitude, zone ) {
+
+		var eqTime = calcEquationOfTime( T )
+
+/*
+	  var theta  = calcSunDeclination(T)
+	  if (output) {
+		document.getElementById("eqtbox").value = Math.floor(eqTime*100 +0.5)/100.0
+		document.getElementById("sdbox").value = Math.floor(theta*100+0.5)/100.0
+	  }
+	  var solarTimeFix = eqTime + 4.0 * longitude - 60.0 * zone
+	  var earthRadVec = calcSunRadVector(T)
+	  var trueSolarTime = localtime + solarTimeFix
+	  while (trueSolarTime > 1440)
+	  {
+		trueSolarTime -= 1440
+	  }
+	  var hourAngle = trueSolarTime / 4.0 - 180.0;
+	  if (hourAngle < -180) 
+	  {
+		hourAngle += 360.0
+	  }
+	  var haRad = degToRad(hourAngle)
+	  var csz = Math.sin(degToRad(latitude)) * Math.sin(degToRad(theta)) + Math.cos(degToRad(latitude)) * Math.cos(degToRad(theta)) * Math.cos(haRad)
+	  if (csz > 1.0) 
+	  {
+		csz = 1.0
+	  } else if (csz < -1.0) 
+	  { 
+		csz = -1.0
+	  }
+	  var zenith = radToDeg(Math.acos(csz))
+	  var azDenom = ( Math.cos(degToRad(latitude)) * Math.sin(degToRad(zenith)) )
+	  if (Math.abs(azDenom) > 0.001) {
+		azRad = (( Math.sin(degToRad(latitude)) * Math.cos(degToRad(zenith)) ) - Math.sin(degToRad(theta))) / azDenom
+		if (Math.abs(azRad) > 1.0) {
+		  if (azRad < 0) {
+		azRad = -1.0
+		  } else {
+		azRad = 1.0
+		  }
+		}
+		var azimuth = 180.0 - radToDeg(Math.acos(azRad))
+		if (hourAngle > 0.0) {
+		  azimuth = -azimuth
+		}
+	  } else {
+		if (latitude > 0.0) {
+		  azimuth = 180.0
+		} else { 
+		  azimuth = 0.0
+		}
+	  }
+	  if (azimuth < 0.0) {
+		azimuth += 360.0
+	  }
+	  var exoatmElevation = 90.0 - zenith
+
+	// Atmospheric Refraction correction
+
+	  if (exoatmElevation > 85.0) {
+		var refractionCorrection = 0.0;
+	  } else {
+		var te = Math.tan (degToRad(exoatmElevation));
+		if (exoatmElevation > 5.0) {
+		  var refractionCorrection = 58.1 / te - 0.07 / (te*te*te) + 0.000086 / (te*te*te*te*te);
+		} else if (exoatmElevation > -0.575) {
+		  var refractionCorrection = 1735.0 + exoatmElevation * (-518.2 + exoatmElevation * (103.4 + exoatmElevation * (-12.79 + exoatmElevation * 0.711) ) );
+		} else {
+		  var refractionCorrection = -20.774 / te;
+		}
+		refractionCorrection = refractionCorrection / 3600.0;
+	  }
+
+	  var solarZen = zenith - refractionCorrection;
+
+	  if ((output) && (solarZen > 108.0) ) {
+		document.getElementById("azbox").value = "dark"
+		document.getElementById("elbox").value = "dark"
+	  } else if (output) {
+		document.getElementById("azbox").value = Math.floor(azimuth*100 +0.5)/100.0
+		document.getElementById("elbox").value = Math.floor((90.0-solarZen)*100+0.5)/100.0
+		if (document.getElementById("showae").checked) {
+		  showLineGeodesic2("azimuth", "#ffff00", azimuth)
+		}
+	  }
+	  return (azimuth)
+*/
+
+	}
+
+</script>
+</body>
+</html>

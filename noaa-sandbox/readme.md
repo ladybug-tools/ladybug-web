@@ -1,20 +1,26 @@
 NOAA Sandbox Read Me
 ===
 
-[NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html )
+Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
+The National Oceanic and Atmospheric Administration is one such source.
+Its [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html ) has been published and updated for a number of years.
+
+
+
+## [Ladybug Web NOAA Sandbox[( http://ladybug-analysis-tools.github.io/ladybug-web/noaa-sandbox )
+
+* Loads the NOAA Solar Calculator [main.js]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
+* Allows data entry and update with a minimal interface
+* Displays the name of most functions along with the results returned by the function and and their units
+* Results from this script will be used to verify results produced by various Ladybug Web scripts 
+
+
+
+## Original [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html )
+
 * [Main JavaScript routine]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
 * Main page fairly easy to update
-* Calls them 'azimuth' and 'elevation'
-* Does not give negative elevations
-
-
-## Links of interest
-
-* [Julian Day]( https://en.wikipedia.org/wiki/Julian_day )
-* simpler calculatin: http://www.geoastro.de/elevaz/basics/meeus.htm
-* short definitions: http://www.ephemeris.com/space-time.html
-* https://en.wikipedia.org/wiki/Orbital_elements
-* https://en.wikipedia.org/wiki/Mean_longitude
-* https://en.wikipedia.org/wiki/Equation_of_the_center
+* Refers to 'azimuth' and 'elevation' rather than 'azimuth' and 'altitude'
+* Does not provide negative elevations
 
 
