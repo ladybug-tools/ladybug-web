@@ -36,7 +36,7 @@
 		css = document.body.appendChild( document.createElement( 'style' ) );
 		css.innerHTML =
 
-			'body { font: 12pt monospace; margin: 0; overflow: hidden}' +
+			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
 			'h2 { margin: 0; }' +
 			'a { text-decoration: none; }' +
 			'iframe { border: 0px solid green; height: 100%; width: 100%; }' +
@@ -119,7 +119,7 @@
 
 		contents = document.body.appendChild( document.createElement( 'div' ) );
 		contents.id = 'contents';
-		contents.innerHTML = '<iframe id=ifr ></iframe>';
+		contents.innerHTML = '<iframe id=ifr scrolling="no" ></iframe>';
 
 		window.addEventListener ( 'hashchange', hashChange, false );
 

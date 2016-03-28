@@ -1,0 +1,204 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>NOAA Sandbox R2</title>
+
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='' >
+<meta name=keywords content='JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-27' >
+</head>
+<body>
+<script src=http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js ></script>
+<script>
+
+// [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html )
+
+
+	lat = 37.796;
+	lng = -122.398;
+
+	init();
+
+	function init() {
+
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; }' +
+//			'h2 { margin: 0; }' +
+			'h2 a { text-decoration: none; }' +
+
+//			'#menu { margin: 0 20px; max-width: 300px; position: absolute; }' +
+
+		'';
+
+		var menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+			'	<a href="" >' + document.title + '</a>' +
+			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web >&#x24D8;</a>' +
+			'</h2>' +
+			'<p>Displays the function names and the results the functions for most of the functions in <a href=http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js target="_blank" >main.js</a></p>' +
+			'<p>- which is part of the <a href=http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html target="_blank" >NOAA Solar Calculator</a> </p>' +
+			'<p>' +
+				'lat <input id=latbox value=' + lat + ' onchange=getNOAASolCalcMainValues(); > ' +
+				'lng <input id=lngbox value=' + lng + ' onchange=getNOAASolCalcMainValues(); > ' +
+			'</p>' +
+
+			'<p>' +
+				'<select id=yearbox onchange=getNOAASolCalcMainValues(); ></select> ' +
+				'<select id=mosbox onchange=getNOAASolCalcMainValues(); ></select> ' +
+				'<select id=daybox onchange=getNOAASolCalcMainValues(); ></select>' +
+			'</p>' +
+
+			'<p>' +
+				'hours <input id=hrbox onchange=getNOAASolCalcMainValues(); > ' +
+				'minutes <input id=mnbox onchange=getNOAASolCalcMainValues(); > ' +
+				'seconds <input id=scbox onchange=getNOAASolCalcMainValues(); > ' +
+				'timezone <input id=zonebox value=-7 onchange=getNOAASolCalcMainValues(); ></p>' +
+			'</p>' +
+
+			'<p>' +
+				'<input type=checkbox id=pmbox onchange=getNOAASolCalcMainValues(); > pm ' +
+				'<input type=checkbox id=dstCheckbox checked onchange=getNOAASolCalcMainValues(); > dst ' +
+				'<input type=checkbox id=showae onchange=getNOAASolCalcMainValues(); > show ae ' +
+				'<input type=checkbox id=showsr onchange=getNOAASolCalcMainValues(); > show sr ' +
+				'<input type=checkbox id=showss onchange=getNOAASolCalcMainValues(); > show ss' +
+			'</p>' +
+
+			'<hr>' +
+
+			'<p>sun equation of time <input id=eqtbox > ' +
+			'sun declination <input id=sdbox > sd</p>' +
+
+			'<p>noon <input id=noonbox ></p>' +
+			'<p>azimuth <input id=azbox > </p>' +
+			'<p>elevation <input id=elbox ></p>' +
+
+			'<p>sunrise <input id=risebox ></p>' +
+			'<p>sunset <input id=setbox ></p>' +
+
+			'<div id=info ></div>' +
+
+		'';
+
+		for ( var i = 0; i < 25; i++ ) {
+
+			yearbox.appendChild( document.createElement( 'option' ) );
+			yearbox.children[ i ].text = i + 2000;
+
+
+		}
+
+		for ( var i = 0; i < 12; i++ ) {
+
+			mosbox.appendChild( document.createElement( 'option' ) );
+			mosbox.children[ i ].text = monthList[ i ].name ;
+
+		}
+
+		for ( var i = 0; i < 31; i++ ) {
+
+			daybox.appendChild( document.createElement( 'option' ) );
+			daybox.children[ i ].text = i + 1;
+
+		}
+
+		getNOAASolCalcMainValues();
+
+	}
+
+	function getNOAASolCalcMainValues() {
+
+//		var b, date, jday, tl;
+
+		b = '<br>';
+
+		date = new Date();
+
+		yearbox.selectedIndex = date.getFullYear() - 2000;
+		mosbox.selectedIndex = date.getMonth();
+		daybox.selectedIndex = date.getDate() - 1;
+
+		hrbox.value = date.getHours();
+		mnbox.value = date.getMinutes();
+		scbox.value = date.getSeconds();
+
+		jday = getJD(); // Julian Day =  Julian Day ~ Day 0 = Monday, January 1, 4713 BC
+		t = calcTimeJulianCent( jday ); // returns a decimal fraction of 100 ~ Julian Century = a constant of exactly 36525 Julian 
+		tl = getTimeLocal(); //
+		tz = readTextBox("zonebox", 5, 0, 0, -14, 13, 0 ); // timeZone ~ hours plus/minus GMT
+		dst = document.getElementById("dstCheckbox").checked;
+		total = jday + tl/1440.0 - tz/24.0;
+		T = calcTimeJulianCent( total );
+
+		txt = '<h2>NOAA Functions</h2>' +
+
+			'calcTimeJulianCent(jd): ' + calcTimeJulianCent( jday ) + ' // jd = Julian Day  ~ returns a decimal fraction of 100 ' + b +
+			'calcJDFromJulianCent(t): ' + calcJDFromJulianCent( t ) + ' // t = Julian century ~ returns Julian Day' + b +
+
+			'isLeapYear(yr): ' + isLeapYear( date.getFullYear() ) + ' // yr = date.getFullYear() ~ returns boolean ' + b +
+			'calcDoyFromJD(jd): ' + calcDoyFromJD( jday ) + ' // number of days since 1 January  ' + b +
+			'radToDeg(angleRad): ' + radToDeg( 0.25 * Math.PI ) + ' // radians to degrees - returns degrees' + b +
+			'degToRad(angleDeg) : ' + degToRad( 45 ) + ' // degrees to radians ~ returns radians' + b +
+			'calcGeomMeanLongSun(t): ' + calcGeomMeanLongSun( t ) + ' // t = Julian century ~ returns Sun mean Longitude in degrees ' + b +
+			'calcGeomMeanAnomalySun(t): ' + calcGeomMeanAnomalySun( t ) + ' // t = Julian century ~ returns Sun mean anomaly in degrees ' + b +
+
+			'calcEccentricityEarthOrbit(t): ' + calcEccentricityEarthOrbit( t ) + ' // t = Julian century ~  returns unitless eccentricity of Earth orbit' + b +
+			'calcSunEqOfCenter(t): ' + calcSunEqOfCenter( t ) + ' // t = Julian century ~  returns Sun equation of center in degrees' + b +
+			'calcSunTrueLong(t): ' + calcSunTrueLong( t ) + ' // t = Julian century ~  returns Sun true longitude in degrees' + b +
+			'calcSunTrueAnomaly(t): ' + calcSunTrueAnomaly( t ) + ' // t = Julian century ~  returns Sun true anomaly in degrees' + b +
+
+			'calcSunRadVector(t): ' + calcSunRadVector(t) + ' // t = Julian century ~  returns Sun rad vector in AUs' + b +
+
+			'calcSunApparentLong(t): ' + calcSunApparentLong(t) + ' // t = Julian century ~  returns Sun apparent longitude in degrees' + b +
+			'calcMeanObliquityOfEcliptic(t): ' + calcMeanObliquityOfEcliptic(t) + ' // t = Julian century ~  returns Obliquity of ecliptic in degrees' + b +
+			'calcObliquityCorrection(t): ' + calcObliquityCorrection(t) + ' // t = Julian century ~  returns obliquity correction in degrees' + b +
+			'calcSunRtAscension(t): ' + calcSunRtAscension(t) + ' // t = Julian century ~  returns Sun right ascension in degrees ' + b +
+			'calcSunDeclination(t): ' + calcSunDeclination(t) + ' // t = Julian century ~  returns Sun declination in degrees' + b +
+
+			'calcEquationOfTime(t): ' + calcEquationOfTime(t) + ' // t = Julian century ~  returns Sun equation of timein minutes of time' + b +
+			'calcHourAngleSunrise(lat, solarDec ): ' + calcHourAngleSunrise(lat, calcSunDeclination( t ) ) + ' // t = Julian century ~  returns hour angle of sunrisen radians (for sunset, use -HA' + b +
+			b +
+			'getJD(): ' + getJD() + ' // returns Julian day in days ' + b +
+			'getTimeLocal(): ' + getTimeLocal() + '// returns local time in minutes ' + b +
+
+			'calcAzEl(output, T, localtime, latitude, longitude, zone): ' + calcAzEl( 1, T, tl, lat, lng, tz ) + b +
+			'calcSolNoon(jd, longitude, timezone, dst): ' + calcSolNoon( jday, lng, tz, dst ) + b + //  updates noonbox ~ returns undefined
+			'calcSunriseSetUTC(rise, JD, latitude, longitude): ' + calcSunriseSetUTC( 1, jday, lat, lng ) + b +
+			'calcSunriseSet(rise, JD, latitude, longitude, timezone, dst): ' + calcSunriseSet( 0, jday, lat, lng, tz, dst ) + b + // returns undefined
+			'calcJDofNextPrevRiseSet(next, rise, JD, latitude, longitude, tz, dst): ' + calcJDofNextPrevRiseSet( 1, 0, jday, lat, lng, tz, dst ) + b +
+
+
+			'<h2>Calculate</h2>' +
+			'<p>Displys the results from the \'calculate\' function in main.js</p>' +
+			'jday = getJD(): ' + getJD() + b +
+			'tl = getTimeLocal(): ' + getTimeLocal() + b +
+
+			'tz = readTextBox("zonebox", 5, 0, 0, -14, 13, 0): ' + readTextBox("zonebox", 5, 0, 0, -14, 13, 0 ) + b +
+			'dst = document.getElementById("dstCheckbox").checked: ' + document.getElementById("dstCheckbox").checked + b +
+			'total = jday + tl/1440.0 - tz/24.0: ' + ( jday + tl/1440.0 - tz/24.0 ) + b +
+			'T = calcTimeJulianCent(total): ' + calcTimeJulianCent(total) + b +
+			'calcAzEl(output, T, localtime, latitude, longitude, zone): ' + calcAzEl( 1, T, tl, lat, lng, tz ) + b +
+			'calcSolNoon(jd, longitude, timezone, dst): ' + calcSolNoon(jday, lng, tz, dst) + b +
+			'rise = calcSunriseSet(rise, JD, latitude, longitude, timezone, dst): ' + calcSunriseSet( 1, jday, lat, lng, tz, dst ) + b +
+			'set = calcSunriseSet(rise, JD, latitude, longitude, timezone, dst): ' + calcSunriseSet( 0, jday, lat, lng, tz, dst ) + b +
+
+//			': ' +  + b +
+
+		'';
+
+
+		info.innerHTML = txt;
+
+		calculate();
+
+	}
+
+</script>
+</body>
+</html>

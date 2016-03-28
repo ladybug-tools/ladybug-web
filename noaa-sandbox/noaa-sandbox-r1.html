@@ -153,9 +153,10 @@
 
 
 console.log( 'eqTime', eqTime, 'theta', theta, 'solarZen', solarZen, 'azi', azi, 'ele', ele  );
+
 	}
 
-	function calcEquationOfTime(t) {
+	function calcEquationOfTime( t ) {
 
 		var epsilon = calcObliquityCorrection(t);
 		var l0 = calcGeomMeanLongSun(t);

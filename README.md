@@ -80,6 +80,17 @@ For details see the Read Me in [Ladybug Web Shadow Explorer]( http://ladybug-ana
 
 ### First commit: 2016-03-24 / R1
 
+
+## [Multiple Lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights )
+
+## Features 
+* Display the shadows for ten hourly sun positions. 
+* Update the latitude via a slider
+* Reference objects are generated randomly at load time
+* Zoom out to see all the directional light frustums 
+* Still contains errors in logic 
+	* Note that times are UTC
+
 <!--
 
 ## Full screen: [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
