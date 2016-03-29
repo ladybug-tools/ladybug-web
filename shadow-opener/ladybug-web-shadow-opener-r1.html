@@ -9,14 +9,27 @@
 <meta name=date content='2016-03-24' >
 </head>
 <body>
+<script src=http://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
 <script>
 
 // set defaults until we get a getYourLocation funtion running
 
-	latitude = 37.8
-	longitude = -122.4;
+	var latitude = 37.398
+	var longitude = -122.796;
 
-	var core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-r2.html';
+	var converter;
+
+	var core;
+
+	if ( location.origin === 'file://' ) {
+
+		core = '../shadow-core/ladybug-web-shadow-core-r2.html';
+
+	} else {
+
+		core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-r2.html';
+
+	}
 
 	var fileName = 'http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js';
 
@@ -33,6 +46,8 @@
 
 		var css, menu, date;
 
+		converter = new showdown.Converter( { strikethrough: true, literalMidWordUnderscores: true, simplifiedAutoLink: true, tables: true });
+
 		css = document.body.appendChild( document.createElement( 'style' ) );
 		css.innerHTML =
 
@@ -46,7 +61,7 @@
 			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; opacity: 0.85; width: 10px; }' +
 
 			'#menu { background-color: #ccc; height: 100%; max-width: 300px; overflow: auto; padding: 0 0 0 20px; position: absolute; }' +
-			'#contents { border: 0px red solid; height: 100%; left: 350px; overflow: auto; position: absolute; top: 0; width: ' + (window.innerWidth - 350) + 'px; }' +
+			'#contents { border: 0px red solid; height: 100%; left: 350px; overflow: hidden; position: absolute; top: 0; width: ' + (window.innerWidth - 350) + 'px; }' +
 
 		'';
 
@@ -211,43 +226,36 @@
 
 		if ( fileName.slice( -3 ) !== '.md' ) {
 
-//			contents.innerHTML = '<iframe  id=ifr src=' + core + fileName + ' ></iframe>';
+//			contents.innerHTML = '<iframe id=ifr src=' + core + fileName + ' scrolling="no" ></iframe>';
 
-ifr.contentWindow.location.hash = txt;
+			ifr.contentWindow.location.hash = txt;
+			contents.style.overflow = 'hidden';
+			contents.style.margin = contents.style.padding = '0';
 
 
 		} else {
 
-			var xhr = new XMLHttpRequest();
-			xhr.open( 'GET', fileName, true );
-			xhr.onreadystatechange = callback;
-			xhr.send( null );
-
-			function callback() {
-
-				if ( xhr.readyState != 4  ) { return; }
-
-				getGitHubParsedMarkdown( xhr.responseText )
-
-			}
+			getMarkdown( fileName, contents );
+			contents.style.overflow = 'auto';
+			contents.style.padding = '0 30px';
 
 		}
 
 	}
 
-	function getGitHubParsedMarkdown( markdown ) {
+	function getMarkdown( fileName, target ) {
 
 		var xhr = new XMLHttpRequest();
-		xhr.open( 'POST', 'https://api.github.com/markdown/raw' );
-		xhr.setRequestHeader('Content-Type', 'text/plain' );
+		xhr.open( 'GET', fileName, true );
 		xhr.onreadystatechange = callback;
-		xhr.send( markdown );
+		xhr.send( null );
 
 		function callback() {
 
 			if ( xhr.readyState != 4  ) { return; }
 
-			contents.innerHTML = xhr.responseText;
+			target.innerHTML = converter.makeHtml(  xhr.responseText );
+//			getGitHubParseMarkdown2HTML( xhr.responseText, target )
 
 		}
 

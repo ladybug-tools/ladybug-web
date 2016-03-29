@@ -9,6 +9,10 @@ value='You are now in the home page view - Click this button to view the read me
 
 _Ladybug for web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), solar and weather data visualization and analysis on the web_
 
+
+## Alternative home page: [Ladybug Web vie GitHub API]( ladybug-web-via-github-api-r1.html )
+
+
 Generally the following scripts
 
 * Built using entry level JavaScript with no dependencies other than Three.js and/or SunCalc.js

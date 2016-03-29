@@ -1,0 +1,101 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Solar Calculator Ladybug R3</title>
+<!--
+<meta name = viewport content = 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0' />
+<meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
+-->
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='' >
+<meta name=keywords content='Mike Bostock,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-26' >
+</head>
+<body>
+<script src=http://d3js.org/d3.v3.js ></script>
+<script src=solar-calculator-ladybug-r1.js ></script>
+<script>
+
+
+// Equations based on NOAA’s Solar Calculator; all angles in radians.
+// http://www.esrl.noaa.gov/gmd/grad/solcalc/
+
+
+	var lat = 37.796
+	var lon = -122.398;
+
+
+	init();
+
+	function init() {
+
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; }' +
+			'a { text-decoration: none; }' +
+
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
+
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
+			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+
+//			'#menu { margin: 0 20px; max-width: 1000px;position: absolute; }' +
+
+		'';
+
+		var menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href="" >' + document.title + '</a>' +
+				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ > &#x24D8; </a>' +
+			'</h2>' +
+
+			'<div id=infosolarCalculator ></div>' +
+			'<div id=infosolarCalculatorVariables ></div>' +
+			'<div id=infosolarCalculatorEquations ></div>' +
+		'';
+
+		ddate = new Date();
+
+		solar = solarCalculator( [ lon, lat ] );
+
+		infosolarCalculator.innerHTML += 
+
+			'<p>Solar > noon: ' + solar.noon( ddate ) + '</p>' +
+			'<p>Solar > position ( now ): ' + solar.position( ddate ) + '</p>' +
+			'<p>Solar > centuries: ' + centuries + '</p>' +
+
+		'<hr>';
+
+		infosolarCalculatorVariables.innerHTML += 
+
+			'<p>Solar > noon > var d3.time.day.utc.floor( ddate ): ' + d3.time.day.utc.floor( ddate ) + '</p>' +
+			'<p>Solar > noon > var centuries: ' + centuries + '</p>' +
+			'<p>Solar > noon > var new Date( +d3.time.day.floor( ddate ) + minutes * 60 * 1000 ): ' + solar.noon( ddate ) + '</p>' +
+
+		'<hr>';
+
+		infosolarCalculatorEquations.innerHTML += 
+			'<p> equationOfTime( centuries ): ' + equationOfTime( centuries ) + '</p>' +
+			'<p> solarDeclination( centuries ): ' + solarDeclination( centuries ) + '</p>' +
+			'<p> solarApparentLongitude( centuries ): ' + solarApparentLongitude( centuries ) + '</p>' +
+			'<p> solarTrueLongitude( centuries ): ' + solarTrueLongitude( centuries ) + '</p>' +
+			'<p> solarGeometricMeanAnomaly( centuries ): ' + solarGeometricMeanAnomaly(centuries) + '</p>' +
+			'<p> solarGeometricMeanLongitude( centuries ): ' + solarGeometricMeanLongitude( centuries ) + '</p>' +
+			'<p> solarEquationOfCenter( centuries ): ' + solarEquationOfCenter( centuries ) + '</p>' +
+			'<p> obliquityCorrection( centuries ): ' + obliquityCorrection( centuries ) + '</p>' +
+			'<p> meanObliquityOfEcliptic( centuries ): ' + meanObliquityOfEcliptic( centuries ) + '</p>' +
+			'<p> eccentricityEarthOrbit( centuries ): ' + eccentricityEarthOrbit( centuries ) + '</p>' +
+
+		'';
+
+	}
+
+</script>
+</body>
+</html>

@@ -157,7 +157,7 @@
 			timeStamp = Date.now().toFixed().substr( 0, 10 );
 
 			request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + timeStamp;
-console.log( 'req', request );
+//console.log( 'req', request );
 //			request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + timeStamp;
 
 
@@ -200,7 +200,7 @@ console.log( 'req', request );
 
 			remoteTime = calculateLocalTime( offset );
 
-console.log( 'time ', remoteTime );
+//console.log( 'time ', remoteTime );
 
 			info.innerHTML = 
 				'<h2>Time ZoneID:<br>' + time.timeZoneId + '</h2>' +
@@ -258,7 +258,7 @@ console.log( 'time ', remoteTime );
 
 	function updateCalculations( timeString, lat, lon ) {
 
-console.log( 'update', timeString, lat, lon );
+//console.log( 'update', timeString, lat, lon );
 
 		time = new Date( timeString );
 
@@ -318,12 +318,13 @@ console.log( 'update', timeString, lat, lon );
 
 		moonTimes = SunCalc.getMoonTimes( time, lat, lon );
 
-		rise = calculateLocalTime2( offset, utcYear, utcMonth, utcDate, moonTimes.rise.getUTCHours(), moonTimes.rise.getUTCMinutes() )
+//		rise = calculateLocalTime2( offset, utcYear, utcMonth, utcDate, moonTimes.getUTCHours(), moonTimes.getUTCMinutes() )
+		rise = moonTimes.rise ?  moonTimes.rise.toISOString() : 'undefined';
 		set = moonTimes.set ?  moonTimes.set.toISOString() : 'undefined';
 
 		txt += '<tr><th colspan=2 > Moon Times </th></tr>' +
 
-		'<tr><td> Rise </td><td> ' + rise.toISOString() + '</td></tr>' +
+		'<tr><td> Rise </td><td> ' + rise + '</td></tr>' +
 		'<tr><td> Set </td><td> ' + set + '</td></tr>' +
 		'<tr><td> Always Up </td><td> ' + moonTimes.alwaysUp + '</td></tr>' +
 		'<tr><td> Always Down </td><td> ' + moonTimes.alwaysDown + '</td></tr>';

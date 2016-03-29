@@ -1,0 +1,248 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Multiple Iframes via GitHub API R2</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='Gallery of a variety of scripts that enable you to view the sun path device in new ways.' >
+<meta name=keywords content='WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-03-25' >
+</head>
+<body>
+<script src=http://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
+<script>
+
+//	var urlAPIContents = 'https://api.github.com/repos/jaanga/jaanga.github.io/git/trees/master?recursive=1';
+	var urlAPIContents = 'https://api.github.com/repos/ladybug-analysis-tools/ladybug-web/git/trees/gh-pages?recursive=1';
+
+//	var urlSourceFilter = 'demo/ms/';
+	var urlSourceFilter = '';
+
+
+//	var urlSource = 'http://jaanga.github.io/demo/ms/';
+//	var urlSource = '../../../../';
+//	var urlSource = 'http://ladybug-analysis-tools.github.io/ladybug-web/';
+	var urlSource = './';
+
+	var converter;
+
+	var footer =
+
+		'<center title="dingbat" >' +
+		'<h1><a href=javascript:window.scrollTo(0,0); style=text-decoration:none; > ❦ </a></h1>' +
+		'</center>' +
+
+	'';
+
+
+	var iframeContainers = [];
+	var iframesActive = [];
+	var iframesActiveLimit = 3;
+
+	var texts, files;
+
+	init();
+	animate();
+
+	function init() {
+
+		converter = new showdown.Converter( { strikethrough: true, literalMidWordUnderscores: true, simplifiedAutoLink: true, tables: true });
+
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; left: 0; right: 0; margin: auto; position: absolute; max-width: 800px; }' +
+			'a, a:visited { color: crimson; text-decoration: none; }' +
+//			'input[type=button]  { background-color: #eee; border: 2px #eee solid; color: #888; }' +
+			'iframe { border: 0px solid green; height: 100%; width: 100%; }' +
+
+			'div.ifr { border: 1px solid crimson; height:512px; margin: 150px 0 0 ' + 0.5 * ( 800 - window.innerWidth ) + 'px; width: ' + ( window.innerWidth - 12 ) + 'px; }' +
+			'div.readme { border: 1px solid blue; max-height:512px; overflow: hidden; transform: scale( 0.75 ); transform-origin: 0 0; ' +
+		'';
+
+		var contents = document.body.appendChild( document.createElement( 'div' ) );
+		contents.innerHTML = 
+			'<div id=header ></div>' +
+			'<div id=container ></div>';
+
+		getMarkdown( 'index.md', header );
+
+		requestFileNames();
+
+	}
+
+	function requestFileNames() {
+
+		var xhr = new XMLHttpRequest();
+		xhr.open( 'GET', urlAPIContents, true );
+		xhr.onreadystatechange = callback;
+		xhr.send( null );
+
+		function callback() {
+
+			if ( xhr.readyState !== 4  ) { return; }
+
+			var response = JSON.parse( xhr.response );
+//			var count = 0;
+			files = [];
+
+			for ( var i = 0; i < response.tree.length; i++ ) {
+
+				var file = response.tree[ i ].path;
+
+				if ( file === 'index.html' || file.indexOf( '\index.html' ) === -1 ) { continue; }
+
+				files.push( file );
+
+//				count++;
+
+			}
+
+			createMultipleViews()
+
+		}
+
+	}
+
+	function createMultipleViews() {
+
+		for ( var i = 0; i < files.length; i++ ) {
+
+			container.innerHTML += 
+
+				'<div class=ifr id=' + i + ' ></div>' +
+				'<div class=txt >header ' + ( i + 1 ) + '</div>' +
+//				'<hr>' +
+
+			'';
+
+		}
+
+		container.innerHTML += footer;
+
+		iframeContainers = document.getElementsByClassName( 'ifr' );
+		texts = document.getElementsByClassName( 'txt' );
+
+	}
+
+	function updateIframe( activeContainer ) {
+
+		var iframes = document.getElementsByTagName( 'iframe' );
+
+		if ( iframes.length > iframesActiveLimit ) {
+
+			var frameTooMany = iframesActive.shift();
+			frameTooMany.innerHTML = '';
+
+		}
+
+		if ( activeContainer.innerHTML === '' ) {
+
+			id = activeContainer.id;
+
+			activeContainer.innerHTML = '<iframe src="' + urlSource + files[ id ] + '" onload=getFile(this,' + id + '); scrolling="no" ></iframe>';
+
+			iframesActive.push( activeContainer );
+
+		}
+
+	}
+
+	function getFile( that, index ) {
+
+		var metas = that.contentWindow.document.getElementsByTagName('meta'); ;
+		var description = 'none';
+		var keywords = 'none';
+		var date = 'none';
+		var b = '<br>';
+
+		for ( var i = 0; i < metas.length; i++ ) {
+
+			if ( metas[ i ].name === 'description' ) { description = metas[ i ].content; }
+			if ( metas[ i ].name === 'keywords' ) { keywords = metas[ i ].content; }
+			if ( metas[ i ].name === 'date' ) { date = metas[ i ].content; }
+
+		}
+
+		texts[ index ].innerHTML =
+
+			'<h2>full screen: <a href=' + that.src + ' >' + that.contentWindow.document.title + '</a></h2>' +
+			'<div><b>Description</b>' + b + converter.makeHtml( description ) + b +
+			'<b>Keywords</b>' + b + keywords + b +
+			'<b>Date</b>' + b + date + b +
+			'<b>Read Me</b>' +
+			'</div>' +
+			'<div class=readme id=readme' + index + ' ></div>' +
+
+		'';
+
+		folder = files[ index ].replace( 'index.html', '' );
+
+		var rm = document.getElementById( 'readme' + index )
+		getMarkdown( urlSource + folder + 'readme.md', rm );
+
+
+		if ( that.contentWindow.controls ) {
+
+			that.contentWindow.controls.enableZoom = false;
+
+		} else if ( that.contentWindow.ifr && that.contentWindow.ifr.contentWindow.controls ) {
+
+			that.contentWindow.ifr.contentWindow.controls.enableZoom = false;
+
+		} else {
+
+			if ( that.contentWindow.menu ) {
+
+				that.contentWindow.menu.style.overflow = 'hidden';
+
+			}
+
+			if ( that.contentWindow.contents ) {
+
+				that.contentWindow.contents.style.overflow = 'hidden';
+
+			}
+
+		}
+
+	}
+
+	function getMarkdown( fileName, target ) {
+
+		var xhr = new XMLHttpRequest();
+		xhr.open( 'GET', fileName, true );
+		xhr.onreadystatechange = callback;
+		xhr.send( null );
+
+		function callback() {
+
+			if ( xhr.readyState != 4  ) { return; }
+
+			target.innerHTML = converter.makeHtml(  xhr.responseText );
+
+		}
+
+	}
+
+	function animate() {
+
+		requestAnimationFrame( animate );
+
+		for ( var i = 0; i < iframeContainers.length; i++ ) {
+
+			var iframeContainer = iframeContainers[ i ];
+
+			var rect = iframeContainer.getBoundingClientRect();
+
+			if ( rect.bottom < 0 || rect.top > window.innerHeight ) { continue; }
+
+			updateIframe( iframeContainer );
+
+		}
+
+	}
+
+</script>
+</body>
+</html>

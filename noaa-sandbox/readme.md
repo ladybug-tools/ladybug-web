@@ -7,7 +7,7 @@ Its [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.htm
 
 
 
-## [Ladybug Web NOAA Sandbox[( http://ladybug-analysis-tools.github.io/ladybug-web/noaa-sandbox )
+## [Ladybug Web NOAA Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/noaa-sandbox )
 
 * Loads the NOAA Solar Calculator [main.js]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
 * Allows data entry and update with a minimal interface
