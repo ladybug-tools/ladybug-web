@@ -10,11 +10,11 @@ value='You are now in the home page view - Click this button to view the read me
 
 Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
 
-## [Ladybug Solar Calculator]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html )
+## [Ladybug Web Solar Calculator Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/index.html )
 
 ### Mission
 
-* To provide you with the position of the azimuth ( apparent longitude ) and altitude ( apparent latitude ) sun quickly and easily
+* To provide you with the position of the azimuth ( apparent longitude ) and altitude ( apparent latitude ) of the Sun quickly and easily
 	* Given latitude, longitude, data and time
 	* Usable in any number of ways
 * Code that is readable by people with little programming experience
@@ -34,7 +34,13 @@ Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
 
 * R1 is feature complete
 	* Produces a sun position identical to NOAA Solar calculator
+	* Most variable names are English-like
+* R2 first commit
+	* Separates JavaScript and viewer
+		* JavaScript: [Ladybug Web Solar Calculator R2](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-r2.js )
+		* Viewer: [Ladybug Web Solar Calculator Viewer R2](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-viewer-r2.html )
 
+	* Continues code streamlining and simplification
 
 
 ### Update 2016-03-29
