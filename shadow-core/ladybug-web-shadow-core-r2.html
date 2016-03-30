@@ -374,7 +374,11 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 			} else if ( window.self === window.top || debug === true ) {
 
-				menuInfo.innerHTML += '<hr>The location is timeless<br>';
+				menuInfo.innerHTML += '<hr>The location is timeless<br>' +
+
+				fileName + '<br>' +
+
+				xhr.responseText;
 
 			}
 
