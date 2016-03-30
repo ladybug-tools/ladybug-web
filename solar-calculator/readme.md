@@ -5,7 +5,7 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
-[Ladybug Solar Calculator Read Me]( #solar-calculator/readme.md )
+[Ladybug Web Solar Calculator Read Me]( #solar-calculator/readme.md )
 ===
 
 Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
@@ -27,6 +27,15 @@ Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
 ### Features
 
 * Calculate the position of the Sun - given latitude, longitude, date and time - and return its azimuth and altitude in degrees
+* Based on the NOAA solar calculator
+
+
+### Update 2016-03-30
+
+* R1 is feature complete
+	* Produces a sun position identical to NOAA Solar calculator
+
+
 
 ### Update 2016-03-29
 
@@ -35,7 +44,14 @@ Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
 * Equation of time working
 * Sun position started
 
-### Fist Commit ~ 2016-03-28
+### First Commit ~ 2016-03-28
+
+
+## Issues
+
+* Should all calcs be in radians - would save many conversions back and forth?
+* Is it 'alitude' or 'elevation'; - would like definitive, globally-oriented source/reference for current astronomical nomenclature
+
 
 
 ## Links of interest

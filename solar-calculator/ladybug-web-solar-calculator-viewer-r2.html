@@ -1,0 +1,131 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Web Solar Calculator Viewer R2</title>
+
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='View results from Ladybug Web Solar Calculator. Calculate the position of the Sun - given latitude, longitude, date and time - and return its azimuth and altitude in degrees' >
+<meta name=keywords content='astronomy,JavaScript,GitHub,FOSS,STEM' >
+<meta name=date content='2016-03-30' >
+</head>
+<body>
+<script src=ladybug-web-solar-calculator-r2.js ></script>
+<script>
+
+	init();
+
+	function init() {
+
+		var css, menu, b;
+
+		css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; }' +
+			'h2 a { text-decoration: none; }' +
+			'input { width: 70px; }' +
+
+		'';
+
+		menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href="" >' + document.title + '</a>' +
+				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web > &#x24D8; </a>' +
+			'</h2>' +
+			'<h3>Input</h3>' +
+			'<p>Latitude <input id=inpLatitude > Longitude <input id=inpLongitude ></p>' +
+			'<p>Year <input id=inpYear > Month <input id=inpMonth > Day <input id=inpDate > Hour <input id=inpHours > Minutes <input id=inpMinutes > Timezone <input id=inpTimezone ></p>' +
+
+			'<div id=info ></div>'+
+		'';
+
+		inpLatitude.value = latitude;
+		inpLongitude.value = longitude;
+
+		date = new Date();
+		inpYear.value = date.getFullYear();
+		inpMonth.value = date.getMonth() + 1;
+		inpDate.value = date.getDate();
+		inpHours.value = date.getHours();
+		inpMinutes.value = date.getMinutes();
+		inpTimezone.value = date.getTimezoneOffset();
+
+		inpLatitude.onchange = inpLongitude.onchange = updateSunPosition = updateSunPosition; 
+		inpYear.onchange = inpMonth.onchange = inpDate.onchange = updateSunPosition;
+		inpHours.onchange = inpMinutes.onchange = inpTimezone.onchange = updateSunPosition;
+
+		updateSunPosition();
+
+	}
+
+	function updateSunPosition( ) {
+
+		var date, latitude, longitude, julianDay, julianCentury, localTime, timezone, sunPosition, b;
+
+		date = new Date( inpYear.value, inpMonth.value - 1, inpDate.value, inpHours.value, inpMinutes.value, 0 );
+
+		latitude = inpLatitude.value;
+		longitude = inpLongitude.value;
+
+		julianDay = getJulianDay( date );
+		julianCentury = getJulianCentury( julianDay );
+		localTime = getTimeLocal( date );
+
+		if ( longitude < 0 ) {
+
+			timezone = - date.getTimezoneOffset() / 60;
+
+		} else {
+
+			timezone = date.getTimezoneOffset() / 60;
+
+		}
+
+		sunPosition = getSunPosition( julianCentury, localTime, latitude, longitude, timezone );
+
+		b = '<br>';
+
+		info.innerHTML = 
+
+			'<h3>Sun Position</h3>' +
+			'<p>' +
+				'&bull; Azimuth:&nbsp; ' + sunPosition[ 0 ] + b +
+				'&bull; Altitude: ' + sunPosition[ 1 ] +
+			'</p>' +
+
+			'<h3>Calculations</h3>' +
+			'<p>' +
+				'Julian Day: ' + julianDay + b +
+				'Julian Century: ' + julianCentury + b +
+				'Local time in minutes: ' + localTime +
+			'</p>' +
+
+			'<p>' +
+				'Equation of Time: ' + getEquationOfTime( julianCentury ) +
+			'</p>' +
+
+			'<p>' +
+				'Obliquity Correction: ' + getObliquityCorrection( julianCentury ) + b +
+				'- Mean Obliquity Of Ecliptic: ' + getMeanObliquityOfEcliptic( julianCentury ) + b +
+				'Geometric Mean Longitude Sun: ' + getGeometricMeanLongitudeSun( julianCentury ) + b +
+				'Eccentricity Earth Orbit: ' + getEccentricityEarthOrbit( julianCentury ) + b +
+				'Geometric Mean Anomaly Sun: ' + getGeometricMeanAnomalySun( julianCentury ) + b +
+			'</p>' +
+
+			'<p>' +
+				'Sun Declination: ' + getSunDeclination( julianCentury ) + b +
+				'- Sun Apparent Longitude: ' + getSunApparentLongitude( julianCentury ) + b +
+				'- - Sun True Longitude: ' + getSunTrueLongitude( julianCentury ) + b +
+				'- - - Sun Equation of Center: ' + getSunEquationOfCenter( julianCentury ) + b +
+			'</p>' +
+
+		'';
+
+	}
+</script>
+</body>
+</html>

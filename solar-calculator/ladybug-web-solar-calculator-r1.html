@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Solar Calculator R2</title>
+<title>Ladybug Web Solar Calculator R1</title>
 
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='Calculate the position of the Sun - given latitude, longitude, date and time - and return its azimuth and altitude in degrees' >
@@ -150,102 +150,138 @@
 	function getSunPosition( century, localTime, latitude, longitude, timeZone ) {
 
 		var equationOfTime;
-		var azimuth = 89;
-		var altitude = 88;
+		var azimuth;
+		var altitude;
 
 		equationOfTime = getEquationOfTime( century );
 
 		var theta  = getSunDeclination( century );
-
 
 //	  if (output) {
 //		document.getElementById("eqtbox").value = Math.floor(eqTime*100 +0.5)/100.0
 //		document.getElementById("sdbox").value = Math.floor(theta*100+0.5)/100.0
 //	  }
 
-	  var solarTimeFix = equationOfTime + 4.0 * longitude - 60.0 * timeZone;
+		var solarTimeFix = equationOfTime + 4.0 * longitude - 60.0 * timeZone;
+		var earthRadVec = calcSunRadVector( century );
 
-/*
+		var trueSolarTime = localTime + solarTimeFix;
 
-	  var earthRadVec = calcSunRadVector(T)
-	  var trueSolarTime = localtime + solarTimeFix
-	  while (trueSolarTime > 1440)
-	  {
-		trueSolarTime -= 1440
-	  }
-	  var hourAngle = trueSolarTime / 4.0 - 180.0;
-	  if (hourAngle < -180) 
-	  {
-		hourAngle += 360.0
-	  }
-	  var haRad = degToRad(hourAngle)
-	  var csz = Math.sin(degToRad(latitude)) * Math.sin(degToRad(theta)) + Math.cos(degToRad(latitude)) * Math.cos(degToRad(theta)) * Math.cos(haRad)
-	  if (csz > 1.0) 
-	  {
-		csz = 1.0
-	  } else if (csz < -1.0) 
-	  { 
-		csz = -1.0
-	  }
-	  var zenith = radToDeg(Math.acos(csz))
-	  var azDenom = ( Math.cos(degToRad(latitude)) * Math.sin(degToRad(zenith)) )
-	  if (Math.abs(azDenom) > 0.001) {
-		azRad = (( Math.sin(degToRad(latitude)) * Math.cos(degToRad(zenith)) ) - Math.sin(degToRad(theta))) / azDenom
-		if (Math.abs(azRad) > 1.0) {
-		  if (azRad < 0) {
-		azRad = -1.0
-		  } else {
-		azRad = 1.0
-		  }
+		while (trueSolarTime > 1440) { trueSolarTime -= 1440; }
+
+		var hourAngle = trueSolarTime / 4.0 - 180.0;
+
+		if (hourAngle < -180) { hourAngle += 360.0; }
+
+
+		var haRad = hourAngle * d2r;
+
+		var csz = Math.sin( latitude * d2r ) * Math.sin( theta * d2r ) + Math.cos( latitude * d2r ) * Math.cos( theta * d2r ) * Math.cos( haRad );
+
+
+		if (csz > 1.0) {
+
+			csz = 1.0;
+
+		} else if (csz < -1.0) { 
+
+			csz = -1.0;
+
 		}
-		var azimuth = 180.0 - radToDeg(Math.acos(azRad))
-		if (hourAngle > 0.0) {
-		  azimuth = -azimuth
-		}
-	  } else {
-		if (latitude > 0.0) {
-		  azimuth = 180.0
-		} else { 
-		  azimuth = 0.0
-		}
-	  }
-	  if (azimuth < 0.0) {
-		azimuth += 360.0
-	  }
-	  var exoatmElevation = 90.0 - zenith
 
-	// Atmospheric Refraction correction
+		var zenith = Math.acos( csz ) * r2d;
 
-	  if (exoatmElevation > 85.0) {
-		var refractionCorrection = 0.0;
-	  } else {
-		var te = Math.tan (degToRad(exoatmElevation));
-		if (exoatmElevation > 5.0) {
-		  var refractionCorrection = 58.1 / te - 0.07 / (te*te*te) + 0.000086 / (te*te*te*te*te);
-		} else if (exoatmElevation > -0.575) {
-		  var refractionCorrection = 1735.0 + exoatmElevation * (-518.2 + exoatmElevation * (103.4 + exoatmElevation * (-12.79 + exoatmElevation * 0.711) ) );
+		var azDenom = ( Math.cos( latitude * d2r ) * Math.sin( zenith * d2r ) );
+
+		if (Math.abs(azDenom) > 0.001) {
+
+			azRad = ( ( Math.sin( latitude * d2r ) * Math.cos( zenith * d2r ) ) - Math.sin( theta * d2r ) ) / azDenom;
+
+			if ( Math.abs( azRad ) > 1.0 ) {
+
+				if (azRad < 0) {
+
+					azRad = -1.0;
+
+				} else {
+
+					azRad = 1.0;
+
+				}
+
+			}
+
+			var azimuth = 180.0 - Math.acos(azRad) * r2d;
+
+			if (hourAngle > 0.0) { azimuth = -azimuth; }
+
 		} else {
-		  var refractionCorrection = -20.774 / te;
+
+			if (latitude > 0.0) {
+
+				azimuth = 180.0;
+
+			} else { 
+
+			azimuth = 0.0;
+
+			}
+
 		}
-		refractionCorrection = refractionCorrection / 3600.0;
-	  }
+
+		if ( azimuth < 0.0 ) { azimuth += 360.0; }
+
+		var exoatmElevation = 90.0 - zenith;
+
+// Atmospheric Refraction correction
+
+		if ( exoatmElevation > 85.0 ) {
+
+			var refractionCorrection = 0.0;
+
+		} else {
+
+			var te = Math.tan( exoatmElevation * d2r );
+
+			if ( exoatmElevation > 5.0 ) {
+
+				var refractionCorrection = 58.1 / te - 0.07 / Math.pow( te, 3 ) + 0.000086 / Math.pow( te, 5 );
+
+			} else if (exoatmElevation > -0.575) {
+
+				var refractionCorrection = 1735.0 + exoatmElevation * (-518.2 + exoatmElevation * (103.4 + exoatmElevation * (-12.79 + exoatmElevation * 0.711) ) );
+
+			} else {
+
+				var refractionCorrection = -20.774 / te;
+
+			}
+
+			refractionCorrection = refractionCorrection / 3600.0;
+
+		}
 
 	  var solarZen = zenith - refractionCorrection;
 
-	  if ((output) && (solarZen > 108.0) ) {
+/*
+	if ((output) && (solarZen > 108.0) ) {
 		document.getElementById("azbox").value = "dark"
 		document.getElementById("elbox").value = "dark"
 	  } else if (output) {
+
 		document.getElementById("azbox").value = Math.floor(azimuth*100 +0.5)/100.0
 		document.getElementById("elbox").value = Math.floor((90.0-solarZen)*100+0.5)/100.0
 		if (document.getElementById("showae").checked) {
 		  showLineGeodesic2("azimuth", "#ffff00", azimuth)
 		}
-	  }
-
+	}
 */
 
-			  return [ azimuth, altitude ];
+		azimuth = Math.floor( azimuth * 100 + 0.5 ) / 100.0;
+		altitude = Math.floor( ( 90.0 - solarZen ) * 100 + 0.5 ) / 100.0;
+
+		return [ azimuth, altitude ];
+
 	}
 
 
@@ -269,8 +305,6 @@
 
 //		return radToDeg(Etime)*4.0;	// in minutes of time
 		return 4.0 * equationOfTime * r2d;  // in minutes of time
-
-return obliquityCorrection;
 
 	}
 
@@ -297,15 +331,7 @@ console.log( 'meanObliquityOfEcliptic', meanObliquityOfEcliptic );
 
 	}
 
-function calcMeanObliquityOfEcliptic(t)
-{
-  var seconds = 21.448 - t*(46.8150 + t*(0.00059 - t*(0.001813)));
-  var e0 = 23.0 + (26.0 + (seconds/60.0))/60.0;
-  return e0;		// in degrees
-}
-
-
-	function getEccentricityEarthOrbit( century) {
+	function getEccentricityEarthOrbit( century ) {
 
 		var eccentricityEarthOrbit = 0.016708634 - century * (0.000042037 + 0.0000001267 * century );
 
@@ -398,6 +424,27 @@ console.log( 'sunApparentLongitude', sunApparentLongitude );
 			sin2m * ( 0.019993 - 0.000101 *  century ) + sin3m * 0.000289;
 
 		return sunEquationOfCenter;  // C ~ in degrees
+
+	}
+
+	function calcSunRadVector( century ) {
+
+		var v = getSunTrueAnomaly( century );
+		var e = getEccentricityEarthOrbit( century );
+		var sunRadVector = ( 1.000001018 * ( 1 - e * e ) ) / ( 1 + e * Math.cos( v * d2r ) );
+
+console.log( 'sunRadVector', sunRadVector);
+
+		return sunRadVector;  // R ~ in AUs
+
+	}
+
+	function getSunTrueAnomaly( century ) {
+
+		var m = getGeometricMeanAnomalySun( century );
+		var c = getSunEquationOfCenter( century );
+		var v = m + c;
+		return v;		// in degrees
 
 	}
 
