@@ -20,6 +20,8 @@ We have found issues with each one of these efforts.
 Therefore we propose a new effort that stands on their shoulders.
 
 ## Full screen viewer: [Ladybug Web Solar Calculator Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/index.html )
+
+
 ## JavaScript source code: [Ladybug Web Solar Calculator R2](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-r2.js )
 
 
@@ -96,4 +98,8 @@ Therefore we propose a new effort that stands on their shoulders.
 * https://en.wikipedia.org/wiki/Mean_longitude
 * https://en.wikipedia.org/wiki/Equation_of_the_center
 
+***
 
+<center>
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f41e.png?v6" ></a>
+</center>
