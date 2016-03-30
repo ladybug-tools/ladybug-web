@@ -25,12 +25,12 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 <script>
 
-	var debug = true;
+	var debug;
 
 // set defaults until we get a getYourLocation function running
 
-	var latitude = 37.8
-	var longitude = -122.4;
+	var latitude = 37.796
+	var longitude = -122.398;
 
 	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
 
@@ -327,7 +327,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	function getDate() {
 
-		var timestamp, request;
+//		var timestamp, request;
 
 		dateHere = new Date();
 
@@ -340,7 +340,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		timestamp = dateUTC.getTime() / 1000;
 
 		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + pud.latitude + ',' + pud.longitude + '&timestamp=' + timestamp;
-
+//console.log( 'request', request );
 		getTimezone( request );
 
 	}
