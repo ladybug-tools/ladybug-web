@@ -327,7 +327,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	function getDate() {
 
-//		var timestamp, request;
+		var timestamp, request;
 
 		dateHere = new Date();
 
@@ -340,7 +340,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		timestamp = dateUTC.getTime() / 1000;
 
 		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + pud.latitude + ',' + pud.longitude + '&timestamp=' + timestamp;
-//console.log( 'request', request );
+
 		getTimezone( request );
 
 	}
@@ -394,7 +394,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		var geometry, vertices, material, line;
 		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
 		var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
 
 		scene.remove( analemma );
 
