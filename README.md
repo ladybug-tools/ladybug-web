@@ -10,9 +10,9 @@ value='You are now in the home page view - Click this button to view the read me
 _Ladybug for web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), solar and weather data visualization and analysis on the web_
 
 
-## Alternative home page: [Ladybug Web via GitHub API]( ladybug-web-via-github-api-r1.html )
+## Alternative home page: [Ladybug Web via GitHub API]( http://ladybug-analysis-tools.github.io/ladybug-web/ladybug-web-via-github-api-r1.html )
 
-2016-03-29 ~ for the time being this read me/ home page is not being updated as all effort is going into the alternative - and experimental - home page
+2016-03-29 ~ for the time being this read me/home page is not being updated as all effort is going into the alternative - and experimental - home page
 
 ***
 
