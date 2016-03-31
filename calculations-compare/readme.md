@@ -8,19 +8,19 @@ value='You are now in the home page view - Click this button to view the read me
 [Calculations Compare Read Me]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html#calculations-compare/readme.md )
 ===
 
-## full screen: [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/
+## full screen: [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/ )
 
 
 ### Update 2016-03-31
 
 * R2
 * Compares Agafonkin, Bostock and NOAA
-* Nobody agrees on the position of the Sun
+* Nobody agrees on the position of the Sun ;-)
 * Structural differences in the code make comparisons difficult
 
 
-
 ### Update 2016-03-21
+
 * Very R1
 * Compares Agafonkin and Bostock sun positions
 * Will add NOAA and Ladybug calcs
@@ -47,6 +47,8 @@ Links of interest
 
 
 ## NOAA
+
+Links of interest
 
 * http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html
 * Primary JavaScript routine [main.js]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
