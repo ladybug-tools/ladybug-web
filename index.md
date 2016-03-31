@@ -1,17 +1,20 @@
 [Ladybug Web Project Explorer]( ladybug-web-via-github-api-r1.html )
 ===
 
-_First thing: scroll down the page and have a look at the projects._
+_First thing: scroll down the page - a few screens down - and have a look at the projects._
 _Then come back here and read about what you have seen._
 
 
 ## Mission and Vision
 
-Explore techniques for presenting an overview of the scripts available on Ladybug Web.
+The idea here is to explore techniques for presenting an overview of the scripts available on Ladybug Web.
 
 The code is fairly stable. The style is still at a very early stage.
 
+Mission statements
+
 * Provide a fast and easy-to-navigate visual overview of numerous apps
+	* Some big, some small. Some fresh, some stale
 * Display latest version of scripts as full interactive apps in 3D
 	* Disable certain features automatically to allow the page to be scrolled both on computers amd mobile devices
 * Identify quickly what's new and what's hot
@@ -25,26 +28,31 @@ The code is fairly stable. The style is still at a very early stage.
 ## Features
 
 * Uses GitHub API to obtain up-to-date list of files
-	* GitHub API rate limits are not abused because pocessing is done client-side and each individual client has their own separate quota
-* If a folder has a file titled 'index.html' then the folder is added to the list of items of interest 
+	* GitHub API rate limits are not abused because processing is done client-side
+	* Each individual client has their own separate quota
+* General meshanism is quite straightforward
+	* If a folder has a file titled 'index.html' then the folder is added to the list of items of interest 
 	* Otherwise the folder is ignored
-* The index file pints to the script in the folder that should be run at load time
-* If a folder has a readme.md' file than that file is read, the contents converted from Markdown to HTML and displayed
+* The index file points to the script in the folder that should be run at load time
+* If a folder has a readme.md' file than that file is read
+	* Contents converted from Markdown to HTML and displayed
 * If a script of interest has HTML meta tags for description, keywords and data then that information is displayed
-* In order to keep things moving fast, at any given time, only three iframes are in active use
+* Apps are displayed in iframes
+	* In order to keep things moving fast, at any given time, only three iframes are in active use
 	* Iframes only become active once they scroll into view
  
 
 
 ## Current Effort
 
-Two avenues of user guidance are being explored:
+Two avenues of user guidance are being explored - 'All-in-one' and 'Read Me'. 
+Both types are exhibited below - just beneath the full-width app 'splash screen'.
 
-## All-In-One
+### All-In-One
 
 Documentation is kept inside the HTML files.
 Information is stored in standard HTML meta tags
-Currently all the files have tags for
+Currently all the files have tags for:
 
 * Description
 * Key words
@@ -52,11 +60,11 @@ Currently all the files have tags for
 
 Their contents are displayed just under each full-width view of each script
 
-### Cons
+#### Cons
 
 * This can cause file bloat and slow down the process of loading files.
 
-### Pros
+#### Pros
 
 * Everything - html, css, JavaScript and documentation is kept together in one place in a single file
 * Once downloaded and code is compiled has no affect on performance
@@ -64,10 +72,27 @@ Their contents are displayed just under each full-width view of each script
 * Markdown may be embedded in the meta tags
 
 
-## Read Me Files
+### Read Me Files
 
-The more traditional way of documenting things.
+The more traditional way of documenting things - using external read me files.
 
 The contents of the Read Me file for each script is displayed just under the meta data in each full-width view of each script.
-The text is scaled down to 75% of normal size.
+The text is scaled down to 75% of normal size and enclosed in a box with red border.
+
+## Current thinking
+
+The all-in-one system is fine for small amounts of text, but becomes very cumbersome when there are more than a few dozen words.
+The current work process is creating and maintaining fairly small meta tag content and putting most content inthe read me files.
+
+## Issues
+
+* Allowing for easy scrolling means to no full width app gets access to the scrollwheel or touch interactions
+	* Preventing such interactions is a work in progress
+
+## Road Map / To Do List
+
+* Access RSS feed and display summary of latest commits
+* Add section on coding style
+
+
 

@@ -12,32 +12,25 @@
 <script src=http://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
 <script>
 
-//	var urlAPIContents = 'https://api.github.com/repos/jaanga/jaanga.github.io/git/trees/master?recursive=1';
 	var urlAPIContents = 'https://api.github.com/repos/ladybug-analysis-tools/ladybug-web/git/trees/gh-pages?recursive=1';
 
-//	var urlSourceFilter = 'demo/ms/';
-	var urlSourceFilter = '';
-
-//	var urlSource = 'http://jaanga.github.io/demo/ms/';
-//	var urlSource = '../../../../';
 //	var urlSource = 'http://ladybug-analysis-tools.github.io/ladybug-web/';
 	var urlSource = './';
-
-	var converter;
-
-	var footer =
-
-		'<center title="dingbat" >' +
-		'<h1><a href=javascript:window.scrollTo(0,0); style=text-decoration:none; > ❦ </a></h1>' +
-		'</center>' +
-
-	'';
 
 	var iframeContainers = [];
 	var iframesActive = [];
 	var iframesActiveLimit = 3;
 
-	var texts, files;
+	var converter, texts, files;
+
+	var footer =
+
+		'<hr>' +
+		'<center>' +
+		'<h1><a href=javascript:window.scrollTo(0,0); style=text-decoration:none; > <img src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f41e.png?v6" > </a></h1>' +
+		'</center>' +
+
+	'';
 
 	init();
 	animate();
@@ -78,13 +71,13 @@
 
 		} else {
 
-			requestFileNames();
+			requestAPIContents();
 
 		}
 
 	}
 
-	function requestFileNames() {
+	function requestAPIContents() {
 
 		var xhr = new XMLHttpRequest();
 		xhr.open( 'GET', urlAPIContents, true );
@@ -95,19 +88,18 @@
 
 			if ( xhr.readyState !== 4  ) { return; }
 
-			var response = JSON.parse( xhr.response );
-//			var count = 0;
+			var response, file;
+
+			response = JSON.parse( xhr.response );
 			files = [];
 
 			for ( var i = 0; i < response.tree.length; i++ ) {
 
-				var file = response.tree[ i ].path;
+				file = response.tree[ i ].path;
 
 				if ( file === 'index.html' || file.indexOf( '\index.html' ) === -1 ) { continue; }
 
 				files.push( file );
-
-//				count++;
 
 			}
 
@@ -117,15 +109,14 @@
 
 	}
 
-	function createMultipleViews() {
+	function createMultipleViews() { // combine with above
 
 		for ( var i = 0; i < files.length; i++ ) {
 
 			container.innerHTML += 
 
 				'<div class=ifr id=' + i + ' ></div>' +
-				'<div class=txt >header ' + ( i + 1 ) + '</div>' +
-//				'<hr>' +
+				'<div class=txt ></div>' +
 
 			'';
 
@@ -151,7 +142,7 @@
 
 		if ( activeContainer.innerHTML === '' ) {
 
-			id = activeContainer.id;
+			var id = activeContainer.id;
 
 			activeContainer.innerHTML = '<iframe src="' + urlSource + files[ id ] + '" onload=getFile(this,' + id + '); scrolling="no" ></iframe>';
 
@@ -177,7 +168,7 @@
 
 		}
 
-		folder = files[ index ].replace( 'index.html', '' );
+		var folder = files[ index ].replace( 'index.html', '' );
 
 		texts[ index ].innerHTML =
 
@@ -192,8 +183,6 @@
 
 		'';
 
-
-
 		var rm = document.getElementById( 'readme' + index )
 		getMarkdown( urlSource + folder + 'readme.md', rm );
 
@@ -204,23 +193,28 @@
 
 		} else if ( that.contentWindow.ifr && that.contentWindow.ifr.contentWindow.controls ) {
 
+console.log( 'cccc', that.contentWindow.ifr );
+// console.log( 'ddd', that.contentWindow.ifr.contentWindow );
+
+///that.contentWindow.ifr.contentWindow.controls   );
+
 			that.contentWindow.ifr.contentWindow.controls.enableZoom = false;
 
-		} else {
+		}
 
-			if ( that.contentWindow.menu ) {
+		if ( that.contentWindow.menu ) {
 
-				that.contentWindow.menu.style.overflow = 'hidden';
-
-			}
-
-			if ( that.contentWindow.contents ) {
-
-				that.contentWindow.contents.style.overflow = 'hidden';
-
-			}
+			that.contentWindow.menu.style.overflow = 'hidden';
 
 		}
+
+		if ( that.contentWindow.contents ) {
+
+			that.contentWindow.contents.style.overflow = 'hidden';
+
+		}
+
+
 
 	}
 
@@ -235,7 +229,7 @@
 
 			if ( xhr.readyState != 4  ) { return; }
 
-			target.innerHTML = converter.makeHtml(  xhr.responseText );
+			target.innerHTML = converter.makeHtml( xhr.responseText );
 
 		}
 
