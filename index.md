@@ -1,3 +1,9 @@
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
+value='You are now in the home page view - Click this button to view the read me file and the source code' >
+
+[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+
 [Ladybug Web Project Explorer]( ladybug-web-via-github-api-r1.html )
 ===
 
@@ -30,7 +36,7 @@ Mission statements
 * Uses GitHub API to obtain up-to-date list of files
 	* GitHub API rate limits are not abused because processing is done client-side
 	* Each individual client has their own separate quota
-* General meshanism is quite straightforward
+* General mechanism is quite straightforward
 	* If a folder has a file titled 'index.html' then the folder is added to the list of items of interest 
 	* Otherwise the folder is ignored
 * The index file points to the script in the folder that should be run at load time
@@ -86,8 +92,12 @@ The current work process is creating and maintaining fairly small meta tag conte
 
 ## Issues
 
-* Allowing for easy scrolling means to no full width app gets access to the scrollwheel or touch interactions
+* Allowing for easy scrolling means to not allow full width apps to get access to the scrollwheel or touch interactions
 	* Preventing such interactions is a work in progress
+* For experienced users who just want to get to a particular folder there is far too much scrolling involved
+	* Something like a simple, text 'table of contents' might help here
+* The current rev shows the coolness of the scripts, but does little to show you how short and simple the code is
+* Needs indicators - text or charts - as to where the action is
 
 ## Road Map / To Do List
 
