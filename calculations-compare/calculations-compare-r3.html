@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Calculations Compare R2</title>
+<title>Calculations Compare R3</title>
 
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='Compares Agafonkin and Bostock sun positions' >
@@ -84,7 +84,7 @@
 
 		var date, latitude, longitude, julianDay, julianCentury, localTime, timezone, sunPosition, b;
 
-		date = new Date( inpYear.value, inpMonth.value - 1, inpDate.value, inpHours.value, inpMinutes.value, 0 );
+		date = new Date( inpYear.value, inpMonth.value - 1, inpDate.value, inpHours.value - 1, inpMinutes.value );
 
 		latitude = inpLatitude.value;
 		longitude = inpLongitude.value;
@@ -103,6 +103,7 @@
 // Agafonkin
 
 //		var sunPosition, agafonkinCalculations; 
+
 		sunPosition = SunCalc.getPosition( date, latitude, longitude );
 
 		agafonkinCalculations = getAgafonkinCalculations(  date );

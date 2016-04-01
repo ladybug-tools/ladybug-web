@@ -1,0 +1,824 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<!--
+    <meta name="DC.language" scheme="DCTERMS.RFC1766" content="EN-US" >
+    <meta name="author" content="ESRL Web Team">
+    <meta name="DC.creator" content="US Department of Commerce, NOAA, Earth System Research Laboratory" >
+
+    
+    <meta name="DC.date.created" scheme="ISO8601" content="2005-10-01" >
+    <meta name="DC.date.reviewed" scheme="ISO8601" content="2015-08-10" >
+
+
+    <meta name="keywords" content="noaa, national oceanic and atmospheric administration, earth system research, esrl, climate, air quality, numerical modeling, global warming, climate change">
+
+
+    <meta name="description" content="The NOAA Earth System Research Laboratory was formed to observe and understand the Earth system and to develop products, through a commitment to research that will advance the National Oceanic and Atmopsheric Administration's environmental information and services on global to local scales.">
+    <meta name="DC.description" content="The NOAA Earth System Research Laboratory was formed to observe and understand the Earth system and to develop products, through a commitment to research that will advance the National Oceanic and Atmopsheric Administration's environmental information and services on global to local scales." >
+
+-->
+
+
+    <title>Test ESRL</title>
+<!--
+    <meta name="DC.title" content="ESRL Global Monitoring Division - Global Radiation Group" >
+-->
+
+
+
+    <!-- Bootstrap -->
+
+    <link href="http://www.esrl.noaa.gov/gmd/css/bootstrap.css" rel="stylesheet" media="all">
+    <link href="http://www.esrl.noaa.gov/gmd/css/header.css" rel="stylesheet" media="all">
+    <link href="http://www.esrl.noaa.gov/gmd/css_r/major_nav.css" rel="stylesheet" media="all">
+    <link href="http://www.esrl.noaa.gov/gmd/css/colors.css" rel="stylesheet" media="all">
+    <link href="http://www.esrl.noaa.gov/gmd/css/style2.css" rel="stylesheet" media="all">
+    <link href="http://www.esrl.noaa.gov/gmd/css/sidebar3.css" rel="stylesheet" media="all"> 
+    <link href="http://www.esrl.noaa.gov/gmd/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/gmd/js/html5shiv.js"></script>
+      <script src="/gmd/js/respond.js"></script>
+    <![endif]-->
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!--    <script src="//code.jquery.com/jquery.js"></script>  -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://www.esrl.noaa.gov/gmd/js/bootstrap.min.js"></script>
+    <script src="http://www.esrl.noaa.gov/gmd/js/jquery.hoverIntent.minified.js"></script>
+    <script src="http://www.esrl.noaa.gov/gmd/js/bootstrap-hover-dropdown.js"></script>
+
+
+  </head>
+  <body>
+
+
+    <div class="container">
+<!--
+	<ol class="breadcrumb hidden-xs" id="minor_header">
+		<li><a href="http://www.doc.gov/">U.S. Department of Commerce</a></li> 
+		<li><a href="http://www.noaa.gov/">National Oceanic &amp; Atmospheric Administration</a></li>
+		<li><a href="http://www.research.noaa.gov/">NOAA Research</a></li>
+	</ol>
+
+	<div id="major_header">
+
+		<div id="search" class="hidden-xs">
+			<form action="http://search.usa.gov/search" class="form-inline">
+				<input type="hidden" name="affiliate" value="noaa_esrl_gmd">
+				<input type="hidden" name="v:project" value="firstgov" >
+				<label for="query-field">Search ESRL:</label><br >
+<!--				<input type="text" name="query" value="" id="query-field" size="18" > -->
+
+<!--
+				<input type="text" name="query" autocomplete="off">
+				<button type="submit" class="btn btn-default btn-xs">Search</button>
+			</form>
+
+			<a class="xsmall" href="http://www.esrl.noaa.gov/calendar/">Calendar</a>&nbsp;|&nbsp;
+			<a class="xsmall" href="http://nsd.rdc.noaa.gov/nsd/pubsearch">People</a>&nbsp;|&nbsp;
+			<a class="xsmall" href="http://www.esrl.noaa.gov/gmd/publications/">Publications</a>
+		</div>
+
+		<a href="http://www.noaa.gov"><img class="logo" src="http://www.esrl.noaa.gov/gmd/images/noaalogo2.png" alt="NOAA Logo"></a>
+		<div id="lab"><a href="http://www.esrl.noaa.gov">Earth System Research Laboratory</a></div>
+		<div id="division"><a href="http://www.esrl.noaa.gov/gmd/">Global Monitoring Division</a></div>
+
+		<!-- force major_header height to include search div -->
+
+<!--
+		<div class="clear"></div>
+
+
+	</div> -->
+
+<!-- end major_header -->
+
+
+<!--
+	<nav class="navbar navbar-default" role="navigation">
+-->
+  <!-- Brand and toggle get grouped for better mobile display -->
+<!-- 
+ <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".majornav">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="http://www.esrl.noaa.gov/gmd/">GMD Home</a>
+
+  </div>
+
+  <div class="collapse navbar-collapse majornav">
+    <ul class="nav navbar-nav">
+
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">About <b class="caret"></b></a>
+		 <ul class="dropdown-menu">
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/aboutgmd.html"><img src="http://www.esrl.noaa.gov/gmd/icons/information.png">About GMD</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/abouthttp://www.esrl.noaa.gov/gmd_Annual_ReportV2.pdf"><img src="http://www.esrl.noaa.gov/gmd/images/pdf.png">GMD Research Plan</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/orgchart.html"><img src="http://www.esrl.noaa.gov/gmd/icons/chart_organisation.png">Organization Chart</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/stafflist.html"><img src="http://www.esrl.noaa.gov/gmd/icons/user.png">Staff</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/stafflist_group.html"><img src="http://www.esrl.noaa.gov/gmd/icons/group.png">Staff by Group</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/contacts.html"><img src="http://www.esrl.noaa.gov/gmd/icons/contact_email.png">Contacts</a></li>
+			<li><a href="http://www.esrl.noaa.gov/about/jobs.html"><img src="http://www.esrl.noaa.gov/gmd/icons/reseller_account.png">Employment</a></li>
+		</ul>
+	</li>
+
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">Research<b class="caret"></b></a>
+    
+		 <ul class="dropdown-menu">
+			<li><h5>Research Areas</h5></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/research.html">Overview</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/abouthttp://www.esrl.noaa.gov/gmd_Annual_ReportV2.pdf"><img src="http://www.esrl.noaa.gov/gmd/images/pdf.png">GMD Research Plan</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/climate.html">Climate Forcing</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/ozone.html">Ozone Depletion</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/about/airquality.html">Baseline Air Quality</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/ccl/">Central Calibration Laboratory</a></li>
+			<li><h5>Research Groups</h5></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/aero/">Aerosols</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/ccgg/">Greenhouse Gases</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/hats/">Halocarbons and Trace Gases</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/ozwv/">Ozone and Water Vapor</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/grad/">Solar and Infrared Radiation</a></li>
+		</ul>
+
+	</li>
+
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">Data and Products<b class="caret"></b></a>
+    
+		<ul class="dropdown-menu">
+			<li><h5>Data</h5></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/dv/data/"><img src="http://www.esrl.noaa.gov/gmd/icons/magnifier.png">Search for Data</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/dv/ftpdata.html"><img src="http://www.esrl.noaa.gov/gmd/icons/database.png">Data Archive</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/dv/site/"><img src="http://www.esrl.noaa.gov/gmd/icons/world.png">Measurement Sites</a></li>
+
+			<li><h5>Tools</h5></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/dv/iadv/"><img src="http://www.esrl.noaa.gov/gmd/icons/chart_curve.png">Interactive Data Viewer</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/grad/solcalc/"><img src="http://www.esrl.noaa.gov/gmd/icons/weather_cloudy.png">Solar Calculator</a></li>
+			<li><h5>Products</h5></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/aggi/"><img src="http://www.esrl.noaa.gov/gmd/images/aggiicon.png">Greenhouse Gas Index</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/odgi/"><img src="http://www.esrl.noaa.gov/gmd/images/odgiicon.png">Ozone Depletion Index</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/ccgg/trends/"><img src="http://www.esrl.noaa.gov/gmd/images/trendsicon.png">Trends in CO<sub>2</sub></a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/ccgg/trends_ch4/"><img src="http://www.esrl.noaa.gov/gmd/images/trendsicon.png">Trends in CH<sub>4</sub></a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/ccgg/carbontracker/"><img src="http://www.esrl.noaa.gov/gmd/images/cticon.png">CarbonTracker</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/ccgg/obspack/"><img src="http://www.esrl.noaa.gov/gmd/icons/database.png">ObsPack</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/ccgg/globalview/"><img src="http://www.esrl.noaa.gov/gmd/images/gvicon.png">GLOBALVIEW</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/grad/snomelt.html"><img src="http://www.esrl.noaa.gov/gmd/icons/weather_snow.png">Barrow Snow Melt Dates</a></li>
+			<li><h5>Visualization</h5></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/dv/ozwv/">Ozone and Water Vapor</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/dv/rad/">Radiation</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/dv/hats/">Trace Gases</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/aero/net/">Aerosols</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/dv/spo_oz/">South Pole Ozone Hole</a></li>
+			<hr>
+			<a href="http://www.esrl.noaa.gov/gmd/dv/"><small><em>&nbsp;More Options...</em></small></a>
+		</ul>
+	</li>
+
+
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">Observatories<b class="caret"></b></a>
+    
+		<ul class="dropdown-menu">
+			<li><a href="http://www.esrl.noaa.gov/gmd/obop/"><img class='menuimage' src="http://www.esrl.noaa.gov/gmd/images/obsmapicon.png">Observatory Operations</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/obop/brw/"><img class='menuimage' src="http://www.esrl.noaa.gov/gmd/images/brwstation_small3.jpg" alt="">Barrow, Alaska</a></li>
+			<li><a href="http://www.esrl.noaa.gov/gmd/obop/thd/"><img class='menuimage' src="/gmd/images/thd_small.jpg" alt="">Trinidad Head, California</a></li>
+			<li><a href="/gmd/obop/mlo/"><img class='menuimage' src="/gmd/images/mlostation_small3.jpg" alt="">Mauna Loa, Hawaii</a></li>
+			<li><a href="/gmd/obop/smo/"><img class='menuimage' src="/gmd/images/smostation_small3.jpg" alt="">American Samoa</a></li>
+			<li><a href="/gmd/obop/spo/"><img class='menuimage' src="/gmd/images/spostation_small3.jpg" alt="">South Pole</a></li>
+			<li><a href="/gmd/obop/sum/"><img class='menuimage' src="/gmd/images/sumstation_small3.jpg" alt="">Summit, Greenland</a></li>
+
+		</ul>
+	</li>
+
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">Information<b class="caret"></b></a>
+    
+		<ul class="dropdown-menu pull-right">
+            
+			<li><a href="/gmd/education/"><img src="/gmd/icons/education.png"> Education/Outreach</a></li>
+			<li><a href="/gmd/news/"><img src="/gmd/icons/newspaper.png"> News</a></li>
+			<li><a href="/gmd/publications/"><img src="/gmd/icons/page_white_stack.png"> Publications</a></li>
+			<li><a href="/gmd/education/faq_cat-1.html"><img src="/gmd/icons/question.png"> FAQ's</a></li>
+			<li><a href="/gmd/about/seminars.php"><img src="/gmd/images/seminar.png"> Seminars</a></li>
+			<li><a href="/gmd/safety/"><img src="/gmd/icons/caution_radiation.png"> Safety Program</a></li>
+			<li><a href="/gmd/about/links.html"><img src="/gmd/icons/link.png"> Links</a></li>
+			<li><a href="/gmd/about/visiting.html"><img src="/gmd/icons/user.png"> Visitor Information</a></li>
+			<li><a href="/gmd/Photo_Gallery/"><img src="/gmd/icons/camera.png"> Photo Gallery</a></li>
+			<li><a href="/gmd/obop/spo/livecamera.html"><img src="/gmd/icons/webcam.png"> South Pole Webcam</a></li>
+			<li><a href="/gmd/obop/mlo/livecam/livecam.html"><img src="/gmd/icons/webcam.png"> Mauna Loa Webcams</a></li>
+			<li><a href="/gmd/obop/brw/livecamera.html"><img src="/gmd/icons/webcam.png"> Barrow Webcam</a></li>
+			<hr>
+			<li><a href="/gmd/review/"><img src="/gmd/webdata/logos/noaa_xsmall.png"> Global Monitoring Division Review</a></li>
+
+			<li><h5>Global Monitoring Annual Conference</h5></li>
+
+			<div class="menu_box">
+				<a href="/gmd/annualconference/" >
+				<div class="illustration">
+					<img src="/gmd/webdata/logos/noaa_vsmall.png" alt="GMAC">
+				</div>
+				<div class="menutext">
+					The 44<sup>th</sup> Global Monitoring Conference will be held May 17-18, 2016 in Boulder.
+				</div>
+				</a>
+			</div>
+		</ul>
+	</li>
+
+	<li class="visible-md visible-lg"><a href="/gmd/sitemap/">Site Map</a></li>
+	<li class="visible-md visible-lg"><a href="http://intranet.cmdl.noaa.gov/">Intranet</a></li>
+    </ul>
+  </div>
+</nav>
+
+-->
+	<div id="mainsection">
+
+	
+		<!-- minor navigation -->
+		
+<!--
+<style>
+
+#subnav {
+margin-top: 10px;
+}
+
+#subnav > li > a {
+font-size: 16px;
+}
+
+
+.gggrn_header {
+/*background-image: linear-gradient(#e4e4e4, #f8f8f8 50%, #fff); */
+border-bottom: 1px solid #eee;
+margin-left: 0;
+margin-right: 0;
+padding: 12px 0;
+line-height: 1.1;
+vertical-align: middle;
+
+}
+
+
+.subnav-toggle {
+    border: 1px solid #cfcfcf;
+color: #bbb;
+}
+
+.subnav-toggle .icon-bar {
+    background-color: #bbb;
+    border-radius: 1px 1px 1px 1px;
+    display: block;
+    height: 2px;
+    width: 22px;
+}
+
+.subnav-toggle .icon-bar + .icon-bar {
+    margin-top: 4px;
+}
+
+.gggrn_header  h4 { font-size: 18px; }
+
+</style>
+-->
+<!--
+<div class="row gggrn_header">
+
+	<div class="col-md-4">
+
+		<a class="media" href="/gmd/grad/">
+			<img src="/gmd/ccgg/gggrn_small.png" class="media-object pull-left">
+			<div class="media-body">
+				<h4 class="media-heading">Global Radiation Group</h4> 
+			</div>
+		</a>
+	</div>
+
+	<div class="col-md-8">
+
+		<!-- Brand and toggle get grouped for better mobile display -->
+
+<!--
+		<div class="navbar-header">
+			<button type="button" class="btn btn-default navbar-toggle subnav-toggle" data-toggle="collapse" data-target="#ggrnnav">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+
+		<div class="collapse navbar-collapse pull-right" data-role="navigation" id="ggrnnav">
+			<ul class="nav navbar-nav" id="subnav">
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
+					 <ul class="dropdown-menu">
+						<li><a href="/gmd/grad/">Home</a></li>
+						<li><a href="/gmd/grad/field.html">Observation Networks</a></li>
+						<li><a href="/gmd/grad//bsrn.html">BSRN Network</a></li>
+						<li><a href="/gmd/grad/surfrad/index.html">SURFRAD Network</a></li>
+						<li><a href="/gmd/grad/isis/index.html">ISIS Network</a></li>
+						<li><a href="http://www.esrl.noaa.gov/gmd/grad/neubrew/">NEUBrew Network</a></li>
+						<li><a href="http://www.esrl.noaa.gov/gmd/grad/antuv/">Antarctic UV Network</a></li>
+						<hr>
+						<li><a href="/gmd/grad/srf.html">Broadband Solar Calibration</a></li>
+						<li><a href="/gmd/grad/calfacil/cucfhome.html">Central UV Calibration Facility</a></li>
+					</ul>
+				</li>
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Products and Data <b class="caret"></b></a>
+					 <ul class="dropdown-menu">
+						<li><a href="/gmd/grad/stardata.html">Data</a></li>
+						<li><a href="/gmd/grad/mloapt.html">MLO Transmission</a></li>
+						<hr>
+						<li><a href="/gmd/grad/solcalc/">Solar Calculator</a></li>
+						<li><a href="/gmd/grad/solcalc/sunrise.html">Sunrise/Sunset (Old version)</a></li>
+						<li><a href="/gmd/grad/solcalc/azel.html">Solar Position (Old version)</a></li>
+						<hr>
+						<li><a href="ftp://aftp.cmdl.noaa.gov/data/radiation/baseline/">Global Remote FTP Server</a></li>
+						<li><a href="ftp://aftp.cmdl.noaa.gov/data/radiation/surfrad/">SURFRAD FTP Server</a></li>
+						<li><a href="ftp://aftp.cmdl.noaa.gov/data/radiation/CUCF/">CUCF FTP Server</a></li>
+						<li><a href="ftp://aftp.cmdl.noaa.gov/data/radiation/neubrew">NEUBrew FTP Server</a></li>
+						<hr>
+						<li><a href="http://cmdl1.cmdl.noaa.gov:8000/www/all/rad/">Baseline Sites Daily Plots</a></li>
+					</ul>
+				</li>
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Information <b class="caret"></b></a>
+					 <ul class="dropdown-menu pull-right">
+						<li><a href="/gmd/grad/news.php">News</a></li>
+						<li><a href="/gmd/grad/researchp.html">Research</a></li>
+						<li><a href="/gmd/grad/instruments.html">Instrument Descriptions</a></li>
+						<li><a href="/gmd/grad/about/rad.html">Radiation Primer</a></li>
+						<li><a href="/gmd/grad/snomelt.html">Barrow Snow Melt Dates</a></li>
+						<li><a href="/gmd/grad/starmeas.html">Terminology</a></li>
+						<li><a href="/gmd/grad/about/redsky/">"Red Sky in the Morning"</a></li>
+						<li><a href="/gmd/about/stafflist_group.html#G-RAD">Personnel</a></li>
+						<li><a href="http://cmdl1.cmdl.noaa.gov:8000/~star/">Internal Pages</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+	
+
+-->
+
+
+
+
+<script>
+
+$(document).ready(function() {  
+
+	// set up event handlers on input boxes
+	$('#daybox').change(function(){ inputsChanged(); });
+	$('#mosbox').change(function(){ inputsChanged(); });
+	$('#yearbox').change(function(){ inputsChanged(); });
+	$('#hrbox').change(function(){ inputsChanged(); });
+	$('#mnbox').change(function(){ inputsChanged(); });
+	$('#scbox').change(function(){ inputsChanged(); });
+	$('#zonebox').change(function(){ inputsChanged(); });
+	$('#latbox').change(function(){ latlongChanged(); });
+	$('#lngbox').change(function(){ latlongChanged(); });
+	$('#dstCheckbox').click(function(){ inputsChanged(); });
+	$('#mkCookie').click(function(){ saveCookie(); });
+	$('#showsr').click(function(){ inputsChanged(); });
+	$('#showss').click(function(){ inputsChanged(); });
+	$('#showae').click(function(){ inputsChanged(); });
+	$('#pmbox').click(function(){ inputsChanged(); });
+
+	// set up event handlers for city markers radio buttons
+	$('#showworld').click(function(){ refreshMap(); });
+	$('#showus').click(function(){ refreshMap(); });
+	$('#showobs').click(function(){ refreshMap(); });
+	$('#showdata').click(function(){ refreshMap(); });
+	$('#showsurf').click(function(){ refreshMap(); });
+
+	// get current date and time
+	dateObj4 = new Date();
+	nowhour = dateObj4.getHours();
+	nowmins = dateObj4.getMinutes();
+	nowsecs = dateObj4.getSeconds();
+	thisYear = dateObj4.getYear();
+	if(thisYear <=199){
+	  thisYear=(thisYear*1)+1900;
+	}
+    	thismonth = dateObj4.getMonth();
+	thisday = dateObj4.getDate();
+
+	// set date boxes to current date and time
+	$('#daybox').val(thisday);
+	$('#mosbox').val(monthList[thismonth].abbr);
+	$('#hrbox').val(zeroPad(nowhour,2));
+	$('#mnbox').val(zeroPad(nowmins,2));
+	$('#scbox').val(zeroPad(nowsecs,2));
+	$('#yearbox').val(thisYear);
+
+/*
+	// get saved location cookie if available, 
+	// and set location inputs
+	cookee = GetCookie("lat");
+	lat = (cookee) ? cookee : "39.833";
+	$('#latbox').val(lat);
+        cookee = GetCookie("lng");
+        lon = (cookee) ? cookee : "-98.583";
+	$('#lngbox').val(lon);
+	cookee = GetCookie("gmt");
+	gmt = (cookee) ? cookee : "-6";
+	$('#zonebox').val(gmt);
+*/
+
+	// do calculations on default location and date
+
+	calculate();
+
+});
+
+</script>
+
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js'></script>
+<script src='http://www.esrl.noaa.gov/gmd/grad/solcalc/L.Control.Zoomslider.js'></script>
+<script src='http://www.esrl.noaa.gov/gmd/grad/solcalc/Leaflet.Geodesic.min.js'></script>
+<script src='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.4/esri-leaflet.js'></script>
+
+<!--
+<script type="text/javascript" src="http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js"></script>
+-->
+<script type="text/javascript" src="main.js"></script>
+
+<link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css' />
+<link rel='stylesheet' href='http://www.esrl.noaa.gov/gmd/grad/solcalc/L.Control.Zoomslider.css' />
+
+
+<!--
+<H1 class="text-center">NOAA Solar Calculator</H1>
+<H4 class="text-center">Find Sunrise, Sunset, Solar Noon and Solar Position for Any Place on Earth</H4>
+  
+
+<div class="row vpad">
+    <div class="col-sm-1">Show:</div>
+    <div class="col-sm-2">
+	<input TYPE="radio" NAME="showpins" ID="showworld" VALUE="World" ><span class="larger bold purple">World Cities</span>
+    </div>
+    <div class="col-sm-2">
+	<input TYPE="radio" NAME="showpins" ID="showus" VALUE="US" CHECKED ><span class="larger bold blue">U.S. Cities</span>
+    </div>
+    <div class="col-sm-2">
+	<input TYPE="radio" NAME="showpins" ID="showobs" VALUE="Obs" ><span class="larger bold gray">GMD Observ.'s</span>
+    </div>
+    <div class="col-sm-2">
+	<input TYPE="radio" NAME="showpins" ID="showdata" VALUE="Site" ><span class="larger bold green">GMD Data Sites</span>
+    </div>
+    <div class="col-sm-2">
+	<input TYPE="radio" NAME="showpins" ID="showsurf" VALUE="Surfrad" ><span class="larger bold red">SurfRad</span>
+    </div>
+</div>
+
+<p>
+    Click one of the small pins near (and in the same time zone as) your desired location. Use the control on the left side of the map to zoom in or out. Place the large pin in the exact desired location. You can use the Save button to have your computer remember the current location for next time. Check the DST check box if Daylight Saving Time is in effect for your site.
+</p>
+  
+-->
+
+<div id='map_canvas' style='max-width: 900px; height: 450px; margin: auto;'></div>
+
+<br>
+
+<div class="row">
+
+    <!-- location box -->
+
+
+    <div class="col-sm-6">
+        Location:
+        <div class="box">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+	                <label for="latbox"><a href="glossary.html#latitude" target="_blank">Latitude: </a></label>
+	                <input type="text" class="form-control" id="latbox" value="39.833">
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+	                <label for="lngbox"><a href="glossary.html#longitude" target="_blank">Longitude: </a></label>
+	                <input type="text" class="form-control" id="lngbox" value="-98.583">
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+	                <label for="zonebox"><a href="timezone.html" target="_blank">Time Zone: </a></label>
+	                <input type="text" class="form-control" id="zonebox" value="-6">
+	                <input type="checkbox" id="dstCheckbox" name="dst"> 
+	                <a href="glossary.html#daylightsavingtime" target="_blank">DST?</a>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-default text-center" id="mkCookie" name="mkCookie" >Save Location</button>
+        </div>  <!-- end box -->
+    </div>  <!-- end col-sm-6-->
+
+    <div class="col-sm-6">
+
+        Date:
+        <div class="box">
+            <div class="row">        <!-- row with date, month, year -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="daybox" >Day: </label>
+                        <select NAME="day" ID="daybox" class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+                        <option>17</option>
+                        <option>18</option>
+                        <option>19</option>
+                        <option>20</option>
+                        <option>21</option>
+                        <option>22</option>
+                        <option>23</option>
+                        <option>24</option>
+                        <option>25</option>
+                        <option>26</option>
+                        <option>27</option>
+                        <option>28</option>
+                        <option>29</option>
+                        <option>30</option>
+                        <option>31</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="mosbox" >Month: </label>
+                        <select NAME="mos" ID="mosbox" class="form-control">
+                        <option>Jan</option>
+                        <option>Feb</option>
+                        <option>Mar</option>
+                        <option>Apr</option>
+                        <option>May</option>
+                        <option>Jun</option>
+                        <option>Jul</option>
+                        <option>Aug</option>
+                        <option>Sep</option>
+                        <option>Oct</option>
+                        <option>Nov</option>
+                        <option>Dec</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="yearbox" >Year: </label>
+                        <input TYPE="text" ID="yearbox" NAME="year" VALUE="2015" class="form-control">
+                    </div>
+                </div>
+            </div> <!-- end row -->
+
+            <div class="row">  <!-- row with hour, minute, second -->
+                <div class="col-sm-12">
+                    <div class="form-group" style="margin-bottom: 2px;">
+                        <label for="yearbox" >Local Time: </label>
+                        <div class="form-inline">
+                            <input TYPE="text" ID="hrbox" NAME="hour" VALUE="15" class="form-controlx" style="width: 50px;">
+                            :
+                            <input TYPE="text" ID="mnbox" NAME="mins" VALUE="20" class="form-controlx" style="width: 50px;">
+                            :
+                            <input TYPE="text" ID="scbox" NAME="secs" VALUE="30" class="form-controlx" style="width: 50px;">
+                            <label> <input type="checkbox" id="pmbox" name="pm"> PM </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  <!-- end box -->
+    </div>  <!-- end col-sm-6 -->
+</div>  <!-- end row -->
+
+<!-- box with results -->
+<br>
+Result
+<div class="box">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+	        <label> <a href="./glossary.html#equationoftime" target="_blank">Equation of Time</a> (minutes):</label>
+	        <input TYPE="text" class="form-control" ID="eqtbox" NAME="eqTime" readonly>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+	        <label><a href="./glossary.html#solardeclination" target="_blank">Solar Declination</a> (in&deg;):&nbsp;&nbsp;&nbsp;</label>
+	        <input TYPE="text" class="form-control" ID="sdbox" NAME="solarDec"  readonly>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+	        <label><a href="./glossary.html#apparentsunrise" target="_blank">Apparent Sunrise</a> (hh:mm):</label>
+	        <input TYPE="text" class="form-control" ID="risebox" NAME="sunrise" readonly>
+		<label class="green"><input TYPE="checkbox" ID="showsr" NAME="srshow">Show Sunrise</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+	        <label><a href="./glossary.html#solarnoon" target="_blank">Solar Noon</a> (hh:mm:ss):&nbsp;&nbsp;&nbsp; </label>
+	        <input TYPE="text" class="form-control" ID="noonbox" NAME="solnoon" readonly>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+	        <label><a href="./glossary.html#apparentsunrise" target="_blank">Apparent Sunset</a> (hh:mm):</label>
+	        <input TYPE="text" class="form-control" ID="setbox" NAME="sunset" readonly>
+		<label class="red"><input TYPE="checkbox" ID="showss" NAME="ssshow" >Show Sunset</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+	        <label><a href="./glossary.html#azimuthelevation" target="_blank">Az/El</a> (in &deg;) at Local Time:</label>
+                <div class="row">
+                    <div class="col-xs-6" style="padding-right: 4px;">
+	                <input TYPE="text" class="form-control" ID="azbox" NAME="az" readonly style="padding:6px 6px;">
+                    </div>
+                    <div class="col-xs-6" style="padding-left: 4px;">
+                        <input TYPE="text" class="form-control" ID="elbox" NAME="el" readonly style="padding:6px 6px;">
+                    </div>
+                </div>
+		<label class="yellow"><input TYPE="checkbox" ID="showae" NAME="aeshow" >Show Azimuth</label>
+            </div>
+        </div>
+    </div>	
+</div>	
+
+<!--
+<script type="text/javascript" src="http://www.esrl.noaa.gov/gmd/grad/solcalc/emaps.js"></script>
+-->
+
+<script type="text/javascript" src="emaps.js"></script>
+
+<script>
+
+document.getElementById("latbox").value = 37.796;
+document.getElementById("lngbox").value = -122.398;
+document.getElementById("zonebox").value = -7;
+document.getElementById("dstCheckbox").checked = true
+
+
+</script>
+
+<!--
+<hr>
+<h4>Having Trouble?</h4>
+<ul>
+<li>Check your Time Zone -- Is the time zone set correctly for this location? Try clicking on one of the city pins near (and in the same time zone as) your location. Tick the boxes above the map to show different sets of pins.</li>
+<li>Daylight Saving Time? -- Our calculator does not automatically set Daylight Time, so tick the DST box if Daylight TIme is in effect for your location on the day you have entered.</li>
+<li>Click the <i>Show</i> checkboxes under sunrise, sunset and azimuth/elevation to display color-coded lines on the map indicating the direction of sunrise, sunset and current solar position.</li>
+<li>This solar calculator is provided for research and entertainment purposes only. Due to variable atmospheric conditions and uncertainty inherent in the algorithms used, the actual observed values of sunrise, sunset and solar position may differ from the results presented here.</li>
+<li>Other Questions? -- Feel free to write to us with any questions or comments at <a href="mailto:webmaster.gmd&#64;noaa.gov">Webmaster</a>.</li>
+</ul>
+
+<hr>
+<h4>Solar Calculation Resources:</h4>
+<div class="larger">
+<div class="row">
+    <div class="col-sm-4">
+	<ul>
+	<li><a href="./index.html">NOAA Solar Calculator</a></li>
+	<li><a href="./sunrise.html">Old Sunrise Calculator</a></li>
+	<li><a href="./azel.html">Old Solar Pos Calculator</a></li>
+	</ul>
+    </div>
+
+    <div class="col-sm-4">
+	<ul>
+	<li><a href="./sollinks.html">Solar Calculator Links</a></li>
+	<li><a href="./glossary.html">Solar Calculator Glossary</a></li>
+	</ul>
+    </div>
+
+    <div class="col-sm-4">
+	<ul>
+	<li><a href="./calcdetails.html">Calculation Details</a></li>
+	<li><a href="./timezone.html">Time Zone Table</a></li>
+	</ul>
+    </div>
+</div>
+</div>
+
+
+
+<noscript><b>JavaScript must be enabled in order for you to use the map.</b> 
+However, it seems JavaScript is either disabled or not supported by your browser. 
+To view Google Maps, enable JavaScript by changing your browser options, and then 
+try again.
+</noscript>
+-->
+
+    </div> <!-- end mainsection -->
+
+
+<!--
+    <div id="footer">
+	<div class="row">
+	    <div id="orgs" class="col-md-5">
+		<a href="http://www.doc.gov/">U.S. Department of Commerce</a> | 
+		<a href="http://www.noaa.gov/">National Oceanic and Atmospheric Administration</a>
+		<br>
+		<a href="/">Earth System Research Laboratory</a> | 
+		<a href="/gmd/">Global Monitoring Division</a>
+		<br>
+		<span class="url">
+			<a href="/gmd/grad/solcalc/index.html">http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html</a>
+		</span>
+	    </div>
+
+	    <div id="media_icons" class="col-md-3">
+		<a href="https://www.facebook.com/NOAAESRL" title="ESRL Facebook"> <i class="fa fa-2x fa-facebook"></i></a>
+		<a href="https://twitter.com/NOAA_ESRL" title="ESRL Twitter"> <i class="fa fa-2x fa-twitter"></i></a>
+		<a href="https://www.youtube.com/user/NOAAESRL" title="ESRL Youtube Channel"> <i class="fa fa-2x fa-youtube"></i></a>
+		<a href="https://www.flickr.com/photos/noaa_esrl" title="ESRL Flickr"> <i class="fa fa-2x fa-flickr"></i></a>
+	    </div>
+
+	    <div id="policies" class="col-md-4">
+		<a href="http://www.noaa.gov/privacy.html">Privacy Policy</a> | 
+		<a href="http://www.esrl.noaa.gov/about/accessibility.html">Accessibility</a> | 
+		<a href="/gmd/about/disclaimer.html">Disclaimer</a> | 
+		<a href="http://www.usa.gov/">USA.gov</a>
+		<br>
+		<a href="/gmd/about/contacts.html">Contact Us</a> | 
+		<a href="mailto:webmaster.gmd&#64;noaa.gov">Webmaster</a>
+		<br>
+		<a href="/gmd/sitemap">Site Map</a>
+	    </div>
+	</div>
+-->
+
+    </div> <!-- end footer -->
+
+</div> <!-- end container -->
+
+<!--
+
+<script type="text/javascript">
+//<![CDATA[
+      var usasearch_config = { siteHandle:"noaa_esrl_gmd" };
+
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "http://search.usa.gov/javascripts/remote.loader.js";
+      document.getElementsByTagName("head")[0].appendChild(script);
+//]]>
+</script>
+
+<script id="_fed_an_ua_tag" type="text/javascript" src="/gmd/js/federated-analytics.js?agency=DOC&sub­agency=NOAA&pua=UA-50368700-1"></script>
+
+-->
+
+
+</body>
+</html>
+
+

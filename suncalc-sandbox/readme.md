@@ -28,3 +28,9 @@ value='You are now in the home page view - Click this button to view the read me
 * Add buttons
 
 * Adapt Google Maps API gazetteer  << done
+
+
+## Road Map / Things To Do
+
+* Add local times
+* Add click on Map

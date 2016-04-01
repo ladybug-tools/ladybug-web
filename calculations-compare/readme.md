@@ -2,14 +2,20 @@
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
+[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 [Calculations Compare Read Me]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html#calculations-compare/readme.md )
 ===
 
 ## full screen: [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/ )
 
+
+## Update 2016-04-01
+
+* R3
+* Most issues seem to be solved
+	* Many had to do with timezone and DST issues
 
 ### Update 2016-03-31
 
