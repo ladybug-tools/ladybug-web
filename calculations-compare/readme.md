@@ -8,7 +8,9 @@ value='You are now in the home page view - Click this button to view the read me
 [Calculations Compare Read Me]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html#calculations-compare/readme.md )
 ===
 
-## full screen: [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/ )
+# full screen: [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/ )
+
+***
 
 ## Features
 
@@ -18,7 +20,7 @@ value='You are now in the home page view - Click this button to view the read me
 	* Displays other related data to help verify accuracy ~ a work-in-progress
 * Currently reports on the following
 	* Ladybug Web Solar Calculator
-	* NOAA Slar Calculator
+	* NOAA Solar Calculator
 	* Vladimir Agafonkin's SunCalc.js
 	* Mike Bostock's Solar Calculaor
 * Where possible the source is original and canonical JavaScript file on the web
