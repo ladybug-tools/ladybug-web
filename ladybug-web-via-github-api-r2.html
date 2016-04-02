@@ -197,9 +197,9 @@
 
 		}
 
-//		var folder = files[ index ].replace( 'index.html', '' );
+		var folder = files[ index ].replace( 'index.html', '' );
 
-		var folder = files[ index ].split('\\').pop().split('/').pop();
+//		var folder = files[ index ].split('\\').pop().split('/').pop();
 
 		texts[ index ].innerHTML =
 
@@ -208,7 +208,7 @@
 				'<b>Description</b>' + b + description + b +
 				'<b>Keywords</b>' + b + keywords + b +
 				'<b>Date</b>' + b + date + b +
-				'<b>Sull screen: <a href=index.html#' + folder + 'readme.md >Read Me</a></b>' +
+				'<b>Full screen: <a href=index.html#' + folder + 'readme.md >Read Me</a></b>' +
 			'</div>' +
 			'<div class=readme id=readme' + index + ' ></div>' +
 
