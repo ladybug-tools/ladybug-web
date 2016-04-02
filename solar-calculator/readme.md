@@ -39,19 +39,27 @@ Therefore we propose a new effort that stands on their shoulders.
 * Viewer that displays output from all functions
 	* Allows you to set location, date and time
 * Documentation that helps you find further information
- 
+	* Provide links to all sources for all calculations
+	* Provide history, further insight, usage for each calculation
+	* Explain the purpose, use and code for each and every function in simple English
 
 ### Features
 
 * Calculate the position of the Sun
 	* Given latitude, longitude, date and time - and return its azimuth and altitude in degrees
-* Based on the NOAA solar calculator
+* All calculations based on the code of the [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html )
 * Variable names and function names written in clear English
 	* Minimal use of unintelligible symbols
 	* functions written as simple functions
 * No outside dependencies
 * JavaScript file usable by any app on the web
 * Viewer files provides detailed example of functions and variables
+
+
+### Update 2016-04-02
+
+* R3
+* Added seconds - in order to keep up with NOAA Solar Calculator
 
 
 ### Update 2016-03-30
@@ -78,22 +86,56 @@ Therefore we propose a new effort that stands on their shoulders.
 
 ## Issues/Questions
 
-* Should all calcs be in radians - would save many conversions back and forth?
-* Is it 'alitude' or 'elevation'; - would like definitive, globally-oriented source/reference for current astronomical nomenclature
+* The NOAA Solar Calculator code is undocumented
+	* Finding sources for the algorithms is not easy
+	* Is use of Julian Century now archaic with use of modern computers?
+* Is it 'altitude' or 'elevation'; - would like definitive, globally-oriented source/reference for current astronomical nomenclature
+* Should all calcs be in radians - might save some conversions back and forth?
+
 
 ## Road Map
 
-* Start verifying calculations
-* Update [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/ )
-* Provide links to all sources for all calculations
-	* Provide history, further insight, usage for each calculation
-* Explain each function in simple English
+* find ways of verifying calculations
+* Compare NOAA, meeus and StackOverflow methods for accuracy and speed
+	* over several thousand years
+
 
 ## Links of interest
 
-* [Julian Day]( https://en.wikipedia.org/wiki/Julian_day )
+* http://www.iau.org/
+* http://www.iausofa.org/
+
 * simpler calculation: http://www.geoastro.de/elevaz/basics/meeus.htm
 * short definitions: http://www.ephemeris.com/space-time.html
+
+
+### Julian Day
+
+* https://en.wikipedia.org/wiki/Julian_day
+* http://aa.usno.navy.mil/data/docs/JulianDate.php
+* http://www.tondering.dk/claus/cal/julperiod.php
+* http://javascript.about.com/library/bljulday.htm
+* http://stackoverflow.com/questions/11759992/calculating-jdayjulian-day-in-javascript
+	* See also http://javascript.about.com/library/bljulday.htm
+	* looks interesting
+	* Maybe nice use of JavaScript prototype
+* http://www.physics.sfasu.edu/astro/javascript/julianday.html
+	* Why so complicated?
+* http://www.geoastro.de/elevaz/basics/meeus.htm
+	* Has slightly modified version of NOAA Julian Day calculation
+
+
+
+### Equation of Time
+
+* https://en.wikipedia.org/wiki/Equation_of_time
+* http://aa.usno.navy.mil/faq/docs/eqtime.php
+* http://info.ifpan.edu.pl/firststep/aw-works/fsII/mul/mueller.html
+	* lots of Euler stuff
+* http://www.sundials.co.uk/equation.htm
+* http://www.astronomynotes.com/nakedeye/s9.htm
+
+
 * https://en.wikipedia.org/wiki/Orbital_elements
 * https://en.wikipedia.org/wiki/Mean_longitude
 * https://en.wikipedia.org/wiki/Equation_of_the_center

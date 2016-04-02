@@ -1,0 +1,137 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Web Solar Calculator Viewer R3</title>
+
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='View results from Ladybug Web Solar Calculator. Calculate the position of the Sun - given latitude, longitude, date and time - and return its azimuth and altitude in degrees' >
+<meta name=keywords content='astronomy,JavaScript,GitHub,FOSS,STEM' >
+<meta name=date content='2016-04-02' >
+</head>
+<body>
+<script src=ladybug-web-solar-calculator-r2.js ></script>
+<script>
+
+	init();
+
+	function init() {
+
+		var css, menu, b;
+
+		css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; }' +
+			'h2 a { text-decoration: none; }' +
+			'input { width: 70px; }' +
+
+		'';
+
+		menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href="" >' + document.title + '</a>' +
+				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/index.html#solar-calculator/readme.md > &#x24D8; </a>' +
+			'</h2>' +
+			'<h3>Input</h3>' +
+			'<p>Latitude <input type=number id=inpLatitude > Longitude <input type=number id=inpLongitude ></p>' +
+			'<p>Year <input type=number id=inpYear > Month <input type=number id=inpMonth > Day <input type=number id=inpDate >' +
+
+			'<p>Hour <input type=number id=inpHours > Minutes <input type=number id=inpMinutes > Seconds <input type=number id=inpSeconds > ' +
+				'Timezone <input id=inpTimezone ></p>' +
+
+			'<div id=info ></div>'+
+		'';
+
+		inpLatitude.value = latitude;
+		inpLongitude.value = longitude;
+
+		date = new Date();
+		inpYear.value = date.getFullYear();
+		inpMonth.value = date.getMonth() + 1;
+		inpDate.value = date.getDate();
+		inpHours.value = date.getHours();
+		inpMinutes.value = date.getMinutes();
+		inpSeconds.value = date.getSeconds();
+		inpTimezone.value = date.getTimezoneOffset();
+
+		inpLatitude.onchange = inpLongitude.onchange = updateSunPosition; 
+		inpYear.onchange = inpMonth.onchange = inpDate.onchange = updateSunPosition;
+		inpHours.onchange = inpMinutes.onchange = inpSeconds.onchange = inpTimezone.onchange = updateSunPosition;
+
+		updateSunPosition();
+
+	}
+
+	function updateSunPosition( ) {
+
+		var date, latitude, longitude, julianDay, julianCentury, localTime, timezone, sunPosition, b;
+
+		date = new Date( inpYear.value, inpMonth.value - 1, inpDate.value, inpHours.value, inpMinutes.value, inpSeconds.value );
+
+		latitude = inpLatitude.value;
+		longitude = inpLongitude.value;
+
+		julianDay = getJulianDay( date );
+		julianCentury = getJulianCentury( julianDay );
+		localTime = getTimeLocal( date );
+
+		if ( longitude < 0 ) {
+
+			timezone = - date.getTimezoneOffset() / 60;
+
+		} else {
+
+			timezone = date.getTimezoneOffset() / 60;
+
+		}
+
+		sunPosition = getSunPosition( julianCentury, localTime, latitude, longitude, timezone );
+
+		b = '<br>';
+
+		info.innerHTML = 
+
+			'<h3>Sun Position</h3>' +
+			'<p>' +
+				'&bull; <a href="https://en.wikipedia.org/wiki/Azimuth" target="_blank">Azimuth</a>:&nbsp; ' + sunPosition[ 0 ] + b +
+				'&bull; <a href="https://en.wikipedia.org/wiki/Horizontal_coordinate_system" target="_blank">Altitude</a>: ' + sunPosition[ 1 ] +
+			'</p>' +
+
+			'<h3>Calculations</h3>' +
+			'<p>JavaScript date and time:' + date + '</p>' +
+			'<p>' +
+				'<a href="https://en.wikipedia.org/wiki/Julian_day" target="_blank">Julian Day</a>: ' + julianDay + b +
+				'<a href="http://www.ephemeris.com/space-time.html" target="_blank">Julian Century</a>: ' + julianCentury + b +
+				'Local time in minutes: ' + localTime +
+			'</p>' +
+
+			'<p title="Equation of Time = Apparent Solar Time – Mean Solar Time" >' +
+				'<a href="https://en.wikipedia.org/wiki/Equation_of_time" target="_blank" >Equation of Time</a>: ' + getEquationOfTime( julianCentury ) +
+			'</p>' +
+
+			'<p>' +
+				'Obliquity Correction: ' + getObliquityCorrection( julianCentury ) + b +
+				'- Mean Obliquity Of Ecliptic: ' + getMeanObliquityOfEcliptic( julianCentury ) + b +
+				'Geometric Mean Longitude Sun: ' + getGeometricMeanLongitudeSun( julianCentury ) + b +
+				'Eccentricity Earth Orbit: ' + getEccentricityEarthOrbit( julianCentury ) + b +
+				'Geometric Mean Anomaly Sun: ' + getGeometricMeanAnomalySun( julianCentury ) + b +
+			'</p>' +
+
+			'<p>' +
+				'Sun Declination: ' + getSunDeclination( julianCentury ) + b +
+				'- Sun Apparent Longitude: ' + getSunApparentLongitude( julianCentury ) + b +
+				'- - Sun True Longitude: ' + getSunTrueLongitude( julianCentury ) + b +
+				'- - - Sun Equation of Center: ' + getSunEquationOfCenter( julianCentury ) + b +
+			'</p>' +
+
+		'';
+
+	}
+
+</script>
+</body>
+</html>

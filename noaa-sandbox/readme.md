@@ -30,4 +30,3 @@ Its [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.htm
 * Refers to 'azimuth' and 'elevation' rather than 'azimuth' and 'altitude'
 * Does not provide negative elevations
 
-

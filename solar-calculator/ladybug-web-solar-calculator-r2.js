@@ -21,7 +21,7 @@
 
 	];
 
-	var pi = Math.PI; // , pi05 = pi * 0.5, pi2 = pi + pi;
+	var pi = Math.PI;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
 
 
@@ -316,6 +316,7 @@
 		var geometricMeanLongitudeSun = getGeometricMeanLongitudeSun( century ); // in Eq of time
 		var c = getSunEquationOfCenter( century );
 		var O = geometricMeanLongitudeSun + c;
+
 		return O; // in degrees
 
 	}

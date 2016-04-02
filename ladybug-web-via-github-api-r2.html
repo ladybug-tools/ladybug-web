@@ -197,7 +197,9 @@
 
 		}
 
-		var folder = files[ index ].replace( 'index.html', '' );
+//		var folder = files[ index ].replace( 'index.html', '' );
+
+		var folder = files[ index ].split('\\').pop().split('/').pop();
 
 		texts[ index ].innerHTML =
 

@@ -10,8 +10,39 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## full screen: [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/ )
 
+## Features
 
-## Update 2016-04-01
+* Compares accuracy of multiple solar calculators
+	* All given identical location, date and time
+
+
+## Links to Ladybug Web Solar Calculators
+
+### Ladybug Web Solar Calculator
+
+* http://ladybug-analysis-tools.github.io/ladybug-web/index.html#solar-calculator/readme.md
+
+
+### NOAA ~ Solar Calculator
+
+* http://ladybug-analysis-tools.github.io/ladybug-web/#noaa-sandbox/readme.md
+
+
+### Vladimir Agafonkin ~ SunCalc.js
+
+* http://ladybug-analysis-tools.github.io/ladybug-web/#suncalc-sandbox/readme.md
+
+
+### Michael Bostock ~ Solar Calculator
+
+* http://ladybug-analysis-tools.github.io/ladybug-web/#bostock-sandbox/readme.md
+
+
+## Change Log
+
+### Update 2016-04-02
+
+### Update 2016-04-01
 
 * R3
 * Most issues seem to be solved
@@ -30,32 +61,3 @@ value='You are now in the home page view - Click this button to view the read me
 * Very R1
 * Compares Agafonkin and Bostock sun positions
 * Will add NOAA and Ladybug calcs
-
-
-## Vladimir Agafonkin
-
-Links of interest
-
-* http://agafonkin.com/en/
-* https://github.com/mourner
-* https://github.com/mourner/suncalc
-* https://github.com/mourner/suncalc/blob/master/suncalc.js
-
-## Michael Bostock
-
-Links of interest
-
-* https://bost.ocks.org/mike/
-* https://bl.ocks.org/mbostock
-* https://bl.ocks.org/mbostock/c5504ab3cd25f93af26a
-* https://bl.ocks.org/mbostock/7784f4b2c7838b893e9b
-* [solar-caculator.js]( https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js )
-
-
-## NOAA
-
-Links of interest
-
-* http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html
-* Primary JavaScript routine [main.js]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
-

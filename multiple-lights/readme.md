@@ -12,7 +12,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### [1 light]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#1 )
 ### [2 lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#2 )
-### [3 lights]{ http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#3 )
+### [3 lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#3 )
 ### [4 lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#4 )
 ### [5 lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#5 )
 

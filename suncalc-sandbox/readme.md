@@ -34,3 +34,12 @@ value='You are now in the home page view - Click this button to view the read me
 
 * Add local times
 * Add click on Map
+
+## Vladimir Agafonkin
+
+Links of interest
+
+* http://agafonkin.com/en/
+* https://github.com/mourner
+* https://github.com/mourner/suncalc
+* https://github.com/mourner/suncalc/blob/master/suncalc.js
