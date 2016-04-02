@@ -17,6 +17,8 @@
 <script src=http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-r2.js ></script>
 <script>
 
+
+
 	var latitude = 37.796
 	var longitude = -122.398;
 
@@ -45,7 +47,6 @@
 				'<a href="" >' + document.title + '</a>' +
 				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/index.html#calculations-compare/readme.md > &#x24D8; </a>' +
 			'</h1>' +
-			'<p><i>Compare Sun positions reported by four scripts given location, date and time</i></p>' +
 
 			'<h2>Input</h2>' +
 			'<p>Latitude <input type=number id=inpLatitude > Longitude <input type=number id=inpLongitude ></p>' +
@@ -62,8 +63,6 @@
 
 		inpLatitude.value = latitude;
 		inpLongitude.value = longitude;
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/
 
 		date = new Date();
 		inpYear.value = date.getFullYear();
@@ -104,34 +103,7 @@
 
 // Ladybug Web
 
-		getLadybugWebCalculations( date );
-
-// NOAA
-
-		getNOAACalculations( date );
-
-// Bostock
-
-		getBostockCalculations( date );
-
-// Agafonkin
-
-		getAgafonkinCalculations( date );
-
-	}
-
-
-	function getLadybugWebCalculations( date ) {
-
-		var julianDay, julianCentury, localTime, timezone;
-
-		julianDay = getJulianDay( date ) + 1;
-		julianCentury = calcTimeJulianCent( julianDay );
-		localTime = getTimeLocal( date );
-
-		timezone = -8;
-
-		sunPosition = getSunPosition( julianCentury, localTime, latitude, longitude, timezone );
+		ladybugWebCalculations = getLadybugWebCalculations( date );
 
 		ladybugWebSolarCalculator.innerHTML = 
 
@@ -141,19 +113,148 @@
 				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/#solar-calculator/readme.md" target="_blank" >SunCalc Sandbox</a>' +
 			'</p>' +
 			'<h3>Sun Position</h3>' +
-			'<p> Azimuth in degrees : ' + sunPosition[ 0 ] + '</p>' +
-			'<p> Altitude in degrees: ' + sunPosition[ 1 ] + '</p>' +
-			'<p><i>ad hoc</i>  Ladybug Web Calculations<br>' + 
-				'Julian Day: ' +  julianDay + '<br>' +
-				'Julian Century: ' +  julianCentury + '<br>' +
-				'Local Time: ' +  localTime + 
+			'<p> Azimuth in degrees : ' + ladybugWebCalculations[ 0 ] + '</p>' +
+			'<p> Altitude in degrees: ' + ladybugWebCalculations[ 1 ] + '</p>' +
+		'';
+
+// NOAA
+
+		noaaCalculations = getNOAACalculations( date );
+
+		var output = 1;
+		var T = noaaCalculations[ 1 ];
+		var localtime = noaaCalculations[ 2 ]
+		var zone = -7;
+
+		az = calcAzEl( output, T, localtime, latitude, longitude, zone )
+
+		noaaSolarCalculator.innerHTML += 
+
+			'<h3>Sun Position</h3>' +
+			'<p>Azimuth : ' + az + '</p>' +
+			'<p>Altitude: ' + elbox.value + '</p>' +
+			'<p><i>ad hoc</i>  NOAA Calculations<br>' + 
+				'Julian Day: ' +  noaaCalculations[ 0 ] + '<br>' +
+				'Julian Century: ' +  noaaCalculations[ 1 ] + '<br>' +
+				'Local Time: ' +  noaaCalculations[ 2 ] + 
 			'</p>' +
 		'';
+		yearbox.selectedIndex = inpYear.value - 2000;
+		mosbox.selectedIndex = inpMonth.value - 1;
+		daybox.selectedIndex = inpDate.value - 1;
+
+		hrbox.value = inpHours.value;
+		mnbox.value = inpMinutes.value;
+		scbox.value = inpSeconds.value;
+
+
+// Bostock
+
+		var solar, position;
+
+		solar = solarCalculator( [ longitude, latitude ] );
+		position = solar.position( date );
+
+		bostockCalculations = getBostockCalculations( date );
+
+		bostockSolarCalculator.innerHTML = 
+
+			'<h2>Bostock Solar Calculator</h2>' +
+			'<p>' +
+				'source code: <a href="https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js" target="_blank">Solar Calculator</a>' +
+				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/#bostock-sandbox/readme.md" target="_blank" >Bostock Sandbox</a>' +
+			'</p>' +
+			'<h3>Sun Position</h3>' +
+			'<p>Azimuth : ' + position[ 0 ] + '</p>' +
+			'<p>Altitude: ' + position[ 1 ] + '</p>' +
+			'<p><i>ad hoc</i> Bostock Calculations<br>' + 
+				'Julian Century: ' + bostockCalculations[ 0 ] + 
+
+			'</p>' +
+
+		'';
+
+
+// Agafonkin
+
+//		var sunPosition, agafonkinCalculations; 
+
+		sunPosition = SunCalc.getPosition( date, latitude, longitude );
+
+		agafonkinCalculations = getAgafonkinCalculations(  date );
+
+		agafonkinSunCalc.innerHTML = 
+
+			'<h2>Agafonkin SunCalc</h2>' +
+			'<p>' +
+				'source code: <a href="https://github.com/mourner/suncalc" target="_blank">SunCalc</a>' +
+				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/#suncalc-sandbox/readme.md" target="_blank" >SunCalc Sandbox</a>' +
+			'</p>' +
+			'<h3>Sun Position</h3>' +
+			'<p> Azimuth in degrees : ' + ( ( Math.PI + sunPosition.azimuth ) * r2d ) + '</p>' +
+			'<p> Altitude in degrees: ' + ( sunPosition.altitude * r2d ) + '</p>' +
+			'<p><i>ad hoc</i> Agafonkin Calculations<br>Julian Day: ' + agafonkinCalculations[ 0 ] + '</p>' +
+
+		'';
+
+
+	}
+
+
+	function getLadybugWebCalculations( date ) {
+
+		var julianDay, julianCentury, localTime;
+
+		julianDay = getJulianDay( date ) + 1;
+		julianCentury = calcTimeJulianCent( julianDay );
+		localTime = getTimeLocal( date );
+
+		timezone = -7;
+
+		sunPosition = getSunPosition( julianCentury, localTime, latitude, longitude, timezone );
+
+		return sunPosition;
+
+	}
+
+	function getAgafonkinCalculations( date ) {
+
+// sun calculations are based on http://aa.quae.nl/en/reken/zonpositie.html formulas
+
+// date/time constants and conversions
+
+		var dayMs = 1000 * 60 * 60 * 24,
+			J1970 = 2440588,
+			J2000 = 2451545;
+
+		function toJulian(date) { return date.valueOf() / dayMs - 0.5 + J1970; }
+		function fromJulian(j)  { return new Date((j + 0.5 - J1970) * dayMs); }
+		function toDays(date)   { return toJulian(date) - J2000; }
+
+		j = toJulian( date );
+		fj = fromJulian( j );
+		td = toDays( date );
+
+		agafinkinCalculations = [ j, fj, td ];
+
+		return agafinkinCalculations;
+
+	}
+
+	function getBostockCalculations( date ) {
+
+		var J2000 = Date.UTC( 2000, 0, 1, 12 );
+		var centuries = ( date - J2000 ) / (864e5 * 36525),
+
+		bostockCalculations = [ centuries ];
+
+		return bostockCalculations;
 
 	}
 
 
 	function getNOAACalculations( date ){
+
 
 		var julianDay, julianCentury, localTime;
 
@@ -165,7 +266,7 @@
 				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/#noaa-sandbox/readme.md" target="_blank" >NOAA Sandbox</a>' +
 
 			'</p>' +
-			'<p><i>ad hoc html needed to get things to work</i><br>' +
+			'<p><i>ad hoc</i><br>' +
 				'<select id=yearbox ></select> ' +
 				'<select id=mosbox ></select> ' +
 				'<select id=daybox ></select>' +
@@ -214,6 +315,7 @@
 		mnbox.value = inpMinutes.value;
 		scbox.value = 0;
 
+		timezone = -7;
 
 		julianDay = getJD( date ) + 1;
 		julianCentury = calcTimeJulianCent( julianDay );
@@ -221,104 +323,7 @@
 
 		noaaCalculations = [ julianDay, julianCentury, localTime ];
 
-		var output = 1;
-		var T = noaaCalculations[ 1 ];
-		var localtime = noaaCalculations[ 2 ]
-		var zone = -8;
-
-		az = calcAzEl( output, T, localtime, latitude, longitude, zone )
-
-		noaaSolarCalculator.innerHTML += 
-
-			'<h3>Sun Position</h3>' +
-			'<p>Azimuth : ' + az + '</p>' +
-			'<p>Altitude: ' + elbox.value + '</p>' +
-			'<p><i>ad hoc</i>  NOAA Calculations<br>' + 
-				'Julian Day: ' +  noaaCalculations[ 0 ] + '<br>' +
-				'Julian Century: ' +  noaaCalculations[ 1 ] + '<br>' +
-				'Local Time: ' +  noaaCalculations[ 2 ] + 
-			'</p>' +
-		'';
-
-		yearbox.selectedIndex = inpYear.value - 2000;
-		mosbox.selectedIndex = inpMonth.value - 1;
-		daybox.selectedIndex = inpDate.value - 1;
-
-		hrbox.value = inpHours.value;
-		mnbox.value = inpMinutes.value;
-		scbox.value = inpSeconds.value;
-
-	}
-
-	function getAgafonkinCalculations( date ) {
-
-		var j, fj, td;
-		var sunPosition, agafonkinCalculations; 
-
-// sun calculations are based on http://aa.quae.nl/en/reken/zonpositie.html formulas
-
-// date/time constants and conversions
-
-		var dayMs = 1000 * 60 * 60 * 24,
-			J1970 = 2440588,
-			J2000 = 2451545;
-
-		function toJulian(date) { return date.valueOf() / dayMs - 0.5 + J1970; }
-		function fromJulian(j)  { return new Date((j + 0.5 - J1970) * dayMs); }
-		function toDays(date)   { return toJulian(date) - J2000; }
-
-		j = toJulian( date );
-		fj = fromJulian( j );
-		td = toDays( date );
-
-		sunPosition = SunCalc.getPosition( date, latitude, longitude );
-
-		agafonkinCalculations = [ j, fj, td ];
-
-		agafonkinSunCalc.innerHTML = 
-
-			'<h2>Agafonkin SunCalc</h2>' +
-			'<p>' +
-				'source code: <a href="https://github.com/mourner/suncalc" target="_blank">SunCalc</a>' +
-				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/#suncalc-sandbox/readme.md" target="_blank" >SunCalc Sandbox</a>' +
-			'</p>' +
-			'<h3>Sun Position</h3>' +
-			'<p> Azimuth in degrees : ' + ( ( Math.PI + sunPosition.azimuth ) * r2d ) + '</p>' +
-			'<p> Altitude in degrees: ' + ( sunPosition.altitude * r2d ) + '</p>' +
-			'<p><i>ad hoc</i> Agafonkin Calculations<br>Julian Day: ' + agafonkinCalculations[ 0 ] + '</p>' +
-
-		'';
-
-	}
-
-	function getBostockCalculations( date ) {
-
-		var solar, position;
-
-		var J2000 = Date.UTC( 2000, 0, 1, 12 );
-		var centuries = ( date - J2000 ) / (864e5 * 36525),
-
-		bostockCalculations = [ centuries ];
-
-		solar = solarCalculator( [ longitude, latitude ] );
-		position = solar.position( date );
-
-		bostockSolarCalculator.innerHTML = 
-
-			'<h2>Bostock Solar Calculator</h2>' +
-			'<p>' +
-				'source code: <a href="https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js" target="_blank">Solar Calculator</a>' +
-				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/#bostock-sandbox/readme.md" target="_blank" >Bostock Sandbox</a>' +
-			'</p>' +
-			'<h3>Sun Position</h3>' +
-			'<p>Azimuth : ' + position[ 0 ] + '</p>' +
-			'<p>Altitude: ' + position[ 1 ] + '</p>' +
-			'<p><i>ad hoc</i> Bostock Calculations<br>' + 
-				'Julian Century: ' + bostockCalculations[ 0 ] + 
-
-			'</p>' +
-
-		'';
+		return noaaCalculations;
 
 	}
 
