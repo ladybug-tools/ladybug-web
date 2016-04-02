@@ -10,16 +10,17 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## [Multiple Lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights )
 
-### [1 light]( ## [Multiple Lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#1 )
-### [2 lights]( ## [Multiple Lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#2 )
-### [3 lights]( ## [Multiple Lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#3 )
-### [4 lights]( ## [Multiple Lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#4 )
-### [5 lights]( ## [Multiple Lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#5 )
+### [1 light]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#1 )
+### [2 lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#2 )
+### [3 lights]{ http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#3 )
+### [4 lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#4 )
+### [5 lights]( http://ladybug-analysis-tools.github.io/ladybug-web/multiple-lights/index.html#5 )
 
-For more lights, edit the location.has and reload. With no hash the default is ten lights.
+For more lights, edit the location.hash, press enter and then reload. With no hash the default is ten lights.
 
 ## Features 
-* Display the shadows for ten hourly sun positions. 
+* Display the shadows for ten hourly sun positions
+	* Edit the number of lights using location.hash
 * Update the latitude via a slider
 * Reference objects are generated randomly at load time
 * Zoom out to see all the directional light frustums 
