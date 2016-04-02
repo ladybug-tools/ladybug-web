@@ -1,5 +1,5 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/#solar-calculator/readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
 [Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
@@ -59,8 +59,8 @@ Therefore we propose a new effort that stands on their shoulders.
 ### Update 2016-04-02
 
 * R3
-* Added seconds - in order to keep up with NOAA Solar Calculator
-
+* Add seconds - in order to keep up with NOAA Solar Calculator
+* Add Wikipedia links to viewer
 
 ### Update 2016-03-30
 
