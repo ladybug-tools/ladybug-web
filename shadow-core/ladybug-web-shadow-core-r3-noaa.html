@@ -20,8 +20,15 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 <script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
 <script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
 <script src=http://rawgit.com/mrdoob/three.js/dev/src/loaders/JSONLoader.js ></script>
+<!--
 <script src=http://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
-<!-- <script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script> -->
+-->
+<script src=../solar-calculator/ladybug-web-solar-calculator-r2.js ></script>
+
+<!-- 
+<script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script> 
+
+-->
 
 <script>
 
@@ -43,6 +50,8 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	var offsetHours;
 
 	var analemma, sun, sunBand;
+
+	var julianDay, julianCentury;
 
 	var v = function( x, y, z ){ return new THREE.Vector3( x, y, z ); };
 
@@ -131,6 +140,10 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		initSunAndLight();
 
 		initNorthArrow();
+
+		julianDay = getJulianDay( date );
+		julianCentury = getJulianCentury( julianDay );
+		localTime = getTimeLocal( date );
 
 		hashChange();
 
@@ -316,7 +329,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetHours );
 
-		sunPosition = getSunPositionXYZ( pud.analemmaRadius, dateUTC, pud.latitude - 90, pud.longitude );
+		sunPosition = getSunPositionXYZ( pud.analemmaRadius, dateUTC, pud.latitude, pud.longitude );
 
 		sun.position.copy( sunPosition );
 
@@ -392,6 +405,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	function drawAnalemma() {
 
 //		var geometry, vertices, material, line;
+
 		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
 		var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -401,7 +415,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		for ( var hours = 0; hours < 24; hours++ ) {
 
-//			var geometry, vertices;
 			geometry = new THREE.Geometry();
 			vertices = geometry.vertices;
 
@@ -413,7 +426,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-					analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude - 90, pud.longitude );
+					analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
 
 					vertices.push( analemmaSunPosition );
 
@@ -428,7 +441,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 			line = new THREE.Line( geometry, material );
 			analemma.add( line );
 
-			placard = drawPlacard( '' + hours, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
+			placard = drawPlacard( '' + ( hours), 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
 			analemma.add( placard );
 
 		}
@@ -437,7 +450,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		for ( var month = 5; month < 12; month++ ) {
 
-//			var geometry, vertices;
 			geometry = new THREE.Geometry();
 			vertices = geometry.vertices;
 
@@ -447,7 +459,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-				analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude - 90, pud.longitude );
+				analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
 
 				vertices.push( analemmaSunPosition );
 
@@ -523,13 +535,24 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
-		var sunPosition = SunCalc.getPosition( dateUTC, latitude, longitude );
+		timeZone = -8;
 
-		var x = - radius * Math.cos( sunPosition.altitude ) * Math.sin( sunPosition.azimuth );
-		var y = - radius * Math.cos( sunPosition.altitude ) * Math.cos( sunPosition.azimuth );
-		var z = radius * Math.sin( sunPosition.altitude );
+		julianDay = getJulianDay( dateUTC );
+		julianCentury = getJulianCentury( julianDay );
+		localTime = getTimeLocal( dateUTC );
 
-		return v( x, y, z );
+//		var sunPosition = SunCalc.getPosition( dateUTC, latitude, longitude);
+
+
+		var sunPosition = getSunPosition( julianCentury, localTime, latitude, longitude + 180, timeZone );
+
+
+
+		var x = radius * Math.cos( sunPosition[ 1 ] * d2r ) * Math.sin( sunPosition[ 0 ] * d2r );
+		var y = radius * Math.cos( sunPosition[ 1 ] * d2r ) * Math.cos( sunPosition[ 0 ] * d2r );
+		var z = radius * Math.sin( sunPosition[ 1 ] * d2r );
+
+		return v( -x, y, -z );
 
 	}
 

@@ -2,19 +2,19 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Solar Calculator Ladybug R3</title>
+<title>Bostock Solar Calculator Viewer R5</title>
 <!--
 <meta name = viewport content = 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0' />
 <meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
 -->
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
-<meta name=description content='' >
+<meta name=description content='Code to retriev sun position. Requires D3' >
 <meta name=keywords content='Mike Bostock,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-03-26' >
+<meta name=date content='ladybug-web-solar-calculator-bostock-r1' >
 </head>
 <body>
-<script src=http://d3js.org/d3.v3.js ></script>
-<script src=solar-calculator-ladybug-r1.js ></script>
+
+<script src=ladybug-web-solar-calculator-bostock-r1.js ></script>
 <script>
 
 
@@ -22,8 +22,8 @@
 // http://www.esrl.noaa.gov/gmd/grad/solcalc/
 
 
-	var lat = 37.796
-	var lon = -122.398;
+	var latitude = 37.796
+	var longitude = -122.398;
 
 
 	init();
@@ -62,23 +62,29 @@
 
 		date = new Date();
 
-		solar = solarCalculator( [ lon, lat ] );
+		date = new Date( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() - 1, date.getMinutes(), date.getSeconds() );
 
-		infosolarCalculator.innerHTML += 
+		position = getSunPosition( date, latitude, longitude );
 
-			'<p>Now: ' + date + ' </p>' +
+		infosolarCalculator.innerHTML +=
+
+			'<p>Now: ' + date + '</p>' +
 			'<p>Offset: ' + date.getTimezoneOffset() + '</p>' +
-			'<p>Solar > noon: ' + solar.noon( date ) + '</p>' +
-			'<p>Solar > position ( now ): ' + solar.position( date ) + '</p>' +
+
+		'<hr>' +
+
+//			'<p>Solar > noon: ' + noon( date ) + '</p>' +
+			'<p>Solar > position ( now ): ' + position.azimuth + ' ~ ' + position.altitude + '</p>' +
 			'<p>Solar > centuries: ' + centuries + '</p>' +
 
 		'<hr>';
 
 		infosolarCalculatorVariables.innerHTML += 
 
-			'<p>Solar > noon > var d3.time.day.utc.floor( date ): ' + d3.time.day.utc.floor( date ) + '</p>' +
+//			'<p>Solar > noon > var d3.time.day.utc.floor( date ): ' + d3.time.day.utc.floor( date ) + '</p>' +
+
 			'<p>Solar > noon > var centuries: ' + centuries + '</p>' +
-			'<p>Solar > noon > var new Date( +d3.time.day.floor( date ) + minutes * 60 * 1000 ): ' + solar.noon( date ) + '</p>' +
+//			'<p>Solar > noon > var new Date( +d3.time.day.floor( date ) + minutes * 60 * 1000 ): ' + noon( date ) + '</p>' +
 
 		'<hr>';
 

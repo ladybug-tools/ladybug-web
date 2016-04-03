@@ -20,7 +20,10 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 <script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
 <script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
 <script src=http://rawgit.com/mrdoob/three.js/dev/src/loaders/JSONLoader.js ></script>
+<script src=../solar-calculator/ladybug-web-solar-calculator-bostock-r1.js ></script>
+<!--
 <script src=http://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
+-->
 <!-- <script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script> -->
 
 <script>
@@ -316,7 +319,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetHours );
 
-		sunPosition = getSunPositionXYZ( pud.analemmaRadius, dateUTC, pud.latitude - 90, pud.longitude );
+		sunPosition = getSunPositionXYZ( pud.analemmaRadius, dateUTC, pud.latitude, pud.longitude );
 
 		sun.position.copy( sunPosition );
 
@@ -413,7 +416,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-					analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude - 90, pud.longitude );
+					analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
 
 					vertices.push( analemmaSunPosition );
 
@@ -447,7 +450,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-				analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude - 90, pud.longitude );
+				analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
 
 				vertices.push( analemmaSunPosition );
 
@@ -523,13 +526,13 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
-		var sunPosition = SunCalc.getPosition( dateUTC, latitude, longitude );
+		var sunPosition = getSunPosition( dateUTC, latitude, longitude );
 
-		var x = - radius * Math.cos( sunPosition.altitude ) * Math.sin( sunPosition.azimuth );
-		var y = - radius * Math.cos( sunPosition.altitude ) * Math.cos( sunPosition.azimuth );
+		var x = radius * Math.cos( sunPosition.altitude ) * Math.sin( sunPosition.azimuth );
+		var y = radius * Math.cos( sunPosition.altitude ) * Math.cos( sunPosition.azimuth );
 		var z = radius * Math.sin( sunPosition.altitude );
 
-		return v( x, y, z );
+		return v( x, - y, z );
 
 	}
 
