@@ -4,7 +4,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 [Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
-[Ladybug Web Project Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/ladybug-web-via-github-api-r1.html )
+[Ladybug Web Project Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/ladybug-web-via-github-api-r2.html )
 ===
 
 _First thing: scroll down the page - a few screens down - and have a look at the projects._
