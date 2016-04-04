@@ -21,7 +21,7 @@ See work discussed in the [Ladybug Web Solar Calculator Read Me ]( http://ladybu
 ## Full screen: [Bostock Solar Calculator Viewer R5]( bostock-solar-calculator-viewer-r5.html )
 
 * Viewer displays most of Bostocks calculations
-* [Core]( ./bostock-solar-calculator-r2.js ) is partially re-written version of Bostock's code
+* [Core]( ./bostock-sandbox/bostock-solar-calculator-r2.js ) is partially re-written version of Bostock's code
 
 ## Features
 

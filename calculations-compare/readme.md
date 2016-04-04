@@ -19,7 +19,8 @@ value='You are now in the home page view - Click this button to view the read me
 	* Displays azimuth and altitude of calculated by each script
 	* Displays other related data to help verify accuracy ~ a work-in-progress
 * Currently reports on the following
-	* Ladybug Web Solar Calculator
+	* Ladybug Web Solar Calculator Bostock
+	* Ladybug Web Solar Calculator NOAA
 	* NOAA Solar Calculator
 	* Vladimir Agafonkin's SunCalc.js
 	* Mike Bostock's Solar Calculaor
@@ -28,7 +29,12 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Links to Ladybug Web Sun Position Scripts
 
-### Ladybug Web Solar Calculator
+### Ladybug Web Solar Calculator Bostock
+
+* http://ladybug-analysis-tools.github.io/ladybug-web/index.html#solar-calculator/readme.md
+
+
+### Ladybug Web Solar Calculator NOAA
 
 * http://ladybug-analysis-tools.github.io/ladybug-web/index.html#solar-calculator/readme.md
 
@@ -57,6 +63,12 @@ value='You are now in the home page view - Click this button to view the read me
 
 
 ## Change Log
+
+### 2016-04-03
+
+* R4
+* Add Adds Ladybug Web Solar Calculator Bostock
+* Rename from 'Ladybug Web Solar Calculator' to 'Ladybug Web Solar Calculator NOAA'
 
 ### Update 2016-04-02
 
