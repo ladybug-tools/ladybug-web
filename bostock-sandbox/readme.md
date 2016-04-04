@@ -16,9 +16,9 @@ Unfortunately for Ladybug, Mike's code requires D3 - and Ladybug Web discourages
 We are trying to remove the dependency - and have had some success.
 See work discussed in the [Ladybug Web Solar Calculator Read Me ]( http://ladybug-analysis-tools.github.io/ladybug-web/#solar-calculator/readme.md )
 
-## Full screen: [Bostock Solar Calculator Original]( bostock-solar-calculator-original.html )
+## Full screen: [Bostock Solar Calculator Original]( http://ladybug-analysis-tools.github.io/ladybug-web/bostock-sandbox/bostock-solar-calculator-original.html )
 
-## Full screen: [Bostock Solar Calculator Viewer R5]( bostock-solar-calculator-viewer-r5.html )
+## Full screen: [Bostock Solar Calculator Viewer R5]( http://ladybug-analysis-tools.github.io/ladybug-web/bostock-sandbox/bostock-solar-calculator-viewer-r5.html )
 
 * Viewer displays most of Bostocks calculations
 * [Core]( ./bostock-sandbox/bostock-solar-calculator-r2.js ) is partially re-written version of Bostock's code
