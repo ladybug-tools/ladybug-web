@@ -25,17 +25,18 @@ Currently the Bostck calculater is being used.
 
 
 
-## Full screen viewer: [Ladybug Web Solar Calculator Bostock Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/index.html )
+## Full screen: [Ladybug Web Solar Calculator Bostock Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/index.html )
 
 
-## JavaScript source code: [Ladybug Web Solar Calculator Bostock R1](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-bostock-r1.js )
+## Source code: [Ladybug Web Solar Calculator Bostock R1](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-bostock-r1.js )
 
 
-## Full screen viewer: [Ladybug Web Solar Calculator NOAA Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-noaa-viewer-r3.html )
+## Full screen: [Ladybug Web Solar Calculator NOAA Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-noaa-viewer-r3.html )
 
 
-## JavaScript source code: [Ladybug Web Solar Calculator NOAA R2](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-r2.js )
+## Source code: [Ladybug Web Solar Calculator NOAA R2](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-r2.js )
 
+***
 
 ## Mission
 
