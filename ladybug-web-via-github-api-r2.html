@@ -69,17 +69,26 @@
 
 		'';
 
+		window.addEventListener ( 'hashchange', onHashChange, false );
+
+
 		getMarkdown( 'index.md', header );
 
 		if ( location.hash ) {
 
-			getMarkdown( location.hash.substr( 1 ), contents );
+			onHashChange()
 
 		} else {
 
 			requestAPIContents();
 
 		}
+
+	}
+
+	function onHashChange () {
+
+		getMarkdown( location.hash.substr( 1 ), contents );
 
 	}
 
@@ -223,7 +232,6 @@
 
 		} else if ( that.contentWindow.ifr && that.contentWindow.ifr.contentWindow.controls ) {
 
-console.log( 'cccc', that.contentWindow.ifr );
 // console.log( 'ddd', that.contentWindow.ifr.contentWindow );
 
 ///that.contentWindow.ifr.contentWindow.controls   );

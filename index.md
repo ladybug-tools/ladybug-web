@@ -7,102 +7,32 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Web Project Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/ladybug-web-via-github-api-r2.html )
 ===
 
-_First thing: scroll down the page - a few screens down - and have a look at the projects._
-_Then come back here and read about what you have seen._
+## Concept
+
+_Ladybug Web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), solar and weather data visualization and analysis on the web and in your browser_
 
 
-## Mission and Vision
+### Mission
 
-The idea here is to explore techniques for presenting an overview of the scripts available on Ladybug Web.
+* Fabricate free, fast, fun fantasies
+* Write code you can fork, edit and share
+* Build engineering tools you can understand
+* Develop skills you can use everywhere
 
-The code is fairly stable. The style is still at a very early stage.
+### Vision
 
-Mission statements
-
-* Provide a fast and easy-to-navigate visual overview of numerous apps
-	* Some big, some small. Some fresh, some stale
-* Display latest version of scripts as full interactive apps in 3D
-	* Disable certain features automatically to allow the page to be scrolled both on computers amd mobile devices
-* Identify quickly what's new and what's hot
-* Seamless two-way transition from read me files and source code to apps and web pages
-* Write once, read many. Write something once and have the text appear where and when needed
-* No 'webmaster' needed. Home pages update themselves
-* No teaching/learning needed. Ability to copy and paste templates is all that's needed
-* No server required. Works on static servers such as GitHub pages
+* When the mundane engineering tasks become easy, inexpensive and swift to carry out, 
+the possibilities arise for the more complex, sophisticated and even extravagant ideas to turn into realities
+* RIP Zaha Hadid. Let us continue to design with your disruptive yet aways elegant spirit
 
 
 ## Features
 
-* Uses GitHub API to obtain up-to-date list of files
-	* GitHub API rate limits are not abused because processing is done client-side
-	* Each individual client has their own separate quota
-* General mechanism is quite straightforward
-	* If a folder has a file titled 'index.html' then the folder is added to the list of items of interest 
-	* Otherwise the folder is ignored
-* The index file points to the script in the folder that should be run at load time
-* If a folder has a readme.md' file than that file is read
-	* Contents converted from Markdown to HTML and displayed
-* If a script of interest has HTML meta tags for description, keywords and data then that information is displayed
-* Apps are displayed in iframes
-	* In order to keep things moving fast, at any given time, only three iframes are in active use
-	* Iframes only become active once they scroll into view
- 
+Generally the following scripts
 
+* Free and open source
+* Built using entry level JavaScript with no dependencies other than [Three.js]( http://threejs.org)
+* Enable rotation, zoom and pan using one, two or three fingers or left button, scroll wheel and right button on a mouse
 
-## Current Effort
-
-Two avenues of user guidance are being explored - 'All-in-one' and 'Read Me'. 
-Both types are exhibited below - just beneath the full-width app 'splash screen'.
-
-### All-In-One
-
-Documentation is kept inside the HTML files.
-Information is stored in standard HTML meta tags
-Currently all the files have tags for:
-
-* Description
-* Key words
-* Date
-
-Their contents are displayed just under each full-width view of each script
-
-#### Cons
-
-* This can cause file bloat and slow down the process of loading files.
-
-#### Pros
-
-* Everything - html, css, JavaScript and documentation is kept together in one place in a single file
-* Once downloaded and code is compiled has no affect on performance
-* Might help with search engine optimization
-* Markdown may be embedded in the meta tags
-
-
-### Read Me Files
-
-The more traditional way of documenting things - using external read me files.
-
-The contents of the Read Me file for each script is displayed just under the meta data in each full-width view of each script.
-The text is scaled down to 75% of normal size and enclosed in a box with red border.
-
-## Current thinking
-
-The all-in-one system is fine for small amounts of text, but becomes very cumbersome when there are more than a few dozen words.
-The current work process is creating and maintaining fairly small meta tag content and putting most content inthe read me files.
-
-## Issues
-
-* Allowing for easy scrolling means to not allow full width apps to get access to the scrollwheel or touch interactions
-	* Preventing such interactions is a work in progress
-* For experienced users who just want to get to a particular folder there is far too much scrolling involved
-	* Something like a simple, text 'table of contents' might help here
-* The current rev shows the coolness of the scripts, but does little to show you how short and simple the code is
-* Needs indicators - text or charts - as to where the action is
-
-## Road Map / To Do List
-
-* Access RSS feed and display summary of latest commits
-* Add section on coding style
-
-
+See also: [Project Explorer Read Me]( #./project-explorer-readme.md )
 
