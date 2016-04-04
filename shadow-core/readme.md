@@ -9,5 +9,20 @@ value='You are now in the home page view - Click this button to view the read me
 ===
 
 
-## Full screen: [Ladybug Web Shadow Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ )
+## Full screen: [Ladybug Web Shadow Core Bostock]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ )
+
+## Full screen: [Ladybug Web Shadow Core NOAA]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-r3-noaa.html )
+
+## Full screen: [Ladybug Web Shadow Core SunCalc]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-r2.html )
+
+
+## Features
+
+
+## Change Log
+
+### 2016-04-03
+
+* Add Ladybug Web Shadow Core Bostock
+* Reaname from 'Ladybug Web Shadow Core' to 'Ladybug Web Shadow Core NOAA'
 
