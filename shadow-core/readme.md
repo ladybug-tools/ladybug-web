@@ -15,8 +15,15 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Full screen: [Ladybug Web Shadow Core SunCalc]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-suncalc-r2.html )
 
+***
 
 ## Features
+
+* Draw the sun path
+	* Given location, date and time
+	* Displays analemmas and hour placards
+* Loads and displays a JSON file
+* Supports permalinks
 
 
 ## Change Log
