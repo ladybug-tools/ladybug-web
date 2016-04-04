@@ -358,7 +358,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 				offsetHours = offsetPlace / 3600;
 
-				updateSumPosition();
+				updateSunPosition();
 
 				drawAnalemma();
 
@@ -379,7 +379,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 // draw, add or update the Three.js things
 
-	function updateSumPosition() {
+	function updateSunPosition() {
 
 		var sunPosition, sunDate;
 
@@ -392,19 +392,17 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		sunDate.setUTCHours( sunDate.getUTCHours() - offsetHours );
 
-		sunPosition = getSunPositionXYZ( pud.analemmaRadius, sunDate, pud.latitude, pud.longitude );
+		pud.sunPosition = getSunPosition( pud.analemmaRadius, sunDate, pud.latitude, pud.longitude );
 
-		sun.position.copy( sunPosition );
+		sun.position.copy( pud.sunPosition.xyz );
 
 		if ( window.self === window.top || debug === true ) {
-
-			var sunPosition = getSunPositionBostock( sunDate, pud.latitude, pud.longitude );
 
 			menuSunInfo.innerHTML =
 
 				'Sun:<br>' +
-				'- Azimuth : ' + sunPosition.azimuth + '<br>' +
-				'- Altitude: ' + sunPosition.altitude +
+				'- Azimuth : ' + pud.sunPosition.azimuth + '<br>' +
+				'- Altitude: ' + pud.sunPosition.altitude +
 
 			'';
 
@@ -435,9 +433,9 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-					analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
+					analemmaSunPosition = getSunPosition( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
 
-					vertices.push( analemmaSunPosition );
+					vertices.push( analemmaSunPosition.xyz );
 
 				}
 
@@ -468,9 +466,9 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-				analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
+				analemmaSunPosition = getSunPosition( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
 
-				vertices.push( analemmaSunPosition );
+				vertices.push( analemmaSunPosition.xyz );
 
 			}
 
@@ -545,7 +543,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 // utilities
 
-	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
+	function getSunPosition( radius, dateUTC, latitude, longitude ) {
 
 		var sunPosition = getSunPositionBostock( dateUTC, -latitude, longitude );
 
@@ -553,7 +551,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		var y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
 		var z = radius * Math.sin( sunPosition.altitude * d2r );
 
-		return new THREE.Vector3( x, y, z );
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
 
 	}
 

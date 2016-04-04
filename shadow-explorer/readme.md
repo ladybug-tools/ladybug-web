@@ -9,16 +9,13 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Web Shadow Explorer Read Me]( #shadow-explorer/readme.md )
 ===
 
+_Use the menu on the left to call up files and adjust the date and time. Enjoy watching the shadows move as the hours go by._
 
-2016-03-22
-
-Very R1.
-
-The idea is to have a core or 'engine' that other scripts can call and embed in an `iframe`.
+The idea is to have a core or 'engine' that other scripts - like the one you ae usung now - can call and embed in an `iframe`.
 The engine is here: [Ladybug Web Shadow Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ ).
 
 The calling scripts tend to carry out fairly specialized tasks.
-There can be communication between the calling scripts when needed.
+There can be communication between the two scripts when needed.
 
 The general strategy is to be something like node.js or jquery - a small core that accepts plugins of various types.
 
@@ -27,7 +24,7 @@ Often these URL strings are called 'permalinks'.
 
 As and when needed it could also be via JSON or even .INI files or - for the fastest operation - via the iframe.contentWindow method.
 
-Currently, he following parameters may be used to control the script. 
+Currently, the following parameters may be used to control the script. 
 Only the parameters that need changing need to appear on the location.hash
 Designated times for persistent shadows to be added. 
 Also ability to load multiple projects.
@@ -69,5 +66,13 @@ Any others?
 * Add materials
 
 
+## Change Log
 
 
+### 2016-04-04
+
+* Add ladybug-web-shadow-explorer-bostock-json-r1.html
+
+### 2016-03-22
+
+Very R1.
