@@ -79,6 +79,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				'</div>' +
 				'<div id=menuFileName ></div>' +
 				'<div id=menuInfo ></div>' +
+				'<div id=menuSunInfo ></div>' +
 
 			'';
 
@@ -319,6 +320,24 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		sunPosition = getSunPositionXYZ( pud.analemmaRadius, dateUTC, pud.latitude - 90, pud.longitude );
 
 		sun.position.copy( sunPosition );
+
+		if ( window.self === window.top || debug === true ) {
+
+
+
+			var sunPosition = SunCalc.getPosition( dateUTC, pud.latitude - 90, pud.longitude);
+
+			menuSunInfo.innerHTML =
+
+				'Sun:<br>' +
+				'- Azimuth : ' + sunPosition.azimuth * 180 / Math.PI  + '<br>' +
+				'- Altitude: ' + sunPosition.altitude * 180 / Math.PI +
+
+			'';
+
+		}
+
+
 
 	}
 

@@ -42,16 +42,19 @@ value='You are now in the home page view - Click this button to view the read me
 ### NOAA ~ Solar Calculator
 
 * http://ladybug-analysis-tools.github.io/ladybug-web/#noaa-sandbox/readme.md
+* http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html
 
 
 ### Vladimir Agafonkin ~ SunCalc.js
 
 * http://ladybug-analysis-tools.github.io/ladybug-web/#suncalc-sandbox/readme.md
-
+* https://github.com/mourner/suncalc
+* http://suncalc.net/
 
 ### Michael Bostock ~ Solar Calculator
 
 * http://ladybug-analysis-tools.github.io/ladybug-web/#bostock-sandbox/readme.md
+* https://bl.ocks.org/mbostock/7784f4b2c7838b893e9b
 
 ## Road Map / Things to do
 

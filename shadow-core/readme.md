@@ -28,8 +28,18 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Change Log
 
+###2016-04-04
+
+* Add Ladybug Web Shadow Core Bostock R2
+* Analemmas no longer upside down
+* Code and variable name logic clean-up 
+* Add slide-out hamburger menu
+* Add Sun position read-out to menus of all core apps
+	* Finding issues with all of them. So iy goes
+
+
 ### 2016-04-03
 
-* Add Ladybug Web Shadow Core Bostock
+* Add Ladybug Web Shadow Core Bostock R1
 * Rename from 'Ladybug Web Shadow Core' to 'Ladybug Web Shadow Core NOAA'
 
