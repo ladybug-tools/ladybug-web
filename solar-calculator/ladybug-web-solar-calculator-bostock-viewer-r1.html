@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Bostock Solar Calculator Viewer R5</title>
+<title>Ladybug Web Solar Calculator Bostock Viewer R1</title>
 <!--
 <meta name = viewport content = 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0' />
 <meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
@@ -64,7 +64,7 @@
 
 		date = new Date( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() - 1, date.getMinutes(), date.getSeconds() );
 
-		position = getSunPosition( date, latitude, longitude );
+		position = getSunPositionBostock( date, latitude, longitude );
 
 		infosolarCalculator.innerHTML +=
 

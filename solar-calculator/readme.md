@@ -18,14 +18,26 @@ We have looked at the efforts of:
 
 We have found issues with each one of these efforts.
 Therefore we propose a new effort that stands on their shoulders.
-
-## Full screen viewer: [Ladybug Web Solar Calculator Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/index.html )
-
-
-## JavaScript source code: [Ladybug Web Solar Calculator R2](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-r2.js )
+Currently there are two calculators. One based on Bostock - the other on NOAA.
+They replace the previous SunCalc.js code which has been used in unaltered form.
+Currently the Bostck calculater is being used.
 
 
-### Mission
+
+
+## Full screen viewer: [Ladybug Web Solar Calculator Bostock Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/index.html )
+
+
+## JavaScript source code: [Ladybug Web Solar Calculator Bostock R1](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-bostock-r1.js )
+
+
+## Full screen viewer: [Ladybug Web Solar Calculator NOAA Viewer ]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-noaa-viewer-r3.html )
+
+
+## JavaScript source code: [Ladybug Web Solar Calculator NOAA R2](  http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-r2.js )
+
+
+## Mission
 
 * To provide you with the position of the Sun - the azimuth ( apparent longitude ) and altitude ( apparent latitude ) -  quickly and easily
 	* Given latitude, longitude, data and time
@@ -43,7 +55,7 @@ Therefore we propose a new effort that stands on their shoulders.
 	* Provide history, further insight, usage for each calculation
 	* Explain the purpose, use and code for each and every function in simple English
 
-### Features
+## Features
 
 * Calculate the position of the Sun
 	* Given latitude, longitude, date and time - and return its azimuth and altitude in degrees
@@ -54,6 +66,23 @@ Therefore we propose a new effort that stands on their shoulders.
 * No outside dependencies
 * JavaScript file usable by any app on the web
 * Viewer files provides detailed example of functions and variables
+
+## Issues
+
+The Bostock code contains about twenty lines if impenetrable code
+* The NOAA code requires Julian Century, local time in minutes and timezone for each calculation
+	* Much archaic style coding 
+	* Bostock and Agafonkin use the basic JavaScript Date object - which is simpler and more standard
+
+
+## Change Log
+
+### 2016-04-03
+
+
+* Split into two sections
+	* Ladybug Web Solar Calculator Bostock << currently the default
+	* Ladybug Web Solar Calculator NOAA
 
 
 ### Update 2016-04-02
