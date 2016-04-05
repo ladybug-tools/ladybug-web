@@ -114,6 +114,12 @@
 
 		ifr.contentWindow.location.hash = fileNames[ index ];
 
+		if ( window.self !== window.top ) {
+
+			ifr.contentWindow.controls.enableZoom = false;
+
+		}
+
 		updateInfo();
 
 	}
@@ -127,6 +133,8 @@
 		inpDay.value = pud.day;
 		inpHour.value = pud.hour;
 		inpMinute.value = pud.minute;
+
+
 
 		updateInfo();
 
