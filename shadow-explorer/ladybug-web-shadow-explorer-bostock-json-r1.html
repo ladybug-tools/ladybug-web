@@ -14,7 +14,19 @@
 
 	var converter;
 
-	var core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
+//	var core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
+
+	var core;
+
+	if ( location.origin === 'file://' ) {
+
+		core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html';
+
+	} else {
+
+		core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-bostock-r2.html';
+
+	}
 
 	var va3c = 'fn=http://va3c.github.io/'
 
