@@ -235,6 +235,15 @@
 			contents.style.overflow = 'hidden';
 			contents.style.margin = contents.style.padding = '0';
 
+			ifr.onload = function () {
+
+				if ( window.self !== window.top ) {
+
+					ifr.contentWindow.controls.enableZoom = false;
+
+				}
+
+			}
 
 		} else {
 
