@@ -20,11 +20,11 @@
 
 	if ( location.origin === 'file://' ) {
 
-		core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html';
+		core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
 
 	} else {
 
-		core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-bostock-r2.html';
+		core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
 
 	}
 
@@ -144,7 +144,7 @@
 
 			var file = files[ i ];
 
-			fileName = file[ 0 ].split( '/' ).pop().toLowerCase();
+//			fileName = file[ 0 ].split( '/' ).pop().toLowerCase();
 
 			txt += '<p><a href=#' + file[ 1 ] + ' >' + file[ 0 ] + '</a></p>';
 
@@ -175,7 +175,7 @@
 
 				infoParameters.innerHTML = 
 
-					'Lat: ' + ifr.contentWindow.pud.latitude.toFixed( 3 ) + ' Lon: ' + ifr.contentWindow.pud.longitude.toFixed( 3 ) +
+//					'Lat: ' + ifr.contentWindow.pud.latitude.toFixed( 3 ) + ' Lon: ' + ifr.contentWindow.pud.longitude.toFixed( 3 ) +
 
 				'';
 
