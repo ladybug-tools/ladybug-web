@@ -8,3 +8,18 @@ value='You are now in the home page view - Click this button to view the read me
 
 [Ladybug Web Shadow Opener Read Me]( #shadow-opener/readme.md )
 ===
+
+## full screen [Ladybug Web Shadow Opener Bostock JSON]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-opener/ )
+
+
+
+## Issues
+
+* Cursor still not flowing over this one when in iframe
+
+## Change Log
+
+### 2016-04-04
+
+* Add Ladybug Web Shadow Opener Bostock JSON R1
+* Many small fixes
