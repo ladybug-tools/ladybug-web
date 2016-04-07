@@ -1,0 +1,785 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Web Shadow Core Bostock R3</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='
+Uses location.hash to load Three.js JSON file and display Sun position and analemmas according to latitude, longitude, date and time.
+' >
+<meta name=keywords content='Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-04-04' >
+</head>
+<body>
+
+<script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+<!--
+<script src=http://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+-->
+<script src=http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-bostock-r1.js ></script>
+
+<script>
+
+	var project;
+
+	var debug;
+
+// set defaults until we get a getYourLocation function running
+
+	var latitude = 37.796
+	var longitude = -122.398;
+
+	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
+
+	var parameters = new THREE.Object3D();
+	var pud = parameters.userData;
+
+	var project, helper, northArrow;
+
+	var dateUTC, dateThere;  // could be local
+	var offsetHours;
+
+	var sun, analemma;
+	var placeMap, gridHelper, axisHelper;
+
+	var stats, renderer, scene, camera, controls;
+
+	init();
+	animate();
+
+	function init() {
+
+		var geometry, material, mesh;
+		var css, memu;
+
+		if ( window.self === window.top || debug === true ) {
+
+			css = document.head.appendChild( document.createElement( 'style' ) );
+			css.innerHTML =
+
+				'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+				'h2 a {text-decoration: none; }' +
+				'h2 { margin: 0 }' +
+
+			'#bars { color: pink; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; left: -324px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
+				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
+
+			'';
+
+		hamburger = document.body.appendChild( document.createElement( 'div' ) );
+		hamburger.id = 'hamburger';
+		hamburger.innerHTML = '<div id=bars >☰</div>';
+		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+
+		menu = hamburger.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+			menu.innerHTML =
+				'<div id=menuTitle >' +
+					'<h2>' +
+						'<a href="" >' + document.title + '</a> ' +
+						'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/#shadow-core/readme.md >&#x24D8;</a>' +
+					'</h2>' +
+				'</div>' +
+				'<div id=menuFileName ></div>' +
+				'<div id=menuInfo ></div>' +
+				'<div id=menuSunInfo ></div>' +
+			'';
+
+		}
+
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0;' ;
+		document.body.appendChild( stats.domElement );
+
+		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener ( 'hashchange', hashChange, false );
+
+		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
+//		renderer.setPixelRatio( window.devicePixelRatio ); // for iOS?
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.cullFace = THREE.CullFaceBack;
+//		renderer.gammaInput = true;
+//		renderer.gammaOutput = true;
+//		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		document.body.appendChild( renderer.domElement );
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+		camera.position.set( 0, 80, 120 );
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.maxDistance = 500;
+
+		scene = new THREE.Scene();
+
+// helpers
+
+		geometry = new THREE.PlaneBufferGeometry( 150, 150 );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
+		material = new THREE.MeshPhongMaterial( { color: 0xffffff, side: 2, transparent: true } );
+		placeMap = new THREE.Mesh( geometry, material );
+		placeMap.receiveShadow = true;
+		placeMap.material.opacity = 0.75;
+		scene.add( placeMap );
+
+		gridHelper = new THREE.GridHelper( 75, 10 );
+		scene.add( gridHelper );
+
+		axisHelper = new THREE.AxisHelper( 75 );
+		scene.add( axisHelper );
+
+// assets
+
+		initSunAndLight();
+
+		initNorthArrow();
+
+// Call to action
+
+		hashChange();
+
+	}
+
+	function hashChange() {
+
+		var hashes, hash, parameter, value;
+		var date, b = '<br>';
+		var d2r = Math.PI / 180;
+
+		hashes = location.hash.length ? location.hash.split( '#' ) : fileNameDefault.split( '#' );
+
+		for ( var i = 1; i < hashes.length; i++ ) {
+
+			hash = hashes[ i ].split( '=' );
+			parameter = hash[ 0 ];
+			value = hash[ 1 ];
+
+
+			switch( parameter ) {
+
+				case 'fn': break;
+
+				case 'db' : debug === value;
+
+				case 'ar': pud.analemmaRadius = parseFloat( value ); break;
+				case 'aa': pud.analemmaColor = value; break;
+
+				case 'la': pud.latitude = parseFloat( value ); break;
+				case 'lo': pud.longitude = parseFloat( value ); break;
+
+				case 'yr': pud.year = parseInt( value, 10 ); break;
+				case 'mo': pud.month = parseInt( value, 10 ); break;
+				case 'da': pud.date = parseInt( value, 10 ); break;
+
+				case 'hr': pud.hours = parseInt( value, 10 ); break;
+				case 'mn': pud.minutes = parseInt( value, 10 ); break;
+
+				case 'op': placeMap.material.opacity = parseFloat( value ); break;
+
+				case 'rx': parameters.rotation.x = parseFloat( value * d2r ); break;
+				case 'ry': parameters.rotation.y = parseFloat( value * d2r ); break;
+				case 'rz': parameters.rotation.z = parseFloat( value * d2r ); break;
+
+				case 'px': parameters.position.x = parseFloat( value ); break;
+				case 'py': parameters.position.y = parseFloat( value ); break;
+				case 'pz': parameters.position.z = parseFloat( value ); break;
+
+				case 'sx': parameters.scale.x = parseFloat( value ) || 1 ; break;
+				case 'sy': parameters.scale.y = parseFloat( value ) || 1; break;
+				case 'sz': parameters.scale.z = parseFloat( value ) || 1; break;
+
+				case 'ms': parameters.scale.multiplyScalar( parseFloat( value ) || 1 ); break;
+
+				case 'cx': camera.position.x = parseFloat( value ); break;
+				case 'cy': camera.position.y = parseFloat( value ); break;
+				case 'cz': camera.position.z = parseFloat( value ); break;
+
+				case 'tx': controls.target.x = parseFloat( value ); break;
+				case 'ty': controls.target.y = parseFloat( value ); break;
+				case 'tz': controls.target.z = parseFloat( value ); break;
+
+				default: console.log( 'oops', parameter );
+
+			}
+
+			if ( parameter === 'fn' && value !== pud.fileName ) {
+
+				parameters = new THREE.Object3D();
+				pud = parameters.userData;
+
+				pud.latitude = latitude;
+				pud.longitude = longitude;
+
+				date = new Date();
+				pud.year = date.getFullYear();
+				pud.month = date.getMonth();
+				pud.date = date.getDate();
+
+				pud.hours = date.getHours();
+				pud.minutes = date.getMinutes();
+
+				pud.analemmaRadius = 75;
+				placeMap.material.opacity = 0.75;
+
+				pud.fileName = value;
+
+//				loadJSONFileByURL( pud.fileName );
+
+				loadXHR( pud.fileName );
+
+				if ( window.self === window.top || debug === true ) {
+
+					menuFileName.innerHTML = 'File name: ' + pud.fileName.split('/').pop();
+
+				}
+
+			}
+
+		}
+
+		if ( window.self === window.top || debug === true ) {
+
+			menuInfo.innerHTML =
+
+				'Latitude: ' + pud.latitude + b +
+				'Longitude: ' + pud.longitude + b +
+
+				'Year: ' + pud.year + b +
+				'Month: ' + pud.month + b +
+				'Date: ' + pud.date + b +
+
+				'Hours: ' + pud.hours + b +
+				'Minutes: ' + pud.minutes + b +
+
+				'Position X: ' + parameters.position.x + b +
+				'Position Y: ' + parameters.position.y + b +
+				'Position Z: ' + parameters.position.z + b +
+
+				'Rotation X: ' + parameters.rotation.x + b +
+				'Rotation Y: ' + parameters.rotation.y + b +
+				'Rotation Z: ' + parameters.rotation.z + b +
+
+				'Scale: ' + parameters.scale.z + b +
+
+				'Camera position: ' + camera.position.x.toFixed() + ', '+ camera.position.y.toFixed() + ', '+ camera.position.z.toFixed() + ', ' + b +
+				'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b +
+
+				b +
+
+			'';
+
+		}
+
+		if ( project && parameters ) {
+
+				project.scale.copy( parameters.scale );
+				project.rotation.copy( parameters.rotation );
+				project.position.copy( parameters.position );
+
+		}
+
+		getDate();
+
+	}
+
+
+
+	function loadXHR( file ) {
+
+		var loader = new THREE.XHRLoader();
+		loader.crossOrigin = '';
+		loader.load( file, function ( text ) {
+
+			text = JSON.parse( text );
+
+			handleJSON( text, file, 'test' );
+
+		} );
+
+	}
+
+	function handleJSON( data, file, filename ) {
+
+		if ( data.metadata === undefined ) { // 2.0
+
+			data.metadata = { type: 'Geometry' };
+
+		}
+
+		if ( data.metadata.type === undefined ) { // 3.0
+
+			data.metadata.type = 'Geometry';
+
+		}
+
+		if ( data.metadata.formatVersion !== undefined ) {
+
+			data.metadata.version = data.metadata.formatVersion;
+
+		}
+
+		switch ( data.metadata.type.toLowerCase() ) {
+
+			case 'buffergeometry':
+
+				var loader = new THREE.BufferGeometryLoader();
+				var result = loader.parse( data );
+
+					scene.remove( project );
+
+				project = new THREE.Mesh( result );
+
+				scene.add( project );
+
+				break;
+
+			case 'geometry':
+
+				var loader = new THREE.JSONLoader();
+				loader.crossOrigin = 'anonymous';
+				loader.load( file, function ( geometry, materials ) {
+
+
+
+					scene.remove( project );
+
+					if ( materials && materials.length > 1 ) {
+
+						material = new THREE.MultiMaterial( materials );
+
+					} else {
+
+						material = new THREE.MeshPhongMaterial();
+
+					} 
+
+
+					mesh = new THREE.Mesh( geometry, material );
+
+					updateProject( mesh );
+
+//					project.name = filename;
+
+//					scene.add( project );
+
+				} );
+
+				break;
+
+			case 'object':
+
+				var loader = new THREE.ObjectLoader();
+				loader.crossOrigin = 'anonymous';
+//				loader.setTexturePath( scope.texturePath );
+
+console.log( 'JSON 4', data );
+
+				result = loader.parse( data );
+
+				if ( project instanceof THREE.Scene ) {
+
+					scene = result;
+
+				} else {
+/*
+					scene.remove( project );
+
+					project = result;
+
+					scene.add( project );
+*/
+
+					updateProject( result );
+
+				}
+
+				break;
+
+		}
+
+	}
+
+
+
+	function updateProject( mesh ) {
+
+			scene.remove( project );
+
+			project = mesh;
+			project.castShadow = true;
+			project.receiveShadow = true;
+
+			project.scale.copy( parameters.scale );
+			project.rotation.copy( parameters.rotation );
+			project.position.copy( parameters.position );
+
+			scene.add( project );
+
+	}
+
+
+/*
+	function loadJSONFileByURL( fileName ) {
+
+		var loader = new THREE.JSONLoader();
+		loader.crossOrigin = 'anonymous';
+		loader.load( fileName, function ( geometry ) {
+
+			scene.remove( project, helper );
+
+			material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+
+			project = new THREE.Mesh( geometry, material );
+			project.castShadow = true;
+			project.receiveShadow = true;
+
+			project.scale.copy( parameters.scale );
+			project.rotation.copy( parameters.rotation );
+			project.position.copy( parameters.position );
+
+// only works for some models
+
+//			helper = new THREE.EdgesHelper( project );
+//			helper.material.color.setRGB( 1, 0, 1 );
+
+			scene.add( project );
+
+		} );
+
+	}
+*/
+
+
+// get, request and calculate data
+
+	function getDate() {
+
+		var dateHere, offsetHere, timestamp, request;
+
+		dateHere = new Date();
+
+		offsetHere = dateHere.getTimezoneOffset();
+
+		dateUTC = dateHere.getTime() + offsetHere * 60000;
+
+		dateUTC = new Date( dateUTC );
+
+		timestamp = dateUTC.getTime() / 1000;
+
+		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + pud.latitude + ',' + pud.longitude + '&timestamp=' + timestamp;
+
+		getTimezone( request );
+
+	}
+
+	function getTimezone( fileName ) {
+
+		var xhr = new XMLHttpRequest();
+		xhr.open( 'GET', fileName, true );
+		xhr.onreadystatechange = callback;
+		xhr.send( null );
+
+		function callback() {
+
+			if ( xhr.readyState !== 4  ) { return; }
+
+			var timeZonePlace = JSON.parse( xhr.responseText );
+
+			if ( timeZonePlace.status === 'OK' ) {
+
+				var offsetPlace;
+
+				offsetPlace = timeZonePlace.rawOffset + timeZonePlace.dstOffset;
+
+				dateThere = new Date( dateUTC.getTime() + ( 1000 * offsetPlace ) );
+
+				offsetHours = offsetPlace / 3600;
+
+				updateSunPosition();
+
+				drawAnalemma();
+
+			} else if ( window.self === window.top || debug === true ) {
+
+				menuInfo.innerHTML += '<hr>The location is timeless<br>' +
+
+				fileName + '<br>' +
+
+				xhr.responseText;
+
+			}
+
+		}
+
+	}
+
+
+// draw, add or update the Three.js things
+
+	function updateSunPosition() {
+
+		var sunPosition, sunDate;
+
+		dateThere.setMonth( pud.month );
+		dateThere.setDate( pud.date );
+		dateThere.setHours( pud.hours );
+		dateThere.setMinutes( pud.minutes );
+
+		sunDate = new Date( Date.UTC( 2016, dateThere.getMonth(), dateThere.getDate(), dateThere.getHours(), dateThere.getMinutes(), 0 ) );
+
+		sunDate.setUTCHours( sunDate.getUTCHours() - offsetHours );
+
+		pud.sunPosition = getSunPosition( pud.analemmaRadius, sunDate, pud.latitude, pud.longitude );
+
+		sun.position.copy( pud.sunPosition.xyz );
+
+		if ( window.self === window.top || debug === true ) {
+
+			menuSunInfo.innerHTML =
+
+				'Sun:<br>' +
+				'- Azimuth : ' + pud.sunPosition.azimuth + '<br>' +
+				'- Altitude: ' + pud.sunPosition.altitude +
+
+			'';
+
+		}
+
+	}
+
+	function drawAnalemma() {
+
+		var geometry, vertices, material, line;
+		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
+		var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+		scene.remove( analemma );
+
+		analemma = new THREE.Object3D();
+
+		for ( var hours = 0; hours < 24; hours++ ) {
+
+			geometry = new THREE.Geometry();
+			vertices = geometry.vertices;
+
+			for ( var month = 0; month < 12; month++ ) {
+
+				for ( var date = 1; date < daysOfMonth[ month ]; date++ ) {
+
+					analemmaDateUTC = new Date( Date.UTC( 2016, month, date, hours, 0, 0 ) );
+
+					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
+
+					analemmaSunPosition = getSunPosition( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
+
+					vertices.push( analemmaSunPosition.xyz );
+
+				}
+
+			}
+
+			analemmaColor = hours === 0 ? 0xff0000 : 0x000000;
+			analemmaColor = hours === 12 ? 0x00ff00 : analemmaColor;
+
+			material = new THREE.LineBasicMaterial( { color: analemmaColor } );
+			line = new THREE.Line( geometry, material );
+			analemma.add( line );
+
+			placard = drawPlacard( '' + hours, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
+			analemma.add( placard );
+
+		}
+
+		material = new THREE.LineBasicMaterial( { color: 0xbbbbbb } );
+
+		for ( var month = 5; month < 12; month++ ) {
+
+			geometry = new THREE.Geometry();
+			vertices = geometry.vertices;
+
+			for ( var hours = 0; hours < 24; hours++ ) {
+
+				analemmaDateUTC = new Date( Date.UTC( 2016, month, 21, hours, 0, 0 ) );
+
+				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
+
+				analemmaSunPosition = getSunPosition( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
+
+				vertices.push( analemmaSunPosition.xyz );
+
+			}
+
+			vertices.push( vertices[ 0 ] );
+
+			line = new THREE.Line( geometry, material );
+			analemma.add( line );
+
+		}
+
+		scene.add( analemma );
+
+	}
+
+	function initSunAndLight() {
+
+		var geometry, material, lightAmbient;
+		var d = 100;
+
+		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
+		material = new THREE.MeshPhongMaterial( { color: 0xffff00, emissive: 0x333333 } );
+
+		sun = new THREE.Mesh( geometry, material );
+		scene.add( sun );
+
+		lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.85 );
+
+
+		lightDirectional.shadow.camera.left = -d;
+		lightDirectional.shadow.camera.right = d;
+		lightDirectional.shadow.camera.top = d;
+		lightDirectional.shadow.camera.bottom = -d;
+
+		lightDirectional.shadow.camera.near = 0;
+		lightDirectional.shadow.camera.far = 2 * d;
+
+		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		sun.add( lightDirectional );
+
+//		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+
+	}
+
+	function initNorthArrow() {
+
+		var geometry, material;
+
+		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
+		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
+		geometry.merge( new THREE.CylinderGeometry( 12, 0, 20, 3 ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - Math.PI ) );
+
+		material = new THREE.MeshNormalMaterial();
+
+		northArrow = new THREE.Mesh( geometry, material );
+		northArrow.scale.multiplyScalar( 0.5 );
+		northArrow.position.set( 50, -12, 25 );
+
+		scene.add( northArrow );
+
+	}
+
+
+// utilities
+
+	function getSunPosition( radius, dateUTC, latitude, longitude ) {
+
+		var sunPosition = getSunPositionBostock( dateUTC, -latitude, longitude );
+
+		var x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		var y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		var z = radius * Math.sin( sunPosition.altitude * d2r );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+
+	}
+
+	function drawPlacard( text, scale, color, x, y, z ) {
+
+// 2016-02-27 ~ https://github.com/jaanga/jaanga.github.io/tree/master/cookbook-threejs/functions/placards
+
+		var placard = new THREE.Object3D();
+		var texture = canvasMultilineText( text, { backgroundColor: color }   );
+		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 0.9, transparent: true } );
+		var sprite = new THREE.Sprite( spriteMaterial );
+		sprite.position.set( x, y, z ) ;
+		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+
+		placard.add( sprite /*,  line */ );
+
+		return placard;
+
+		function canvasMultilineText( textArray, parameters ) {
+
+			var parameters = parameters || {} ;
+
+			var canvas = document.createElement( 'canvas' );
+			var context = canvas.getContext( '2d' );
+			var width = parameters.width ? parameters.width : 0;
+			var font = parameters.font ? parameters.font : '48px monospace';
+			var color = parameters.backgroundColor ? parameters.backgroundColor : 120 ;
+
+			if ( typeof textArray === 'string' ) textArray = [ textArray ];
+
+			context.font = font;
+
+			for ( var i = 0; i < textArray.length; i++) {
+
+				width = context.measureText( textArray[ i ] ).width > width ? context.measureText( textArray[ i ] ).width : width;
+
+			}
+
+			canvas.width = width + 20;
+			canvas.height =  parameters.height ? parameters.height : textArray.length * 60;
+
+			context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
+			context.fillRect( 0, 0, canvas.width, canvas.height);
+
+			context.lineWidth = 1 ;
+			context.strokeStyle = '#000';
+			context.strokeRect( 0, 0, canvas.width, canvas.height );
+
+			context.fillStyle = '#000' ;
+			context.font = font;
+
+			for ( i = 0; i < textArray.length; i++) {
+
+				context.fillText( textArray[ i ], 10, 48  + i * 60 );
+
+			}
+
+			var texture = new THREE.Texture( canvas );
+			texture.minFilter = texture.magFilter = THREE.NearestFilter;
+			texture.needsUpdate = true;
+
+			return texture;
+
+		}
+
+	}
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+	}
+
+	function animate() {
+
+		requestAnimationFrame( animate );
+		controls.update();
+		stats.update();
+		renderer.render( scene, camera );
+
+	}
+
+</script>
+</body>
+</html>
