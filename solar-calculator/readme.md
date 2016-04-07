@@ -76,6 +76,13 @@ The Bostock code contains about twenty lines if impenetrable code
 	* Bostock and Agafonkin use the basic JavaScript Date object - which is simpler and more standard
 
 
+## Links of Interest
+
+Ladybug's Python Sun path calculator
+
+* https://github.com/ladybug-analysis-tools/ladybug/blob/master/ladybug/sunpath.py
+
+
 ## Change Log
 
 ### 2016-04-03
