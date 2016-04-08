@@ -19,11 +19,24 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Change Log
 
+
+### 2016-04-08
+
+* R3
+* Fix Toggle Ground Plane typo. Thanks Mostapha!
+* Tighten up menu
+* Add sliding 'hamburger' menu
+* Remove ability to read Markdown files
+* Remove unused 75+ limes of unused code
+* Add locaton.hash capability
+* Add Toggle Analemma
+* Add Sun light slider
+
+
 ### 2016-04-07
 
 * Add R2
 * Add drag-and-drop URL
-
 * Toggle visibility of ground plane, grid and Axis
 
 ### 2016-04-04
