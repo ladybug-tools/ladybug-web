@@ -19,6 +19,13 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Change Log
 
+### 2016-04-07
+
+* Add R2
+* Add drag-and-drop URL
+
+* Toggle visibility of ground plane, grid and Axis
+
 ### 2016-04-04
 
 * Add Ladybug Web Shadow Opener Bostock JSON R1

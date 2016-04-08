@@ -160,7 +160,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 			parameter = hash[ 0 ];
 			value = hash[ 1 ];
 
-
 			switch( parameter ) {
 
 				case 'fn': break;
@@ -194,7 +193,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				case 'sy': parameters.scale.y = parseFloat( value ) || 1; break;
 				case 'sz': parameters.scale.z = parseFloat( value ) || 1; break;
 
-				case 'ms': parameters.scale.multiplyScalar( parseFloat( value ) || 1 ); break;
+//				case 'ms': parameters.scale.multiplyScalar( parseFloat( value ) || 1 ); break;
 
 				case 'cx': camera.position.x = parseFloat( value ); break;
 				case 'cy': camera.position.y = parseFloat( value ); break;
@@ -230,7 +229,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				pud.fileName = value;
 
 //				loadJSONFileByURL( pud.fileName );
-
 				loadXHR( pud.fileName );
 
 				if ( window.self === window.top || debug === true ) {
@@ -288,8 +286,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	}
 
-
-
 	function loadXHR( file ) {
 
 		var loader = new THREE.XHRLoader();
@@ -331,7 +327,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				var loader = new THREE.BufferGeometryLoader();
 				var result = loader.parse( data );
 
-					scene.remove( project );
+				scene.remove( project );
 
 				project = new THREE.Mesh( result );
 
@@ -345,8 +341,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				loader.crossOrigin = 'anonymous';
 				loader.load( file, function ( geometry, materials ) {
 
-
-
 					scene.remove( project );
 
 					if ( materials && materials.length > 1 ) {
@@ -357,8 +351,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 						material = new THREE.MeshPhongMaterial();
 
-					} 
-
+					}
 
 					mesh = new THREE.Mesh( geometry, material );
 
@@ -387,13 +380,6 @@ console.log( 'JSON 4', data );
 					scene = result;
 
 				} else {
-/*
-					scene.remove( project );
-
-					project = result;
-
-					scene.add( project );
-*/
 
 					updateProject( result );
 
@@ -404,8 +390,6 @@ console.log( 'JSON 4', data );
 		}
 
 	}
-
-
 
 	function updateProject( mesh ) {
 
@@ -449,6 +433,16 @@ console.log( 'JSON 4', data );
 //			helper.material.color.setRGB( 1, 0, 1 );
 
 			scene.add( project );
+
+			scene.traverse( function ( child ) {
+
+				if ( child instanceof THREE.Mesh || child instanceof THREE.Object) {
+
+					child.castShadow = true;
+					child.receiveShadow = true;
+
+				}
+			} );
 
 		} );
 
@@ -641,7 +635,6 @@ console.log( 'JSON 4', data );
 		scene.add( lightAmbient );
 
 		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.85 );
-
 
 		lightDirectional.shadow.camera.left = -d;
 		lightDirectional.shadow.camera.right = d;

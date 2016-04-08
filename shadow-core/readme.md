@@ -22,13 +22,22 @@ value='You are now in the home page view - Click this button to view the read me
 * Draw the sun path
 	* Given location, date and time
 	* Displays analemmas and hour placards
-* Loads and displays a JSON file
+* Loads and displays JSON file
+	* Should handle all revisions of the Three.js JSON standard - R3 and R4 in particular
+	* Uses both Three.js JSONLoader and ObjectLoader
+	* Should load and make use of and display texture bitmaps
 * Supports permalinks
 
 
 ## Change Log
 
-###2016-04-04
+### 2016-04-07
+
+* Add R3
+* Add support for all the Three.js JSON standards
+* Fix scaling issues
+
+### 2016-04-04
 
 * Add Ladybug Web Shadow Core Bostock R2
 * Analemmas no longer upside down
