@@ -34,6 +34,9 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	var longitude = -122.398;
 
 	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
+	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/3D10.0_12.0_24.0_66.0_17.0_2.0_0.0_0.0_0.1.json#sy=0.3#py=-3';
+//	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/model.json';
+
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
@@ -371,15 +374,38 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				loader.crossOrigin = 'anonymous';
 //				loader.setTexturePath( scope.texturePath );
 
-console.log( 'JSON 4', data );
+
 
 				result = loader.parse( data );
 
-				if ( project instanceof THREE.Scene ) {
+				if ( result instanceof THREE.Scene ) {
+
+console.log( 'r4 scene', result );
 
 					scene = result;
 
+					scene.traverse( function ( child ) {
+
+						if ( child instanceof THREE.Mesh ) {
+
+						child.castShadow = true;
+						child.receiveShadow = true;
+
+						}
+					} );
+
+
 				} else {
+
+console.log( 'JSON 4 model', result );
+
+					for ( var i = 0; i < result.geometries.length; i++ ) {
+
+						child = data.geometries[ i ];
+						child.castShadow = true;
+						child.receiveShadow = true;
+
+					} 
 
 					updateProject( result );
 

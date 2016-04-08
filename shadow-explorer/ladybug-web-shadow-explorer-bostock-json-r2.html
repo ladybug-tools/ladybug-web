@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Web Shadow Explorer Bostock JSON R1</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='View JSON files' >
+<meta name=keywords content='GitHub API,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-04-04' >
+</head>
+<body>
+<script src=http://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
+<script>
+
+	var converter;
+
+//	var core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
+
+	var core;
+
+	if ( location.origin === 'file://' ) {
+
+		core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
+
+	} else {
+
+		core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
+
+	}
+
+	var va3c = 'fn=http://va3c.github.io/'
+
+	files = [
+
+		[ 'Walt Disney', 'fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#py=30', ''  ],
+
+		[ 'Robie House', va3c + '3d-warehouse-samples/robie-house/untitled/robie-house.js#px=-50$pz=80#sx=30#sy=30#sz=30#la=41.7898#lo=-87.5959', '1909 - slow but worth it'],
+		[ 'Schroder House', va3c + '3d-warehouse-samples/schroder-house/untitled/schroder-house.js#sx=5#sy=5#sz=5#la=52.0853#lo=5.1472', '1909'],
+		[ 'Villa Savoye', va3c + '3d-warehouse-samples/villa-savoye/untitled/villa-savoye.js#px=-30#pz-50#sx=3#sy=3#sz=3#la=48.9231#lo=2.02658', '1929'],
+		[ 'Barcelona Pavilion', va3c + '3d-warehouse-samples/barcelona-pavilion/untitled/barcelona-pavilion.js#px=-70#pz=50#sx=2#sy=2#sz=2#cx=-50#cy=17#cz=64#la=41.3706#lo=2.1500', '1930' ],
+
+		[ 'ratamahatta', va3c + 'three.js/examples/models/animated/ratamahatta/ratamahatta.js#py=25#ry=-90#sx=1#sy=1#sz=1#la=37.8#lo=-122.4'],
+		[ 'cubecolors', va3c + 'three.js/examples/obj/cubecolors/cubecolors.js#sx=30#sy=30#sz=30#la=37.8#lo=-122.4'],
+		[ 'female02', va3c + 'three.js/examples/obj/female02/Female02_slim.js#sx=0.3#sy=0.3#sz=0.3#la=37.8#lo=-122.4'],
+		[ 'leeperrysmith', va3c + 'three.js/examples/obj/leeperrysmith/LeePerrySmith.js#py=20#sx=5#sy=5#sz=5#la=37.8#lo=-122.4' ],
+
+	];
+
+	init();
+
+	function init() {
+
+		var css, menu, date;
+
+		converter = new showdown.Converter( { strikethrough: true, literalMidWordUnderscores: true, simplifiedAutoLink: true, tables: true });
+
+		css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; margin: 0; overflow: hidden}' +
+			'h2 { margin: 0; }' +
+			'a { text-decoration: none; }' +
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
+			'iframe { border: 2px solid green; height: 100%; padding: 0; width: 100%; }' +
+
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; }' +
+			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; opacity: 0.85; width: 10px; }' +
+
+			'#menu { background-color: #ccc; height: 100%; max-width: 300px; overflow: auto; padding: 0 0 0 20px; position: absolute; }' +
+			'#contents { border: 0px red solid; height: 100%; left: 320px; margin: 0; position: absolute; top: 0; width: ' + ( window.innerWidth - 320 ) + 'px; }' +
+
+		'';
+
+		menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href="" >' + document.title + '</a> ' +
+				'<a href=https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-explorer >&#x24D8;</a>' +
+			'</h2>' +
+			'<p><a href="#readme.md" >Read Me</a></p>' +
+
+			'<hr>' +
+
+			'<p>Time at your location: <br>' + 
+				'Month<br><input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" ><output id=outMonth ></output><br>' +
+				'Day<br><input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" ><output id=outDate ></output><br>' +
+				'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" ><output id=outHours ></output><br>' +
+				'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" ><output id=outMinutes ></output><br>' +
+			'</p>' +
+			'<div id=infoParameters ></div>' +
+			'<div id=infoSun ></div>' +
+			'<hr>' +
+			'<div id=info ></div>' +
+
+		'';
+
+		date = new Date();
+
+		outMonth.value = inpMonth.value = date.getMonth();
+		outDate.value = inpDate.value = date.getDate() + 1;
+		outHours.value = inpHours.value = date.getHours();
+		outMinutes.value = inpMinutes.value = date.getMinutes();
+
+		contents = document.body.appendChild( document.createElement( 'div' ) );
+		contents.id = 'contents';
+
+		window.addEventListener ( 'hashchange', hashChange, false );
+
+		initMenu();
+
+		hashChange();
+
+	}
+
+	function setDate() {
+
+		ifr.contentWindow.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
+			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber ;
+
+		outMonth.value = inpMonth.value;
+		outDate.value = inpDate.value;
+		outHours.value = inpHours.value;
+		outMinutes.value = inpMinutes.value;
+
+		infoSun.innerHTML =
+
+			'Sun:<br>' +
+			'- Azimuth : ' + ifr.contentWindow.pud.sunPosition.azimuth.toFixed( 2 ) + '<br>' +
+			'- Altitude: ' + ifr.contentWindow.pud.sunPosition.altitude.toFixed( 2 ) +
+
+		'';
+
+	}
+
+
+	function initMenu() {
+
+		txt = '';
+
+		for ( var i = 0; i < files.length; i++ ) {
+
+			var file = files[ i ];
+
+//			fileName = file[ 0 ].split( '/' ).pop().toLowerCase();
+
+			txt += '<p><a href=#' + file[ 1 ] + ' >' + file[ 0 ] + '</a></p>';
+
+		}
+
+		info.innerHTML += txt;
+
+		info.innerHTML += 
+
+			'<hr>' +
+			'<p><a href="http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/" target="_blank" >&#x1f5d7; Ladybug Web Shadow Core</a></p>' +
+			'<center><img src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f41e.png?v6" >';
+
+	}
+
+	function hashChange() {
+
+		fileName = location.hash ? location.hash.slice( 1 ) : 'readme.md';
+
+		if ( fileName.slice( -3 ) !== '.md' ) {
+
+			contents.innerHTML = '<iframe id=ifr src=' + core + fileName + ' scrolling="no" ></iframe>';
+			contents.style.overflow = 'hidden';
+			contents.style.margin = contents.style.padding = '0';
+
+
+			ifr.onload = function () {
+
+				infoParameters.innerHTML = 
+
+//					'Lat: ' + ifr.contentWindow.pud.latitude.toFixed( 3 ) + ' Lon: ' + ifr.contentWindow.pud.longitude.toFixed( 3 ) +
+
+				'';
+
+				if ( window.self !== window.top ) {
+
+					ifr.contentWindow.controls.enableZoom = false;
+
+				}
+
+			}
+
+		} else {
+
+			getMarkdown( fileName, contents );
+			contents.style.overflow = 'auto';
+			contents.style.padding = '0 30px';
+
+		}
+
+	}
+
+	function getMarkdown( fileName, target ) {
+
+		var xhr = new XMLHttpRequest();
+		xhr.open( 'GET', fileName, true );
+		xhr.onreadystatechange = callback;
+		xhr.send( null );
+
+		function callback() {
+
+			if ( xhr.readyState !== 4 ) { return; }
+
+			target.innerHTML = converter.makeHtml(  xhr.responseText );
+
+		}
+
+	}
+
+</script>
+</body>
+</html>
