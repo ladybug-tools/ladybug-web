@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Explorer Bostock JSON R1</title>
+<title>Ladybug Web Shadow Explorer Bostock JSON R2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='View JSON files' >
 <meta name=keywords content='GitHub API,JavaScript,GitHub,FOSS,3D,STEM' >
@@ -14,17 +14,15 @@
 
 	var converter;
 
-//	var core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
-
 	var core;
 
 	if ( location.origin === 'file://' ) {
 
-		core = '../shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
+		core = '../shadow-core/ladybug-web-shadow-core-bostock-r3.html';
 
 	} else {
 
-		core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-bostock-r2.html#';
+		core = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-bostock-r3.html';
 
 	}
 
@@ -139,6 +137,7 @@
 	function initMenu() {
 
 		txt = '';
+		opener = 'http://ladybug-analysis-tools.github.io/ladybug-web/shadow-opener/ladybug-web-shadow-opener-bostock-json-r3.html';
 
 		for ( var i = 0; i < files.length; i++ ) {
 
@@ -146,7 +145,9 @@
 
 //			fileName = file[ 0 ].split( '/' ).pop().toLowerCase();
 
-			txt += '<p><a href=#' + file[ 1 ] + ' >' + file[ 0 ] + '</a></p>';
+			txt += '<p><a href=#' + file[ 1 ] + ' >' + file[ 0 ] + '</a> - ' +
+				'&#x1f5d7; <a href=' + opener + '#' + file[ 1 ] + ' >edit</a>' +
+			'';
 
 		}
 
@@ -162,7 +163,7 @@
 
 	function hashChange() {
 
-		fileName = location.hash ? location.hash.slice( 1 ) : 'readme.md';
+		fileName = location.hash ? location.hash : 'readme.md';
 
 		if ( fileName.slice( -3 ) !== '.md' ) {
 
