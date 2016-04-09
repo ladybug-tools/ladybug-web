@@ -1,6 +1,6 @@
 ﻿
-<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
+<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-opener/ "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-opener'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
 [Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
@@ -11,11 +11,21 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## full screen [Ladybug Web Shadow Opener Bostock JSON]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-opener/ )
 
+There are a number of cross-origin or security issues related to loading files your files locally from your had disk.
+
+Fortunately there are some good and save ways of working around these issues
+
+Future revisions of this read me will start to document the possibilities,
+
+## Features
+
+* To be listed
 
 
-## Issues
+## Road Map / To Do List / Wishlist
 
-* Cursor still not flowing over this one when in iframe
+
+
 
 ## Change Log
 
@@ -31,6 +41,10 @@ value='You are now in the home page view - Click this button to view the read me
 * Add locaton.hash capability
 * Add Toggle Analemma
 * Add Sun light slider
+* Add messaging from core
+* Set default file to whatever core wants
+* Disable zoom if not top window
+* And a bunch of other bits and bobs
 
 
 ### 2016-04-07
