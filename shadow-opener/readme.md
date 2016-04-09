@@ -22,7 +22,7 @@ Future revisions of this read me will start to document the possibilities.
 * To be listed
 
 
-## Road Map / To Do List / Wishlist
+## Road Map / To Do List / Wish list
 
 * Sparse permalinks = only add what's needed
 
@@ -34,6 +34,7 @@ Future revisions of this read me will start to document the possibilities.
 * R4
 * Fix a bunch of file loading and location.hash updates 
 * Streamline and cleanup code
+* Seems to be running OK. We shall see...
 
 
 ### 2016-04-08
