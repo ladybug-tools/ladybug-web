@@ -213,6 +213,12 @@
 
 	ifr.onload = function() {
 
+		if ( window.self === window.top ) {
+
+			ifr.contentWindow.controls.enableZoom = false;
+
+		}
+
 		pars = ifr.contentWindow.parameters;
 		pud = pars.userData;
 
