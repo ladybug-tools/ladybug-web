@@ -31,6 +31,18 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Change Log
 
+### 2016-04-08
+
+* Add send messages to parent
+* Add toglle placeMap visibility
+* Set default file to urban model 001
+* Improve ability to load files
+	* Add cast and receive shadows
+	* Add two sides
+* Add Edges Helpers to R4 files
+* Other bits and bobs
+
+
 ### 2016-04-07
 
 * Add R3

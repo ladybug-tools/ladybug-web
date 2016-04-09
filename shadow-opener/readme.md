@@ -15,7 +15,7 @@ There are a number of cross-origin or security issues related to loading files y
 
 Fortunately there are some good and save ways of working around these issues
 
-Future revisions of this read me will start to document the possibilities,
+Future revisions of this read me will start to document the possibilities.
 
 ## Features
 
