@@ -33,10 +33,11 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	var latitude = 37.796
 	var longitude = -122.398;
 
-	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
+//	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
 //	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/3D10.0_12.0_24.0_66.0_17.0_2.0_0.0_0.0_0.1.json#sy=0.3#py=-3';
 //	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/model.json';
-
+	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/ladybug-analysis-tools.github.io/3d-models/json/urban-model-001/urban-model-001.json' +
+		'#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#vp=0';
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
@@ -92,6 +93,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				'<div id=menuFileName ></div>' +
 				'<div id=menuInfo ></div>' +
 				'<div id=menuSunInfo ></div>' +
+				'<div id=menuMessage ></div>' +
 			'';
 
 		}
@@ -123,6 +125,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 // helpers
 
+
 		geometry = new THREE.PlaneBufferGeometry( 150, 150 );
 		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
 		material = new THREE.MeshPhongMaterial( { color: 0xffffff, side: 2, transparent: true } );
@@ -132,10 +135,10 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		scene.add( placeMap );
 
 		gridHelper = new THREE.GridHelper( 75, 10 );
-		scene.add( gridHelper );
+		placeMap.add( gridHelper );
 
 		axisHelper = new THREE.AxisHelper( 75 );
-		scene.add( axisHelper );
+		placeMap.add( axisHelper );
 
 // assets
 
@@ -183,6 +186,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				case 'mn': pud.minutes = parseInt( value, 10 ); break;
 
 				case 'op': placeMap.material.opacity = parseFloat( value ); break;
+				case 'vp': placeMap.visible = parseInt( value, 10 ) === 0 ? false : true ; break;
 
 				case 'rx': parameters.rotation.x = parseFloat( value * d2r ); break;
 				case 'ry': parameters.rotation.y = parseFloat( value * d2r ); break;
@@ -301,12 +305,15 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 			if ( text.slice( 0, 1 ) !== '{' ) {
 
-				if ( parent.message ) {
+				if ( window.self === window.top || debug === true ) {
+
+					menuMessage.innerHTML = file + ' is not json<br>';
+
+				} else if ( parent.message ) {
 
 					parent.message.innerHTML = file + ' is not json<br>';
 
 				}
-
 
 				return;
 
@@ -371,7 +378,9 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				break;
 
 			case 'geometry':
-message = 'R3 geometry';
+
+				message = 'R3 geometry';
+
 				var loader = new THREE.JSONLoader();
 				loader.crossOrigin = 'anonymous';
 				loader.load( file, function ( geometry, materials ) {
@@ -395,12 +404,6 @@ message = 'R3 geometry';
 					mesh = new THREE.Mesh( geometry, material );
 
 					updateProject( mesh );
-
-//					project.name = filename;
-
-//					scene.add( project );
-
-
 
 				} );
 
@@ -437,13 +440,19 @@ message = 'R3 geometry';
 
 					message = 'JSON 4 model';
 
-					for ( var i = 0; i < result.geometries.length; i++ ) {
+// console.log( '', result );
 
-						child = data.geometries[ i ];
-						child.castShadow = true;
-						child.receiveShadow = true;
+					for ( var i = 0; i < result.children.length; i++ ) {
+
+						child = result.children[ i ];
+						child.material.side = 2
+
+						helper = new THREE.EdgesHelper( child, 0x444444 );
+						scene.add( helper );
 
 					} 
+
+
 
 					updateProject( result );
 
@@ -465,7 +474,11 @@ message = 'R3 geometry';
 
 		}
 
-		if ( parent.message ) {
+		if ( window.self === window.top || debug === true ) {
+
+			menuMessage.innerHTML = fileName + ': ' + message + '<br>&nbsp;';
+
+		} else if ( parent.message ) {
 
 			parent.message.innerHTML = fileName + ': ' + message + '<br>&nbsp;';
 
@@ -671,7 +684,7 @@ message = 'R3 geometry';
 		sun = new THREE.Mesh( geometry, material );
 		scene.add( sun );
 
-		lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
+		lightAmbient = new THREE.AmbientLight( 0x888888 );
 		scene.add( lightAmbient );
 
 		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.85 );

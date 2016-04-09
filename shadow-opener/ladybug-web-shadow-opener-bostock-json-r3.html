@@ -30,9 +30,11 @@
 	}
 
 //	var fileName = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js';
-	var fileName = '#fn=http://mrdoob.github.io/three.js/examples/obj/leeperrysmith/LeePerrySmith.js#la=38.111#lo=-120.666#sx=10#sy=10#sz=10';
+//	var fileName = '#fn=http://mrdoob.github.io/three.js/examples/obj/leeperrysmith/LeePerrySmith.js#la=38.111#lo=-120.666#sx=10#sy=10#sz=10';
 //	var fileName = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#la=37.798#lo=-122.396#mo=2#da=30#hr=17#mn=40#px=0#py=0#pz=0#rx=1#ry=1#rz=1#ms=1';
 
+	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
+	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
 
 	init();
 
@@ -124,7 +126,7 @@
 			'</p>' +
 
 			'<div id=info ></div>' +
-
+			'<div id=message ></div>' +
 		'';
 
 		inpLatitude.value = latitude;
@@ -137,7 +139,7 @@
 		outHours.value = inpHours.value = date.getHours();
 		outMinutes.value = inpMinutes.value = date.getMinutes();
 
-		hash = location.hash ? location.hash : fileName;
+		hash = location.hash ? location.hash : ''; //fileName;
 
 //		taURL.value = fileName; 
 
@@ -204,6 +206,30 @@
 		outDate.value = inpDate.value;
 		outHours.value = inpHours.value;
 		outMinutes.value = inpMinutes.value;
+
+	}
+
+
+	ifr.onload = function() {
+
+		pars = ifr.contentWindow.parameters;
+		pud = pars.userData;
+
+// console.log( 'icw', pars );
+
+		inpLatitude.value = pud.latitude;
+		inpLongitude.value = pud.longitude;
+		inpMonth.value = pud.month;
+		inpDate.value = pud.date;
+		inpHours.value = pud.hours;
+		inpMinutes.value = pud.minutes;
+		inpScale.value = pars.scale.x;
+		inpRotX.value = pars.rotation.x * r2d;
+		inpRotY.value = pars.rotation.y * r2d;
+		inpRotZ.value = pars.rotation.z * r2d;
+		inpPosX.value = pars.position.x;
+		inpPosY.value = pars.position.y;
+		inpPosZ.value = pars.position.z;
 
 	}
 
