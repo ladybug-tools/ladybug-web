@@ -28,6 +28,11 @@ value='You are now in the home page view - Click this button to view the read me
 	* Should load and make use of and display texture bitmaps
 * Supports permalinks
 
+## Wishlist
+
+* Mostapha: Finally, isn't it easier to scale and move sunpath instead of the geometry? I imagine cases that the user input a complex mesh and moving or scaling the geometry will be expensive performance wise.
+
+
 
 ## Change Log
 

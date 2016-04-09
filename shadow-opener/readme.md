@@ -24,10 +24,16 @@ Future revisions of this read me will start to document the possibilities.
 
 ## Road Map / To Do List / Wishlist
 
-
+* Sparse permalinks = only add what's needed
 
 
 ## Change Log
+
+### 2016-04-09
+
+* R4
+* Fix a bunch of file loading and location.hash updates 
+* Streamline and cleanup code
 
 
 ### 2016-04-08
@@ -38,7 +44,7 @@ Future revisions of this read me will start to document the possibilities.
 * Add sliding 'hamburger' menu
 * Remove ability to read Markdown files
 * Remove unused 75+ limes of unused code
-* Add locaton.hash capability
+* Add location.hash capability
 * Add Toggle Analemma
 * Add Sun light slider
 * Add messaging from core
