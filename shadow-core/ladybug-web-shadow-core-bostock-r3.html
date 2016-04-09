@@ -34,7 +34,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	var longitude = -122.398;
 
 	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
-	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/3D10.0_12.0_24.0_66.0_17.0_2.0_0.0_0.0_0.1.json#sy=0.3#py=-3';
+//	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/3D10.0_12.0_24.0_66.0_17.0_2.0_0.0_0.0_0.1.json#sy=0.3#py=-3';
 //	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/model.json';
 
 
@@ -295,15 +295,36 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		loader.crossOrigin = '';
 		loader.load( file, function ( text ) {
 
+// console.log( 'text', text.slice( 0, 10 ) );
+
+			fileName = file.slice( file.lastIndexOf( '/' ) + 1 );
+
+			if ( text.slice( 0, 1 ) !== '{' ) {
+
+				if ( parent.message ) {
+
+					parent.message.innerHTML = file + ' is not json<br>';
+
+				}
+
+
+				return;
+
+			}
+
 			text = JSON.parse( text );
 
-			handleJSON( text, file, 'test' );
+			handleJSON( text, file, fileName );
 
 		} );
 
 	}
 
-	function handleJSON( data, file, filename ) {
+	function handleJSON( data, file, fileName ) {
+
+//console.log( 'data', data.buffers );
+
+		message = 'JSON data';
 
 		if ( data.metadata === undefined ) { // 2.0
 
@@ -323,6 +344,15 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		}
 
+
+		if ( data.buffers ) {
+
+			data.metadata.type = 'binary';
+
+			message = 'binary data: not handled yet';
+
+		}
+
 		switch ( data.metadata.type.toLowerCase() ) {
 
 			case 'buffergeometry':
@@ -336,10 +366,12 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 				scene.add( project );
 
+				message = 'buffer geometry';
+
 				break;
 
 			case 'geometry':
-
+message = 'R3 geometry';
 				var loader = new THREE.JSONLoader();
 				loader.crossOrigin = 'anonymous';
 				loader.load( file, function ( geometry, materials ) {
@@ -349,6 +381,10 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 					if ( materials && materials.length > 1 ) {
 
 						material = new THREE.MultiMaterial( materials );
+
+					} else if ( materials ) {
+
+						material = materials[ 0 ];
 
 					} else {
 
@@ -364,7 +400,11 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 //					scene.add( project );
 
+
+
 				} );
+
+				
 
 				break;
 
@@ -374,13 +414,11 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				loader.crossOrigin = 'anonymous';
 //				loader.setTexturePath( scope.texturePath );
 
-
-
 				result = loader.parse( data );
 
 				if ( result instanceof THREE.Scene ) {
 
-console.log( 'r4 scene', result );
+					message = 'r4 scene';
 
 					scene = result;
 
@@ -397,7 +435,7 @@ console.log( 'r4 scene', result );
 
 				} else {
 
-console.log( 'JSON 4 model', result );
+					message = 'JSON 4 model';
 
 					for ( var i = 0; i < result.geometries.length; i++ ) {
 
@@ -412,6 +450,24 @@ console.log( 'JSON 4 model', result );
 				}
 
 				break;
+
+			case 'scene':
+
+					message = 'JSON scene - nothing to show';
+
+				break;
+
+			case 'app':
+
+				message = 'JSON app - maybe next year';
+
+				break;
+
+		}
+
+		if ( parent.message ) {
+
+			parent.message.innerHTML = fileName + ': ' + message + '<br>&nbsp;';
 
 		}
 
@@ -432,48 +488,6 @@ console.log( 'JSON 4 model', result );
 			scene.add( project );
 
 	}
-
-
-/*
-	function loadJSONFileByURL( fileName ) {
-
-		var loader = new THREE.JSONLoader();
-		loader.crossOrigin = 'anonymous';
-		loader.load( fileName, function ( geometry ) {
-
-			scene.remove( project, helper );
-
-			material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
-
-			project = new THREE.Mesh( geometry, material );
-			project.castShadow = true;
-			project.receiveShadow = true;
-
-			project.scale.copy( parameters.scale );
-			project.rotation.copy( parameters.rotation );
-			project.position.copy( parameters.position );
-
-// only works for some models
-
-//			helper = new THREE.EdgesHelper( project );
-//			helper.material.color.setRGB( 1, 0, 1 );
-
-			scene.add( project );
-
-			scene.traverse( function ( child ) {
-
-				if ( child instanceof THREE.Mesh || child instanceof THREE.Object) {
-
-					child.castShadow = true;
-					child.receiveShadow = true;
-
-				}
-			} );
-
-		} );
-
-	}
-*/
 
 
 // get, request and calculate data
