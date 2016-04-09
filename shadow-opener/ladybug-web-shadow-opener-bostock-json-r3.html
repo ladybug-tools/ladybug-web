@@ -213,7 +213,7 @@
 
 	ifr.onload = function() {
 
-		if ( window.self === window.top ) {
+		if ( window.self !== window.top ) {
 
 			ifr.contentWindow.controls.enableZoom = false;
 

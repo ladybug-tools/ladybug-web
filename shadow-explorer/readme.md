@@ -1,6 +1,6 @@
 ﻿
-<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
+<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/#shadow-explorer/readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-explorer'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
 [Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
@@ -12,7 +12,7 @@ value='You are now in the home page view - Click this button to view the read me
 _Use the menu on the left to call up files and adjust the date and time. Enjoy watching the shadows move as the hours go by._
 
 
-## [Ladybug Web Shadow Explorer Bostock JSON R1]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
+## full screen: [Ladybug Web Shadow Explorer Bostock JSON]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-explorer/ )
 
 The idea is to have a core or 'engine' that other scripts - like the one you ae usung now - can call and embed in an `iframe`.
 The engine is here: [Ladybug Web Shadow Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ ).
@@ -65,11 +65,17 @@ Any others?
 * There is a big need for better models
 * Rendering quality is still low/primitive
 * Need for persistent shadows for designated time periods
-* Import JSON 4 files
-* Add materials
+
 
 
 ## Change Log
+
+
+### 2016-04-08
+
+* Add link to Shadow Opener to every menu item
+* Add messaging from core
+* Big revision is in the works elsewhere
 
 
 ### 2016-04-04
