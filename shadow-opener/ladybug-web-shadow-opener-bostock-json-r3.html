@@ -84,7 +84,7 @@
 			'</h2>' +
 
 
-			'<div>URL:<br><textarea id=taURL cols=35 rows=6 placeholder="Drag and drop a URL or file path & name into here..."></textarea></div>' +
+			'<div>URL:<br><textarea id=taURL cols=35 rows=6 placeholder="Drag and drop a URL here\nor\nsee read me for more tricks..."></textarea></div>' +
 			'<div>Permalink:<br><textarea id=taPermalink cols=35 rows=8 ></textarea></div>' +
 
 			'<div>' +
@@ -198,6 +198,7 @@
 
 		}
 
+
 		taPermalink.value = txt;
 
 		ifr.src = txt;
@@ -214,6 +215,8 @@
 
 		pars = ifr.contentWindow.parameters;
 		pud = pars.userData;
+
+		taURL.value = pud.fileName;
 
 // console.log( 'icw', pars );
 
