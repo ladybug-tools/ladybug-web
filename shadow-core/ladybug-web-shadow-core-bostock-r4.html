@@ -32,15 +32,22 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 //	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/3D10.0_12.0_24.0_66.0_17.0_2.0_0.0_0.0_0.1.json#sy=0.3#py=-3';
 //	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/model.json';
 	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/json/urban-model/urban-model-001.json' +
-		'#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#vp=0';
+		'#la=37.796#lo=-122.398#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=0';
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
+//	pud.fileName = '';
+	pud.analemmaRadius = 75;
+	pud.analemmaVisible = true;
+
+	pud.groundPlaneOpacity = 0.75;
+	pud.groundPlaneVisible = true;
+
 	pud.latitude = 37.796
 	pud.longitude = -122.398;
+
 	pud.scaleProject = true;
-	pud.analemmaRadius = 75;
-	pud.groundPlaneOpacity = 0.75;
+	pud.sunlightIntensity = 0.85
 
 	var project, helper, northArrow;
 
@@ -153,7 +160,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	function hashChange() {
 
-		var hashes, hash, parameter, value;
+//		var hashes, hash, parameter, value;
 		var date, b = '<br>';
 		var d2r = Math.PI / 180;
 
@@ -164,6 +171,8 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 			hash = hashes[ i ].split( '=' );
 			parameter = hash[ 0 ];
 			value = hash[ 1 ];
+
+//console.log( '', parameter );
 
 			switch( parameter ) {
 
@@ -188,6 +197,8 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				case 'gv': pud.groundPlaneVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
 				case 'av': pud.analemmaVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
 
+				case 'sl': lightDirectional.intensity = pud.sunlightIntensity = parseFloat( value ); break;
+
 				case 'rx': parameters.rotation.x = parseFloat( value * d2r ); break;
 				case 'ry': parameters.rotation.y = parseFloat( value * d2r ); break;
 				case 'rz': parameters.rotation.z = parseFloat( value * d2r ); break;
@@ -209,17 +220,13 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				case 'ty': controls.target.y = parseFloat( value ); break;
 				case 'tz': controls.target.z = parseFloat( value ); break;
 
-				default: console.log( 'oops', parameter );
+				case  parent.core : break;
+
+				default: console.log( 'oops', value, i, hashes );
 
 			}
 
 			if ( parameter === 'fn' && value !== pud.fileName ) {
-
-				parameters = new THREE.Object3D();
-				pud = parameters.userData;
-
-				pud.latitude = latitude;
-				pud.longitude = longitude;
 
 				date = new Date();
 				pud.year = date.getFullYear();
@@ -229,12 +236,8 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				pud.hours = date.getHours();
 				pud.minutes = date.getMinutes();
 
-				pud.analemmaRadius = 75;
-				groundPlane.material.opacity = pud.groundPlaneOpacity = 0.75;
-
 				pud.fileName = value;
 
-//				loadJSONFileByURL( pud.fileName );
 				loadXHR( pud.fileName );
 
 				if ( window.self === window.top || debug === true ) {
@@ -286,8 +289,9 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				project.rotation.copy( parameters.rotation );
 				project.position.copy( parameters.position );
 
-
 		}
+
+		groundPlane.visible = pud.groundPlaneVisible;
 
 		getDate();
 
@@ -350,7 +354,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 			data.metadata.version = data.metadata.formatVersion;
 
 		}
-
 
 		if ( data.buffers ) {
 
@@ -503,7 +506,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 			scene.add( project );
 
-			scaleProject();
+			if ( pud.scaleProject === true ) { scaleProject(); }
 
 	}
 
@@ -511,14 +514,13 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		bbh = new THREE.BoundingBoxHelper( project );
 		bbh.update();
-		scene.add( bbh );
+//		scene.add( bbh );
 
 		size = parameters.scale.x * 150 / bbh.position.distanceTo( bbh.scale );
 
 		project.scale.set( size, size, size )
 
-console.log( 'bbh', bbh, bbh.position.distanceTo( bbh.scale ) );
-
+// console.log( 'bbh', bbh, bbh.position.distanceTo( bbh.scale ) );
 
 	}
 
@@ -690,6 +692,8 @@ console.log( 'bbh', bbh, bbh.position.distanceTo( bbh.scale ) );
 
 		scene.add( analemma );
 
+		analemma.visible = pud.analemmaVisible;
+
 	}
 
 	function initSunAndLight() {
@@ -706,7 +710,7 @@ console.log( 'bbh', bbh, bbh.position.distanceTo( bbh.scale ) );
 		lightAmbient = new THREE.AmbientLight( 0x888888 );
 		scene.add( lightAmbient );
 
-		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.85 );
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, pud.sunlightIntensity );
 
 		lightDirectional.shadow.camera.left = -d;
 		lightDirectional.shadow.camera.right = d;
