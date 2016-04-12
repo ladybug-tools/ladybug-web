@@ -494,19 +494,19 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	function updateProject( mesh ) {
 
-			scene.remove( project );
+		scene.remove( project );
 
-			project = mesh;
-			project.castShadow = true;
-			project.receiveShadow = true;
+		project = mesh;
+		project.castShadow = true;
+		project.receiveShadow = true;
 
-			project.scale.copy( parameters.scale );
-			project.rotation.copy( parameters.rotation );
-			project.position.copy( parameters.position );
+		project.scale.copy( parameters.scale );
+		project.rotation.copy( parameters.rotation );
+		project.position.copy( parameters.position );
 
-			scene.add( project );
+		scene.add( project );
 
-			if ( pud.scaleProject === true ) { scaleProject(); }
+		if ( pud.scaleProject === true ) { scaleProject(); }
 
 	}
 
@@ -518,7 +518,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		size = parameters.scale.x * 150 / bbh.position.distanceTo( bbh.scale );
 
-		project.scale.set( size, size, size )
+		project.scale.set( size, size, size );
 
 // console.log( 'bbh', bbh, bbh.position.distanceTo( bbh.scale ) );
 

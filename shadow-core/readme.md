@@ -25,8 +25,12 @@ value='You are now in the home page view - Click this button to view the read me
 * Loads and displays JSON file
 	* Should handle all revisions of the Three.js JSON standard - R3 and R4 in particular
 	* Uses both Three.js JSONLoader and ObjectLoader
-	* Should load and make use of and display texture bitmaps
+	* Loads and makes use of and display texture bitmaps
 * Supports permalinks
+
+## Isuues
+
+* Scale project not being remembered
 
 ## Wishlist
 
@@ -35,6 +39,12 @@ value='You are now in the home page view - Click this button to view the read me
 
 
 ## Change Log
+
+##2016-04-09
+
+* Add permalink support for groundPlane, analemma, sun intensity
+* Add scale project and toggle
+* Streamline code
 
 ### 2016-04-08
 
