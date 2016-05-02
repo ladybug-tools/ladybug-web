@@ -1,11 +1,12 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/analemma-3d/'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d ) »
 
 
-[Analemma 3D Read Me]( #analemma-3d/readme.md )
+[Analemma 3D Read Me]( index.html#readme.md )
 ===
 
 ## Full screen: [Analemma 3D]( http://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
@@ -27,9 +28,10 @@ value='You are now in the home page view - Click this button to view the read me
 	* Displays a transparent yellow band indicating the total annual sun path 
 	* Reference object (Trylon and Perisphere) to indicate shade and shadow coverage
 * Select location
-	* By latitude and longitude sliders
-	* By selecting city from a gazetteer of over 2,000 places names
-	* Default latitude and longitude is selected randomly from the gazetteer
+	* By entering latitude and longitude
+	* By entering address
+		* With auto-complete assistance
+	* Default latitude and longitude is your current location
 	* Sliders update latitude and longitude of analemma in real-time
 * Select date and time
 	* Sliders for month, date, hour and minutes
@@ -50,17 +52,6 @@ value='You are now in the home page view - Click this button to view the read me
 	* Slide-out "hamburger" menu support for mobile devices
 
 
-
-### Latest update: 2016-03-22 / R10
-
-* Add arcs for 21 of each month
-* Add a north arrow 
-
-### Latest update: 2016-03-21 / R9
-
-* Analemmas are no longer upside down
-* Calculates analemma for every day of month - not just first 28 as in previous release
-* Add transparent yellow band to indicate full Sun path
 
 
 ### Issues
@@ -106,6 +97,19 @@ value='You are now in the home page view - Click this button to view the read me
 ## Previous updates
 
 See main Read Me for latest updates
+
+
+### Latest update: 2016-03-22 / R10
+
+* Add arcs for 21 of each month
+* Add a north arrow 
+
+### Latest update: 2016-03-21 / R9
+
+* Analemmas are no longer upside down
+* Calculates analemma for every day of month - not just first 28 as in previous release
+* Add transparent yellow band to indicate full Sun path
+
 
 ### Latest update: 2016-03-20 / R8
 
