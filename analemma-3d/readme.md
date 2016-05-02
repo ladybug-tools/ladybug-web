@@ -93,7 +93,7 @@ See main Read Me for latest updates
 * Add geolocation
 * Add geoencoding
 * Add reverse geoencoding
-* Remeve gazetteer
+* Remove gazetteer
 
 
 ### Latest update: 2016-03-22 / R10
