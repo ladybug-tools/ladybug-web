@@ -52,16 +52,12 @@ value='You are now in the home page view - Click this button to view the read me
 	* Slide-out "hamburger" menu support for mobile devices
 
 
-
-
 ### Issues
 
 * Sun itself is shaded
 * Sun path band incorrectly positions itself
 	* Tries to be its own algorithm - good for checking errors
 	* Fall back could be to create sun path band from analemma vertices
-* Latitude and longitude sliders not working properly
-* Maps not always not updating properly when using lat/lon sliders
 * Permalink support (currently broken )
 
 
@@ -75,14 +71,10 @@ value='You are now in the home page view - Click this button to view the read me
 * Add a button for top view and also save view to file.
 * Start moving some of the code into libraries 
 * Do something when Google API reports no time zone
-* Text input for lat and lon // or wait for permalinks?
 * Replace/Upgrade SunCalc.js with NOAA/Bostock JavaScript
 * Animations
 * Add reference object choices
 * Add solar times readout - with buttons to display sun position for location, date and time 
-* Add access to geolocation - as in [ Google Developers Geolocation API]( https://developers.google.com/maps/documentation/javascript/examples/map-geolocation )
-* Add access to places autocomplete = as in [Google Maps JavaScript API Place Autocomplete]( https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete )
-* Open Street gazetteer
 
 ### Goals
 
@@ -92,11 +84,16 @@ value='You are now in the home page view - Click this button to view the read me
 	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
 
 
-
-
 ## Previous updates
 
 See main Read Me for latest updates
+
+### 2016-05-01 / R11
+
+* Add geolocation
+* Add geoencoding
+* Add reverse geoencoding
+* Remeve gazetteer
 
 
 ### Latest update: 2016-03-22 / R10
