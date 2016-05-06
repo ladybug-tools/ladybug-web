@@ -332,7 +332,7 @@
 		var y = - analemmaRadius * Math.cos( sunPosition.altitude ) * Math.cos( sunPosition.azimuth );
 		var z = analemmaRadius * Math.sin( sunPosition.altitude );
 
-		return v( x, y, z );
+		return v( x, y, 0 );
 
 	}
 
