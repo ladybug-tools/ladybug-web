@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R11</title>
+<title>Analemma 2D R6</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month
@@ -378,9 +378,12 @@
 
 		offsetHours = offsetPlace / 3600;
 
+/*
+		count = 0;
+
 		for ( var hours = 0; hours < 24; hours++ ) {
 
-			var geometry, vertices;
+//			var geometry, vertices;
 			geometry = new THREE.Geometry();
 			vertices = geometry.vertices;
 
@@ -394,7 +397,24 @@
 
 					analemmaSunPosition = getSunPositionXYZ( analemmaDateUTC, latitude - 90, longitude );
 
+//console.log( 'analemmaSunPosition', analemmaSunPosition );
+
+					if ( analemmaSunPosition.y > 0 ) {
+
+
+					} else if ( vertices[ count - 1 ] ) {
+
+						analemmaSunPosition = vertices[ count  - 1];
+
+
+
+					}
+
+					analemmaSunPosition.y = 0;
+
 					vertices.push( analemmaSunPosition );
+
+					count++;
 
 				}
 
@@ -411,8 +431,9 @@
 			analemma.add( placard );
 
 		}
+*/
 
-		material = new THREE.LineBasicMaterial( { color: 0xbbbbbb } );
+		material = new THREE.LineBasicMaterial( { color: 0xff0000 } );
 
 		for ( var month = 5; month < 12; month++ ) {
 
@@ -428,11 +449,17 @@
 
 				analemmaSunPosition = getSunPositionXYZ( analemmaDateUTC, latitude - 90, longitude );
 
+				if ( analemmaSunPosition.y >= 0 ) {
+
+				analemmaSunPosition.y = 0;
+
 				vertices.push( analemmaSunPosition );
+
+				}
 
 			}
 
-			vertices.push( vertices[ 0 ] );
+//			vertices.push( vertices[ 0 ] );
 
 			line = new THREE.Line( geometry, material );
 			analemma.add( line );
@@ -595,7 +622,7 @@
 		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.05, side: 2, transparent: true });
 		sunBand = new THREE.Mesh( geometry, material );
 
-		scene.add( sunBand );
+//		scene.add( sunBand );
 
 	}
 

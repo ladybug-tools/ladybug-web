@@ -1,0 +1,109 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Solar Calculator Ladybug Web Viewer R1</title>
+<!--
+<meta name = viewport content = 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0' />
+<meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
+-->
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='Code to calculate Sun position' >
+<meta name=keywords content='Ladybug Web,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='solar-calculator-ladybug-web-r1' >
+</head>
+<body>
+
+<script src=solar-calculator-ladybug-web-r1.js ></script>
+<script>
+
+// https://bl.ocks.org/mbostock/c5504ab3cd25f93af26a
+// https://bl.ocks.org/mbostock/7784f4b2c7838b893e9b
+// Equations based on NOAA’s Solar Calculator; all angles in radians.
+// http://www.esrl.noaa.gov/gmd/grad/solcalc/
+
+
+	var latitude = 37.796
+	var longitude = -122.398;
+
+
+	init();
+
+	function init() {
+
+		var css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; }' +
+			'a { text-decoration: none; }' +
+
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
+
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
+			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+
+//			'#menu { margin: 0 20px; max-width: 1000px;position: absolute; }' +
+
+		'';
+
+		var menu = document.body.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href="" >' + document.title + '</a>' +
+				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md > &#x24D8; </a>' +
+			'</h2>' +
+
+			'<div id=infosolarCalculator ></div>' +
+			'<div id=infosolarCalculatorVariables ></div>' +
+			'<div id=infosolarCalculatorEquations ></div>' +
+		'';
+
+		date = new Date();
+
+		date = new Date( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() - 1, date.getMinutes(), date.getSeconds() );
+
+		position = getSunPositionBostock( date, latitude, longitude );
+
+		infosolarCalculator.innerHTML +=
+
+			'<p>Here & Now: ' + date + '</p>' +
+			'<p>Minutes Offset from GMT: ' + date.getTimezoneOffset() + '</p>' +
+
+//		'<hr>' +
+
+//			'<p>Solar > noon: ' + noon( date ) + '</p>' +
+			'<p>Solar > position ( now ): Azimuth: ' + position.azimuth + ' ~ Altitude: ' + position.altitude + '</p>' +
+			'<p>Solar > centuries: ' + centuries + '</p>' +
+
+		'<hr>';
+
+		infosolarCalculatorVariables.innerHTML += 
+
+//			'<p>Solar > noon > var d3.time.day.utc.floor( date ): ' + d3.time.day.utc.floor( date ) + '</p>' +
+//			'<p>Solar > noon > var centuries: ' + centuries + '</p>' +
+//			'<p>Solar > noon > var new Date( +d3.time.day.floor( date ) + minutes * 60 * 1000 ): ' + noon( date ) + '</p>' +
+
+		'';
+
+		infosolarCalculatorEquations.innerHTML += 
+			'<p> equationOfTime( centuries ): ' + equationOfTime( centuries ) + '</p>' +
+			'<p> solarDeclination( centuries ): ' + solarDeclination( centuries ) + '</p>' +
+			'<p> solarApparentLongitude( centuries ): ' + solarApparentLongitude( centuries ) + '</p>' +
+			'<p> solarTrueLongitude( centuries ): ' + solarTrueLongitude( centuries ) + '</p>' +
+			'<p> solarGeometricMeanAnomaly( centuries ): ' + solarGeometricMeanAnomaly(centuries) + '</p>' +
+			'<p> solarGeometricMeanLongitude( centuries ): ' + solarGeometricMeanLongitude( centuries ) + '</p>' +
+			'<p> solarEquationOfCenter( centuries ): ' + solarEquationOfCenter( centuries ) + '</p>' +
+			'<p> obliquityCorrection( centuries ): ' + obliquityCorrection( centuries ) + '</p>' +
+			'<p> meanObliquityOfEcliptic( centuries ): ' + meanObliquityOfEcliptic( centuries ) + '</p>' +
+			'<p> eccentricityEarthOrbit( centuries ): ' + eccentricityEarthOrbit( centuries ) + '</p>' +
+
+		'';
+
+	}
+
+</script>
+</body>
+</html>
