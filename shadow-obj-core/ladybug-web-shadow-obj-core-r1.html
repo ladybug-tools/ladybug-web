@@ -29,17 +29,10 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	var debug;
 
 //	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
-	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/schroder-house/schroder-house-r2.js';
-	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/engel-house/AngelHouse_Bauhaus-in-Israel.json';
-	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/robie-house/robie-house-r2.js';
-	var fileNameDefault = '#fn=http://va3c.github.io/json-r2/TypTower.json';
-	var fileNameDefault = '#fn=http://va3c.github.io/json-r2/MissSpacyEyes.json';
-
-	var fileNameDefault = '#fn=http://va3c.github.io/json-r2/DrMajentaKlein-object.json';
-	var fileNameDefault = '#fn=DrMajentaKlein-object.json';
-
+//	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/3D10.0_12.0_24.0_66.0_17.0_2.0_0.0_0.0_0.1.json#sy=0.3#py=-3';
+//	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/model.json';
 	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/urban-model/urban-model-001.json' +
-		'#la=37.796#lo=-122.398#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=12#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=0';
+		'#la=37.796#lo=-122.398#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=0';
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
@@ -101,7 +94,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				'<div id=menuTitle >' +
 					'<h2>' +
 						'<a href="" >' + document.title + '</a> ' +
-						'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/index.html#readme.md >&#x24D8;</a>' +
+						'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/#shadow-core/readme.md >&#x24D8;</a>' +
 					'</h2>' +
 				'</div>' +
 				'<div id=menuFileName ></div>' +
@@ -265,7 +258,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				'Longitude: ' + pud.longitude + b +
 
 				'Year: ' + pud.year + b +
-				'Month: ' + ( pud.month + 1 ) + b +
+				'Month: ' + pud.month + b +
 				'Date: ' + pud.date + b +
 
 				'Hours: ' + pud.hours + b +
@@ -275,9 +268,9 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				'Position Y: ' + parameters.position.y + b +
 				'Position Z: ' + parameters.position.z + b +
 
-				'Rotation X: ' + ( parameters.rotation.x * r2d ) + b +
-				'Rotation Y: ' + ( parameters.rotation.y * r2d ) + b +
-				'Rotation Z: ' + ( parameters.rotation.z * r2d ) + b +
+				'Rotation X: ' + parameters.rotation.x + b +
+				'Rotation Y: ' + parameters.rotation.y + b +
+				'Rotation Z: ' + parameters.rotation.z + b +
 
 				'Scale: ' + parameters.scale.z + b +
 
@@ -619,7 +612,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 			menuSunInfo.innerHTML =
 
 				'Sun:<br>' +
-				'- Azimuth : ' + ( 180 - pud.sunPosition.azimuth )+ '<br>' +
+				'- Azimuth : ' + pud.sunPosition.azimuth + '<br>' +
 				'- Altitude: ' + pud.sunPosition.altitude +
 
 			'';
