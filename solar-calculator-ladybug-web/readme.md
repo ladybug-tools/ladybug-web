@@ -13,7 +13,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## [Solar Calculator Ladybug Web Viewer]( index.html )
 
-## [Solar Calculator Ladybug Web Source code ] ( https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js )
+## [Solar Calculator Ladybug Web Source code ]( https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js )
 
 
 ## Solar Calculation Details

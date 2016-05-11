@@ -26,7 +26,6 @@
 	var latitude = 37.796
 	var longitude = -122.398;
 
-
 	init();
 
 	function init() {
@@ -65,7 +64,7 @@
 
 		date = new Date( date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() - 1, date.getMinutes(), date.getSeconds() );
 
-		position = getSunPositionBostock( date, latitude, longitude );
+		position = getSunPosition( date, latitude, longitude );
 
 		infosolarCalculator.innerHTML +=
 

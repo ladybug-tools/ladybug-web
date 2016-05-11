@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow R1</title>
+<title>Ladybug Web Shadow JSON Core R1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Uses location.hash to load Three.js JSON file and display Sun position and analemmas according to latitude, longitude, date and time.
@@ -28,15 +28,15 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	var debug;
 
-//	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
-	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/schroder-house/schroder-house-r2.js';
-	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/engel-house/AngelHouse_Bauhaus-in-Israel.json';
-	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/robie-house/robie-house-r2.js';
-	var fileNameDefault = '#fn=http://va3c.github.io/json-r2/TypTower.json';
-	var fileNameDefault = '#fn=http://va3c.github.io/json-r2/MissSpacyEyes.json';
+//	var fileNameDefault = '#fn=https://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
+	var fileNameDefault = '#fn=https://ladybug-analysis-tools.github.io/3d-models/content/json/schroder-house/schroder-house-r2.js';
+	var fileNameDefault = '#fn=https://ladybug-analysis-tools.github.io/3d-models/content/json/engel-house/AngelHouse_Bauhaus-in-Israel.json';
+	var fileNameDefault = '#fn=https://ladybug-analysis-tools.github.io/3d-models/content/json/robie-house/robie-house-r2.js';
+	var fileNameDefault = '#fn=https://va3c.github.io/json-r2/TypTower.json';
+	var fileNameDefault = '#fn=https://va3c.github.io/json-r2/MissSpacyEyes.json';
 
-	var fileNameDefault = '#fn=http://va3c.github.io/json-r2/DrMajentaKlein-object.json';
-	var fileNameDefault = '#fn=DrMajentaKlein-object.json';
+	var fileNameDefault = '#fn=https://va3c.github.io/json-r2/DrMajentaKlein.json';
+	var fileNameDefault = '#fn=DrMajentaKlein.json';
 
 	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/urban-model/urban-model-001.json' +
 		'#la=37.796#lo=-122.398#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=12#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=0';
@@ -54,7 +54,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	pud.longitude = -122.398;
 
 	pud.scaleProject = true;
-	pud.sunlightIntensity = 0.85
+	pud.sunlightIntensity = 0.85;
 
 	var project, helper, northArrow;
 
@@ -90,18 +90,18 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 			'';
 
-		hamburger = document.body.appendChild( document.createElement( 'div' ) );
-		hamburger.id = 'hamburger';
-		hamburger.innerHTML = '<div id=bars >☰</div>';
-		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+			hamburger = document.body.appendChild( document.createElement( 'div' ) );
+			hamburger.id = 'hamburger';
+			hamburger.innerHTML = '<div id=bars >☰</div>';
+			bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
 
-		menu = hamburger.appendChild( document.createElement( 'div' ) );
-		menu.id = 'menu';
+			menu = hamburger.appendChild( document.createElement( 'div' ) );
+			menu.id = 'menu';
 			menu.innerHTML =
 				'<div id=menuTitle >' +
 					'<h2>' +
 						'<a href="" >' + document.title + '</a> ' +
-						'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/index.html#readme.md >&#x24D8;</a>' +
+						'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html#readme.md >&#x24D8;</a>' +
 					'</h2>' +
 				'</div>' +
 				'<div id=menuFileName ></div>' +
@@ -455,7 +455,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 // console.log( '', result );
 
-					
 					for ( var i = 0; i < result.children.length; i++ ) {
 
 						child = result.children[ i ];
@@ -530,6 +529,8 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 // console.log( 'bbh', bbh, bbh.position.distanceTo( bbh.scale ) );
 
 	}
+
+
 
 // get, request and calculate data
 
@@ -610,7 +611,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		sunDate.setUTCHours( sunDate.getUTCHours() - offsetHours );
 
-		pud.sunPosition = getSunPosition( pud.analemmaRadius, sunDate, pud.latitude, pud.longitude );
+		pud.sunPosition = getSunPositionXYZ( pud.analemmaRadius, sunDate, pud.latitude, pud.longitude );
 
 		sun.position.copy( pud.sunPosition.xyz );
 
@@ -651,7 +652,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-					analemmaSunPosition = getSunPosition( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
+					analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
 
 					vertices.push( analemmaSunPosition.xyz );
 
@@ -684,7 +685,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-				analemmaSunPosition = getSunPosition( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
+				analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
 
 				vertices.push( analemmaSunPosition.xyz );
 
@@ -762,9 +763,9 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 // utilities
 
-	function getSunPosition( radius, dateUTC, latitude, longitude ) {
+	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
-		var sunPosition = getSunPositionBostock( dateUTC, -latitude, longitude );
+		var sunPosition = getSunPosition( dateUTC, -latitude, longitude );
 
 		var x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
 		var y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );

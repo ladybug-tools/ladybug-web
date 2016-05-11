@@ -10,7 +10,7 @@
 	var d2r = pi / 180;
 	var r2d = 180 / pi;
 
-	function getSunPositionBostock( date, latitude, longitude ) {
+	function getSunPosition( date, latitude, longitude ) {
 
 		var azimuth, zenith, azimuthDenominator, atmosphere;
 

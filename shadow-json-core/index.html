@@ -11,7 +11,7 @@ Opens index file or Markdown reader template file
 
 ' >
 <meta name=keywords content='AJAX,JavaScript,GitHub,FOSS' >
-<meta name=date content='2016-05-09' >
+<meta name=date content='2016-05-11' >
 </head>
 <body>
 <script src=http://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
@@ -20,13 +20,13 @@ Opens index file or Markdown reader template file
 // original: http://jaanga.github.io/cookbook-html/templates/open-index-or-markdown/index.html
 // http://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
 
-	defaultFile = './ladybug-web-shadow-core-r1.html';
+	defaultFile = './ladybug-web-shadow-json-core-r2.html';
 
 	init();
 
 	function init() {
 
-		if ( location.hash ) {
+		if ( location.hash && location.hash.indexOf( '.md' ) > -1 ) {
 
 			var css, fileName, contents, converter;
 
