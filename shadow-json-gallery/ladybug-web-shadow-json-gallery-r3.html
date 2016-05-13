@@ -106,6 +106,27 @@
 
 	}
 
+	function hashChange() {
+
+		fileName = location.hash ? location.hash.slice( 1 ) : 'readme.md';
+console.log( '', );
+		if ( fileName.slice( -3 ) !== '.md' ) {
+
+			contents.innerHTML = '<iframe id=ifr src=' + core + location.hash + ' scrolling="no" ></iframe>';
+			ifr.id = 'ifr';
+			contents.style.overflow = 'hidden';
+			contents.style.margin = contents.style.padding = '0';
+
+		} else {
+
+			getMarkdown( fileName, contents );
+			contents.style.overflow = 'auto';
+			contents.style.padding = '0 30px';
+
+		}
+
+	}
+
 	function setDate() {
 
 		if ( contents.innerText === '' ) {
@@ -146,27 +167,6 @@
 		}
 
 		info.innerHTML += txt;
-
-	}
-
-	function hashChange() {
-
-		fileName = location.hash ? location.hash.slice( 1 ) : 'readme.md';
-
-		if ( fileName.slice( -3 ) !== '.md' ) {
-
-			contents.innerHTML = '<iframe id=ifr src=' + core + location.hash + ' scrolling="no" ></iframe>';
-			ifr.id = 'ifr';
-			contents.style.overflow = 'hidden';
-			contents.style.margin = contents.style.padding = '0';
-
-		} else {
-
-			getMarkdown( fileName, contents );
-			contents.style.overflow = 'auto';
-			contents.style.padding = '0 30px';
-
-		}
 
 	}
 
