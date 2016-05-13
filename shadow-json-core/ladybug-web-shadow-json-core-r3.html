@@ -2,13 +2,13 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow JSON Core R3</title>
+<title>Ladybug Web Shadow JSON Core R3.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Uses location.hash to load Three.js JSON file and display Sun position and analemmas according to latitude, longitude, date and time.
 ' >
-<meta name=keywords content='Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-11' >
+<meta name=keywords content='Ladybug Web,Mike Bostock,NOAA,Sun Path,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-05-12' >
 </head>
 <body>
 <!--
@@ -39,34 +39,31 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	var fullFilePathDefault = '#fn=https://ladybug-analysis-tools.github.io/3d-models/content/json/urban-model/urban-model-001.json' +
 		'#la=37.796#lo=-122.398#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=12#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sl=1.5#gv=0#av=1';
 
-	var fullFilePath, fileName, object;
+	var fullFilePath, fileName, model;
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
-//	pud.fileName = '';
+
 	pud.analemmaRadius = 75;
 	pud.analemmaVisible = true;
 
-	pud.groundPlaneOpacity = 0.75;
-	pud.groundPlaneVisible = true;
+//	pud.groundPlaneOpacity = 0.75;
+//	pud.groundPlaneVisible = true;
 
 	pud.latitude = 37.796
 	pud.longitude = -122.398;
 
-	pud.scaleProject = true;
 	pud.sunlightIntensity = 0.85;
-
-	var project, helper, northArrow;
 
 	var dateUTC, dateThere;  // could be local
 	var offsetHours;
 
 	var sun, analemma;
-	var placeMap, gridHelper, axisHelper;
-
 	var metadata, fileSize;
+	var northArrow;
 
 	var stats, renderer, scene, camera, controls, coreLight;
+	var d2r = Math.PI / 180, r2d = 180 / Math.PI;  // degrees / radians
 
 	init();
 	animate();
@@ -74,13 +71,14 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	function init() {
 
 		var css, menu;
-//		var geometry, material, mesh;
+		var geometry, material, mesh;
 
 		css = document.head.appendChild( document.createElement( 'style' ) );
 		css.innerHTML =
 
 			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
 			'a {text-decoration: none; }' +
+			'button, input[type=button] { background-color: #ccc; border: 2px #ccc solid; color: #666; }' +
 			'h2 { margin: 0 }' +
 
 			'#bars { color: pink; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
@@ -156,8 +154,8 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 	function onHashChange() {
 
 		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : fullFilePathDefault.slice( 4 ) ;
-console.log( 'fullFilePath', fullFilePath);
-		if ( !object ) {
+
+		if ( !model ) {
 
 			loadXHR( fullFilePath );
 
@@ -193,7 +191,6 @@ console.log( 'fullFilePath', fullFilePath);
 	}
 
 	function handleJSON( fullFilePath, data ) {
-
 
 // needs streamlining
 
@@ -430,19 +427,19 @@ console.log( 'fullFilePath', fullFilePath);
 
 	function addObject( obj ) {
 
-// for the parent
+// for the parent, better name?
 
-console.log( 'obj', obj );
+//console.log( 'obj', obj );
 
-		object = obj;
-		object.name = fullFilePath;
-		object.userData.metadata = metadata
-		object.userData.fileSize = fileSize;
+		model = obj;
+		model.name = fullFilePath;
+		model.userData.metadata = metadata
+		model.userData.fileSize = fileSize;
 
-		object.castShadow = true;
-		object.receiveShadow = true;
+		model.castShadow = true;
+		model.receiveShadow = true;
 
-		scene.add( object );
+		scene.add( model );
 
 		date = new Date();
 		pud.year = date.getFullYear();
@@ -462,7 +459,7 @@ console.log( 'obj', obj );
 
 	function getHashParameters() {
 
-//		var hashes, hash, parameter, value;
+		var hashes, hash, parameter, value;
 		var d2r = Math.PI / 180, r2d = 180 / Math.PI;  // degrees / radians
 		var b = '<br>';
 
@@ -496,17 +493,17 @@ console.log( 'obj', obj );
 
 				case 'sl': lightDirectional.intensity = pud.sunlightIntensity = parseFloat( value ); break;
 
-				case 'rx': object.rotation.x = parseFloat( value * d2r ); break;
-				case 'ry': object.rotation.y = parseFloat( value * d2r ); break;
-				case 'rz': object.rotation.z = parseFloat( value * d2r ); break;
+				case 'rx': model.rotation.x = parseFloat( value * d2r ); break;
+				case 'ry': model.rotation.y = parseFloat( value * d2r ); break;
+				case 'rz': model.rotation.z = parseFloat( value * d2r ); break;
 
-				case 'px': object.position.x = parseFloat( value ); break;
-				case 'py': object.position.y = parseFloat( value ); break;
-				case 'pz': object.position.z = parseFloat( value ); break;
+				case 'px': model.position.x = parseFloat( value ); break;
+				case 'py': model.position.y = parseFloat( value ); break;
+				case 'pz': model.position.z = parseFloat( value ); break;
 
-				case 'sx': object.scale.x = parseFloat( value ) || 1 ; break;
-				case 'sy': object.scale.y = parseFloat( value ) || 1; break;
-				case 'sz': object.scale.z = parseFloat( value ) || 1; break;
+				case 'sx': model.scale.x = parseFloat( value ) || 1 ; break;
+				case 'sy': model.scale.y = parseFloat( value ) || 1; break;
+				case 'sz': model.scale.z = parseFloat( value ) || 1; break;
 
 				case 'cx': camera.position.x = parseFloat( value ); break;
 				case 'cy': camera.position.y = parseFloat( value ); break;
@@ -539,15 +536,15 @@ console.log( 'obj', obj );
 				'Hours: ' + pud.hours + b +
 				'Minutes: ' + pud.minutes + b +
 
-				'Position X: ' + object.position.x + b +
-				'Position Y: ' + object.position.y + b +
-				'Position Z: ' + object.position.z + b +
+				'Position X: ' + model.position.x + b +
+				'Position Y: ' + model.position.y + b +
+				'Position Z: ' + model.position.z + b +
 
-				'Rotation X: ' + ( object.rotation.x * r2d ) + b +
-				'Rotation Y: ' + ( object.rotation.y * r2d ) + b +
-				'Rotation Z: ' + ( object.rotation.z * r2d ) + b +
+				'Rotation X: ' + ( model.rotation.x * r2d ) + b +
+				'Rotation Y: ' + ( model.rotation.y * r2d ) + b +
+				'Rotation Z: ' + ( model.rotation.z * r2d ) + b +
 
-				'Scale: ' + object.scale.z + b +
+				'Scale: ' + model.scale.z + b +
 
 				'Camera position: ' + camera.position.x.toFixed() + ', '+ camera.position.y.toFixed() + ', '+ camera.position.z.toFixed() + ', ' + b +
 				'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b +
@@ -559,10 +556,10 @@ console.log( 'obj', obj );
 			menuMetadata.innerHTML =
 
 				'<p>' +
-				'File size: ' + fileSize + '<br>' +
-				'Version: ' + ( metadata.formatVersion || metadata.version )+ '<br>' +
-				'Type: ' + metadata.type + '<br>' +
-				'Generated by: ' + ( metadata.generatedBy || metadata.generator ) + '<br>' +
+					'File size: ' + fileSize + '<br>' +
+					'Version: ' + ( metadata.formatVersion || metadata.version )+ '<br>' +
+					'Type: ' + metadata.type + '<br>' +
+					'Generated by: ' + ( metadata.generatedBy || metadata.generator ) + '<br>' +
 				'</p>' +
 
 			'';
@@ -582,11 +579,7 @@ console.log( 'obj', obj );
 
 		} else if ( parent.coreMessage ) {
 
-// send data via 'object'...
-
 			parent.coreMessage.innerHTML = message;
-
-//console.log( 'metadata', metadata, 'fileSize', fileSize );
 
 		} else {
 
@@ -597,8 +590,6 @@ console.log( 'obj', obj );
 	}
 
 // analemma
-
-// get, request and calculate data
 
 	function getDate() {
 
@@ -622,7 +613,9 @@ console.log( 'obj', obj );
 
 	function getTimezone( fileName ) {
 
-		var xhr = new XMLHttpRequest();
+		var xhr, timeZonePlace, offsetPlace;
+
+		xhr = new XMLHttpRequest();
 		xhr.open( 'GET', fileName, true );
 		xhr.onreadystatechange = callback;
 		xhr.send( null );
@@ -635,7 +628,7 @@ console.log( 'obj', obj );
 
 			if ( timeZonePlace.status === 'OK' ) {
 
-				var offsetPlace;
+				offsetPlace;
 
 				offsetPlace = timeZonePlace.rawOffset + timeZonePlace.dstOffset;
 
@@ -748,7 +741,6 @@ console.log( 'obj', obj );
 			for ( var hours = 0; hours < 24; hours++ ) {
 
 				analemmaDateUTC = new Date( Date.UTC( 2016, month, 21, hours, 0, 0 ) );
-
 				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
 				analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
@@ -775,11 +767,12 @@ console.log( 'obj', obj );
 
 	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
+		var z, y, z;
 		var sunPosition = getSunPosition( dateUTC, -latitude, longitude );
 
-		var x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-		var y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-		var z = radius * Math.sin( sunPosition.altitude * d2r );
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
 
 		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
 

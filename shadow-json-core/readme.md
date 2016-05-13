@@ -1,4 +1,5 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/#shadow-core/readme.md "View file as a web page." ) </span>
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( http://ladybug-analysis-tools.github.io/ladybug-web/#shadow-core/readme.md "View file as a web page." ) </span>
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-core'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
@@ -8,12 +9,13 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Web Shadow Core Read Me]( #shadow-core/readme.md )
 ===
 
+## Full screen: [Ladybug Web Shadow Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html )
 
-## Full screen: [Ladybug Web Shadow Core Bostock]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ )
+Older versions
 
-## Full screen: [Ladybug Web Shadow Core NOAA]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-noaa-r1.html )
-
-## Full screen: [Ladybug Web Shadow Core SunCalc]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-core/ladybug-web-shadow-core-suncalc-r2.html )
+* Full screen: [Ladybug Web Shadow Core Bostock]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/ladybug-web-shadow-core-bostock-r4.html )
+* Full screen: [Ladybug Web Shadow Core NOAA]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/ladybug-web-shadow-core-noaa-r1.html )
+* Full screen: [Ladybug Web Shadow Core SunCalc]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/ladybug-web-shadow-core-suncalc-r2.html )
 
 ***
 
@@ -27,10 +29,12 @@ value='You are now in the home page view - Click this button to view the read me
 	* Uses both Three.js JSONLoader and ObjectLoader
 	* Loads and makes use of and display texture bitmaps
 * Supports permalinks
+* Displays statistics
+	* Displayed if window is top or debug is true
+* Simple test button
 
-## Isuues
+## Issues
 
-* Scale project not being remembered
 
 ## Wishlist
 
@@ -40,7 +44,15 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Change Log
 
-##2016-04-09
+### 2016-05-13
+
+* R3
+* Many changes
+* Uses Ladybug Web solar calculator
+* Hamburger menu
+
+
+### 2016-04-09
 
 * Add permalink support for groundPlane, analemma, sun intensity
 * Add scale project and toggle
@@ -72,7 +84,6 @@ value='You are now in the home page view - Click this button to view the read me
 * Add slide-out hamburger menu
 * Add Sun position read-out to menus of all core apps
 	* Finding issues with all of them. So it goes
-
 
 ### 2016-04-03
 
