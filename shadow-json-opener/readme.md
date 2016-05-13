@@ -1,15 +1,16 @@
 ﻿
-<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/#shadow-opener/readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-opener'; 
+<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( https://ladybug-analysis-tools.github.io/ladybug-web/#shadow-json-opener/readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-json-opener'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
-[Ladybug Web Shadow Opener Read Me]( #shadow-opener/readme.md )
+[Ladybug Web Shadow Opener Read Me]( index.html#readme.md )
 ===
 
-## full screen [Ladybug Web Shadow Opener Bostock JSON]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-opener/ )
+## full screen [Ladybug Web Shadow JSON Opener]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-opener/ )
 
 There are a number of cross-origin or security issues related to loading files your files locally from your had disk.
 
@@ -24,10 +25,17 @@ Future revisions of this read me will start to document the possibilities.
 
 ## Road Map / To Do List / Wish list
 
-* Sparse permalinks = only add what's needed
 
 
 ## Change Log
+
+### 2016-05-13
+
+* R3
+* Many changes
+* Uses Ladybug Web solar calculator
+* Hamburger menu
+* Fully https
 
 ### 2016-04-09
 

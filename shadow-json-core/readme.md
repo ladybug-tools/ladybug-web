@@ -1,12 +1,12 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/#shadow-core/readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-core'; 
+( https://ladybug-analysis-tools.github.io/ladybug-web/#shadow-json-core/readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-json-core'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
 [Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
-[Ladybug Web Shadow JSON Core Read Me]( #shadow-core/readme.md )
+[Ladybug Web Shadow JSON Core Read Me]( index.html#readme.md )
 ===
 
 ## Full screen: [Ladybug Web Shadow JSON Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html )
@@ -46,10 +46,11 @@ Older versions
 
 ### 2016-05-13
 
-* R3
+* R3.1
 * Many changes
 * Uses Ladybug Web solar calculator
 * Hamburger menu
+* Fully https
 
 
 ### 2016-04-09

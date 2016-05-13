@@ -14,8 +14,8 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 <body>
 <script>
 
-//	var core = '../shadow-json-core/index.html';
-	var core = 'https://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html';
+	var core = '../shadow-json-core/index.html';
+//	var core = 'https://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html';
 
 	var d2r = Math.PI / 180, r2d = 180 / Math.PI;  // degrees / radians
 
@@ -64,10 +64,10 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 			'<h2>' +
 				'<a href="" >' + document.title + '</a>' +
-				'<a href=https://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html#readme.md > &#x24D8; </a>' +
+				'<a href=https://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-opener/index.html#readme.md > &#x24D8; </a>' +
 			'</h2>' +
 
-			'<p><a href=../browser/ladybug-web-json-browser-r2.html >Browser</a></p>' +
+			'<p><a href=../shadow-json-gallery/index.html >Gallery</a></p>' +
 			'<p id=coreMessage style=color:crimson; /* onchange=console.log("msg",message); */ ></p>' +
 
 			'<div><b>URL</b><br>' +
@@ -82,8 +82,8 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 			'</div>' +
 
 			'<p>' + 
-				'Latitude &nbsp;<input type=number id=inpLatitude min=-90 max=90 value=1 step=0.001 oninput=setPermalink(); title="0 to 90: OK" ><br>' +
-				'Longitude <input type=number id=inpLongitude min=-180 max=180 value=1 step=0.001 oninput=setPermalink(); title="0 to 90: OK" ><br>' +
+				'Latitude &nbsp;<input id=inpLatitude min=-90 max=90 value=1 step=0.001 oninput=setPermalink(); title="0 to 90: OK" ><br>' +
+				'Longitude <input id=inpLongitude min=-180 max=180 value=1 step=0.001 oninput=setPermalink(); title="0 to 90: OK" ><br>' +
 
 				'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setPermalink(); title="1 to 12: OK" ><output id=outMonth ></output><br>' +
 				'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=outDate ></output><br>' +
@@ -218,7 +218,7 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 		txt =
 
 //			'#db=true' +
-			'#la=' + inpLatitude.value + '#lo=' + inpLongitude.value +
+			'#la=' + inpLatitude.value + '#lo=' +inpLongitude.value +
 			'#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
 			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber +
 
@@ -244,8 +244,8 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 		txt += inpTarY.valueAsNumber != 0 ? '#ty=' + inpTarY.valueAsNumber : '';
 		txt += inpTarZ.valueAsNumber != 0 ? '#tz=' + inpTarZ.valueAsNumber : '';
 
-		taURL.value = core + '#' +model.name + txt;
-//		taURL.value = txt;
+		pud.permalink = taURL.value = core + '#' + model.name + txt;
+
 		ifrContentWindow.location.hash = txt;
 
 		outMonth.value = inpMonth.value;
@@ -310,7 +310,7 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 	function openNewTab() {
 
-		window.open( core + '#' + taURL.value, '_blank' )
+		window.open( pud.permalink, '_blank' )
 
 	}
 
