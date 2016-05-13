@@ -15,8 +15,8 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 <script>
 
 
-	core = '../shadow-json-core/index.html';
-//	var core = 'http://ladybug-analysis-tools.github.io/3d-models/code/json/shadow-json-core/index.html';
+//	core = '../shadow-json-core/index.html';
+	var core = 'https://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html';
 
 	var d2r = Math.PI / 180, r2d = 180 / Math.PI;  // degrees / radians
 
@@ -182,21 +182,21 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 	function getCoreParameters() {
 
 		ifrContentWindow = ifr.contentWindow;
-		object = ifrContentWindow.object;
+		model = ifrContentWindow.model;
 		pud = ifr.contentWindow.pud;
 
 		inpLatitude.value = pud.latitude;
 		inpLongitude.value = pud.longitude;
 
-		inpScale.value = object.scale.x;
+		inpScale.value = model.scale.x;
 
-		inpRotX.value = object.rotation.x * r2d;
-		inpRotY.value = object.rotation.y * r2d;
-		inpRotZ.value = object.rotation.z * r2d;
+		inpRotX.value = model.rotation.x * r2d;
+		inpRotY.value = model.rotation.y * r2d;
+		inpRotZ.value = model.rotation.z * r2d;
 
-		inpPosX.value = object.position.x;
-		inpPosY.value = object.position.y;
-		inpPosZ.value = object.position.z;
+		inpPosX.value = model.position.x;
+		inpPosY.value = model.position.y;
+		inpPosZ.value = model.position.z;
 
 		inpCamX.value = ifrContentWindow.camera.position.x.toFixed();
 		inpCamY.value = ifrContentWindow.camera.position.y.toFixed();
@@ -208,7 +208,7 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 		setPermalink();
 
-// console.log( '', object );
+// console.log( '', model );
 
 	}
 
@@ -245,8 +245,8 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 		txt += inpTarY.valueAsNumber != 0 ? '#ty=' + inpTarY.valueAsNumber : '';
 		txt += inpTarZ.valueAsNumber != 0 ? '#tz=' + inpTarZ.valueAsNumber : '';
 
-//		taURL.value = object.name + txt;
-		taURL.value = txt;
+		taURL.value = core + '#' +model.name + txt;
+//		taURL.value = txt;
 		ifrContentWindow.location.hash = txt;
 
 		outMonth.value = inpMonth.value;
@@ -259,7 +259,7 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 	function allPhong() {
 
-		object.traverse( function ( child ) {
+		model.traverse( function ( child ) {
 
 			if ( child instanceof ifrContentWindow.THREE.Mesh ) {
 
@@ -274,7 +274,7 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 	function allNormal() {
 
-		object.traverse( function ( child ) {
+		model.traverse( function ( child ) {
 
 			if ( child instanceof ifrContentWindow.THREE.Mesh ) {
 
@@ -289,17 +289,17 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 	function zoomBoundary() {
 
-			bbh = new ifrContentWindow.THREE.BoundingBoxHelper( object );
+			bbh = new ifrContentWindow.THREE.BoundingBoxHelper( model );
 			bbh.update();
 //			bbh.geometry.computeBoundingSphere();
 //			radius = bbh.geometry.boundingSphere.radius;
 
 			distance = bbh.position.distanceTo( bbh.scale );
-			size = object.scale.y * 80 / distance;
+			size = model.scale.y * 80 / distance;
 
-			object.scale.multiplyScalar( size );
+			model.scale.multiplyScalar( size );
 
-			bbh = new ifrContentWindow.THREE.BoundingBoxHelper( object );
+			bbh = new ifrContentWindow.THREE.BoundingBoxHelper( model );
 			bbh.update();
 			ifrContentWindow.scene.add( bbh );
 
@@ -320,7 +320,7 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 		var blob, a;
 
-		blob = new Blob( [ JSON.stringify( ifrContentWindow.object.toJSON() ) ] );
+		blob = new Blob( [ JSON.stringify( ifrContentWindow.model.toJSON() ) ] );
 
 		a = document.body.appendChild( document.createElement( 'a' ) );
 		a.href = window.URL.createObjectURL( blob );
