@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow JSON Core R2</title>
+<title>Ladybug Web Shadow JSON Core R3</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Uses location.hash to load Three.js JSON file and display Sun position and analemmas according to latitude, longitude, date and time.
@@ -28,15 +28,15 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	var debug = false;
 
-//	var fullFilePathDefault = 'https://rawgit.com/mrdoob/three.js/dev/examples/obj/WaltHeadLo.js';
-//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/models/json/teapot-claraio.json';
-//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/cubecolors/cubecolors.js'
-//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead_bin.js';
-//	var fullFilePathDefault = 'mobius.json';
-//	var fullFilePathDefault = 'data.json';
+//	var fullFilePathDefault = '#fn=https://rawgit.com/mrdoob/three.js/dev/examples/obj/WaltHeadLo.js';
+//	var fullFilePathDefault = '#fn=https://rawgit.com/mrdoob/three.js/dev/examples/models/json/teapot-claraio.json';
+//	var fullFilePathDefault = '#fn=https://rawgit.com/mrdoob/three.js/dev/examples/obj/cubecolors/cubecolors.js'
+//	var fullFilePathDefault = '#fn=https://rawgit.com/mrdoob/three.js/dev/examples/obj/walt/WaltHead_bin.js';
+//	var fullFilePathDefault = '#fn=../../../content/json/mobius.json';
+//	var fullFilePathDefault = '#fn=../../../content/json/data.json';
 
-//	var fullFilePathDefault = 'http://va3c.github.io/json-r2/MissSpacyEyes.json';
-	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/json/urban-model/urban-model-001.json' +
+//	var fullFilePathDefault = '#fn=http://va3c.github.io/json-r2/MissSpacyEyes.json';
+	var fullFilePathDefault = '#fn=https://ladybug-analysis-tools.github.io/3d-models/content/json/urban-model/urban-model-001.json' +
 		'#la=37.796#lo=-122.398#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=12#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sl=1.5#gv=0#av=1';
 
 	var fullFilePath, fileName, object;
@@ -105,6 +105,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 					'<a href="" >' + document.title + '</a> ' +
 					'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html#readme.md > &#x24D8; </a>' +
 				'</h2>' +
+				'<p><button onclick=location.hash="#cy=0"; >Test permalink</button></p>' +
 				'<div id=coreMessage ></div>' +
 				'<div id=menuFileName ></div>' +
 				'<div id=menuInfo ></div>' +
@@ -120,7 +121,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		document.body.appendChild( stats.domElement );
 
 		window.addEventListener( 'resize', onWindowResize, false );
-//		window.addEventListener ( 'hashchange', hashChange, false );
+		window.addEventListener ( 'hashchange', onHashChange, false );
 		document.body.addEventListener("mouseup", function() { if ( parent.getCoreParameters ) { parent.getCoreParameters(); } }, false );
 
 
@@ -148,9 +149,25 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		initSunAndLight();
 
-		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : fullFilePathDefault;
+		onHashChange();
 
-		loadXHR( fullFilePath );
+	}
+
+	function onHashChange() {
+
+		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : fullFilePathDefault.slice( 4 ) ;
+console.log( 'fullFilePath', fullFilePath);
+		if ( !object ) {
+
+			loadXHR( fullFilePath );
+
+			return;
+
+		} else {
+
+			getHashParameters();
+
+		}
 
 	}
 
@@ -165,20 +182,11 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		if ( fileNameSplit.length ) { fileName = fileNameSplit[0]; }
 
 		loader = new THREE.XHRLoader();
-		loader.crossOrigin = 'anonymous';
-		loader.load( fullFilePath, function ( text ) {
+		loader.crossOrigin = '';
+		loader.load( fullFilePath, function ( response ) {
 
-			if ( text.slice( 0, 1 ) !== '{' ) {
-
-				setCoreMessage( fileName + ': is not JSON' );
-
-				return;
-
-			}
-
-			text = JSON.parse( text );
-
-			handleJSON( fullFilePath, text );
+			fileSize = response.length;
+			handleJSON( fullFilePath, response );
 
 		} );
 
@@ -186,7 +194,18 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	function handleJSON( fullFilePath, data ) {
 
+
 // needs streamlining
+
+		if ( data.slice( 0, 1 ) !== '{' ) {
+
+			setCoreMessage( fileName + ': is not JSON' );
+
+			return;
+
+		}
+
+		data = JSON.parse( data );
 
 		if ( data.offsets !== undefined || data.__metadata__ !== undefined || data.urls !== undefined || data.materials === undefined ) {
 
@@ -224,15 +243,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 			case 'buffergeometry':
 
-				var loader, result, object;
-
-				loader = new THREE.BufferGeometryLoader();
-				result = loader.parse( data );
-
-				object = new THREE.Mesh( result );
-				object.name = url;
-
-				scene.add( object );
+				loadBufferGeometryFileByURL( fullFilePath )
 
 				break;
 
@@ -290,6 +301,20 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	}
 
+	function loadBufferGeometryFileByURL( url ) {
+
+		var loader, result, object;
+
+		loader = new THREE.BufferGeometryLoader();
+		result = loader.parse( data );
+
+		mesh = new THREE.Mesh( result );
+		mesh.name = url;
+
+		addObject( mesh );
+
+	}
+
 	function loadJSONLoaderFileByURL( url ) {
 
 		var loader, material, mesh;
@@ -327,19 +352,21 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 		loader = new THREE.ObjectLoader();
 		loader.crossOrigin = 'anonymous';
-		loader.load( url, function ( obj, materials ) {
+		loader.load( url, function ( result, materials ) {
 
-			if ( obj instanceof THREE.Scene ) {
+			if ( result instanceof THREE.Scene ) {
 
 				object = new THREE.Object3D();;
 
-				for ( var i = 0; i < obj.children.length; i++ ) {
+				for ( var i = 0; i < result.children.length; i++ ) {
 
-					child = obj.children[ i ];
+					child = result.children[ i ];
 
 					if ( child instanceof THREE.Mesh ) {
 
 						child.material.side = 2;
+						child.castShadow = true;
+						child.receiveShadow = true;
 
 					}
 
@@ -349,25 +376,27 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 				addObject( object );
 
-				scene = obj;
+				scene = result;
 
 				scene.add( object );
 
+				initNorthArrow();
+
+				initSunAndLight();
+
 			} else {
 
+			for ( var i = 0; i < result.children.length; i++ ) {
 
-					for ( var i = 0; i < obj.children.length; i++ ) {
+				child = result.children[ i ];
+				child.material.side = 2
 
-						child = obj.children[ i ];
-						child.material.side = 2
+				helper = new THREE.EdgesHelper( child, 0x444444 );
+				scene.add( helper );
 
-						helper = new THREE.EdgesHelper( child, 0x444444 );
-						scene.add( helper );
+			} 
 
-					} 
-
-				addObject( obj );
-
+				addObject( result );
 
 			}
 
@@ -389,8 +418,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 			}
 
-			fileSize = xhr.total;
-
 		}
 
 		function onError ( xhr ) { 
@@ -401,12 +428,11 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	}
 
-
 	function addObject( obj ) {
 
 // for the parent
 
-//console.log( '', obj );
+console.log( 'obj', obj );
 
 		object = obj;
 		object.name = fullFilePath;
@@ -426,20 +452,22 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		pud.hours = date.getHours();
 		pud.minutes = date.getMinutes();
 
-		getHashParameters( object );
+		getHashParameters();
 
 		setCoreMessage( fileName + ': load complete' );
 
+		document.title = fileName + ' - ' + document.title;
 
 	}
 
-	function getHashParameters( object ) {
+	function getHashParameters() {
 
-		var hashes, hash, parameter, value;
-		var d2r = Math.PI / 180;
+//		var hashes, hash, parameter, value;
+		var d2r = Math.PI / 180, r2d = 180 / Math.PI;  // degrees / radians
+		var b = '<br>';
 
-//		hashes = location.hash.split( '#' );
-		hashes = fullFilePathDefault.split( '#' );
+		hashes = location.hash.length ? location.hash : fullFilePathDefault;
+		hashes = hashes.split( '#' );
 
 		for ( var i = 1; i < hashes.length; i++ ) {
 
@@ -488,7 +516,8 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 				case 'ty': controls.target.y = parseFloat( value ); break;
 				case 'tz': controls.target.z = parseFloat( value ); break;
 
-				case  hashes[ 1 ] : break;
+				case  '': break;
+				case  'fn': break;
 
 				default: console.log( 'oops', hash, i, hashes );
 
@@ -497,13 +526,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		}
 
 		if ( window.self === window.top || debug === true ) {
-
-
-			var b = '<br>';
-
-			var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
-			var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
-
 
 			menuInfo.innerHTML =
 
@@ -534,6 +556,17 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 			'';
 
+			menuMetadata.innerHTML =
+
+				'<p>' +
+				'File size: ' + fileSize + '<br>' +
+				'Version: ' + ( metadata.formatVersion || metadata.version )+ '<br>' +
+				'Type: ' + metadata.type + '<br>' +
+				'Generated by: ' + ( metadata.generatedBy || metadata.generator ) + '<br>' +
+				'</p>' +
+
+			'';
+
 		}
 
 		getDate();
@@ -555,34 +588,13 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 //console.log( 'metadata', metadata, 'fileSize', fileSize );
 
-			if ( window.self === window.top || debug === true ) {
-
-				menuMetadata.innerHTML =
-
-					'<p>' +
-					'File size: ' + fileSize + '<br>' +
-					'Version: ' + metadata.formatVersion + '<br>' +
-					'Type: ' + metadata.type + '<br>' +
-					'Generated by: ' + metadata.generatedBy + '<br>' +
-					'</p>' +
-
-				'';
-
-			}
-
 		} else {
 
 			parent.console.log( 'message:', message );
 
 		}
 
-		document.title = fileName + ' - ' + document.title;
-
 	}
-
-
-
-
 
 // analemma
 
