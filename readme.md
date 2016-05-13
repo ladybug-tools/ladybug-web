@@ -1,10 +1,11 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
+﻿<span style=display:none; >
+[You are now in a GitHub source code view - click this link to view the home page]( https://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
-[Ladybug Web Project Explorer]( http://ladybug-analysis-tools.github.io/ladybug-web/ladybug-web-via-github-api-r2.html )
+[Ladybug Web Project Explorer]( https://ladybug-analysis-tools.github.io/ladybug-web/ladybug-web-via-github-api-r2.html )
 ===
 
 ## Concept
@@ -31,7 +32,7 @@ the possibilities arise for the more complex, sophisticated and even extravagant
 Generally the following scripts
 
 * Free and open source
-* Built using entry level JavaScript with no dependencies other than [Three.js]( http://threejs.org)
+* Built using entry level JavaScript with no dependencies other than [Three.js]( https://threejs.org)
 * Enable rotation, zoom and pan using one, two or three fingers or left button, scroll wheel and right button on a mouse
 
 See also: [Project Explorer Read Me]( #./project-explorer-readme.md )
