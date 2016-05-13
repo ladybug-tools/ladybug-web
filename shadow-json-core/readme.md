@@ -6,10 +6,10 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
-[Ladybug Web Shadow Core Read Me]( #shadow-core/readme.md )
+[Ladybug Web Shadow JSON Core Read Me]( #shadow-core/readme.md )
 ===
 
-## Full screen: [Ladybug Web Shadow Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html )
+## Full screen: [Ladybug Web Shadow JSON Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-core/index.html )
 
 Older versions
 
