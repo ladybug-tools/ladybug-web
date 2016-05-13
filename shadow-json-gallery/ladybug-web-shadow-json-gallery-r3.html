@@ -109,7 +109,7 @@
 	function hashChange() {
 
 		fileName = location.hash ? location.hash.slice( 1 ) : 'readme.md';
-console.log( '', );
+
 		if ( fileName.slice( -3 ) !== '.md' ) {
 
 			contents.innerHTML = '<iframe id=ifr src=' + core + location.hash + ' scrolling="no" ></iframe>';
