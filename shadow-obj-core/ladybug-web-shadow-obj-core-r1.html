@@ -7,31 +7,47 @@
 <meta name=description content='
 Uses location.hash to load Three.js JSON file and display Sun position and analemmas according to latitude, longitude, date and time.
 ' >
-<meta name=keywords content='Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-04-08' >
+<meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-05-15' >
 </head>
 <body>
-
-<script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
-<script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
-<script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
 <!--
-<script src=http://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
-<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
-<script src=http://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+<script src=https://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+
+<script src=https://mrdoob.github.io/three.js/examples/js/loaders/DDSLoader.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/loaders/MTLLoader.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/loaders/OBJLoader.js ></script>
 -->
-<script src=http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+
+<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/DDSLoader.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/MTLLoader.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/OBJLoader.js ></script>
 
 <script>
 
-	var project;
 
-	var debug;
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/female02/female02.obj';
+	var fullFilePathDefault = 'https://rawgit.com/mrdoob/three.js/dev/examples/obj/female02/female02.mtl';
 
-//	var fileNameDefault = '#fn=http://mrdoob.github.io/three.js/examples/obj/WaltHeadLo.js#ar=80#rz=45#px=-5#py=30#ms=0.5';
-//	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/3D10.0_12.0_24.0_66.0_17.0_2.0_0.0_0.0_0.1.json#sy=0.3#py=-3';
-//	var fileNameDefault = '#fn=file:///C:/Users/Theo/Dropbox/Public/git-repos/jaanga.github.io/cookbook-threejs/viewers/models/model.json';
-	var fileNameDefault = '#fn=http://ladybug-analysis-tools.github.io/3d-models/content/json/urban-model/urban-model-001.json' +
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/male02/male02.obj';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/male02/male02.mtl';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/male02/male02_dds.mtl';
+
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/models/campfire/campfire.obj';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/models/campfire/campfire.mtl';
+
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/models/campfire/brownrock.obj';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/models/campfire/brownrock.mtl';
+
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
+
+	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
 		'#la=37.796#lo=-122.398#cx=50#cy=70#cz=40#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=0';
 
 	var parameters = new THREE.Object3D();
@@ -164,7 +180,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		var date, b = '<br>';
 		var d2r = Math.PI / 180;
 
-		hashes = location.hash.length ? location.hash.split( '#' ) : fileNameDefault.split( '#' );
+		hashes = location.hash.length ? location.hash.split( '#' ) : fullFilePathDefault.split( '#' );
 
 		for ( var i = 1; i < hashes.length; i++ ) {
 
