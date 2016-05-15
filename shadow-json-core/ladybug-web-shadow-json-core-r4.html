@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow JSON Core R3.2</title>
+<title>Ladybug Web Shadow JSON Core R4</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Uses location.hash to load Three.js JSON file and display Sun position and analemmas according to latitude, longitude, date and time.
@@ -156,7 +156,7 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 
 	function onHashChange() {
 
-		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : fullFilePathDefault.slice( 4 ) ;
+		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : fullFilePathDefault ;
 
 		if ( !model ) {
 
