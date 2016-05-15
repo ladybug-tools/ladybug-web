@@ -7,7 +7,7 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
-[Ladybug Web Shadow JSON Gallery Read Me]( index.htl#readme.md )
+[Ladybug Web Shadow JSON Gallery Read Me]( index.html#readme.md )
 ===
 
 _Use the menu on the left to call up files and adjust the date and time. Enjoy watching the shadows move as the hours go by._
@@ -88,3 +88,9 @@ Any others?
 ### 2016-03-22
 
 Very R1.
+
+***
+
+<center title="dingbat" >
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="http://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+</center
