@@ -4,10 +4,10 @@
 [Urban Model]( #https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#la=37.796#lo=-122.398#cx=0#cy=50#cz=-180#hr=12#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sl=1.5#gv=0#av=1 )
 
 view [Engel House]( #https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj#rx=-90#px=-30#pz=25#cx=-11#cy=16#cz=51#tx=-4#ty=5#tz=-1#rx=-90#px=-30#pz=25#cx=-34#cy=40#cz=13#tx=-1#ty=2#tz=-7 )  
-home page [Engel House]( http://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/ )
+home page [Engel House]( https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/ )
 
 view [Urban Model]( #https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92 )  
-[Urban Model]( http://ladybug-analysis-tools.github.io/3d-models/content/obj/index.html#./content/obj/urban_model_001/readme.md )
+[Urban Model]( https://ladybug-analysis-tools.github.io/3d-models/content/obj/index.html#urban_model_001/readme.md )
 
 view [Seaside Villa]( #https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#sx=0.1#sy=0.1#sz=0.1#px=100#pz=100#cx=164#cy=38#cz=143#tx=-24#ty=20#tz=19 )  
 [Seaside Villa]( http://ladybug-analysis-tools.github.io/3d-models/content/obj/index.html#./content/obj/seaside-villa-obj/readme.md )

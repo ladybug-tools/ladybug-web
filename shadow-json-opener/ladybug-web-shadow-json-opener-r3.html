@@ -173,6 +173,12 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 		taURL.value = url;
 		contents.innerHTML = '<iframe id=ifr src=' + core + '#' + url + ' scrolling="no" ></iframe>';
 
+		ifr.onload = function () {
+
+			if ( window.self !== window.top ) { ifr.contentWindow.controls.enableZoom = false; }
+
+		}
+
 	}
 
 // called by core

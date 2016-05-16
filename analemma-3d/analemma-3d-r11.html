@@ -2,13 +2,13 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R11</title>
+<title>Analemma 3D R11.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month
 ' >
 <meta name=keywords content='SunCalc.js,WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-01' >
+<meta name=date content='2016-05-16' >
 </head>
 <body>
 <!--
@@ -805,7 +805,7 @@
 		geocoder = new google.maps.Geocoder;
 		infoWindow = new google.maps.InfoWindow( { map: map } );
 
-		if ( navigator.geolocation ) {
+		if ( window.self === window.top && navigator.geolocation ) {
 
 			navigator.geolocation.getCurrentPosition( function( position ) {
 

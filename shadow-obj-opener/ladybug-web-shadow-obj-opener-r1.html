@@ -51,7 +51,8 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 		contents = document.body.appendChild( document.createElement( 'div' ) );
 		contents.id = 'contents';
-		contents.innerHTML = '<h1>Stuff</h1>';
+//		contents.innerHTML = '<h1>Stuff</h1>';
+		contents.innerHTML = '<iframe id=ifr scrolling="no" ></iframe>';
 
 		hamburger = document.body.appendChild( document.createElement( 'div' ) );
 		hamburger.id = 'hamburger';
@@ -172,6 +173,12 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 		taURL.value = url;
 		contents.innerHTML = '<iframe id=ifr src=' + core + '#' + url + ' scrolling="no" ></iframe>';
+
+		ifr.onload = function () {
+
+			if ( window.self !== window.top ) { ifr.contentWindow.controls.enableZoom = false; }
+
+		}
 
 	}
 
