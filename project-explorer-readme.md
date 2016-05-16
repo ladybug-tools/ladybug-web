@@ -19,7 +19,7 @@ Mission statements
 * Provide a fast and easy-to-navigate visual overview of numerous apps
 	* Some big, some small. Some fresh, some stale
 * Display latest version of scripts as full interactive apps in 3D
-	* Disable certain features automatically to allow the page to be scrolled both on computers amd mobile devices
+	* Disable certain features automatically to allow the page to be scrolled both on computers and mobile devices
 * Identify quickly what's new and what's hot
 * Seamless two-way transition from read me files and source code to apps and web pages
 * Write once, read many. Write something once and have the text appear where and when needed
@@ -85,11 +85,11 @@ The text is scaled down to 75% of normal size and enclosed in a box with red bor
 ## Current thinking
 
 The all-in-one system is fine for small amounts of text, but becomes very cumbersome when there are more than a few dozen words.
-The current work process is creating and maintaining fairly small meta tag content and putting most content inthe read me files.
+The current work process is creating and maintaining fairly small meta tag content and putting most content in the read me files.
 
 ## Issues
 
-* Allowing for easy scrolling means to not allow full width apps to get access to the scrollwheel or touch interactions
+* Allowing for easy scrolling means to not allow full width apps to get access to the scroll wheel or touch interactions
 	* Preventing such interactions is a work in progress
 * For experienced users who just want to get to a particular folder there is far too much scrolling involved
 	* Something like a simple, text 'table of contents' might help here
@@ -102,7 +102,12 @@ The current work process is creating and maintaining fairly small meta tag conte
 * Add section on coding style
 
 
-## Chaange Log
+## Change Log
+
+
+### 2016-05-14
+
+* Shadow JSON ~ many small updates
 
 ### 2016-04-03
 

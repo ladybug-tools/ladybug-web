@@ -37,10 +37,3 @@ Generally the following scripts
 
 See also: [Project Explorer Read Me]( #./project-explorer-readme.md )
 
-
-
-## Change Log
-
-### 2016-05-14
-
-* Shadow JSON ~ many small uppates
