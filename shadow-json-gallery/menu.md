@@ -1,3 +1,5 @@
+
+<!--
 [Ladybug Analysis Tools]( ../../../index.html  ) &raquo; [Ladybug Web]( ../../index.html ) &raquo;
 
 [Shadow JSON Gallery]( index.html )
@@ -9,7 +11,7 @@ Month<br><input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDa
 Day<br><input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" ><output id=outDate ></output><br>
 Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" ><output id=outHours ></output><br>
 Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" ><output id=outMinutes ></output><br>
-
+-->
 
 ### Ladybug Web 3D Models
 [Urban Model]( #https://ladybug-analysis-tools.github.io/3d-models/content/json/urban-model/urban-model-001.json#la=37.796#lo=-122.398#cx=0#cy=50#cz=-180#hr=12#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sl=1.5#gv=0#av=1 )
@@ -36,9 +38,3 @@ Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=se
 [Spectacles]( #https://tt-acm.github.io/Spectacles.WebViewer/examples/1/js/Spectacles.json )  
 [Spectacles 2]( #https://tt-acm.github.io/Spectacles.WebViewer/examples/2/js/Spectacles_2.json )  
 [RST Basic Sample Project]( #https://tt-acm.github.io/Spectacles.RevitExporter/sampleModels/rst_basic_sample_project.rvt.js#sx=0.001#sy=0.001#sz=0.001 )  
-
-***
-
-<center title="dingbat" >
-# <a href=javascript:menu.scrollTop=0; style=text-decoration:none; ><img src="http://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
-</center>

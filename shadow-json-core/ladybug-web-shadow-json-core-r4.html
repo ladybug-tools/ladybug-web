@@ -125,7 +125,6 @@ Uses location.hash to load Three.js JSON file and display Sun position and anale
 		window.addEventListener ( 'hashchange', onHashChange, false );
 		document.body.addEventListener("mouseup", function() { if ( parent.getCoreParameters ) { parent.getCoreParameters(); } }, false );
 
-
 		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
 //		renderer.setPixelRatio( window.devicePixelRatio ); // for iOS?
 		renderer.setSize( window.innerWidth, window.innerHeight );
