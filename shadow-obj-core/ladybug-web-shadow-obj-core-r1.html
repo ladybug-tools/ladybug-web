@@ -109,7 +109,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		hamburger = document.body.appendChild( document.createElement( 'div' ) );
 		hamburger.id = 'hamburger';
-		hamburger.innerHTML = '<div id=bars >☰</div>';
+		hamburger.innerHTML = '<div id=bars >  &#9776 </div>';
 		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
 
 		menu = hamburger.appendChild( document.createElement( 'div' ) );
@@ -118,7 +118,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 				'<div id=menuTitle >' +
 					'<h2>' +
 						'<a href="" >' + document.title + '</a> ' +
-						'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/#shadow-core/readme.md >&#x24D8;</a>' +
+						'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/index.html#readme.md >&#x24D8;</a>' +
 					'</h2>' +
 				'</div>' +
 				'<div id=menuFileName ></div>' +
