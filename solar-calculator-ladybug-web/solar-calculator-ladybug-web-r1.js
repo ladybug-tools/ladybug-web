@@ -25,15 +25,15 @@
 		var cosPhi = Math.cos( phi );
 		var sinPhi = Math.sin( phi);
 
-		now = new Date();
+		var now = new Date();
 
 		hoursOffset = now.getTimezoneOffset() / 60;
 
 		hoursOffset = longitude < 0 ? - hoursOffset : hoursOffset;
 
-		dateLastMidnightUTC = new Date( now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() );
+		var dateLastMidnightUTC = new Date( now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() );
 
-		dateLastMidnightLocal = new Date( dateLastMidnightUTC.getFullYear(), dateLastMidnightUTC.getMonth(),
+		var dateLastMidnightLocal = new Date( dateLastMidnightUTC.getFullYear(), dateLastMidnightUTC.getMonth(),
 			dateLastMidnightUTC.getDate(), dateLastMidnightUTC.getHours() + hoursOffset );
 
 // now for twenty lines of nearly impenetrable code   ;-(
