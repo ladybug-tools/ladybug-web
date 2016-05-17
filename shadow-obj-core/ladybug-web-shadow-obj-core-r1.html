@@ -2,13 +2,13 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow OBJ Core R1</title>
+<title>Ladybug Web Shadow OBJ Core R1.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Uses location.hash to load OBJ and MTL files and display Sun position and analemmas according to latitude, longitude, date and time.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-15' >
+<meta name=date content='2016-05-17' >
 </head>
 <body>
 <!--
@@ -73,7 +73,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 	var dateUTC, dateThere;  // could be local
 	var offsetHours;
 
-	var sun, directionalLight;
+	var sun, lightDirectional;
 	var analemma;
 	var northArrow;
 
@@ -157,9 +157,6 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 		scene = new THREE.Scene();
 
 // assets
-		initNorthArrow();
-
-		initSunAndLight();
 
 // Call to action
 
@@ -266,6 +263,11 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 // for the parent
 
+		initNorthArrow();
+
+		initSunAndLight();
+
+
 		model = object;
 		model.name = fullFilePath;
 
@@ -339,7 +341,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 				case 'gv': pud.groundPlaneVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
 				case 'av': pud.analemmaVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
 
-				case 'sl': lightDirectional.intensity = pud.sunlightIntensity = parseFloat( value ); break;
+				case 'sl': lightDirectional ? lightDirectional.intensity = pud.sunlightIntensity = parseFloat( value ) : ''; break;
 
 				case 'rx': model.rotation.x = parseFloat( value * d2r ); break;
 				case 'ry': model.rotation.y = parseFloat( value * d2r ); break;
@@ -522,6 +524,10 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 				'- Altitude: ' + pud.sunPosition.altitude +
 
 			'';
+
+		} else if ( parent.getCorePositions ) { 
+
+			parent.getCorePositions();
 
 		}
 

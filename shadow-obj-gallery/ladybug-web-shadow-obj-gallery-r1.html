@@ -26,7 +26,7 @@
 		css = document.body.appendChild( document.createElement( 'style' ) );
 		css.innerHTML =
 
-			'body { font: 12pt monospace; margin: 0; overflow: hidden}' +
+			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
 			'a { color: crimson; text-decoration: none; }' +
 			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
 
@@ -42,7 +42,6 @@
 			'#contents { border: 0px red solid; height: 100%; left: 320px; margin: 0; position: absolute; top: 0; width: ' + ( window.innerWidth - 320 ) + 'px; }' +
 
 		'';
-
 
 		contents = document.body.appendChild( document.createElement( 'div' ) );
 		contents.id = 'contents';
@@ -65,6 +64,7 @@
 				'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" ><output id=outHours ></output><br>' +
 				'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" ><output id=outMinutes ></output><br>' +
 			'</p>' +
+			'<p id=positions ></p>' +
 			'<hr>' +
 			'<div id=info ></div>' +
 			'<hr>' +
@@ -79,8 +79,6 @@
 		outDate.value = inpDate.value = date.getDate();
 		outHours.value = inpHours.value = date.getHours();
 		outMinutes.value = inpMinutes.value = date.getMinutes();
-
-
 
 		window.addEventListener ( 'hashchange', onHashChange, false );
 
@@ -98,6 +96,21 @@
 
 			contents.innerHTML = '<iframe id=ifr src=' + core + location.hash + ' scrolling="no" ></iframe>';
 			ifr.id = 'ifr';
+
+			ifr.onload = function() {
+
+				var icw = ifr.contentWindow;
+				positions.innerHTML = 
+
+					'Latitude ' + icw.pud.latitude + '<br>' +
+					'Longitude ' + icw.pud.longitude + '<br>' +
+					'Azimuth ' + '<br>' +
+					'Altitude ' + '<br>' +
+
+				'';
+
+			}
+
 			contents.style.overflow = 'hidden';
 			contents.style.margin = contents.style.padding = '0';
 
@@ -115,10 +128,20 @@
 
 	function setDate() {
 
+		var icw;
+
 		if ( contents.innerText === '' ) {
 
-			ifr.contentWindow.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
+			icw = ifr.contentWindow;
+			icw.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
 				'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber ;
+
+			positions.innerHTML = 
+				'Latitude ' + icw.pud.latitude + '<br>' +
+				'Longitude ' + icw.pud.longitude + '<br>' +
+				'Azimuth ' + icw.pud.sunPosition.azimuth.toFixed() + '<br>' +
+				'Altitude ' + icw.pud.sunPosition.altitude.toFixed() + '<br>' +
+			'';
 
 		}
 
