@@ -1,9 +1,11 @@
-﻿
+﻿// r1 2016-05-17
+
 // Equations based on NOAA’s Solar Calculator; all angles in radians.
 // http://www.esrl.noaa.gov/gmd/grad/solcalc/
 // http://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
 
 	var centuries;
+
 	var pi = Math.PI;
 	var pi2 = 2 * pi;
 	var pi05 = 0.5 * pi;
@@ -62,7 +64,7 @@
 			var te = Math.tan( atmosphere );
 
 			zenith -= ( atmosphere > 5 ? 58.1 / te - 0.07 / ( te * te * te ) + 0.000086 / ( te * te * te * te * te )
-				: atmosphere > -.575 ? 1735 + atmosphere * ( -518.2 + atmosphere * ( 103.4 + atmosphere * ( -12.79 + atmosphere * 0.711) ) )
+				: atmosphere > -.575 ? 1735 + atmosphere * ( -518.2 + atmosphere * ( 103.4 + atmosphere * ( -12.79 + atmosphere * 0.711 ) ) )
 				: -20.774 / te ) / 3600 * d2r;
 
 		}
@@ -115,7 +117,7 @@
 
 	function solarGeometricMeanLongitude( centuries ) {
 
-		var l = (280.46646 + centuries * (36000.76983 + centuries * 0.0003032)) % 360;
+		var l = ( 280.46646 + centuries * ( 36000.76983 + centuries * 0.0003032 ) ) % 360;
 
 		return ( l < 0 ? l + 360 : l ) / 180 * pi;
 
@@ -133,7 +135,7 @@
 
 	function obliquityCorrection( centuries ) {
 
-		return meanObliquityOfEcliptic(centuries) + 0.00256 * Math.cos((125.04 - 1934.136 * centuries) * d2r) * d2r;
+		return meanObliquityOfEcliptic( centuries ) + 0.00256 * Math.cos( ( 125.04 - 1934.136 * centuries ) * d2r ) * d2r;
 
 	}
 

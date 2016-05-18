@@ -7,7 +7,7 @@
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month
 ' >
-<meta name=keywords content='SunCalc.js,WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=keywords content='Ladybug Web,WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
 <meta name=date content='2016-05-17' >
 </head>
 <body>
@@ -21,24 +21,29 @@
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
 
 <script src=https://maps.googleapis.com/maps/api/js?libraries=places ></script>
-
+<!--
 <script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
-<!-- <script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script> -->
+<script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script>
+-->
+
+<script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
 
-// https://github.com/mourner/suncalc
-
 	var places, place;
+
 	var latitude;
 	var longitude;
-	var latPrev = latitude;
-	var lonPrev = longitude;
+
+	var placeDefault = 'Sydney NSW';
+	var latDefault = -33.8675;
+	var lonDefault = 151.207;
 
 	var dateHere, dateUTC, datePlace;
 	var timeZonePlace;
 	var offset;
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+	var declination = 23.439281 * d2r;
 
 	var analemma, sun, sunBand;
 	var analemmaRadius = 50;
@@ -47,17 +52,15 @@
 
 	var map, mapCenter, geocoder, infoWindow;
 	var zoom = 14;
-
 	var opacity = 0.85;
+
 	var pixelsPerTile = 256;
 	var tilesPerSide = 7; // odd number please
 	var tilesPerSideSquared = tilesPerSide * tilesPerSide;
 
 	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
-	var v = function( x, y, z ){ return new THREE.Vector3( x, y, z ); };
-
-	var declination = 23.439281 * d2r;
+	var v = new THREE.Vector3;
 
 	var stats, renderer, scene, camera, controls;
 
@@ -67,24 +70,24 @@
 	function init() {
 
 		var geometry, material, mesh;
-		var css, hamburger, menu;
+		var css, contents, hamburger, menu;
 
 		css = document.head.appendChild( document.createElement( 'style' ) );
 		css.innerHTML =
 
 			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
-			'a {text-decoration: none; }' +
-			'button, input[type=button] { background-color: #ccc; border: 2px #ccc solid; color: #666; }' +
+			'a { color: crimson; text-decoration: none; }' +
+			'button, input[type=button] { background-color: #ccc; border: 2px #ccc solid; color: #333; }' +
 
 			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; }' +
 			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
 			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; opacity: 0.85; width: 10px; }' +
 
-			'h2 { margin: 0; }' +
+//			'h2 { margin: 0; }' +
 			'h3 { display: inline; margin: 0; }' +
 			'summary { outline: none; }' +
 
-			'#bars { color: pink; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
 			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
 			'#menu { background-color: #eee; border: 1px #ccc solid; left: -324px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
 				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
@@ -97,7 +100,7 @@
 
 		hamburger = document.body.appendChild( document.createElement( 'div' ) );
 		hamburger.id = 'hamburger';
-		hamburger.innerHTML = '<div id=bars >☰</div>';
+		hamburger.innerHTML = '<div id=bars >  &#9776 </div>';
 		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
 
 		menu = hamburger.appendChild( document.createElement( 'div' ) );
@@ -105,16 +108,16 @@
 		menu.innerHTML =
 
 			'<h2>' +
-			'	<a href="" >' + document.title + '</a>' +
-			'	<a href=index.html#readme.md >&#x24D8;</a>' +
+				'<a href="" >' + document.title + '</a>' +
+				'<a href=index.html#readme.md > &#x24D8; </a>' +
 			'</h2>' +
 
 			'<details open>' +
 				'<summary><h3>Place</h3></summary>' +
 
-				'<p>Latitude &nbsp;<input id=inpLatitude placeholder="" onchange=updateCenter(); ></p>' +
-				'<p>Longitude <input id=inpLongitude placeholder="" onchange=updateCenter(); ></p>' +
-				'<p>Zoom level <input type=number id=inpZoom placeholder="" value=' + zoom + ' onchange=updateCenter(); size=2 min=1 max=20 ></p>' +
+				'<p>Latitude &nbsp;<input id=inpLatitude placeholder=' + latDefault + ' onchange=updateCenter(); size=10 ></p>' +
+				'<p>Longitude <input id=inpLongitude placeholder=' + lonDefault + '  onchange=updateCenter(); size=10 ></p>' +
+//				'<p>Zoom level <input type=number id=inpZoom placeholder=' + placeDefault + '  value=' + zoom + ' onchange=updateCenter(); size=2 min=1 max=20 ></p>' +
 				'<p><button onclick=updateCenter(); >Update map position</button></p>' +
 
 				'<p><input id=inpAddress class=controls placeholder="Sydney NSW" onchange=geocodeAddress(geocoder,map); style=width:100%; >' +
@@ -125,10 +128,10 @@
 			'<details open >' +
 				'<summary><h3>Date and Time</h3></summary>' +
 				'<p>' +
-					'Month<br><input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" ><output id=outMonth ></output><br>' +
-					'Day<br><input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" ><output id=outDate ></output><br>' +
-					'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" ><output id=outHours ></output><br>' +
-					'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" ><output id=outMinutes ></output><br>' +
+					'Month<br><input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
+					'Day<br><input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
+					'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" > <output id=outHours ></output><br>' +
+					'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" > <output id=outMinutes ></output><br>' +
 
 				'</p>' +
 			'</details>' +
@@ -141,8 +144,10 @@
 					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(axisHelper); > Display Axis</p>' +
 				'<p>Map source<br><select id=selMap onchange=drawMapOverlay(); size=9 /></select></p>' +
 				'<p>' +
-					'Zoom<br><input type=range id=inpZoom max=20 min=3 step=1 value=12 oninput=zoom=this.value;drawMapOverlay(); title="1 to 18: OK" ><output id=outZoom ></output><br>' +
-					'Opacity<br><input type=range id=inpOpacity min=0.05 max=1 step=0.05 value=0.85 oninput=opacity=this.value;drawMapOverlay(); title="1 to 18: OK" ><output id=outZoom ></output>' +
+					'Zoom<br><input type=range id=inpZoom max=20 min=3 step=1 value=12 oninput=outZoom.value=zoom=this.value;drawMapOverlay(); title="1 to 20: OK" > ' +
+						'<output id=outZoom >' + zoom + '</output><br>' +
+					'Opacity<br><input type=range id=inpOpacity min=0.05 max=1 step=0.05 value=0.85 oninput=outOpacity.value=opacity=this.value;drawMapOverlay(); title="0 to 1: OK" > ' +
+						'<output id=outOpacity >' + opacity + '</output>' +
 				'</p>' +
 			'</details>' +
 
@@ -153,9 +158,11 @@
 			'</details>' +
 
 			'<details open >' +
-				'<summary><h3>Information</h3></summary>' +
-				'<p id=info ></p>' +
+				'<summary><h3>Time</h3></summary>' +
+				'<p id=infoTime ></p>' +
 			'</details>' +
+			'<hr>' +
+			'<center><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></center>' +
 
 		'';
 
@@ -248,9 +255,9 @@
 
 		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetHours );
 
-		sunPosition = getSunPositionXYZ( dateUTC, latitude - 90, longitude );
+		sunPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude - 90, longitude );
 
-		sun.position.copy( sunPosition );
+		sun.position.copy( sunPosition.xyz );
 
 		updateInfo();
 
@@ -313,7 +320,7 @@
 
 			} else {
 
-				info.innerHTML = 'the location is timeless';
+				infoTime.innerHTML = 'the location is timeless';
 
 			}
 
@@ -321,6 +328,7 @@
 
 	}
 
+/*
 	function getSunPositionXYZ( dateUTC, latitude, longitude ) {
 
 		var sunPosition = SunCalc.getPosition( dateUTC, latitude, longitude );
@@ -330,6 +338,22 @@
 		var z = analemmaRadius * Math.sin( sunPosition.altitude );
 
 		return v( x, y, z );
+
+	}
+*/
+
+
+	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
+
+		var sunPosition;
+
+		sunPosition = getSunPosition( dateUTC,latitude, longitude );
+
+		var x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		var y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		var z = radius * Math.sin( sunPosition.altitude * d2r );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
 
 	}
 
@@ -346,21 +370,20 @@
 		outHours.value = datePlace.getHours();
 		outMinutes.value = datePlace.getMinutes();
 
-		info.innerHTML = 
+		infoTime.innerHTML =
 
-			'<h3>latitude: ' + latitude + '<br>longitude:' + longitude + '</h3>' +
+//			'<h3>latitude: ' + latitude + '<br>longitude:' + longitude + '</h3>' +
 //			'<p>' + place[ 0 ] + '</p>' +
 			'<p>Given a UTC time of ' + dateUTC.getHours() + ':' + dateUTC.getMinutes() + '</p>' +
-			'<p>Time ZoneID:' + timeZonePlace.timeZoneId + '</p>' +
+			'<p>Time ZoneID: ' + timeZonePlace.timeZoneId + '</p>' +
 			'<p>Time zone: ' + timeZonePlace.timeZoneName + '</p>' +
 			'<p>Offset in hours: ' + offsetPlace / 3600 + '</p>' +
 			'<p>The local date and time is: ' + datePlace.toLocaleString() + '</p>' +
-			'<p> The local universal time is:' + datePlace.getTime() + '</p>' +
+			'<p>The local universal time is: ' + datePlace.getTime() + '</p>' +
 
 		'';
 
 	}
-
 
 // draw, add or update the Three.js things
 
@@ -368,6 +391,7 @@
 
 		var geometry, vertices, material, line;
 		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
+		var sunPosition;
 
 		scene.remove( analemma );
 
@@ -377,7 +401,6 @@
 
 		for ( var hours = 0; hours < 24; hours++ ) {
 
-			var geometry, vertices;
 			geometry = new THREE.Geometry();
 			vertices = geometry.vertices;
 
@@ -389,9 +412,9 @@
 
 					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-					analemmaSunPosition = getSunPositionXYZ( analemmaDateUTC, latitude - 90, longitude );
+					analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude - 90, longitude );
 
-					vertices.push( analemmaSunPosition );
+					vertices.push( analemmaSunPosition.xyz );
 
 				}
 
@@ -413,7 +436,6 @@
 
 		for ( var month = 5; month < 12; month++ ) {
 
-			var geometry, vertices;
 			geometry = new THREE.Geometry();
 			vertices = geometry.vertices;
 
@@ -423,9 +445,9 @@
 
 				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
-				analemmaSunPosition = getSunPositionXYZ( analemmaDateUTC, latitude - 90, longitude );
+				analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude - 90, longitude );
 
-				vertices.push( analemmaSunPosition );
+				vertices.push( analemmaSunPosition.xyz );
 
 			}
 
@@ -438,33 +460,34 @@
 
 		scene.add( analemma );
 
-
-		dateUTC = new Date( Date.UTC( 2016, 2, 20, 12, 0, 0 ) );  // vernal equinox
+		dateUTC = new Date( Date.UTC( 2016, 5, 21, 13, 0, 0 ) );  // vernal equinox
 
 		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetHours );
 
-		sunPosition = getSunPositionXYZ( dateUTC, latitude, longitude );
+		sunPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
 
-//console.log( '', sunPosition );
+// console.log( 'sunPosition.altitude', sunPosition.altitude );
 
-		sunBand.lookAt( sunPosition ); // only sets two axes
+		sunBand.rotation.x = - sunPosition.altitude * d2r + declination;
 
 	}
 
 
 	function drawMapOverlay() {
 
+		var baseURL, tileX, tileY, tileOffset, count;
+
 		placeMap.visible = chkMap.checked === true ? true : false ;
 
 		if ( chkMap.checked === false ) { return; }
-
-		var baseURL, tileX, tileY, tileOffset, count;
 
 		baseURL = mapTypes[ selMap.selectedIndex ][ 1 ];
 
 		tileOffset = Math.floor( 0.5 * tilesPerSide );
 		tileX = lon2tile( longitude, zoom ) - tileOffset;
 		tileY = lat2tile( latitude, zoom ) - tileOffset;
+
+		outZoom.value = zoom;
 
 		count = 0;
 
@@ -499,7 +522,9 @@
 			img.onload = function(){
 
 				placeMapContext.drawImage( img, 0, 0, 256, 256, x * pixelsPerTile, y * pixelsPerTile, pixelsPerTile, pixelsPerTile );
+
 				count++;
+
 				if ( count === tilesPerSideSquared ) {
 
 					placeMap.material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: texture, side: 2, opacity: opacity , transparent: true } );
@@ -551,6 +576,8 @@
 
 	function initSunAndLight() {
 
+		var geometry, material;
+
 		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
 		material = new THREE.MeshPhongMaterial( { color: 0xffff00, emissive: 0x333333 } );
 		sun = new THREE.Mesh( geometry, material );
@@ -585,11 +612,11 @@
 
 		geometry = new THREE.SphereBufferGeometry( analemmaRadius, 50, 25, 0, pi2, pi05 - declination, 2 * declination );
 
-		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( pi05 ) );
-// 		geometry.applyMatrix( new THREE.Matrix4().makeRotationZ( - declination ) );
+//		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( pi05 ) );
+//		geometry.applyMatrix( new THREE.Matrix4().makeRotationZ( - declination ) );
 
 		var color = 0xffff00;
-		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.05, side: 2, transparent: true });
+		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.25, side: 2, transparent: true });
 		sunBand = new THREE.Mesh( geometry, material );
 
 		scene.add( sunBand );
@@ -667,7 +694,7 @@
 		var texture = canvasMultilineText( text, { backgroundColor: color }   );
 		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 0.9, transparent: true } );
 		var sprite = new THREE.Sprite( spriteMaterial );
-		sprite.position.set( x, y, z ) ;
+		sprite.position.set( x * 1.1, y * 1.1, z * 1.1) ;
 		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
 /*
 		var geometry = new THREE.Geometry();
@@ -750,7 +777,7 @@
 
 		map = new google.maps.Map( contents, {
 
-			center: { lat: -33.8675, lng: 151.207 },
+			center: { lat: latDefault, lng: lonDefault },
 			zoom: zoom,
 			mapTypeControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT }
 
@@ -802,7 +829,7 @@
 
 		origin_autocomplete.addListener('place_changed', function() {
 
-			var place = origin_autocomplete.getPlace();
+			place = origin_autocomplete.getPlace();
 
 			mapCenter = place.geometry.location;
 			map.setCenter( mapCenter );

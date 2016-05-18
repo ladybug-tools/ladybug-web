@@ -13,7 +13,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### Mission
 
-* To display one analemma for every hour of the day in 3D at any location on Earth
+* To display one analemma for every hour of the day in 3D at any location on Earth as displayed on a 2D map
 * To display the position of the Sun - using azimuth and altitude - at any date and time at any location on Earth
 
 
@@ -54,7 +54,8 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### Issues
 
-* Sun itself is shaded
+* Analemmas only drawn correctly in NW lat/lons
+* Typing in lat amd lon in input boxes is broken
 * Sun path band incorrectly positions itself
 	* Tries to be its own algorithm - good for checking errors
 	* Fall back could be to create sun path band from analemma vertices
@@ -65,13 +66,10 @@ value='You are now in the home page view - Click this button to view the read me
 
 * Add the ability to change the north based on an angle
 * Add sun-path circles
-* Add being able to import json files
 * Add an option to re-scale the sunpath
-* Add ability to add sun positions for a time-range (21 Dec, 9 am - 5 pm)
 * Add a button for top view and also save view to file.
 * Start moving some of the code into libraries 
 * Do something when Google API reports no time zone
-* Replace/Upgrade SunCalc.js with NOAA/Bostock JavaScript
 * Animations
 * Add reference object choices
 * Add solar times readout - with buttons to display sun position for location, date and time 
@@ -87,6 +85,16 @@ value='You are now in the home page view - Click this button to view the read me
 ## Previous updates
 
 See main Read Me for latest updates
+
+### 2016-05-17 / R12
+
+* Using Ladybug Web Solar Calculator
+	* Replaces Agafonkib calculator as used in previous releases
+	* Work in progress
+	* Works OK in NW lats/lons only
+* Sun band positioning is improving
+* Minor code clean-up
+
 
 ### 2016-05-01 / R11
 
