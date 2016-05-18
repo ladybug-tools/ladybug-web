@@ -13,7 +13,7 @@ value='You are now in the home page view - Click this button to view the read me
 _Use the menu on the left to call up files and adjust the date and time. Enjoy watching the shadows move as the hours go by._
 
 
-## full screen: [Ladybug Web Shadow OBJ Gallery]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-gallery/ )
+## full screen: [Ladybug Web Shadow Range OBJ Gallery]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ )
 
 The idea is to have a core or 'engine' that other scripts - like the one you ae usung now - can call and embed in an `iframe`.
 The engine is here: [Ladybug Web Shadow OBJ Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/ ).
