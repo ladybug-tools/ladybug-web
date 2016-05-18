@@ -72,6 +72,13 @@ Any others?
 ## Change Log
 
 
+### 2016-05-17
+
+* Many changes
+* Many issues with move to Ladybug Web Solar Calculator
+* Needs it;s own original read me!
+
+
 ### 2016-04-08
 
 * Add link to Shadow Opener to every menu item
