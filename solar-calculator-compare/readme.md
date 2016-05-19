@@ -1,11 +1,12 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/#calculations-compare/readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/calculations-compare'; 
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-compare/'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
 
 [Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
-[Calculations Compare Read Me]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html#calculations-compare/readme.md )
+[Calculations Compare Read Me]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md )
 ===
 
 # full screen: [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/ )
@@ -22,39 +23,37 @@ value='You are now in the home page view - Click this button to view the read me
 	* Ladybug Web Solar Calculator Bostock
 	* Ladybug Web Solar Calculator NOAA
 	* NOAA Solar Calculator
-	* Vladimir Agafonkin's SunCalc.js
 	* Mike Bostock's Solar Calculaor
+	* Vladimir Agafonkin's SunCalc.js
 * Where possible the source is original and canonical JavaScript file on the web
 
 
-## Links to Ladybug Web Sun Position Scripts
-
-### Ladybug Web Solar Calculator Bostock
-
-* http://ladybug-analysis-tools.github.io/ladybug-web/index.html#solar-calculator/readme.md
+## Links to Ladybug Web Sun Calculator Scripts
 
 
-### Ladybug Web Solar Calculator NOAA
+### Ladybug Web Solar Calculator
 
-* http://ladybug-analysis-tools.github.io/ladybug-web/index.html#solar-calculator/readme.md
+* https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md
 
 
 ### NOAA ~ Solar Calculator
 
-* http://ladybug-analysis-tools.github.io/ladybug-web/#noaa-sandbox/readme.md
+* https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md
 * http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html
 
 
-### Vladimir Agafonkin ~ SunCalc.js
 
-* http://ladybug-analysis-tools.github.io/ladybug-web/#suncalc-sandbox/readme.md
-* https://github.com/mourner/suncalc
-* http://suncalc.net/
 
 ### Michael Bostock ~ Solar Calculator
 
-* http://ladybug-analysis-tools.github.io/ladybug-web/#bostock-sandbox/readme.md
+* https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md
 * https://bl.ocks.org/mbostock/7784f4b2c7838b893e9b
+
+### Vladimir Agafonkin ~ SunCalc.js
+
+* https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/#readme.md
+* https://github.com/mourner/suncalc
+* http://suncalc.net/
 
 ## Road Map / Things to do
 
@@ -66,6 +65,11 @@ value='You are now in the home page view - Click this button to view the read me
 
 
 ## Change Log
+
+### 2016-05-19
+
+* https update
+* Rearrange the lineup
 
 ### 2016-04-03
 
