@@ -1,14 +1,15 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/ "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-agafonkin'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
-[SunCalc Sandbox Read Me]( #suncalc-sandbox/readme.md )
+[Agafonkin SunCalc Sandbox Read Me]( index.html#readme.md )
 ===
 
-## [SunCalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/suncalc-sandbox/ )
+## [Agafonkin SunCalc Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/ )
 
 ### Features
 
@@ -20,13 +21,18 @@ value='You are now in the home page view - Click this button to view the read me
 * Buttons provide data for selected cities
 
 
-### Latest update: 2016-03-14 / R7
+### 2016-05-19
+
+* Rename folder
+* Add https
+* Update index
+
+### 2016-03-14 / R7
 
 * Code clean-up
 * Display data in UTC plus in the time zone of the remote location
 * Redesign permalinks
 * Add buttons
-
 * Adapt Google Maps API gazetteer  << done
 
 

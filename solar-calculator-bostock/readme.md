@@ -1,24 +1,25 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/#bostock-sandbox/readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/bostock-sandbox/'; 
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-bostock'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
-[Bostock Solar Calculator Read Me]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html#bostock-sandbox/readme.md )
+[Bostock Solar Calculator Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
 ===
 
-Mike Bostock's Solar Calculator. Mike is the maintainer for D3 - a very pewerful 2D JavaScript visualization library for HTML and SVG.
+Mike Bostock's Solar Calculator. Mike is the maintainer for D3 - a very powerful 2D JavaScript visualization library for HTML and SVG.
 Mike's code is derived from the NOAA Solar Calculator. The code is is shorter and mostly simpler than the NOAA code.
 The discrepancies with NOAA code are smaller than the Agafonkin code
 In particular, his code only asks for a JavaScript Date object - whereas the NOAA code asks for Julian century, local time, and time zone.
 
 Unfortunately for Ladybug, Mike's code requires D3 - and Ladybug Web discourages dependencies on multiple JavaScript libraries.
 We are trying to remove the dependency - and have had some success.
-See work discussed in the [Ladybug Web Solar Calculator Read Me ]( http://ladybug-analysis-tools.github.io/ladybug-web/#solar-calculator/readme.md )
+See work discussed in the [Ladybug Web Solar Calculator Read Me ]( https://ladybug-analysis-tools.github.io/ladybug-web/#solar-calculator/readme.md )
 
-## Full screen: [Bostock Solar Calculator Original]( http://ladybug-analysis-tools.github.io/ladybug-web/bostock-sandbox/bostock-solar-calculator-original.html )
+## Full screen: [Bostock Solar Calculator Original]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/bostock-solar-calculator-original.html )
 
-## Full screen: [Bostock Solar Calculator Viewer R5]( http://ladybug-analysis-tools.github.io/ladybug-web/bostock-sandbox/bostock-solar-calculator-viewer-r5.html )
+## Full screen: [Bostock Solar Calculator Viewer R5]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/ )
 
 * Viewer displays most of Bostocks calculations
 * [Core]( ./bostock-sandbox/bostock-solar-calculator-r2.js ) is partially re-written version of Bostock's code
@@ -52,6 +53,11 @@ See work discussed in the [Ladybug Web Solar Calculator Read Me ]( http://ladybu
 
 
 ## Updates
+
+
+### 2016-05-19
+
+* To https
 
 ### 2016-04-03
 
