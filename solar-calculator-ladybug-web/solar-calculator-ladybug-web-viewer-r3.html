@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Solar Calculator Ladybug Web Viewer R2</title>
+<title>Solar Calculator Ladybug Web Viewer R3</title>
 <!--
 <meta name = viewport content = 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0' />
 <meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
@@ -40,7 +40,7 @@
 
 			'body { font: 12pt monospace; }' +
 			'a { text-decoration: none; }' +
-
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
 		'';
 
 		menu = document.body.appendChild( document.createElement( 'div' ) );
@@ -52,12 +52,37 @@
 				'<a href=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md > &#x24D8; </a>' +
 			'</h2>' +
 
+			'<p><button onclick=offset="";latitude=21.3;longitude=-157.8167;updateSunPosition(); >Honolulu</button> ' +
+			'<button onclick=offset="";latitude=32.6333;longitude=51.6500;updateSunPosition(); >Isfahan</button> ' +
+			'<button onclick=offset="";latitude=51.5072;longitude=-0.1275;updateSunPosition(); >London</button> ' +
+			'<button onclick=offset="";latitude=40.712;longitude=-74.0059;updateSunPosition(); >New York</button> ' +
+			'<button onclick=offset="";latitude=48.8566;longitude=2.3522;updateSunPosition(); >Paris</button> ' +
+			'<button onclick=offset="";latitude=-22.9068;longitude=-43.1729;updateSunPosition(); >Rio de Janeiro </button> ' +
+			'<button onclick=offset="";latitude=37.796;longitude=-122.398;updateSunPosition(); >San Francisco</button> ' +
+			'<p><button onclick=offset="";latitude=-33.8650;longitude=151.2094;updateSunPosition(); >Sydney</button></p>' +
+
+			'<p>' +
+				' Latitude <input id=inpLat class=inpPos onchange=updateSunPosition(); >' +
+				' Longitude <input id=inpLon class=inpPos onchange=updateSunPosition(); >' +
+			'<p>' +
+
 			'<div id=infoSolarCalculator ></div>' +
 			'<div id=infoSolarCalculatorEquations ></div>' +
 
 		'';
 
+
+		updateSunPosition();
+
+	}
+
+	function updateSunPosition() {
+
 		date = new Date();
+
+
+		inpLat.value = latitude;
+		inpLon.value = longitude;
 
 		position = getSunPosition( date, latitude, longitude );
 
