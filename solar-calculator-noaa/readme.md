@@ -1,12 +1,15 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/#noaa-sandbox/readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/noaa-sandbox'; 
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-noaa/'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
-[NOAA Sandbox Read Me]( #noaa-sandbox/readme.md )
+[NOAA Sandbox Read Me]( index.html#readme.md )
 ===
+
+## [Ladybug Web NOAA Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/ )
 
 Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
 The National Oceanic and Atmospheric Administration is one such source.
@@ -29,7 +32,7 @@ Its [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.htm
 * Provides many functions with useful results but provides no easy access to those functions
 
 
-## [Ladybug Web NOAA Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/noaa-sandbox )
+### Features
 
 * Much simplified version of NOAA Solar Calculator web page
 	* Allows data entry and update with a minimal interface
