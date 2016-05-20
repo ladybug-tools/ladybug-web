@@ -22,7 +22,7 @@ We have found issues with each one of these efforts.
 Therefore we propose a new effort that stands on their shoulders.
 Currently there are two calculators. One based on Bostock - the other on NOAA.
 They replace the previous SunCalc.js code which has been used in unaltered form.
-Currently the Bostck calculater is being used.
+Currently the Bostock calculator is being used.
 
 
 

@@ -6,10 +6,10 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
-[NOAA Sandbox Read Me]( index.html#readme.md )
+[Solar Calculator NOAA Read Me]( index.html#readme.md )
 ===
 
-## [Ladybug Web NOAA Sandbox]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/ )
+## [Solar Calculator NOAA]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/ )
 
 Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
 The National Oceanic and Atmospheric Administration is one such source.
@@ -18,6 +18,11 @@ Its [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.htm
 ## Original [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html )
 
 ### Primary JavaScript routine used to perform calculations [main.js]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
+
+### Solar Calculation Details
+
+* http://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
+
 
 ### Issues
 
@@ -40,8 +45,26 @@ Its [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.htm
 * Loads the NOAA Solar Calculator [main.js]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
 * Displays the name of most functions along with the results returned by the function and and their units
 * Results from this script will be used to verify results produced by various Ladybug Web scripts 
-	* See [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/calculations-compare/ )
+	* See [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/ )
 
+
+
+## Issues/Questions
+
+* The NOAA Solar Calculator code is undocumented
+	* Finding sources for the algorithms is not easy
+	* Is use of Julian Century now archaic with use of modern computers?
+* Is it 'altitude' or 'elevation'; - would like definitive, globally-oriented source/reference for current astronomical nomenclature
+* Should all calcs be in radians - might save some conversions back and forth?
+
+
+## Change Log
+
+
+### 2016-05-20
+
+* Update readme
+* Minor updates
 
 
 

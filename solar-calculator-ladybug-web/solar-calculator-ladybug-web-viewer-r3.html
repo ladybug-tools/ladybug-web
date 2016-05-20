@@ -2,15 +2,11 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Solar Calculator Ladybug Web Viewer R3</title>
-<!--
-<meta name = viewport content = 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0' />
-<meta name=viewport content='initial-scale=1, minimal-ui, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width' >
--->
+<title>Solar Calculator Ladybug Web Viewer R3.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
-<meta name=description content='Code to calculate Sun position' >
+<meta name=description content='Code to calculate Sun position - based on Bostock/NOAA code.' >
 <meta name=keywords content='Ladybug Web,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-17' >
+<meta name=date content='2016-05-20' >
 </head>
 <body>
 <script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
@@ -20,7 +16,6 @@
 // https://bl.ocks.org/mbostock/7784f4b2c7838b893e9b
 // Equations based on NOAA’s Solar Calculator; all angles in radians.
 // http://www.esrl.noaa.gov/gmd/grad/solcalc/
-
 
 	var latitude = 37.796
 	var longitude = -122.398;
@@ -41,6 +36,8 @@
 			'body { font: 12pt monospace; }' +
 			'a { text-decoration: none; }' +
 			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
+			'.red {color: crimson }' +
+
 		'';
 
 		menu = document.body.appendChild( document.createElement( 'div' ) );
@@ -71,42 +68,42 @@
 
 		'';
 
-
 		updateSunPosition();
 
 	}
 
 	function updateSunPosition() {
 
-		date = new Date();
+		var date, position;
 
+		date = new Date();
 
 		inpLat.value = latitude;
 		inpLon.value = longitude;
 
 		position = getSunPosition( date, latitude, longitude );
-console.log( 'position', position );
+
 		infoSolarCalculator.innerHTML =
 
 			'<p>Now: ' + date + '</p>' +
-			'<p>Solar > position ( now ): Azimuth: ' + position.azimuth + ' ~ Altitude: ' + position.altitude + '</p>' +
+			'<p class=red >Solar > position ( now ): Azimuth: ' + position.azimuth + ' ~ Altitude: ' + position.altitude + '</p>' +
 			'<p>Minutes Offset from GMT: ' + date.getTimezoneOffset() + '</p>' +
-			'<p>Solar > centuries: ' + centuries + '</p>' +
+			'<p>Solar > century: ' + century + '</p>' +
 
 		'<hr>';
 
 		infoSolarCalculatorEquations.innerHTML = 
 
-			'<p> equationOfTime( centuries ): ' + equationOfTime( centuries ) + '</p>' +
-			'<p> solarDeclination( centuries ): ' + solarDeclination( centuries ) + '</p>' +
-			'<p> solarApparentLongitude( centuries ): ' + solarApparentLongitude( centuries ) + '</p>' +
-			'<p> solarTrueLongitude( centuries ): ' + solarTrueLongitude( centuries ) + '</p>' +
-			'<p> solarGeometricMeanAnomaly( centuries ): ' + solarGeometricMeanAnomaly(centuries) + '</p>' +
-			'<p> solarGeometricMeanLongitude( centuries ): ' + solarGeometricMeanLongitude( centuries ) + '</p>' +
-			'<p> solarEquationOfCenter( centuries ): ' + solarEquationOfCenter( centuries ) + '</p>' +
-			'<p> obliquityCorrection( centuries ): ' + obliquityCorrection( centuries ) + '</p>' +
-			'<p> meanObliquityOfEcliptic( centuries ): ' + meanObliquityOfEcliptic( centuries ) + '</p>' +
-			'<p> eccentricityEarthOrbit( centuries ): ' + eccentricityEarthOrbit( centuries ) + '</p>' +
+			'<p> equationOfTime( century ): ' + equationOfTime( century ) + '</p>' +
+			'<p> solarDeclination( century ): ' + solarDeclination( century ) + '</p>' +
+			'<p> solarApparentLongitude( century ): ' + solarApparentLongitude( century ) + '</p>' +
+			'<p> solarTrueLongitude( century ): ' + solarTrueLongitude( century ) + '</p>' +
+			'<p> solarGeometricMeanAnomaly( century ): ' + solarGeometricMeanAnomaly(century) + '</p>' +
+			'<p> solarGeometricMeanLongitude( century ): ' + solarGeometricMeanLongitude( century ) + '</p>' +
+			'<p> solarEquationOfCenter( century ): ' + solarEquationOfCenter( century ) + '</p>' +
+			'<p> obliquityCorrection( century ): ' + obliquityCorrection( century ) + '</p>' +
+			'<p> meanObliquityOfEcliptic( century ): ' + meanObliquityOfEcliptic( century ) + '</p>' +
+			'<p> eccentricityEarthOrbit( century ): ' + eccentricityEarthOrbit( century ) + '</p>' +
 
 		'';
 

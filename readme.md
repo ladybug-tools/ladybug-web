@@ -8,6 +8,8 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Web Project Explorer]( https://ladybug-analysis-tools.github.io/ladybug-web/ladybug-web-via-github-api-r2.html )
 ===
 
+_Scroll down a bit to have look/see first!_
+
 ## Concept
 
 _Ladybug Web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), solar and weather data visualization and analysis on the web and in your browser_
@@ -29,7 +31,7 @@ then possibilities arise for the more complex, sophisticated and even extravagan
 
 ## Features
 
-Generally the following scripts are
+Generally the following scripts are:
 
 * Free and open source
 * Built using entry level JavaScript with no dependencies other than the [Three.js]( https://threejs.org) JavaScript library
@@ -38,5 +40,5 @@ Generally the following scripts are
 The 3D views below enable you to rotate and pan using one three fingers or left button, scroll wheel and right button on a mouse. 
 In these views only, zooming is disabled because it interferes with scrolling the page
 
-For more information on how this page obtains and displays its content see: [Project Explorer Read Me]( #./project-explorer-readme.md )
+For more information on how this page obtains and displays its content see: [Project Explorer Read Me]( #project-explorer-readme.md )
 

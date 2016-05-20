@@ -16,10 +16,33 @@ value='You are now in the home page view - Click this button to view the read me
 * Built on [SunCalc.js]( https://github.com/mourner/suncalc )
 * Calculates and reports Sun times and position in radians and degrees
 * Calculates and reports Moon illumination, times and positions in radians and degrees
-* API that creates, updates and accepts permalinks
-	* Accept date, time, latitude and longitude
 * Buttons provide data for selected cities
 
+## Issues
+
+* Should display numbers for local time, not UTC time
+* Updating time not working properly
+
+## Road Map / Things To Do
+
+* Convert to opener.js
+* Add local times
+* Add click on Map
+
+## Vladimir Agafonkin
+
+Links of interest
+
+* http://agafonkin.com/en/
+* https://github.com/mourner
+* https://github.com/mourner/suncalc
+* https://github.com/mourner/suncalc/blob/master/suncalc.js
+
+## Change Log
+
+### 2016-05-20
+
+* Update readme
 
 ### 2016-05-19
 
@@ -34,18 +57,3 @@ value='You are now in the home page view - Click this button to view the read me
 * Redesign permalinks
 * Add buttons
 * Adapt Google Maps API gazetteer  << done
-
-
-## Road Map / Things To Do
-
-* Add local times
-* Add click on Map
-
-## Vladimir Agafonkin
-
-Links of interest
-
-* http://agafonkin.com/en/
-* https://github.com/mourner
-* https://github.com/mourner/suncalc
-* https://github.com/mourner/suncalc/blob/master/suncalc.js

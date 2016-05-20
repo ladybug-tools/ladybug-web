@@ -1,8 +1,9 @@
-﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]( http://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
+﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( https://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 [Ladybug Web Project Explorer Read Me]( http://ladybug-analysis-tools.github.io/ladybug-web#project-explorer-readme.md )
 ===
@@ -43,8 +44,11 @@ Mission statements
 * Apps are displayed in iframes
 	* In order to keep things moving fast, at any given time, only three iframes are in active use
 	* Iframes only become active once they scroll into view
- 
-
+* Allows for easy scrolling
+	* Prevents full width apps from getting access to the scroll wheel or touch interactions
+	* Preventing such interactions is a work in progress 
+* Table of Contents box
+	* For experienced users who just want to get to a particular folder without too much scrolling involved
 
 ## Current Effort
 
@@ -89,21 +93,25 @@ The current work process is creating and maintaining fairly small meta tag conte
 
 ## Issues
 
-* Allowing for easy scrolling means to not allow full width apps to get access to the scroll wheel or touch interactions
-	* Preventing such interactions is a work in progress
-* For experienced users who just want to get to a particular folder there is far too much scrolling involved
-	* Something like a simple, text 'table of contents' might help here
 * The current rev shows the coolness of the scripts, but does little to show you how short and simple the code is
+	* Display the code!
 * Needs indicators - text or charts - as to where the action is
+	* Add a What's New view
 
 ## Road Map / To Do List
 
 * Access RSS feed and display summary of latest commits
 * Add section on coding style
+* Copy opener.js from Jaanga over to a libs folder?
+* Improve the license doc
 
 
 ## Change Log
 
+## 2016-05-20
+
+* Minor updates
+* Update readme files
 
 ### 2016-05-14
 
