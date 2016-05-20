@@ -30,10 +30,10 @@
 
 		hoursOffset = longitude < 0 ? - hoursOffset : hoursOffset;
 
-		dateLastMidnightUTC = new Date( now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() );
+//		dateLastMidnightUTC = new Date( now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() );
 
 		dateLastMidnightLocal = new Date( dateLastMidnightUTC.getFullYear(), dateLastMidnightUTC.getMonth(),
-			dateLastMidnightUTC.getDate(), dateLastMidnightUTC.getHours() + hoursOffset );
+			dateLastMidnightUTC.getDate(), dateLastMidnightUTC.getHours() - hoursOffset );
 
 // now for twenty lines of nearly impenetrable code   ;-(
 

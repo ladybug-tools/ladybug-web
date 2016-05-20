@@ -11,16 +11,15 @@
 </head>
 <body>
 
-<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
-
 <!--
 <script src=../solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+<script src=../solar-calculator/ladybug-web-solar-calculator-bostock-r1.js ></script>
 -->
+<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script src=https://www.esrl.noaa.gov/gmd/grad/solcalc/main.js ></script>
-<!--
-<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator/ladybug-web-solar-calculator-noaa-r2.js ></script>
--->
+<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/ladybug-web-solar-calculator-noaa-r2.js ></script>
+
 <script src=https://d3js.org/d3.v3.js ></script>
 <script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/bostock-solar-calculator-r1.js ></script>
 
@@ -47,9 +46,11 @@
 		css.innerHTML =
 
 			'body { font: 12pt monospace; left: 0; margin: 0 auto; position: absolute; max-width: 800px; right: 0; }' +
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
 			'h1 a { text-decoration: none; }' +
 			'input { width: 70px; text-align: right; }' +
 
+			'.red { color: crimson }' +
 		'';
 
 		var menu = document.body.appendChild( document.createElement( 'div' ) );
@@ -134,7 +135,7 @@
 
 // NOAA
 
-//		getNOAACalculations( date );
+		getNOAACalculations( date );
 
 // Bostock
 
@@ -148,22 +149,22 @@
 
 	function getLadybugWebCalculations( date ) {
 
-//		var sunPosition;
+		var sunPosition;
 
 		sunPosition = getSunPosition( date, latitude, longitude );
 
 		ladybugWebSolarCalculator.innerHTML = 
 
-			'<h2>Ladybug Web Solar Calculator Bostock</h2>' +
+			'<h2>Ladybug Web Solar Calculator</h2>' +
 			'<p>' +
 				'source code: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ladybug-web-solar-calculator-r1.js" target="_blank">SunCalc</a>' +
 				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md" target="_blank" >SunCalc Sandbox</a>' +
 			'</p>' +
 			'<h3>Sun Position</h3>' +
-			'<p> Azimuth in degrees : ' + sunPosition.azimuth + '</p>' +
-			'<p> Altitude in degrees: ' + sunPosition.altitude + '</p>' +
+			'<p class=red > Azimuth in degrees : ' + sunPosition.azimuth + '</p>' +
+			'<p class=red > Altitude in degrees: ' + sunPosition.altitude + '</p>' +
 			'<p><i>ad hoc</i>  Ladybug Web Calculations<br>' + 
-
+				'Julian Century: ' + sunPosition.century + 
 			'</p>' +
 		'';
 
@@ -190,8 +191,8 @@
 				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/#solar-calculator/readme.md" target="_blank" >SunCalc Sandbox</a>' +
 			'</p>' +
 			'<h3>Sun Position</h3>' +
-			'<p> Azimuth in degrees : ' + sunPosition[ 0 ] + '</p>' +
-			'<p> Altitude in degrees: ' + sunPosition[ 1 ] + '</p>' +
+			'<p class=red > Azimuth in degrees : ' + sunPosition[ 0 ] + '</p>' +
+			'<p class=red > Altitude in degrees: ' + sunPosition[ 1 ] + '</p>' +
 			'<p><i>ad hoc</i>  Ladybug Web Calculations<br>' + 
 				'Julian Day: ' +  julianDay + '<br>' +
 				'Julian Century: ' +  julianCentury + '<br>' +
@@ -280,8 +281,8 @@
 		noaaSolarCalculator.innerHTML += 
 
 			'<h3>Sun Position</h3>' +
-			'<p>Azimuth : ' + az + '</p>' +
-			'<p>Altitude: ' + elbox.value + '</p>' +
+			'<p class=red >Azimuth in degrees : ' + az + '</p>' +
+			'<p class=red >Altitude in degrees: ' + elbox.value + '</p>' +
 			'<p><i>ad hoc</i>  NOAA Calculations<br>' + 
 				'Julian Day: ' +  noaaCalculations[ 0 ] + '<br>' +
 				'Julian Century: ' +  noaaCalculations[ 1 ] + '<br>' +
@@ -321,8 +322,8 @@
 				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md" target="_blank" >Bostock Sandbox</a>' +
 			'</p>' +
 			'<h3>Sun Position</h3>' +
-			'<p>Azimuth : ' + position[ 0 ] + '</p>' +
-			'<p>Altitude: ' + position[ 1 ] + '</p>' +
+			'<p class=red >Azimuth in degrees : ' + position[ 0 ] + '</p>' +
+			'<p class=red >Altitude in degrees: ' + position[ 1 ] + '</p>' +
 			'<p><i>ad hoc</i> Bostock Calculations<br>' + 
 				'Julian Century: ' + bostockCalculations[ 0 ] + 
 
@@ -365,8 +366,8 @@
 				' ~ Ladybug Web: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/#readme.md" target="_blank" >SunCalc Sandbox</a>' +
 			'</p>' +
 			'<h3>Sun Position</h3>' +
-			'<p> Azimuth in degrees : ' + ( ( Math.PI + sunPosition.azimuth ) * r2d ) + '</p>' +
-			'<p> Altitude in degrees: ' + ( sunPosition.altitude * r2d ) + '</p>' +
+			'<p class=red > Azimuth in degrees : ' + ( ( Math.PI + sunPosition.azimuth ) * r2d ) + '</p>' +
+			'<p class=red > Altitude in degrees: ' + ( sunPosition.altitude * r2d ) + '</p>' +
 			'<p><i>ad hoc</i> Agafonkin Calculations<br>Julian Day: ' + agafonkinCalculations[ 0 ] + '</p>' +
 
 		'';
