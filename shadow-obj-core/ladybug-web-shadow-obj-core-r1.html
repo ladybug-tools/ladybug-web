@@ -51,7 +51,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 
 	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
-		'#la=37.796#lo=-122.398#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=1';
+		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=1';
 
 	var fullFilePath, fileName;
 	var model;
@@ -65,7 +65,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 	pud.groundPlaneOpacity = 0.75;
 	pud.groundPlaneVisible = true;
 
-	pud.latitude = 37.796
+	pud.latitude = -37.796
 	pud.longitude = -122.398;
 
 	pud.sunlightIntensity = 0.85
@@ -553,7 +553,6 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 				for ( var date = 1; date < daysOfMonth[ month ]; date++ ) {
 
 					analemmaDateUTC = new Date( Date.UTC( 2016, month, date, hours, 0, 0 ) );
-
 					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
 					analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
@@ -586,7 +585,6 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 			for ( var hours = 0; hours < 24; hours++ ) {
 
 				analemmaDateUTC = new Date( Date.UTC( 2016, month, 21, hours, 0, 0 ) );
-
 				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
 				analemmaSunPosition = getSunPositionXYZ( pud.analemmaRadius, analemmaDateUTC, pud.latitude, pud.longitude );
@@ -667,6 +665,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 // utilities
 
+/*
 	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
 		var sunPosition = getSunPosition( dateUTC, -latitude, longitude );
@@ -678,6 +677,25 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
 
 	}
+
+*/
+
+	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
+
+		var sunPosition, x, y, z;
+
+		sunPosition = getSunPosition( dateUTC, latitude - 90, longitude );
+
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
+
+//		sun.userData.position = getSunPosition( dateUTC, latitude, longitude );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+
+	}
+
 
 	function drawPlacard( text, scale, color, x, y, z ) {
 

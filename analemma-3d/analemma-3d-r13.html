@@ -346,7 +346,6 @@ Shadows displayed on a 2D map
 
 					analemmaDateUTC = new Date( Date.UTC( 2016, month, date, hours, 0, 0 ) );
 					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
-
 					analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
 
 					vertices.push( analemmaSunPosition.xyz );

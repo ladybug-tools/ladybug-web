@@ -53,7 +53,7 @@
 			'div.ifr { border: 1px solid crimson; height: 512px; margin: 150px 0 0 ' + 0.5 * ( 800 - window.innerWidth ) + 'px; width: ' + ( window.innerWidth - 12 ) + 'px; }' +
 			'div.readme { border: 1px solid blue; max-height:512px; overflow: hidden; transform: scale( 0.75 ); transform-origin: 0 0; }' +
 
-			'#tableOfContents { border: 1px solid green; max-width: 240px; position: absolute; right: 0; }' +
+			'#tableOfContents { border: 1px solid green; max-width: 275px; position: absolute; right: 0; }' +
 			'#contents { left: 0; right: 0; margin: 0 auto; position: absolute; max-width: 800px; top: 0; }' +
 
 		'';
@@ -223,6 +223,7 @@
 		'';
 
 		var rm = document.getElementById( 'readme' + index )
+
 		getMarkdown( urlSource + folder + 'readme.md', rm );
 
 

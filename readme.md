@@ -35,5 +35,5 @@ Generally the following scripts
 * Built using entry level JavaScript with no dependencies other than [Three.js]( https://threejs.org)
 * Enable rotation, zoom and pan using one, two or three fingers or left button, scroll wheel and right button on a mouse
 
-See also: [Project Explorer Read Me]( #./project-explorer-readme.md )
+For more information on how this page obtains and displays its content see: [Project Explorer Read Me]( #./project-explorer-readme.md )
 
