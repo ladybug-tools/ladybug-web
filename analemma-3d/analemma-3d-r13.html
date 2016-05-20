@@ -41,9 +41,14 @@ Shadows displayed on a 2D map
 	var latDefault = -33.8675;
 	var lonDefault = 151.207;
 
-	var placeDefault = 'Paris France';
-	var latDefault = 48.8566;
-	var lonDefault = 2.3522;
+//	var placeDefault = 'Paris France';
+//	var latDefault = 48.8566;
+//	var lonDefault = 2.3522;
+
+	var placeDefault = 'Chile';
+	var latDefault = -35.6751;
+	var lonDefault = -71.5430;
+
 
 	var dateHere, dateUTC, datePlace;
 	var timeZonePlace;
@@ -127,7 +132,7 @@ Shadows displayed on a 2D map
 				'<p>Longitude <input id=inpLongitude placeholder=' + lonDefault + '  onchange=updateCenter(); size=10 ></p>' +
 //				'<p><button onclick=updateCenter(); >Update map position</button></p>' +
 				'<div id=messagePlace class=warning ></div>' +
-				'<p><input id=inpAddress placeholder="Sydney NSW" onchange=geocodeAddress(geocoder,map); style=width:100%; >' +
+				'<p><input id=inpAddress placeholder=' + placeDefault + ' onchange=geocodeAddress(geocoder,map); style=width:100%; >' +
 //				'<p><button onclick=geocodeAddress(geocoder,map); >Update latitude & longitude</button></p>' +
 
 			'</details>' +
@@ -217,7 +222,8 @@ Shadows displayed on a 2D map
 		axisHelper = new THREE.AxisHelper( 75 );
 		scene.add( axisHelper );
 
-// assets ~ inits start at line ~480
+// assets
+
 
 		initMapOverlays();
 
@@ -300,61 +306,19 @@ Shadows displayed on a 2D map
 
 // draw, add or update the Three.js things
 
-/*
-	function getSunPositionXYZ( dateUTC, latitude, longitude ) {
-
-		var sunPosition = SunCalc.getPosition( dateUTC, latitude, longitude );
-
-		var x = - analemmaRadius * Math.cos( sunPosition.altitude ) * Math.sin( sunPosition.azimuth );
-		var y = - analemmaRadius * Math.cos( sunPosition.altitude ) * Math.cos( sunPosition.azimuth );
-		var z = analemmaRadius * Math.sin( sunPosition.altitude );
-
-		return v( x, y, z );
-
-	}
-*/
-
 	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
 		var sunPosition, x, y, z;
 
-		sunPositionActual = getSunPosition( dateUTC, latitude, longitude );
+		sunPosition = getSunPosition( dateUTC, latitude - 90, longitude );
 
-		if ( latitude > 0 && longitude < 0 ) {
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
 
-			sunPosition = getSunPosition( dateUTC, latitude - 90, longitude );
+		sun.userData.position = getSunPosition( dateUTC, latitude, longitude );
 
-			x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-			y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-			z = radius * Math.sin( sunPosition.altitude * d2r );
-
-		} else if ( latitude < 0 && longitude < 0 ) {
-
-			sunPosition = getSunPosition( dateUTC, latitude, longitude );
-
-			x = radius * Math.cos( pi + sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-			y = radius * Math.cos( pi + sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-			z = - radius * Math.sin( pi + sunPosition.altitude * d2r );
-
-		} else if ( latitude > 0 && longitude > 0 ) {
-
-			sunPosition = getSunPosition( dateUTC, latitude, longitude );
-
-			x = - radius * Math.cos( sunPosition.altitude * d2r + pi ) * Math.sin( sunPosition.azimuth * d2r + pi );
-			y = radius * Math.cos( sunPosition.altitude * d2r + pi ) * Math.cos( sunPosition.azimuth * d2r + pi );
-			z = radius * Math.sin( sunPosition.altitude * d2r + pi );
-
-		} else {
-
-			sunPosition = getSunPosition( dateUTC, latitude, longitude );
-
-			x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-			y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-			z = radius * Math.sin( sunPosition.altitude * d2r );
-
-		}
-
-		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPositionActual.azimuth, altitude: sunPositionActual.altitude };
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
 
 	}
 
@@ -381,7 +345,6 @@ Shadows displayed on a 2D map
 				for ( var date = 1; date < daysOfMonth[ month ]; date++ ) {
 
 					analemmaDateUTC = new Date( Date.UTC( 2016, month, date, hours, 0, 0 ) );
-
 					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
 					analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
@@ -414,7 +377,6 @@ Shadows displayed on a 2D map
 			for ( var hours = 0; hours < 24; hours++ ) {
 
 				analemmaDateUTC = new Date( Date.UTC( 2016, month, 21, hours, 0, 0 ) );
-
 				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetHours );
 
 				analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
@@ -433,16 +395,14 @@ Shadows displayed on a 2D map
 		scene.add( analemma );
 
 
-
 		dateUTC = new Date( Date.UTC( 2016, 5, 21, 13, 0, 0 ) );  // vernal equinox
-
 		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetHours );
 
 		sunPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
 
-// console.log( 'sunPosition.altitude', sunPosition.altitude );
+ console.log( 'sunPosition ', sunPosition.altitude );
 
-		sunBand.rotation.x = - sunPosition.altitude * d2r + declination;
+		sunBand.rotation.x = sunPosition.altitude * d2r - 2 * declination;
 
 	}
 
@@ -838,7 +798,9 @@ Shadows displayed on a 2D map
 		map.setZoom( zoom );
 
 		geocodeLatLng();
-				messagePlace.innerHTML = 'Click & Select location from list';
+
+		messagePlace.innerHTML = 'Click & Select location from list';
+
 	}
 
 	function geocodeLatLng() {
