@@ -7,7 +7,7 @@
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='View results from Ladybug Web Solar Calculator. Calculate the position of the Sun - given latitude, longitude, date and time - and return its azimuth and altitude in degrees' >
 <meta name=keywords content='astronomy,JavaScript,GitHub,FOSS,STEM' >
-<meta name=date content='2016-03-30' >
+<meta name=date content='2016-05-19' >
 </head>
 <body>
 <script src=ladybug-web-solar-calculator-noaa-r2.js ></script>
@@ -86,7 +86,7 @@
 
 		}
 
-		sunPosition = getSunPosition( julianCentury, localTime, latitude, longitude, timezone );
+		sunPosition = getSunPositionNOAA( julianCentury, localTime, latitude, longitude, timezone );
 
 		b = '<br>';
 

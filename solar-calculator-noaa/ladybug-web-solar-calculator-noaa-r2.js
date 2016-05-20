@@ -89,7 +89,7 @@
 
 
 
-	function getSunPosition( century, localTime, latitude, longitude, timeZone ) {
+	function getSunPositionNOAA( century, localTime, latitude, longitude, timeZone ) {
 
 		var equationOfTime;
 		var azimuth;

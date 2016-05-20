@@ -14,6 +14,7 @@
 
 	function getSunPosition( date, latitude, longitude ) {
 
+console.log( '', date  );
 		var azimuth, zenith, azimuthDenominator, atmosphere;
 
 		var J2000 = Date.UTC( 2000, 0, 1, 12 );
