@@ -45,9 +45,9 @@ Shadows displayed on a 2D map
 //	var latDefault = 48.8566;
 //	var lonDefault = 2.3522;
 
-	var placeDefault = 'Chile';
-	var latDefault = -35.6751;
-	var lonDefault = -71.5430;
+//	var placeDefault = 'Chile';
+//	var latDefault = -35.6751;
+//	var lonDefault = -71.5430;
 
 
 	var dateHere, dateUTC, datePlace;
@@ -95,7 +95,6 @@ Shadows displayed on a 2D map
 			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
 			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; opacity: 0.85; width: 10px; }' +
 
-//			'h2 { margin: 0; }' +
 			'h3 { display: inline; margin: 0; }' +
 			'summary { outline: none; }' +
 
@@ -130,10 +129,8 @@ Shadows displayed on a 2D map
 
 				'<p>Latitude &nbsp;<input id=inpLatitude placeholder=' + latDefault + ' onchange=updateCenter(); size=10 ></p>' +
 				'<p>Longitude <input id=inpLongitude placeholder=' + lonDefault + '  onchange=updateCenter(); size=10 ></p>' +
-//				'<p><button onclick=updateCenter(); >Update map position</button></p>' +
 				'<div id=messagePlace class=warning ></div>' +
 				'<p><input id=inpAddress placeholder=' + placeDefault + ' onchange=geocodeAddress(geocoder,map); style=width:100%; >' +
-//				'<p><button onclick=geocodeAddress(geocoder,map); >Update latitude & longitude</button></p>' +
 
 			'</details>' +
 
@@ -224,7 +221,6 @@ Shadows displayed on a 2D map
 
 // assets
 
-
 		initMapOverlays();
 
 		initSunAndLight();
@@ -243,23 +239,7 @@ Shadows displayed on a 2D map
 
 // respond to UI / menu events
 
-/*
-	function setPlace() {
-
-		latitude = inpLat.valueAsNumber;
-		longitude = inpLon.valueAsNumber;
-		zoom = inpZoom.valueAsNumber;
-		offset='';
-		place = [ 'Somewhere...', latitude, longitude  ];
-
-		getDate();
-
-	}
-*/
-
 	function setDate() {
-
-//		var sunPosition;
 
 		datePlace.setMonth( inpMonth.valueAsNumber );
 		datePlace.setDate( inpDate.valueAsNumber );
@@ -318,7 +298,7 @@ Shadows displayed on a 2D map
 
 		sun.userData.position = getSunPosition( dateUTC, latitude, longitude );
 
-		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sun.userData.position.azimuth, altitude: sun.userData.position.altitude };
 
 	}
 
@@ -399,9 +379,10 @@ Shadows displayed on a 2D map
 
 		sunPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
 
- console.log( 'sunPosition ', sunPosition.altitude );
+ console.log( 'sunPosition ', sunPosition.altitude + 23.439281 );
 
-		sunBand.rotation.x = sunPosition.altitude * d2r - 2 * declination;
+		decl = latitude > 0 ? 2 * declination : declination;
+		sunBand.rotation.x = sunPosition.altitude * d2r + decl;
 
 	}
 
@@ -549,7 +530,7 @@ Shadows displayed on a 2D map
 //		geometry.applyMatrix( new THREE.Matrix4().makeRotationZ( - declination ) );
 
 		var color = 0xffff00;
-		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.25, side: 2, transparent: true });
+		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.05, side: 2, transparent: true });
 		sunBand = new THREE.Mesh( geometry, material );
 
 		scene.add( sunBand );

@@ -17,13 +17,16 @@ value='You are now in the home page view - Click this button to view the read me
 
 We have looked at the efforts of:  
 
-* [Agafonkin]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html#suncalc-sandbox/readme.md )
-* [Bostock]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html#bostock-sandbox/readme.md )
-* [Hoffman]( http://ladybug-analysis-tools.github.io/ladybug-web/sonnenverlauf/sonnenverlauf-test-r1.html )
-* [NOAA]( http://ladybug-analysis-tools.github.io/ladybug-web/index.html#noaa-sandbox/readme.md )
+* [Agafonkin]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/ )
+* [Bostock]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
+* [NOAA]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md )
+* And others (Hoffman )
 
 We have found issues with each one of these efforts.
 Therefore we propose a new effort that stands on their shoulders.
+
+* [Solar Calculator Ladybug Web]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ )
+
 
 ### Issues
 
