@@ -54,8 +54,6 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### Issues
 
-* Analemmas only drawn correctly in NW lat/lons
-* Typing in lat amd lon in input boxes is broken
 * Sun path band incorrectly positions itself
 	* Tries to be its own algorithm - good for checking errors
 	* Fall back could be to create sun path band from analemma vertices
@@ -82,9 +80,13 @@ value='You are now in the home page view - Click this button to view the read me
 	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
 
 
-## Previous updates
+## Change Log
 
-See main Read Me for latest updates
+### 2016-05-20 / R13
+
+* Work on sun band placement
+* Update readme
+
 
 ### 2016-05-17 / R12
 
