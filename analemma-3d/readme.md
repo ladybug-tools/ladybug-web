@@ -62,6 +62,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### Things To Do / Road Map
 
+* Add choice of 3D objects
 * Add the ability to change the north based on an angle
 * Add sun-path circles
 * Add an option to re-scale the sunpath
@@ -70,7 +71,6 @@ value='You are now in the home page view - Click this button to view the read me
 * Do something when Google API reports no time zone
 * Animations
 * Add reference object choices
-* Add solar times readout - with buttons to display sun position for location, date and time 
 
 ### Goals
 
@@ -84,6 +84,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### 2016-05-20 / R13
 
+* UI simplified
 * Work on sun band placement
 * Update readme
 
@@ -91,7 +92,7 @@ value='You are now in the home page view - Click this button to view the read me
 ### 2016-05-17 / R12
 
 * Using Ladybug Web Solar Calculator
-	* Replaces Agafonkib calculator as used in previous releases
+	* Replaces Agafonkin calculator as used in previous releases
 	* Work in progress
 	* Works OK in NW lats/lons only
 * Sun band positioning is improving
