@@ -22,18 +22,21 @@ _Ladybug Web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), sola
 
 ### Vision
 
-* When the mundane engineering tasks become easy, inexpensive and swift to carry out, 
-the possibilities arise for the more complex, sophisticated and even extravagant ideas to turn into realities
+* If the mundane engineering tasks become easy, inexpensive and swift to carry out, 
+then possibilities arise for the more complex, sophisticated and even extravagant ideas to turn into realities
 * RIP Zaha Hadid. Let us continue to design with your disruptive yet aways elegant spirit
 
 
 ## Features
 
-Generally the following scripts
+Generally the following scripts are
 
 * Free and open source
-* Built using entry level JavaScript with no dependencies other than [Three.js]( https://threejs.org)
-* Enable rotation, zoom and pan using one, two or three fingers or left button, scroll wheel and right button on a mouse
+* Built using entry level JavaScript with no dependencies other than the [Three.js]( https://threejs.org) JavaScript library
+
+
+The 3D views below enable you to rotate and pan using one three fingers or left button, scroll wheel and right button on a mouse. 
+In these views only, zooming is disabled because it interferes with scrolling the page
 
 For more information on how this page obtains and displays its content see: [Project Explorer Read Me]( #./project-explorer-readme.md )
 

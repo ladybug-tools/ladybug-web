@@ -4,14 +4,15 @@
 <meta charset=utf-8 >
 <title>Ladybug Web via GitHub API R2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
-<meta name=description content='Home page gallery of a variety of scripts that enable you to view the sun path in new ways.' >
+<meta name=description content='Home page gallery of all available apps - scripts to enable you to view the sun path in new ways.
+Uses GitHub API to obtain latest list of apps.
+' >
 <meta name=keywords content='GitHup API,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-03-29' >
+<meta name=date content='2016-05-20' >
 </head>
 <body>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
 <script>
-//
 
 	var urlAPIContents = 'https://api.github.com/repos/ladybug-analysis-tools/ladybug-web/git/trees/gh-pages?recursive=1';
 
@@ -24,21 +25,12 @@
 
 	var converter, texts, files;
 
-	var footer =
-
-		'<hr>' +
-		'<center>' +
-		'<a href=javascript:window.scrollTo(0,0); style=text-decoration:none; > <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 > </a>' +
-		'</center>' +
-
-	'';
-
 	init();
 	animate();
 
 	function init() {
 
-		var css, contents;
+		var css, tableOfContents, contents;
 
 		converter = new showdown.Converter( { strikethrough: true, literalMidWordUnderscores: true, simplifiedAutoLink: true, tables: true });
 
@@ -67,6 +59,10 @@
 
 			'<div id=header ></div>' +
 			'<div id=container ></div>' +
+			'<hr>' +
+			'<center>' +
+			'<a href=javascript:window.scrollTo(0,0); style=text-decoration:none; > <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 > </a>' +
+			'</center>' +
 
 		'';
 
@@ -128,7 +124,7 @@
 
 	function createTableOfContents() {
 
-		var txt =  '<details open><summary>Contents</summary>';
+		var txt = '<details open><summary>Contents</summary>';
 
 		for ( var i = 0; i < files.length; i++ ) {
 
@@ -159,7 +155,7 @@
 
 		}
 
-		container.innerHTML = txt + footer;
+		container.innerHTML = txt;
 
 		iframeContainers = document.getElementsByClassName( 'ifr' );
 		texts = document.getElementsByClassName( 'txt' );
