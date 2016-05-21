@@ -3,7 +3,7 @@
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-obj-opener'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( http://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( http://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
 [Ladybug Web Shadow OBJ Opener Read Me]( index.html#readme.md )
@@ -14,12 +14,11 @@ value='You are now in the home page view - Click this button to view the read me
 Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opener
 
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
-* http://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
+* https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.obj
-
-* http://jaanga.github.io/3d-models/obj/architecture/factory-complex/factory-complex.obj
-* http://jaanga.github.io/3d-models/obj/architecture/sydney-opera-house/sydney-opera-house.obj
+* https://jaanga.github.io/3d-models/obj/architecture/factory-complex/factory-complex.obj
+* https://jaanga.github.io/3d-models/obj/architecture/sydney-opera-house/sydney-opera-house.obj
 
 
 ***
