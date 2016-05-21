@@ -11,12 +11,15 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Full screen: [Ladybug Web Shadow OBJ Opener]( index.html )
 
-Files you can drag and drop
+Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opener
 
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
 * http://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.obj
+
+* http://jaanga.github.io/3d-models/obj/architecture/factory-complex/factory-complex.obj
+* http://jaanga.github.io/3d-models/obj/architecture/sydney-opera-house/sydney-opera-house.obj
 
 
 ***
