@@ -17,15 +17,13 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 	var core = '../shadow-obj-core/index.html';
 //	var core = 'https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/index.html';
 
-	var d2r = Math.PI / 180, r2d = 180 / Math.PI;  // degrees / radians
-
-	var ifrContentWindow, ifrContentWindowObject;
+	var model, ifrContentWindow, ifrContentWindowObject;
 
 	init();
 
 	function init() {
 
-		var css, hamburger, menu, contents;
+		var css, hamburger, menu, contents, date;
 
 		css = document.body.appendChild( document.createElement('style') );
 		css.innerHTML =
@@ -65,7 +63,7 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 
 			'<h2>' +
 				'<a href="" >' + document.title + '</a>' +
-				'<a href=https://ladybug-analysis-tools.github.io/ladybug-web/shadow-json-opener/index.html#readme.md > &#x24D8; </a>' +
+				'<a href=index.html#readme.md > &#x24D8; </a>' +
 			'</h2>' +
 
 			'<p><a href=../shadow-json-gallery/index.html >Gallery</a></p>' +
@@ -186,6 +184,8 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 // could this be in core?
 
 	function getCoreParameters() {
+
+		var r2d = 180 / Math.PI;
 
 		ifrContentWindow = ifr.contentWindow;
 		model = ifrContentWindow.model;

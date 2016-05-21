@@ -3,7 +3,7 @@
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/analemma-3d';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d ) »
+[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
 
 [Analemma 3D Read Me]( index.html#readme.md )
@@ -29,28 +29,12 @@ value='You are now in the home page view - Click this button to view the read me
 	* Displays a transparent yellow band indicating the total annual sun path
 	* Reference object (Trylon and Perisphere) to indicate shade and shadow coverage
 	* 3D arrow shows direction of north
-* Select location
-	* By entering latitude and longitude
-	* By entering address
-		* With auto-complete assistance
-	* Default latitude and longitude is your current location
-	* Sliders update latitude and longitude of analemma in real-time
-* Select date and time
-	* Sliders for month, date, hour and minutes
-	* Update Sun position and shadows in real-time
-* Displays map of location
-	* Check boxes to toggle map display - also grid and axis etc
-	* Nine maps styles to choose from
-	* Sliders for map zoom factor and opacity
+
 * Information panel
 	* Displays a variety of information including
 	* Latitude and longitude
 	* Local and UTC time
 	* Time zone name, id and offset in hours
-* Full menu system
-	* Accordion menus use [HTML5 details and summary]( https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details ) elements
-		* [Works on all recent browsers]( http://caniuse.com/#feat=details ) - though still in beta on FF until FF 48 - Edge: under consideration
-	* Slide-out "hamburger" menu support for mobile devices
 
 
 ### Issues

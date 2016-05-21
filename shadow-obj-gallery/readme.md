@@ -21,7 +21,7 @@ The engine is here: [Ladybug Web Shadow OBJ Core]( https://ladybug-analysis-tool
 The calling scripts tend to carry out fairly specialized tasks.
 There can be communication between the two scripts when needed.
 
-The general strategy is to be something like node.js or jquery - a small core that accepts plugins of various types.
+The general strategy is to be something like node.js or jQuery - a small core that accepts plugins of various types.
 
 Communication between the calling scripts and the core is currently via location hash.
 Often these URL strings are called 'permalinks'.

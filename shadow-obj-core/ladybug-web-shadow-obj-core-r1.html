@@ -2,13 +2,13 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow OBJ Core R1.1</title>
+<title>Ladybug Web Shadow OBJ Core R1.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Uses location.hash to load OBJ and MTL files and display Sun position and analemmas according to latitude, longitude, date and time.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-17' >
+<meta name=date content='2016-05-21' >
 </head>
 <body>
 <!--
@@ -50,8 +50,10 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 
-	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
-		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=1';
+//	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
+//		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=1';
+
+	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=90#ry=180';
 
 	var fullFilePath, fileName;
 	var model;
@@ -65,7 +67,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 	pud.groundPlaneOpacity = 0.75;
 	pud.groundPlaneVisible = true;
 
-	pud.latitude = -37.796
+	pud.latitude = 37.796
 	pud.longitude = -122.398;
 
 	pud.sunlightIntensity = 0.85
@@ -75,10 +77,9 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 	var sun, lightDirectional;
 	var analemma;
-	var northArrow;
+	var northPoint;
 
 	var stats, renderer, scene, camera, controls;
-	var d2r = Math.PI / 180, r2d = 180 / Math.PI;  // degrees / radians
 
 	var stats, renderer, scene, camera, controls;
 
@@ -118,7 +119,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 				'<div id=menuTitle >' +
 					'<h2>' +
 						'<a href="" >' + document.title + '</a> ' +
-						'<a href=https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/index.html#readme.md >&#x24D8;</a>' +
+						'<a href=index.html#readme.md >&#x24D8;</a>' +
 					'</h2>' +
 				'</div>' +
 				'<div id=menuFileName ></div>' +
@@ -156,24 +157,22 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		scene = new THREE.Scene();
 
-// assets
-
-// Call to action
-
 		onHashChange();
 
 	}
 
 	function onHashChange() {
 
+		var fileNameSplit;
+
 		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : fullFilePathDefault;
 
 		if ( !model ) {
 
 			fileName = fullFilePath.split( '/' ).pop();
-
 			fileNameSplit = fileName.split( '#' );
-			if ( fileNameSplit.length ) { fileName = fileNameSplit[0]; }
+
+			if ( fileNameSplit.length ) { fileName = fileNameSplit[ 0 ]; }
 
 			if ( fileName.endsWith( '.obj' )  ){
 
@@ -213,7 +212,6 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		index = file.lastIndexOf( '/' ) + 1;
 		filePath = file.slice( 0, index );
-//		fileName = file.slice( index );
 
 		fileNameOBJ = fileName.replace( '_dds.mtl', '.obj' );
 		fileNameOBJ = fileNameOBJ.replace( '.obj.mtl', '.mtl' );
@@ -259,18 +257,16 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 	function addObject( object ) {
 
-//console.log( 'object', object );
+		var date;
 
-// for the parent
-
-		initNorthArrow();
+		initNorthPoint();
 
 		initSunAndLight();
 
+// for the parent
 
 		model = object;
 		model.name = fullFilePath;
-
 		model.traverse( function ( child ) {
 
 			if ( child instanceof THREE.Mesh ) {
@@ -307,7 +303,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 	function getHashParameters() {
 
 		var hashes, hash, parameter, value;
-		var d2r = Math.PI / 180, r2d = 180 / Math.PI;  // degrees / radians
+		var d2r = Math.PI / 180;
 		var b = '<br>';
 
 		hashes = location.hash.length ? location.hash : fullFilePathDefault;
@@ -363,7 +359,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 				case 'ty': controls.target.y = parseFloat( value ); break;
 				case 'tz': controls.target.z = parseFloat( value ); break;
 
-				case  '': 
+				case  '':
 				case 'sp' :
 					break;
 
@@ -484,7 +480,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 			} else if ( window.self === window.top || debug === true ) {
 
-				menuInfo.innerHTML += '<hr>The location is timeless<br>' +
+				menuInfo.innerHTML += '<hr><p style=color:crimson; >The location is timeless</p>' +
 
 				fileName + '<br>' +
 
@@ -525,7 +521,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 			'';
 
-		} else if ( parent.getCorePositions ) { 
+		} else if ( parent.getCorePositions ) {
 
 			parent.getCorePositions();
 
@@ -642,7 +638,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 	}
 
-	function initNorthArrow() {
+	function initNorthPoint() {
 
 		var geometry, material;
 
@@ -654,31 +650,16 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		material = new THREE.MeshNormalMaterial();
 
-		northArrow = new THREE.Mesh( geometry, material );
-		northArrow.scale.multiplyScalar( 0.5 );
-		northArrow.position.set( 50, -12, 25 );
+		northPoint = new THREE.Mesh( geometry, material );
+		northPoint.scale.multiplyScalar( 0.5 );
+		northPoint.position.set( 50, -12, 25 );
 
-		scene.add( northArrow );
+		scene.add( northPoint );
 
 	}
 
 
 // utilities
-
-/*
-	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
-
-		var sunPosition = getSunPosition( dateUTC, -latitude, longitude );
-
-		var x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-		var y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-		var z = radius * Math.sin( sunPosition.altitude * d2r );
-
-		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
-
-	}
-
-*/
 
 	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
@@ -689,8 +670,6 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
 		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
 		z = radius * Math.sin( sunPosition.altitude * d2r );
-
-//		sun.userData.position = getSunPosition( dateUTC, latitude, longitude );
 
 		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
 
