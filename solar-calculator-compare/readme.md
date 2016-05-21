@@ -30,7 +30,7 @@ Therefore we propose a new effort that stands on their shoulders.
 
 ### Issues
 
-The Bostock code contains about twenty lines if impenetrable code
+* The Bostock code contains about twenty lines of impenetrable code
 * The NOAA code requires Julian Century, local time in minutes and timezone for each calculation
 	* Much archaic style coding 
 	* Bostock and Agafonkin use the basic JavaScript Date object - which is simpler and more standard
@@ -57,6 +57,7 @@ The Bostock code contains about twenty lines if impenetrable code
 
 * [Script]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ )
 * [Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md )
+	* This read me supplies a number of links to relevant research and calculations and other links of interest
 
 
 ### Solar Calculator NOAA

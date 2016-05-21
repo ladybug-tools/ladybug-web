@@ -25,7 +25,6 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Road Map / Things To Do
 
-* Convert to opener.js
 * Add local times
 * Add click on Map
 

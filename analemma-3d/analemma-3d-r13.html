@@ -2,12 +2,12 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R13</title>
+<title>Analemma 3D R13.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
-3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month
-Calculations of any latitude and longitude or select location using the Google Maps gazetteer.
-Shadows displayed on a 2D map
+3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
+Calculates for any latitude and longitude or select location using the Google Maps gazetteer.
+Shadows displayed on a 2D map.
 ' >
 <meta name=keywords content='Ladybug Web,WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
 <meta name=date content='2016-05-19' >
@@ -69,6 +69,8 @@ Shadows displayed on a 2D map
 	var pixelsPerTile = 256;
 	var tilesPerSide = 7; // odd number please
 	var tilesPerSideSquared = tilesPerSide * tilesPerSide;
+
+	var trylonPerisphere, northPoint;
 
 	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
@@ -148,9 +150,15 @@ Shadows displayed on a 2D map
 			'<details>' +
 				'<summary><h3>Map</h3></summary>' +
 				'<p>' +
-					'<input type=checkbox id=chkMap checked onchange=setMapOverlay(); > Display Map<br>' +
+					'<input type=checkbox id=chkMap checked onchange=toggleVisible(placeMap); > Display Map<br>' +
 					'<input type=checkbox id=chkGrid checked onchange=toggleVisible(gridHelper); > Display Grid<br>' +
-					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(axisHelper); > Display Axis</p>' +
+					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(axisHelper); > Display Axis<br>' +
+					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object<br>' +
+					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(northPoint); > Display North Point<br>' +
+					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(analemma); > Display Analemma<br>' +
+					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(sunBand); > Display Sun Band<br>' +
+				'</p>' +
+
 				'<p>Map source<br><select id=selMap onchange=drawMapOverlay(); size=9 /></select></p>' +
 				'<p>' +
 					'Zoom<br><input type=range id=inpZoom max=20 min=3 step=1 value=12 oninput=outZoom.value=zoom=this.value;drawMapOverlay(); title="1 to 20: OK" > ' +
@@ -227,7 +235,7 @@ Shadows displayed on a 2D map
 
 		initSunPath();
 
-		initNorthArrow();
+		initNorthPoint();
 
 		initTrylonPerisphere();
 
@@ -537,7 +545,7 @@ Shadows displayed on a 2D map
 
 	}
 
-	function initNorthArrow() {
+	function initNorthPoint() {
 
 		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
 		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
@@ -545,10 +553,10 @@ Shadows displayed on a 2D map
 		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * pi ) );
 		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - pi ) );
 		material = new THREE.MeshNormalMaterial();
-		pointer = new THREE.Mesh( geometry, material );
-		pointer.scale.multiplyScalar( 0.5 );
-		pointer.position.set( 50, -12, 25 );
-		scene.add( pointer );
+		northPoint = new THREE.Mesh( geometry, material );
+		northPoint.scale.multiplyScalar( 0.5 );
+		northPoint.position.set( 50, -12, 25 );
+		scene.add( northPoint );
 
 	}
 
@@ -556,7 +564,7 @@ Shadows displayed on a 2D map
 
 // https://en.wikipedia.org/wiki/Trylon_and_Perisphere
 
-		var trylonPerisphere, geometry, material, mesh;
+		var geometry, material, mesh;
 
 		trylonPerisphere = new THREE.Object3D();
 

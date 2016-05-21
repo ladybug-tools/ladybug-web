@@ -1,6 +1,6 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
 ( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/analemma-3d'; 
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/analemma-3d';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
 [Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d ) »
@@ -15,6 +15,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 * To display one analemma for every hour of the day in 3D at any location on Earth as displayed on a 2D map
 * To display the position of the Sun - using azimuth and altitude - at any date and time at any location on Earth
+* To display the shadows cast by 3D objects onto the ground 
 
 
 ### Features
@@ -25,8 +26,9 @@ value='You are now in the home page view - Click this button to view the read me
 	* Placards indicate the hour of each analemma
 	* Displays current position of sun
 	* Displays shadow and shade
-	* Displays a transparent yellow band indicating the total annual sun path 
+	* Displays a transparent yellow band indicating the total annual sun path
 	* Reference object (Trylon and Perisphere) to indicate shade and shadow coverage
+	* 3D arrow shows direction of north
 * Select location
 	* By entering latitude and longitude
 	* By entering address
@@ -37,40 +39,42 @@ value='You are now in the home page view - Click this button to view the read me
 	* Sliders for month, date, hour and minutes
 	* Update Sun position and shadows in real-time
 * Displays map of location
-	* Check boxes to toggle map display - also grid and axis
+	* Check boxes to toggle map display - also grid and axis etc
 	* Nine maps styles to choose from
-	* Sliders for map zoom factor and opacity 
+	* Sliders for map zoom factor and opacity
 * Information panel
 	* Displays a variety of information including
 	* Latitude and longitude
 	* Local and UTC time
 	* Time zone name, id and offset in hours
-	* 3D arrow shows direction of north
 * Full menu system
-	* Accordion menus use HTML5 details and summary element
-	* Works on all recent browsers - though still in beta on FF
+	* Accordion menus use [HTML5 details and summary]( https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details ) elements
+		* [Works on all recent browsers]( http://caniuse.com/#feat=details ) - though still in beta on FF until FF 48 - Edge: under consideration
 	* Slide-out "hamburger" menu support for mobile devices
 
 
 ### Issues
 
-* Sun path band incorrectly positions itself
+* Sun path - yellow band - incorrectly positions itself
 	* Tries to be its own algorithm - good for checking errors
 	* Fall back could be to create sun path band from analemma vertices
-* Permalink support (currently broken )
-
+* Open Street Maps - and other maps - not showing because of HTTPS issues
 
 ### Things To Do / Road Map
 
 * Add choice of 3D objects
-* Add the ability to change the north based on an angle
-* Add sun-path circles
-* Add an option to re-scale the sunpath
+* Add the ability to change the north point based on an angle
+	* Select type of north point
+* Add an option to re-scale the sun path
 * Add a button for top view and also save view to file.
-* Start moving some of the code into libraries 
 * Do something when Google API reports no time zone
-* Animations
-* Add reference object choices
+* Animations / lighten end darken sky
+	* Every hour of every day
+	* Every day at same hour
+* Start moving some of the code into libraries
+* How best to display daily sun path?
+	* As in lower left of [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
+* Permalink support
 
 ### Goals
 
@@ -80,7 +84,26 @@ value='You are now in the home page view - Click this button to view the read me
 	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
 
 
+## Links of Interest
+
+* https://en.wikipedia.org/wiki/Analemma
+* [How the sun looks when you take a pictures at the same place and time every week for a year]( http://imgur.com/61YTxQ2 )
+	* See also more links in the comments
+* [StackEchange: How does the appearance of the analemma vary with latitude?]( http://astronomy.stackexchange.com/questions/12590/how-does-the-appearance-of-the-analemma-vary-with-latitude )
+* [Science Blog: Why Our Analemma Looks like a Figure 8]( http://scienceblogs.com/startswithabang/2009/08/26/why-our-analemma-looks-like-a/ )
+* [Stanford Solar Center: Viewing and Understanding the Analemma]( http://solar-center.stanford.edu/art/analemma.html )
+* [analemma.com]( http://www.analemma.com/pages/framespage.html ) << mostly broken
+
+
+
 ## Change Log
+
+### 2016-05-21 / R13.2
+
+* Update readme
+* Add more display toggles
+* Add to global vars
+
 
 ### 2016-05-20 / R13
 
@@ -110,7 +133,7 @@ value='You are now in the home page view - Click this button to view the read me
 ### Latest update: 2016-03-22 / R10
 
 * Add arcs for 21 of each month
-* Add a north arrow 
+* Add a north arrow
 
 ### Latest update: 2016-03-21 / R9
 
