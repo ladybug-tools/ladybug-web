@@ -2,11 +2,13 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Gallery R1</title>
+<title>Ladybug Web Shadow Range OBJ Gallery R1.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
-<meta name=description content='Browse and view OBJ and MTL files' >
-<meta name=keywords content='GitHub API,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-16' >
+<meta name=description content='Uses location.hash to load OBJ and MTL files and display a daily Sun range -
+according to latitude, longitude, date and time.
+' >
+<meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-05-21' >
 </head>
 <body>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
@@ -15,11 +17,15 @@
 
 	var core = '../shadow-obj-core/index.html';
 
-	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
+//	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
 
-	var lights = [];
+	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23';
+
+	var icw;
+
+	var lights;
 	var lightsCount = 10;
-	var shadowHelpers = [];
+	var shadowHelpers;
 
 	init();
 
@@ -64,7 +70,7 @@
 
 			'<h2>' +
 				'<a href="" >' + document.title + '</a> ' +
-				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-gallery/index.html#readme.md >&#x24D8;</a>' +
+				'<a href=index.html#readme.md >&#x24D8;</a>' +
 			'</h2>' +
 
 			'<p id=sendToOpener > </p>' +
@@ -101,14 +107,19 @@
 
 	function onHashChange() {
 
-//		var icw;
+		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : defaultFile;
 
-		contents.innerHTML = '<iframe id=ifr src=' + core + location.hash + ' scrolling="no" ></iframe>';
+		contents.innerHTML = '<iframe id=ifr src=' + core + '#' + fullFilePath + ' scrolling="no" ></iframe>';
+
 		ifr.id = 'ifr';
 
 		ifr.onload = function() {
 
 			icw = ifr.contentWindow;
+			icw.drawAnalemma = function(){};
+			icw.initSunAndLight = function(){};
+			icw.updateSunPosition = function(){};
+
 			positions.innerHTML = 
 
 				'Latitude ' + icw.pud.latitude + '<br>' +
@@ -118,13 +129,6 @@
 
 			'';
 
-			icw.drawAnalemma = function(){};
-			icw.initSunAndLight = function(){};
-			icw.updateSunPosition = function(){};
-
-//			if ( lights.length === 0 ) {  }
-addLights();
-//			updateLights();
 
 		}
 
@@ -134,7 +138,7 @@ addLights();
 
 	function setDate() {
 
-		var icw;
+//		var icw;
 
 		if ( contents.innerText === '' ) {
 
@@ -162,9 +166,11 @@ addLights();
 	function getCoreParameters() {
 
 
-//			addLights();
+		if ( icw.scene.name === '' ) { addLights(); }
 
-			updateLights();
+console.log( '', lights );
+//
+//			updateLights();
 
 	}
 
@@ -180,6 +186,12 @@ addLights();
 
 			lightDirectional.shadow.camera.scale.multiplyScalar( 15 );
 
+			date = new Date(  2016, 5, 20, i + 8, 0, 0  );
+console.log( 'date', date );
+			position = icw.getSunPositionXYZ( 150, date, icw.pud.latitude, icw.pud.longitude  );
+
+			lightDirectional.position.copy( position.xyz );
+
 //			position = convertPosition( 100, 0.2 + i * 0.3, 0.8 );
 
 //			lightDirectional.position.set( i * 200 - 1000 , 2 * size,  0.9 * size );
@@ -190,13 +202,15 @@ addLights();
 			lightDirectional.shadow.mapSize.height = 2048;
 
 			icw.scene.add( lightDirectional );
-			lights.push( lightDirectional );
+//			lights.push( lightDirectional );
 
 			shadowHelper = new icw.THREE.CameraHelper( lightDirectional.shadow.camera )
 			icw.scene.add( shadowHelper );
-			shadowHelpers.push( shadowHelper );
+//			shadowHelpers.push( shadowHelper );
 
 		}
+
+		icw.scene.name = 'hasLights';
 
 	}
 
@@ -208,8 +222,9 @@ addLights();
 
 			date = new Date( Date.UTC( 2016, 5, 20, i + 8, 0, 0 ) );
 
-			position = getSunPositionXYZ( 200, date, 70, 0 );
-			lights[ i ].position.copy( position );
+			position = icw.getSunPositionXYZ( 200, date, icw.pud.latitude, icw.pud.longitude  );
+
+			lights[ i ].position.copy( position.xyz );
 
 		}
 
