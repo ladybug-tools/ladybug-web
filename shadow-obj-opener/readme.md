@@ -18,19 +18,58 @@ Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opene
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.obj
 * https://jaanga.github.io/3d-models/obj/architecture/factory-complex/factory-complex.obj
+	* Scale to 0.1
 * https://jaanga.github.io/3d-models/obj/architecture/sydney-opera-house/sydney-opera-house.obj
+	* Use 'zoom boundary' button
 
+## Concept
+
+To provide a simple user-interface for adding end aditing parameters used by Ladybug Web Shadow OBJ Core
 
 ***
 
 ## Features
 
-* Draw the sun path
-	* Given location, date and time
-	* Displays analemmas and hour placards
+* 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
+	* Lines connect each hour on the 21st of the month
+	* Midnight highlighted is red. Noon highlighted in green
+	* Placards indicate the hour of each analemma
+	* Displays current position of sun
+	* Displays shadow and shade
+	* 3D arrow shows direction of north
 * Loads and displays OBJ and MTL files
 	* Loads and makes use of and display texture bitmaps
-* Supports permalinks
+* Information panel displays a variety of information including
+	* Latitude and longitude
+	* Selected time
+	* If not top window - ie in an iframe - Information panel does not display
+* Creates  permalinks for the following parameters
+	* Only the parameters that need changing need to appear on the location.hash
+	* file name
+	* latitude
+	* longitude
+	* year
+	* month
+	* date
+	* hours
+	* minutes
+	* placeMap.material.opacity
+	* project.rotation.x
+	* project.rotation.y
+	* project.rotation.z
+	* project.position.x
+	* project.position.y
+	* project.position.z
+	* project.scale.x
+	* project.scale.y
+	* project.scale.z
+	* cx - camera.position.x
+	* cy - camera.position.y
+	* cz - camera.position.z
+	* tx - controls.target.x
+	* ty - controls.target.y
+	* tz - controls.target.z
+
 
 ## Issues
 
