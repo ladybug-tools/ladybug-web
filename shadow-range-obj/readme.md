@@ -16,10 +16,17 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Issues / To Do
 
+* Should add sum type of azimith and altitude data
+	* At Solar noon maybe
 * Rendering quality is still low/primitive
 
 
 ## Change Log
+
+### 2016-05-22 / R1.2
+
+* Add core message
+* Drop sun position - because there are 10!
 
 ### 2016-05-21
 

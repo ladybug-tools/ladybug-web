@@ -75,9 +75,18 @@ value='You are now in the home page view - Click this button to view the read me
 * Mostapha: Finally, isn't it easier to scale and move sunpath instead of the geometry? I imagine cases that the user input a complex mesh and moving or scaling the geometry will be expensive performance wise.
 
 
-## Change Log
+### Change Log
 
-##2016-04-09
+### 2016-05-22
+
+* Simplify messaging
+* Add more xhr error-trapping
+* Add 'location is timeless' error-handling
+* Add messaging system idea
+
+
+
+### 2016-04-09
 
 * Add permalink support for groundPlane, analemma, sun intensity
 * Add scale project and toggle
@@ -86,7 +95,7 @@ value='You are now in the home page view - Click this button to view the read me
 ### 2016-04-08
 
 * Add send messages to parent
-* Add toglle placeMap visibility
+* Add toggle placeMap visibility
 * Set default file to urban model 001
 * Improve ability to load files
 	* Add cast and receive shadows

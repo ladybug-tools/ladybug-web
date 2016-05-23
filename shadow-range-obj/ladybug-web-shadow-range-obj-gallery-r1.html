@@ -2,24 +2,24 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Gallery R1.1</title>
+<title>Ladybug Web Shadow Range OBJ Gallery R1.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='Uses location.hash to load OBJ and MTL files and display a daily Sun range -
 according to latitude, longitude, date and time.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-21' >
+<meta name=date content='2016-05-22' >
 </head>
 <body>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
 <script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
 <script>
 
-	var core = '../shadow-obj-core/index.html';
+	var core = '../shadow-obj-core/ladybug-web-shadow-obj-core-r2.html';
 
 //	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
 
-	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23';
+	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#la=22#lo=5#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23';
 
 	var icw;
 
@@ -73,16 +73,20 @@ according to latitude, longitude, date and time.
 				'<a href=index.html#readme.md >&#x24D8;</a>' +
 			'</h2>' +
 
+			'<p id=coreFileInfo ></p>' +
+			'<p id=coreMessage ></p>' +
+			'<p id=coreSunInfo ></p>' +
+			'<p id=menuInfo ></p>' +
+
 			'<p id=sendToOpener > </p>' +
 			'<hr>' +
 			'<p>' + 
-				'Month<br><input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" ><output id=outMonth ></output><br>' +
-				'Day<br><input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" ><output id=outDate ></output><br>' +
-//				'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" ><output id=outHours ></output><br>' +
-//				'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" ><output id=outMinutes ></output><br>' +
+				'Month <input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
+				'Day &nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
 			'</p>' +
 			'<p id=positions ></p>' +
 			'<hr>' +
+
 			'<div id=info ></div>' +
 			'<hr>' +
 			'<center><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></center>' +
@@ -91,11 +95,9 @@ according to latitude, longitude, date and time.
 
 		date = new Date();
 
-		outMonth.value = inpMonth.value = date.getMonth();
+		inpMonth.value = date.getMonth();
 		outMonth.value = inpMonth.valueAsNumber + 1;
-//		outDate.value = inpDate.value = date.getDate();
-//		outHours.value = inpHours.value = date.getHours();
-//		outMinutes.value = inpMinutes.value = date.getMinutes();
+		outDate.value = inpDate.value = date.getDate();
 
 		window.addEventListener ( 'hashchange', onHashChange, false );
 
@@ -112,23 +114,21 @@ according to latitude, longitude, date and time.
 		contents.innerHTML = '<iframe id=ifr src=' + core + '#' + fullFilePath + ' scrolling="no" ></iframe>';
 
 		ifr.id = 'ifr';
-
+		icw = ifr.contentWindow;
 		ifr.onload = function() {
 
-			icw = ifr.contentWindow;
 			icw.drawAnalemma = function(){};
-			icw.initSunAndLight = function(){};
 			icw.updateSunPosition = function(){};
 
-			positions.innerHTML = 
+			icw.sun.remove( icw.directionalLight );
+			icw.scene.remove( icw.sun, icw.directionalLight, icw.lightDirectionalHelper );
 
+			var message = 
 				'Latitude ' + icw.pud.latitude + '<br>' +
 				'Longitude ' + icw.pud.longitude + '<br>' +
-				'Azimuth ' + '<br>' +
-				'Altitude ' + '<br>' +
-
 			'';
 
+			getCoreParameters( message, positions );
 
 		}
 
@@ -138,42 +138,17 @@ according to latitude, longitude, date and time.
 
 	function setDate() {
 
-//		var icw;
+//		if ( contents.innerText === '' ) {
 
-		if ( contents.innerText === '' ) {
-
-			icw = ifr.contentWindow;
 			icw.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
 				'';
 
-			positions.innerHTML = 
-				'Latitude ' + icw.pud.latitude + '<br>' +
-				'Longitude ' + icw.pud.longitude + '<br>' +
-				'Azimuth ' + icw.pud.sunPosition.azimuth.toFixed() + '<br>' +
-				'Altitude ' + icw.pud.sunPosition.altitude.toFixed() + '<br>' +
-			'';
-
-		}
+//		}
 
 		outMonth.value = inpMonth.valueAsNumber + 1;
 		outDate.value = inpDate.value;
-//		outHours.value = inpHours.value;
-//		outMinutes.value = inpMinutes.value;
 
 	}
-
-
-	function getCoreParameters() {
-
-
-		if ( icw.scene.name === '' ) { addLights(); }
-
-console.log( '', lights );
-//
-//			updateLights();
-
-	}
-
 
 	function addLights() {
 
@@ -187,7 +162,9 @@ console.log( '', lights );
 			lightDirectional.shadow.camera.scale.multiplyScalar( 15 );
 
 			date = new Date(  2016, 5, 20, i + 8, 0, 0  );
-console.log( 'date', date );
+
+//console.log( 'date', i, date.toLocaleTimeString() );
+
 			position = icw.getSunPositionXYZ( 150, date, icw.pud.latitude, icw.pud.longitude  );
 
 			lightDirectional.position.copy( position.xyz );
@@ -222,7 +199,7 @@ console.log( 'date', date );
 
 			date = new Date( Date.UTC( 2016, 5, 20, i + 8, 0, 0 ) );
 
-			position = icw.getSunPositionXYZ( 200, date, icw.pud.latitude, icw.pud.longitude  );
+			position = getSunPositionXYZ( 200, date, icw.pud.latitude, icw.pud.longitude  );
 
 			lights[ i ].position.copy( position.xyz );
 
@@ -232,13 +209,33 @@ console.log( 'date', date );
 
 	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
-		var sunPosition = SunCalc.getPosition( dateUTC, latitude, longitude );
+		var sunPosition, x, y, z;
 
-		var x = - radius * Math.cos( sunPosition.altitude ) * Math.sin( sunPosition.azimuth );
-		var y = radius * Math.cos( sunPosition.altitude ) * Math.cos( sunPosition.azimuth );
-		var z = radius * Math.sin( sunPosition.altitude );
+		sunPosition = getSunPosition( dateUTC, latitude, longitude );
 
-		return new icw.THREE.Vector3( x, y, z )
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+
+	}
+
+	function getCoreParameters( message, target ) {
+
+console.log( 'getCoreParameters', message, target );
+
+		if ( !icw.model ) { 
+
+			addLights();
+
+		} 
+
+		if ( target && message ) {
+
+			target.innerHTML = message;
+
+		}
 
 	}
 

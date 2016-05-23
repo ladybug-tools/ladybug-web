@@ -2,13 +2,14 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow OBJ Core R1.2</title>
+<title>Ladybug Web Shadow OBJ Core R2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
-Uses location.hash to load OBJ and MTL files and display Sun position and analemmas according to latitude, longitude, date and time.
+Load OBJ and MTL files. Display Sun position and analemmas according to latitude, longitude, date and time.
+Uses location.hash to set a variety of parameters.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-21' >
+<meta name=date content='2016-05-22' >
 </head>
 <body>
 <!--
@@ -31,8 +32,6 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 <script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
-
-	var debug = false;
 
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/female02/female02.obj';
 	var fullFilePathDefault = 'https://rawgit.com/mrdoob/three.js/dev/examples/obj/female02/female02.mtl';
@@ -60,26 +59,21 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
+
 //	pud.fileName = '';
 	pud.analemmaRadius = 75;
-	pud.analemmaVisible = true;
-
-	pud.groundPlaneOpacity = 0.75;
-	pud.groundPlaneVisible = true;
 
 	pud.latitude = 37.796
 	pud.longitude = -122.398;
-
-	pud.sunlightIntensity = 0.85
+	pud.sunlightIntensity = 0.85;
 
 	var dateUTC, dateThere;  // could be local
 	var offsetHours;
 
-	var sun, lightDirectional;
-	var analemma;
-	var northPoint;
+	var sun, lightDirectional, lightDirectionalHelper;
 
-	var stats, renderer, scene, camera, controls;
+	var analemma;
+//	var northPoint;
 
 	var stats, renderer, scene, camera, controls;
 
@@ -88,10 +82,10 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 	function init() {
 
-		var css, memu;
+		var css, hamburger, menu;
 		var geometry, material, mesh;
 
-		if ( window.self === window.top || debug === true ) {
+		if ( window.self === window.top ) {
 
 			css = document.head.appendChild( document.createElement( 'style' ) );
 			css.innerHTML =
@@ -108,13 +102,13 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 			'';
 
-		hamburger = document.body.appendChild( document.createElement( 'div' ) );
-		hamburger.id = 'hamburger';
-		hamburger.innerHTML = '<div id=bars >  &#9776 </div>';
-		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+			hamburger = document.body.appendChild( document.createElement( 'div' ) );
+			hamburger.id = 'hamburger';
+			hamburger.innerHTML = '<div id=bars >  &#9776 </div>';
+			bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
 
-		menu = hamburger.appendChild( document.createElement( 'div' ) );
-		menu.id = 'menu';
+			menu = hamburger.appendChild( document.createElement( 'div' ) );
+			menu.id = 'menu';
 			menu.innerHTML =
 				'<div id=menuTitle >' +
 					'<h2>' +
@@ -122,10 +116,13 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 						'<a href=index.html#readme.md >&#x24D8;</a>' +
 					'</h2>' +
 				'</div>' +
-				'<div id=menuFileName ></div>' +
-				'<div id=menuInfo ></div>' +
-				'<div id=menuSunInfo ></div>' +
-				'<div id=menuMessage ></div>' +
+
+				'<p id=coreFileInfo ></p>' +
+				'<p id=coreMessage ></p>' +
+				'<p id=coreSunInfo ></p>' +
+				'<p id=menuInfo ></p>' +
+
+//				'<p id=menuMessage ></p>' +
 			'';
 
 		}
@@ -153,9 +150,11 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 		camera.position.set( 0, 80, 120 );
 
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
-		controls.maxDistance = 500;
+		controls.maxDistance = 1000;
 
 		scene = new THREE.Scene();
+
+		initSunAndLight();
 
 		onHashChange();
 
@@ -184,7 +183,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 			} else {
 
-				parent.coreMessage.innerHTML = 'file oops: ' + fileName;
+				parent.coreFileInfo.innerHTML = 'file oops: ' + fileName + '<br><br>' + fullFilePath;
 
 			}
 
@@ -202,7 +201,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		var loader = new THREE.OBJLoader();
 		loader.crossOrigin = 'Anonymous';
-		loader.load( fullFilePath, function ( object ) { addObject( object ); }, onProgress, onError );
+		loader.load( fullFilePath, onLoadComplete, onProgress, onError );
 
 	}
 
@@ -231,9 +230,9 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 			loader.crossOrigin = 'Anonymous';
 			loader.setMaterials( materials );
 			loader.setPath( filePath );
-			loader.load( fileNameOBJ, function ( object ) { addObject( object ); }, onProgress, onError );
+			loader.load( fileNameOBJ, onLoadComplete, onProgress, onError );
 
-		});
+		}, onProgress, onError );
 
 	}
 
@@ -242,26 +241,33 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 		if ( xhr.total ) {
 
 			var percentComplete = xhr.loaded / xhr.total * 100;
-			setCoreMessage( fileName + ': ' + percentComplete.toFixed() + '% or ' + xhr.loaded + ' bytes of ' + xhr.total + ' downloaded' );
+			var message = fileName + ': ' + percentComplete.toFixed() + '% or ' + xhr.loaded + ' bytes of ' + xhr.total + ' downloaded';
 
 		} else {
 
-			setCoreMessage( fileName + ': ' + xhr.loaded + ' bytes loaded' );
+			message = fileName + ': ' + xhr.loaded + ' bytes loaded';
 
 		}
 
+		handleMessage( message, parent.coreFileInfo );
+
 	}
 
-	function onError ( xhr ) { setCoreMessage( 'An error happened' ); };
+	function onError ( xhr ) { 
+
+		var message = 
+			'<p>An error happened:</p>' +
+			xhr.target.responseURL + '<br><br>' +
+			xhr.target.statusText; console.log( '', xhr ); 
+
+		handleMessage( message, parent.coreFileInfo );
+
+	};
 
 
-	function addObject( object ) {
+	function onLoadComplete( object ) {
 
 		var date;
-
-		initNorthPoint();
-
-		initSunAndLight();
 
 // for the parent
 
@@ -294,7 +300,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		getHashParameters();
 
-		setCoreMessage( fileName + ': load complete' );
+		handleMessage( fileName + ': load complete', parent.coreFileInfo );
 
 		document.title = fileName + ' - ' + document.title;
 
@@ -369,67 +375,38 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		}
 
-		if ( window.self === window.top || debug === true ) {
+		message =
+			'Latitude: ' + pud.latitude + b +
+			'Longitude: ' + pud.longitude + b + b +
 
-			menuInfo.innerHTML =
+			'Year: ' + pud.year + b +
+			'Month: ' + ( pud.month + 1 ) + b +
+			'Date: ' + pud.date + b +
 
-				'Latitude: ' + pud.latitude + b +
-				'Longitude: ' + pud.longitude + b +
+			'Hours: ' + pud.hours + b +
+			'Minutes: ' + pud.minutes + b + b +
 
-				'Year: ' + pud.year + b +
-				'Month: ' + ( pud.month + 1 ) + b +
-				'Date: ' + pud.date + b +
+			'Position X: ' + model.position.x + b +
+			'Position Y: ' + model.position.y + b +
+			'Position Z: ' + model.position.z + b +
 
-				'Hours: ' + pud.hours + b +
-				'Minutes: ' + pud.minutes + b +
+			'Rotation X: ' + ( model.rotation.x * r2d ) + b +
+			'Rotation Y: ' + ( model.rotation.y * r2d ) + b +
+			'Rotation Z: ' + ( model.rotation.z * r2d ) + b +
 
-				'Position X: ' + model.position.x + b +
-				'Position Y: ' + model.position.y + b +
-				'Position Z: ' + model.position.z + b +
+			'Scale: ' + model.scale.z + b + b +
 
-				'Rotation X: ' + ( model.rotation.x * r2d ) + b +
-				'Rotation Y: ' + ( model.rotation.y * r2d ) + b +
-				'Rotation Z: ' + ( model.rotation.z * r2d ) + b +
+			'Camera position: ' + camera.position.x.toFixed() + ', '+ camera.position.y.toFixed() + ', '+ camera.position.z.toFixed() + ', ' + b +
+			'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b +
+		'';
 
-				'Scale: ' + model.scale.z + b +
-
-				'Camera position: ' + camera.position.x.toFixed() + ', '+ camera.position.y.toFixed() + ', '+ camera.position.z.toFixed() + ', ' + b +
-				'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b +
-
-				b +
-
-			'';
-
-		}
+		handleMessage( message, parent.menuInfo );
 
 		getDate();
 
 	}
 
-
-	function setCoreMessage( message ){
-
-//		if ( window.self !== window.top && message === ( fileName + ': load complete' ) ) {
-
-		if ( window.self !== window.top && pud.year) {
-
-			if ( parent.getCoreParameters ) { parent.getCoreParameters(); }
-
-		} else if ( parent.coreMessage ) {
-
-// send data via 'model'...
-
-			parent.coreMessage.innerHTML = message;
-
-		} else {
-
-//			parent.console.log( 'message:', message );
-
-		}
-
-	}
-
-// analemma
+//
 
 	function getDate() {
 
@@ -476,17 +453,18 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 				offsetHours = offsetPlace / 3600;
 
-				updateSunPosition();
+				handleMessage( 'have time' );
 
-				drawAnalemma();
 
-			} else if ( window.self === window.top || debug === true ) {
+			} else {
 
-				menuInfo.innerHTML += '<hr><p style=color:crimson; >The location is timeless</p>' +
+				var message = 
+					'<p style=color:crimson; >The location is timeless</p>' +
+					'<p>' + fileName + '</p>' +
+					xhr.responseText +
+				'';
 
-				fileName + '<br>' +
-
-				xhr.responseText;
+				handleMessage( message, parent.coreMessage );
 
 			}
 
@@ -494,7 +472,46 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 	}
 
-// draw, add or update the Three.js things
+
+//
+
+	function initSunAndLight() {
+
+		var geometry, material, lightAmbient;
+		var d = 50;
+
+		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
+		material = new THREE.MeshPhongMaterial( { color: 0xcccc00, emissive: 0xaaaaaa } );
+
+		sun = new THREE.Mesh( geometry, material );
+		sun.position.set( 50, 30, 50 );
+		scene.add( sun );
+
+		lightAmbient = new THREE.AmbientLight( 0x888888 );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, pud.sunlightIntensity );
+
+		lightDirectional.shadow.camera.left = -d;
+		lightDirectional.shadow.camera.right = d;
+		lightDirectional.shadow.camera.top = d;
+		lightDirectional.shadow.camera.bottom = -d;
+
+		lightDirectional.shadow.camera.near = 0;
+		lightDirectional.shadow.camera.far = 5 * d;
+
+		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		sun.add( lightDirectional );
+
+		lightDirectionalHelper = new THREE.CameraHelper( lightDirectional.shadow.camera );
+		scene.add( lightDirectionalHelper );
+
+	}
 
 	function updateSunPosition() {
 
@@ -513,23 +530,36 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		sun.position.copy( pud.sunPosition.xyz );
 
-		if ( window.self === window.top || debug === true ) {
+		message =
+			'Sun azimuth : ' + pud.sunPosition.azimuth + '<br>' +
+			'Sun altitude: ' + pud.sunPosition.altitude +
+		'';
 
-			menuSunInfo.innerHTML =
+		handleMessage( message, parent.coreSunInfo );
 
-				'Sun:<br>' +
-				'- Azimuth : ' + pud.sunPosition.azimuth + '<br>' +
-				'- Altitude: ' + pud.sunPosition.altitude +
-
-			'';
-
-		} else if ( parent.getCorePositions ) {
-
-			parent.getCorePositions();
-
-		}
+		handleMessage( 'have sun' );
 
 	}
+
+
+
+
+	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
+
+		var sunPosition, x, y, z;
+
+		sunPosition = getSunPosition( dateUTC, latitude - 90, longitude );
+
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+
+	}
+
+
+//
 
 	function drawAnalemma() {
 
@@ -600,83 +630,7 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 
 		scene.add( analemma );
 
-		analemma.visible = pud.analemmaVisible;
-
 	}
-
-	function initSunAndLight() {
-
-		var geometry, material, lightAmbient;
-		var d = 100;
-
-		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
-		material = new THREE.MeshPhongMaterial( { color: 0xcccc00, emissive: 0xaaaaaa } );
-
-		sun = new THREE.Mesh( geometry, material );
-		scene.add( sun );
-
-		lightAmbient = new THREE.AmbientLight( 0x888888 );
-		scene.add( lightAmbient );
-
-		lightDirectional = new THREE.DirectionalLight( 0xffffff, pud.sunlightIntensity );
-
-		lightDirectional.shadow.camera.left = -d;
-		lightDirectional.shadow.camera.right = d;
-		lightDirectional.shadow.camera.top = d;
-		lightDirectional.shadow.camera.bottom = -d;
-
-		lightDirectional.shadow.camera.near = 0;
-		lightDirectional.shadow.camera.far = 2 * d;
-
-		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
-
-		lightDirectional.shadow.mapSize.width = 2048;  // default 512
-		lightDirectional.shadow.mapSize.height = 2048;
-
-		lightDirectional.castShadow = true;
-		sun.add( lightDirectional );
-
-//		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
-
-	}
-
-	function initNorthPoint() {
-
-		var geometry, material;
-
-		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
-		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
-		geometry.merge( new THREE.CylinderGeometry( 12, 0, 20, 3 ) );
-		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
-		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - Math.PI ) );
-
-		material = new THREE.MeshNormalMaterial();
-
-		northPoint = new THREE.Mesh( geometry, material );
-		northPoint.scale.multiplyScalar( 0.5 );
-		northPoint.position.set( 50, -12, 25 );
-
-		scene.add( northPoint );
-
-	}
-
-
-// utilities
-
-	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
-
-		var sunPosition, x, y, z;
-
-		sunPosition = getSunPosition( dateUTC, latitude - 90, longitude );
-
-		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-		z = radius * Math.sin( sunPosition.altitude * d2r );
-
-		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
-
-	}
-
 
 	function drawPlacard( text, scale, color, x, y, z ) {
 
@@ -739,6 +693,34 @@ Uses location.hash to load OBJ and MTL files and display Sun position and analem
 			return texture;
 
 		}
+
+	}
+
+//
+
+	function handleMessage( message, target ) {
+
+		if ( message === 'have time' ) {
+
+				updateSunPosition();
+
+				drawAnalemma();
+
+		} else if ( message === 'have sun' ) { 
+
+			parent.getCoreParameters( message );
+
+		} else if ( target ) {
+
+			target.innerHTML = message;
+
+		}
+
+	}
+
+	function getCoreParameters( message) {
+
+console.log( 'message', message );
 
 	}
 
