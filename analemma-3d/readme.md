@@ -82,6 +82,12 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Change Log
 
+### 2016-05-23
+
+* Add more visibility toggles
+* Streamline UI
+
+
 ### 2016-05-21 / R13.2
 
 * Update readme
