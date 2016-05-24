@@ -46,6 +46,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### Things To Do / Road Map
 
+* Add ability to turn off casting and receiving of shadows whenever the sun is below the ground plane/horizon.
 * Add choice of 3D objects
 * Add the ability to change the north point based on an angle
 	* Select type of north point

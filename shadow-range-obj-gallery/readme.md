@@ -16,7 +16,8 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Issues / To Do
 
-* Should add sum type of azimith and altitude data
+* Nice and useful to let users define the hours to show.
+* Should add some type of azimuth and altitude data
 	* At Solar noon maybe
 * Rendering quality is still low/primitive
 
