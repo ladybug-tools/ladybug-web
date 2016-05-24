@@ -2,11 +2,11 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Solar Calculator Ladybug Web Viewer R3.1</title>
+<title>Solar Calculator Ladybug Web Viewer R3.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='Code to calculate Sun position - based on Bostock/NOAA code.' >
 <meta name=keywords content='Ladybug Web,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-20' >
+<meta name=date content='2016-05-23' >
 </head>
 <body>
 <script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
@@ -74,9 +74,13 @@
 
 	function updateSunPosition() {
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+
 		var date, position;
 
-		date = new Date();
+//		date = new Date();
+
+		date = new Date( Date.UTC( 2016, 5, 21, 12, 0 ) );
 
 		inpLat.value = latitude;
 		inpLon.value = longitude;

@@ -23,12 +23,16 @@ Shadows displayed on a 2D map.
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
 
 <script src=https://maps.googleapis.com/maps/api/js?libraries=places ></script>
+
 <!--
 <script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
 <script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script>
--->
 
 <script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+
+-->
+
+<script src= ../solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
 
@@ -49,11 +53,10 @@ Shadows displayed on a 2D map.
 //	var latDefault = -35.6751;
 //	var lonDefault = -71.5430;
 
-
 	var dateHere, dateUTC, datePlace;
 	var timeZonePlace;
-	var offset;
-	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+	var offset, offsetPlace;
+	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
 	var analemma
 	var analemmaRadius = 50;
@@ -138,32 +141,32 @@ Shadows displayed on a 2D map.
 
 			'<details open >' +
 				'<summary><h3>Set Date and Time</h3></summary>' +
-				'<p>' +
-					'Month<br><input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
-					'Day<br><input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
-					'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" > <output id=outHours ></output><br>' +
-					'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" > <output id=outMinutes ></output><br>' +
+				'<p>Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" > <output id=outMonth ></output></p>' +
+				'<p>Day &nbsp; &nbsp;<input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" > <output id=outDate ></output></p>' +
+				'<p>Hour &nbsp; <input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" > <output id=outHours ></output></p>' +
+				'<p>Minute <input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" > <output id=outMinutes ></output></p>' +
 
 				'</p>' +
 			'</details>' +
 
 			'<details>' +
-				'<summary><h3>Map</h3></summary>' +
+				'<summary><h3>Display & Map</h3></summary>' +
 				'<p>' +
-					'<input type=checkbox id=chkMap checked onchange=toggleVisible(placeMap); > Display Map<br>' +
-					'<input type=checkbox id=chkGrid checked onchange=toggleVisible(gridHelper); > Display Grid<br>' +
-					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(axisHelper); > Display Axis<br>' +
-					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object<br>' +
-					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(northPoint); > Display North Point<br>' +
-					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(analemma); > Display Analemma<br>' +
-					'<input type=checkbox id=chkAxis checked onchange=toggleVisible(sunBand); > Display Sun Band<br>' +
+					'<input type=checkbox checked onchange=toggleVisible(placeMap); > Display Map <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(gridHelper); > Display Grid <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(axisHelper); > Display Axis <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(northPoint); > Display North Point <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(analemma); > Display Analemma <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(sunBand); > Display Sun Band <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(sun); > Display Sun <br>' +
 				'</p>' +
 
 				'<p>Map source<br><select id=selMap onchange=drawMapOverlay(); size=9 /></select></p>' +
 				'<p>' +
-					'Zoom<br><input type=range id=inpZoom max=20 min=3 step=1 value=12 oninput=outZoom.value=zoom=this.value;drawMapOverlay(); title="1 to 20: OK" > ' +
+					'Map zoom<br><input type=range id=inpZoom max=20 min=3 step=1 value=12 oninput=outZoom.value=zoom=this.value;drawMapOverlay(); title="1 to 20: OK" > ' +
 						'<output id=outZoom >' + zoom + '</output><br>' +
-					'Opacity<br><input type=range id=inpOpacity min=0.05 max=1 step=0.05 value=0.85 oninput=outOpacity.value=opacity=this.value;drawMapOverlay(); title="0 to 1: OK" > ' +
+					'Map opacity<br><input type=range id=inpOpacity min=0.05 max=1 step=0.05 value=0.85 oninput=outOpacity.value=opacity=this.value;drawMapOverlay(); title="0 to 1: OK" > ' +
 						'<output id=outOpacity >' + opacity + '</output>' +
 				'</p>' +
 			'</details>' +
@@ -179,7 +182,7 @@ Shadows displayed on a 2D map.
 				'<p id=infoTime ></p>' +
 			'</details>' +
 			'<hr>' +
-			'<center><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></center>' +
+			'<center><a href=javascript:menu.scrollTop=0; style=text-decoration:none; ><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></a></center>' +
 
 		'';
 
@@ -280,7 +283,7 @@ Shadows displayed on a 2D map.
 
 //			'<h3>latitude: ' + latitude + '<br>longitude:' + longitude + '</h3>' +
 //			'<p>' + place[ 0 ] + '</p>' +
-			'<p>Given a UTC time of ' + dateUTC.getHours() + ':' + dateUTC.getMinutes() + '</p>' +
+			'<p>Given a time of ' + dateUTC.getHours() + ':' + dateUTC.getMinutes() + ' at your location</p>' +
 			'<p>Time ZoneID: ' + timeZonePlace.timeZoneId + '</p>' +
 			'<p>Time zone: ' + timeZonePlace.timeZoneName + '</p>' +
 			'<p>Offset in hours: ' + offsetPlace / 3600 + '</p>' +
@@ -294,17 +297,17 @@ Shadows displayed on a 2D map.
 
 // draw, add or update the Three.js things
 
-	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
+	function getSunPositionXYZ( radius, datePlace, latitude, longitude ) {
 
 		var sunPosition, x, y, z;
 
-		sunPosition = getSunPosition( dateUTC, latitude - 90, longitude );
+		sunPosition = getSunPosition( datePlace, latitude - 90, longitude );
 
 		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
 		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
 		z = radius * Math.sin( sunPosition.altitude * d2r );
 
-		sun.userData.position = getSunPosition( dateUTC, latitude, longitude );
+		sun.userData.position = getSunPosition( datePlace, latitude, longitude );
 
 		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sun.userData.position.azimuth, altitude: sun.userData.position.altitude };
 
@@ -399,9 +402,9 @@ Shadows displayed on a 2D map.
 
 		var baseURL, tileX, tileY, tileOffset, count;
 
-		placeMap.visible = chkMap.checked === true ? true : false ;
+//		placeMap.visible = chkMap.checked === true ? true : false ;
 
-		if ( chkMap.checked === false ) { return; }
+		if ( placeMap.visible === false ) { return; }
 
 		baseURL = mapTypes[ selMap.selectedIndex ][ 1 ];
 
@@ -805,7 +808,7 @@ Shadows displayed on a 2D map.
 
 				} else {
 
-					window.alert('No results found');
+					window.alert( 'No results found' );
 
 				}
 
@@ -854,14 +857,14 @@ Shadows displayed on a 2D map.
 
 	function getTimezone( fileName ) {
 
-		var xhr = new XMLHttpRequest();
+		var xhr;
+
+		xhr = new XMLHttpRequest();
 		xhr.open( 'GET', fileName, true );
-		xhr.onreadystatechange = callback;
+		xhr.onload = callback;
 		xhr.send( null );
 
 		function callback() {
-
-			if ( xhr.readyState !== 4  ) { return; }
 
 			timeZonePlace = JSON.parse( xhr.responseText );
 
@@ -886,7 +889,7 @@ Shadows displayed on a 2D map.
 
 			} else {
 
-				infoTime.innerHTML = 'the location is timeless';
+				infoTime.innerHTML = 'the location is timeless - probably in the middle of an ocean...';
 
 			}
 

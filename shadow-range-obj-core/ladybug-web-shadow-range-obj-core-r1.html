@@ -2,14 +2,14 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow OBJ Core R2</title>
+<title>Ladybug Web Shadow Range OBJ Core R1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Load OBJ and MTL files. Display Sun position and analemmas according to latitude, longitude, date and time.
 Uses location.hash to set a variety of parameters.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-22' >
+<meta name=date content='2016-05-23' >
 </head>
 <body>
 <!--
@@ -43,7 +43,7 @@ Uses location.hash to set a variety of parameters.
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/campfire/campfire.obj';
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/campfire/campfire.mtl';
 
-//	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#sx=50#sy=50#sz=50';
+	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#sx=50#sy=50#sz=50';
 
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/tparisi/WebGLBook/master/models/LampPost/LampPost.obj#la=33#lo=7#cx=-19#cy=4#cz=21#tx=3#ty=8'
 
@@ -53,8 +53,8 @@ Uses location.hash to set a variety of parameters.
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 
-	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
-		'#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
+//	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
+//		'#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
 //		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=1';
 
 	var fullFilePath, fileName;
@@ -68,11 +68,6 @@ Uses location.hash to set a variety of parameters.
 
 	pud.latitude = 37.796
 	pud.longitude = -122.398;
-
-// Paris
-	pud.latitude = 48.8566;
-	pud.longitude = 2.3522;
-
 	pud.sunlightIntensity = 0.85;
 
 	var dateUTC, dateThere;  // could be local
@@ -162,7 +157,8 @@ Uses location.hash to set a variety of parameters.
 
 		scene = new THREE.Scene();
 
-		initSunAndLight();
+		initLights();
+//		initSunAndLight();
 
 		onHashChange();
 
@@ -456,6 +452,8 @@ Uses location.hash to set a variety of parameters.
 
 			if ( timeZonePlace.status === 'OK' ) {
 
+				offsetPlace;
+
 				offsetPlace = timeZonePlace.rawOffset + timeZonePlace.dstOffset;
 
 				dateThere = new Date( dateUTC.getTime() + ( 1000 * offsetPlace ) );
@@ -483,11 +481,11 @@ Uses location.hash to set a variety of parameters.
 
 
 //
-
+/*
 	function initSunAndLight() {
 
 		var geometry, material, lightAmbient;
-		var d = 50;
+		var d = 100;
 
 		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
 		material = new THREE.MeshPhongMaterial( { color: 0xcccc00, emissive: 0xaaaaaa } );
@@ -521,6 +519,8 @@ Uses location.hash to set a variety of parameters.
 		scene.add( lightDirectionalHelper );
 
 	}
+*/
+
 
 	function updateSunPosition() {
 
@@ -555,7 +555,7 @@ Uses location.hash to set a variety of parameters.
 
 		var sunPosition, x, y, z;
 
-		sunPosition = getSunPosition( dateUTC, latitude - 90, longitude );
+		sunPosition = getSunPosition( dateUTC, latitude - 50, longitude );
 
 		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
 		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
@@ -568,6 +568,7 @@ Uses location.hash to set a variety of parameters.
 
 //
 
+/*
 	function drawAnalemma() {
 
 		var geometry, vertices, material, line;
@@ -650,7 +651,7 @@ Uses location.hash to set a variety of parameters.
 		sprite.position.set( x, y, z ) ;
 		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
 
-		placard.add( sprite /*,  line */ );
+		placard.add( sprite );
 
 		return placard;
 
@@ -702,6 +703,87 @@ Uses location.hash to set a variety of parameters.
 		}
 
 	}
+*/
+
+
+	function initLights() {
+
+		pud.size = 200;
+		pud.lightCount = 10;
+		pud.d = d = 50;
+
+//		var THREE = icw.THREE;
+//		var scene = icw.scene;
+//		var pud = icw.pud;
+//		var lightAmbient, lightDirectional;
+		var date, position;
+
+		pud.positions = [];
+
+		for ( var i = 0; i < pud.lightCount; i++ ) {
+
+			lightDirectional = new THREE.DirectionalLight( 0xffffff, 1 / ( 0.6 * pud.lightCount ) );
+
+			lightDirectional.shadow.camera.left = -d;
+			lightDirectional.shadow.camera.right = d;
+			lightDirectional.shadow.camera.top = d;
+			lightDirectional.shadow.camera.bottom = -d;
+
+			lightDirectional.shadow.camera.near = 0;
+			lightDirectional.shadow.camera.far = 5 * d;
+
+			lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+
+			lightDirectional.shadow.mapSize.width = 2048;  // default 512
+			lightDirectional.shadow.mapSize.height = 2048;
+
+			lightDirectional.castShadow = true;
+
+			date = new Date(  2016, 5, 20, i + 8, 0, 0  );
+
+//console.log( 'date', i, date.toLocaleTimeString() );
+
+			position = getSunPositionXYZ( 150, date, pud.latitude, pud.longitude  );
+
+//console.log( '', position );
+
+			lightDirectional.position.copy( position.xyz );
+			pud.positions.push( position );
+
+			scene.add( lightDirectional );
+//			lights.push( lightDirectional );
+
+			shadowHelper = new THREE.CameraHelper( lightDirectional.shadow.camera )
+			scene.add( shadowHelper );
+//			shadowHelpers.push( shadowHelper );
+
+
+
+		}
+
+		handleMessage( 'Added Suns' );
+
+//		icw.scene.name = 'hasLights';
+
+	}
+
+	function initGroundPlane( sx, sy, sz, px, py, pz ) {
+
+//		var THREE = icw.THREE;
+//		var scene = icw.scene;
+		var geometry, material;
+
+		geometry = new THREE.BoxGeometry( sx || 100, sy || 2, sz || 100 );
+		material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+		groundPlane = new THREE.Mesh( geometry, material );
+		groundPlane.receiveShadow = true;
+		groundPlane.position.set( px || 0, py || -3, pz || 0 );
+		scene.add( groundPlane );
+
+		edgesGPHelper = new THREE.EdgesHelper( groundPlane, 0x444444 );
+		scene.add( edgesGPHelper );
+
+	}
 
 //
 
@@ -709,11 +791,13 @@ Uses location.hash to set a variety of parameters.
 
 		if ( message === 'Added dateThere' ) {
 
-				updateSunPosition();
+				initGroundPlane();
 
-				drawAnalemma();
+//				updateSunPosition();
 
-		} else if ( message === 'Added Sun' ) {
+//				drawAnalemma();
+
+		} else if ( message === 'Added Suns' ) {
 
 			parent.getCoreParameters( message );
 
@@ -728,6 +812,23 @@ Uses location.hash to set a variety of parameters.
 	function getCoreParameters( message) {
 
 console.log( 'message: ', message );
+
+		if ( message === 'Added Suns' ) {
+
+			txt = '';
+
+			for ( var i = 0; i < pud.lightCount; i++ ) {
+
+				txt += ( i + 8 ) +
+					' azimuth: ' + pud.positions[ i ].azimuth.toFixed() + ' - ' +
+					'altitude: ' + pud.positions[ i ].altitude.toFixed() + '<br>' +
+				'';
+
+			}
+
+			handleMessage( txt, parent.coreSunInfo );
+
+		}
 
 	}
 

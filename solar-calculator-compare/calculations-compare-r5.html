@@ -2,11 +2,11 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Calculations Compare R5.1</title>
+<title>Calculations Compare R5.2</title>
 
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
-<meta name=description content='Compares output from Ladybug Web Solar Calculator, NOAA, Agafonkin and Bostock sun positions' >
-<meta name=keywords content='Ladybug Web,NOAA,Vladimir Agafonkin,Mike Bostock,JavaScript,GitHub,FOSS,STEM' >
+<meta name=description content='Compares output from Ladybug Web Solar Calculator, NOAA, Bostock and Agafonkin sun positions' >
+<meta name=keywords content='Ladybug Web,Solar Calculator,NOAA,Mike Bostock,JVladimir Agafonkin,JavaScript,GitHub,FOSS,STEM' >
 <meta name=date content='2016-05-20' >
 </head>
 <body>
@@ -33,8 +33,8 @@
 	var longitude = -122.398;
 
 // Paris
-	var latitude = 48.8566;
-	var longitude = 2.3522;
+//	var latitude = 48.8566;
+//	var longitude = 2.3522;
 
 //	var pi = Math.PI;
 //	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
@@ -65,7 +65,7 @@
 				'<a href="" >' + document.title + '</a>' +
 				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md > &#x24D8; </a>' +
 			'</h1>' +
-			'<p><i>Compare Sun positions reported by four scripts given location, date and time</i></p>' +
+			'<p><i>Compare Sun positions reported by four scripts given location, date and time at you location</i></p>' +
 
 			'<h2>Input</h2>' +
 
@@ -80,7 +80,7 @@
 				'<button onclick=offset="";latitude=-33.8650;longitude=151.2094;updateSunPosition(); >Sydney</button>' +
 			'</p>' +
 
-			'<p>Latitude <input type=number id=inpLatitude > Longitude <input type=number id=inpLongitude ></p>' +
+			'<p>Latitude <input id=inpLatitude > Longitude <input id=inpLongitude ></p>' +
 			'<p>Year <input type=number id=inpYear > Month <input type=number id=inpMonth > Day <input type=number id=inpDate ></p>' +
 			'<p>Hour <input type=number id=inpHours > Minutes <input type=number id=inpMinutes > Seconds  <input type=number id=inpSeconds > ' +
 				'Timezone offset <input type=number id=inpTimezone ></p>' +
@@ -91,9 +91,7 @@
 			'<div id=agafonkinSunCalc ></div>' +
 		'';
 
-		inpLatitude.value = latitude;
-		inpLongitude.value = longitude;
-
+console.log( '', inpLatitude.valueAsNumber, latitude );
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/
 
 		date = new Date();
@@ -105,9 +103,10 @@
 		inpSeconds.value = date.getSeconds();
 		inpTimezone.value = date.getTimezoneOffset();
 
-		inpLatitude.onchange = inpLongitude.onchange = updateSunPosition = updateSunPosition; 
+		inpLatitude.onchange = inpLongitude.onchange = updateSunPosition; 
 		inpYear.onchange = inpMonth.onchange = inpDate.onchange = updateSunPosition;
 		inpHours.onchange = inpMinutes.onchange = inpTimezone.onchange = updateSunPosition;
+
 
 		updateSunPosition();
 
@@ -116,13 +115,12 @@
 
 	function updateSunPosition() {
 
-		var date, latitude, longitude, julianDay, julianCentury, localTime, timezone, sunPosition, b;
+		var date, julianDay, julianCentury, localTime, timezone, sunPosition, b;
 
 		date = new Date( inpYear.value, inpMonth.value - 1, inpDate.value, inpHours.value - 1, inpMinutes.value, inpSeconds.value );
 
-		latitude = inpLatitude.value;
-		longitude = inpLongitude.value;
-
+		inpLatitude.value = latitude;
+		inpLongitude.value = longitude;
 
 // Ladybug Web NOAA
 

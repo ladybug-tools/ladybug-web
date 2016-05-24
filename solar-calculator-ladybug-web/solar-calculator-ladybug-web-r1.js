@@ -12,7 +12,9 @@
 
 	function getSunPosition( date, latitude, longitude ) {
 
-//		var century, now;
+// date is a JavaScript Date object
+
+		var century, now;
 
 		var azimuth, zenith, azimuthDenominator, atmosphere;
 
@@ -40,7 +42,7 @@
 
 // now for twenty lines of nearly impenetrable code   ;-(
 
-		azimuth = ( (date - dateLastMidnightLocal ) / 864e5 * pi2 + equationOfTime( century ) + longitude * d2r ) % pi2 - pi;
+		azimuth = ( ( date - dateLastMidnightLocal ) / 864e5 * pi2 + equationOfTime( century ) + longitude * d2r ) % pi2 - pi;
 
 		zenith = Math.acos( Math.max( -1, Math.min( 1, sinPhi * sinTheta + cosPhi * cosTheta * Math.cos( azimuth ) ) ) );
 

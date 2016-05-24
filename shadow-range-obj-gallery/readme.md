@@ -1,6 +1,6 @@
 ﻿
 <span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj/index.html#readme.md "View file as a web page." ) </span>
+( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/index.html#readme.md "View file as a web page." ) </span>
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-range-obj/'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
@@ -10,7 +10,7 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Web Shadow Range OBJ Gallery Read Me]( index.html#readme.md )
 ===
 
-## full screen: [Ladybug Web Shadow Range OBJ Gallery]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj/ )
+## full screen: [Ladybug Web Shadow Range OBJ Gallery]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ )
 
 
 
@@ -22,6 +22,11 @@ value='You are now in the home page view - Click this button to view the read me
 
 
 ## Change Log
+
+### 2016-05-23
+
+* Streamlining messaging
+* Clean up
 
 ### 2016-05-22 / R1.2
 

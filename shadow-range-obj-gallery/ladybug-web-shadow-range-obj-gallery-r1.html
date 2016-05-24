@@ -19,7 +19,7 @@ according to latitude, longitude, date and time.
 
 //	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
 
-	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#la=22#lo=5#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23';
+	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#la=33.5731#lo=7.5859#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23';
 
 	var icw;
 
@@ -109,7 +109,7 @@ according to latitude, longitude, date and time.
 
 	function onHashChange() {
 
-		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : defaultFile;
+		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : ''; //defaultFile;
 
 		contents.innerHTML = '<iframe id=ifr src=' + core + '#' + fullFilePath + ' scrolling="no" ></iframe>';
 
@@ -150,14 +150,18 @@ according to latitude, longitude, date and time.
 
 	}
 
-	function addLights() {
+	function initLights() {
 
 		var size = 200;
-		var lightAmbient, lightDirectional, lightPoint;
+
+		var THREE = icw.THREE;
+		var scene = icw.scene;
+		var lightAmbient, lightDirectional;
+		var date, position;
 
 		for ( var i = 0; i < lightsCount; i++ ) {
 
-			lightDirectional = new icw.THREE.DirectionalLight( 0xffffff, 1 / ( 0.25 * lightsCount ) );
+			lightDirectional = new THREE.DirectionalLight( 0xffffff, 1 / ( 0.25 * lightsCount ) );
 
 			lightDirectional.shadow.camera.scale.multiplyScalar( 15 );
 
@@ -181,13 +185,13 @@ according to latitude, longitude, date and time.
 			icw.scene.add( lightDirectional );
 //			lights.push( lightDirectional );
 
-			shadowHelper = new icw.THREE.CameraHelper( lightDirectional.shadow.camera )
-			icw.scene.add( shadowHelper );
+			shadowHelper = new THREE.CameraHelper( lightDirectional.shadow.camera )
+			scene.add( shadowHelper );
 //			shadowHelpers.push( shadowHelper );
 
 		}
 
-		icw.scene.name = 'hasLights';
+//		icw.scene.name = 'hasLights';
 
 	}
 
@@ -221,13 +225,57 @@ according to latitude, longitude, date and time.
 
 	}
 
+	function initGroundPlane( sx, sy, sz, px, py, pz ) {
+
+		var THREE = icw.THREE;
+		var scene = icw.scene;
+		var geometry, material;
+
+		geometry = new THREE.BoxGeometry( sx || 100, sy || 2, sz || 100 );
+		material = new THREE.MeshPhongMaterial();
+		groundPlane = new THREE.Mesh( geometry, material );
+		groundPlane.receiveShadow = true;
+		groundPlane.position.set( px || 0, py || -3, pz || 0 );
+		scene.add( groundPlane );
+
+		edgesGPHelper = new THREE.EdgesHelper( groundPlane, 0x444444 );
+		scene.add( edgesGPHelper );
+
+	}
+
+	function initNorthPoint( x, y, z, scale ) {
+
+		var THREE = icw.THREE;
+		var scene = icw.scene;
+		var geometry, material;
+
+		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
+		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
+		geometry.merge( new THREE.CylinderGeometry( 12, 0, 20, 3 ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - Math.PI ) );
+
+		material = new THREE.MeshNormalMaterial();
+
+		northPoint = new THREE.Mesh( geometry, material );
+		northPoint.scale.multiplyScalar( scale || 0.5 );
+		northPoint.position.set( x || 50, y || -12, z || 25 );
+
+		icw.scene.add( northPoint );
+
+	}
+
 	function getCoreParameters( message, target ) {
 
 console.log( 'getCoreParameters', message, target );
 
 		if ( !icw.model ) { 
 
-			addLights();
+			initLights();
+
+			initGroundPlane();
+
+			initNorthPoint();
 
 		} 
 
