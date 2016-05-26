@@ -33,7 +33,7 @@ Shadows displayed on a 2D map.
 
 <script>
 
-//	var places, place;
+	var places, place;
 
 	var latitude;
 	var longitude;
@@ -65,6 +65,7 @@ Shadows displayed on a 2D map.
 		];
 
 	var timeZoneThere, offsetThere, utcZero;
+	var dateUTC, dateThere;
 
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
@@ -91,7 +92,7 @@ Shadows displayed on a 2D map.
 
 	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
-//	var v = new THREE.Vector3;
+	var v = new THREE.Vector3;
 
 	var stats, renderer, scene, camera, controls;
 
@@ -177,7 +178,7 @@ Shadows displayed on a 2D map.
 				'<p>' +
 					'Analemma Scale<br><input type=range id=inpAnalemma max=2 min=0.05 step=0.05 value=1 oninput=outAnalemma.value=this.value;analemma.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
 						'<output id=outAnalemma >' + analemmaScale + '</output><br>' +
-					'Object Scale<br><input type=range id=inpObject min=0.05 max=2 step=0.05 value=1 oninput=outObject.value=this.value;trylonPerisphere.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
+					'Object Scele<br><input type=range id=inpObject min=0.05 max=2 step=0.05 value=1 oninput=outObject.value=this.value;trylonPerisphere.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
 						'<output id=outObject >' + objectScale + '</output>' +
 				'</p>' +
 
@@ -455,8 +456,6 @@ Shadows displayed on a 2D map.
 		origin_autocomplete.bindTo( 'bounds', map );
 
 		origin_autocomplete.addListener('place_changed', function() {
-
-			var place;
 
 			place = origin_autocomplete.getPlace();
 
@@ -741,7 +740,7 @@ Shadows displayed on a 2D map.
 		var year, month, date, hours, hour;
 		var geometry, vertices, material, line;
 		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
-		var dateUTC, sunBandPosition;
+		var sunBandPosition;
 
 		scene.remove( analemma );
 		analemma = new THREE.Object3D();
@@ -804,11 +803,22 @@ Shadows displayed on a 2D map.
 
 		scene.add( analemma );
 
+// fix this!!!!
 
-		dateUTC = new Date( Date.UTC( year, 5, 21, 12 - timeZoneThere.rawOffset / 3600, 0, 0 ) );  // vernal equinox
+		dateUTC = new Date( Date.UTC( year, 5, 21, 12 - offsetThere + 1, 0, 0 ) );  // vernal equinox
+
+//		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetThere + 1 );
 
 		sunBandPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
 
+
+//		dateUTC = new Date( utcZero );
+
+//		sun.userData.position = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
+
+console.log( 'sunBandPosition ', sunBandPosition.altitude );
+
+//		var decl = latitude > 0 ? declination - pi05 : ;
 		sunBand.rotation.x = sunBandPosition.altitude * d2r + declination - pi05;
 
 	}

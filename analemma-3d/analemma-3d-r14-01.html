@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R14.1</title>
+<title>Analemma 3D R14</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
@@ -27,13 +27,16 @@ Shadows displayed on a 2D map.
 <!--
 <script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
 <script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script>
+
+
 <script src= ../solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 -->
+
 <script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
 
-//	var places, place;
+	var places, place;
 
 	var latitude;
 	var longitude;
@@ -50,22 +53,9 @@ Shadows displayed on a 2D map.
 //	var latDefault = -35.6751;
 //	var lonDefault = -71.5430;
 
-	var mapTypes = [
-
-			['Google Maps','https://mt1.google.com/vt/x='],
-			['Google Maps Terrain','https://mt1.google.com/vt/lyrs=t&x='],
-			['Google Maps Satellite','https://mt1.google.com/vt/lyrs=s&x='],
-			['Google Maps Hybrid','https://mt1.google.com/vt/lyrs=y&x='],
-			['Open Street Map','https://tile.openstreetmap.org/'],
-			['Open Cycle Map', 'https://tile.opencyclemap.org/cycle/'],
-			['MapQuest OSM', 'https://otile3.mqcdn.com/tiles/1.0.0/osm/'],
-			['MapQuest Satellite', 'https://otile3.mqcdn.com/tiles/1.0.0/sat/'],
-			['Stamen terrain background','https://tile.stamen.com/terrain-background/']
-
-		];
-
-	var timeZoneThere, offsetThere, utcZero;
-
+	var dateHere, dateUTC, remoteTime;
+	var timeZonePlace;
+	var offset, offsetThere;
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
 	var analemma
@@ -76,8 +66,7 @@ Shadows displayed on a 2D map.
 	var sun, sunBand;
 	var declination = 23.439281 * d2r;
 
-	var placeMap, gridHelper, axisHelper;
-	var placeMapCanvas, placeMapContext;
+	var placeMap, placeMapCanvas, placeMapContext;
 
 	var map, mapCenter, geocoder, infoWindow;
 	var zoom = 14;
@@ -91,7 +80,7 @@ Shadows displayed on a 2D map.
 
 	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
-//	var v = new THREE.Vector3;
+	var v = new THREE.Vector3;
 
 	var stats, renderer, scene, camera, controls;
 
@@ -100,6 +89,7 @@ Shadows displayed on a 2D map.
 
 	function init() {
 
+		var geometry, material, mesh;
 		var css, contents, hamburger, menu;
 
 		css = document.head.appendChild( document.createElement( 'style' ) );
@@ -145,8 +135,8 @@ Shadows displayed on a 2D map.
 			'<details open>' +
 				'<summary><h3>Place</h3></summary>' +
 
-				'<p>Latitude &nbsp;<input id=inpLatitude placeholder=' + latDefault + ' onchange=setCenter(); size=10 ></p>' +
-				'<p>Longitude <input id=inpLongitude placeholder=' + lonDefault + ' onchange=setCenter(); size=10 ></p>' +
+				'<p>Latitude &nbsp;<input id=inpLatitude placeholder=' + latDefault + ' onchange=updateCenter(); size=10 ></p>' +
+				'<p>Longitude <input id=inpLongitude placeholder=' + lonDefault + ' onchange=updateCenter(); size=10 ></p>' +
 				'<div id=messagePlace class=warning ></div>' +
 				'<p><input id=inpAddress placeholder=' + placeDefault + ' onchange=geocodeAddress(geocoder,map); style=width:100%; >' +
 
@@ -177,7 +167,7 @@ Shadows displayed on a 2D map.
 				'<p>' +
 					'Analemma Scale<br><input type=range id=inpAnalemma max=2 min=0.05 step=0.05 value=1 oninput=outAnalemma.value=this.value;analemma.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
 						'<output id=outAnalemma >' + analemmaScale + '</output><br>' +
-					'Object Scale<br><input type=range id=inpObject min=0.05 max=2 step=0.05 value=1 oninput=outObject.value=this.value;trylonPerisphere.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
+					'Object Scele<br><input type=range id=inpObject min=0.05 max=2 step=0.05 value=1 oninput=outObject.value=this.value;trylonPerisphere.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
 						'<output id=outObject >' + objectScale + '</output>' +
 				'</p>' +
 
@@ -197,7 +187,7 @@ Shadows displayed on a 2D map.
 			'</details>' +
 
 			'<details open >' +
-				'<summary><h3>Date & Time There</h3></summary>' +
+				'<summary><h3>Local Time</h3></summary>' +
 				'<p id=menuDates ></p>' +
 			'</details>' +
 			'<hr>' +
@@ -205,22 +195,11 @@ Shadows displayed on a 2D map.
 
 		'';
 
-		for ( var i = 0; i < mapTypes.length; i++ ) {
-
-			selMap.appendChild( document.createElement( 'option' ) );
-			selMap.children[ i ].text = mapTypes[ i ][ 0 ];
-
-		}
-
-		selMap.selectedIndex = 0;
-
 		stats = new Stats();
 		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0; z-index: 100;' ;
 		document.body.appendChild( stats.domElement );
 
 		window.addEventListener( 'resize', onWindowResize, false );
-
-// 
 
 		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
 //		renderer.setPixelRatio( window.devicePixelRatio ); // for iOS?
@@ -233,7 +212,7 @@ Shadows displayed on a 2D map.
 
 		document.body.appendChild( renderer.domElement );
 
-		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
 		camera.position.set( 0, 80, 120 );
 
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -241,28 +220,10 @@ Shadows displayed on a 2D map.
 
 		scene = new THREE.Scene();
 
-		initHelpers();
+		lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
+		scene.add( lightAmbient );
 
-		initMapOverlays();
-
-		initSunAndLight();
-
-		initSunBand();
-
-		initNorthPoint();
-
-		initTrylonPerisphere();
-
-// OK, where's the action?
-
-		initPositioning();
-
-	}
-
-
-	function initHelpers() {
-
-		var geometry, material, mesh;
+// helpers
 
 		geometry = new THREE.PlaneBufferGeometry( 150, 150 );
 		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
@@ -278,398 +239,126 @@ Shadows displayed on a 2D map.
 		axisHelper = new THREE.AxisHelper( 75 );
 		scene.add( axisHelper );
 
-	}
+// assets
 
-	function initMapOverlays() {
+		initMapOverlays();
 
-		placeMapCanvas = document.createElement( 'canvas' );
-		placeMapCanvas.width = placeMapCanvas.height = pixelsPerTile * tilesPerSide;
-//		document.body.appendChild( placeMapCanvas );  // for debug
-		placeMapCanvas.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:-10;';
-		placeMapContext = placeMapCanvas.getContext( '2d' );
+		initSunAndLight();
 
-	}
+		initSunPath();
 
-	function initSunAndLight() {
+		initNorthPoint();
 
-		var geometry, material;
-		var lightAmbient, lightDirectional;
+		initTrylonPerisphere();
 
-		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
-		material = new THREE.MeshPhongMaterial( { color: 0xffff00, emissive: 0x333333 } );
-		sun = new THREE.Mesh( geometry, material );
-		scene.add( sun );
+// OK, where's the action?
 
-		lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
-		scene.add( lightAmbient );
-
-		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
-//		lightDirectional.position.set( -100, 100, 100 );
-		size = 100;
-		var d = size;
-		lightDirectional.shadow.camera.left = -d;
-		lightDirectional.shadow.camera.right = d;
-		lightDirectional.shadow.camera.top = d;
-		lightDirectional.shadow.camera.bottom = -d;
-
-		lightDirectional.shadow.camera.near = 0;
-		lightDirectional.shadow.camera.far = 2 * size;
-
-		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
-
-		lightDirectional.shadow.mapSize.width = 2048;  // default 512
-		lightDirectional.shadow.mapSize.height = 2048;
-
-		lightDirectional.castShadow = true;
-		sun.add( lightDirectional );
-
-//		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+		initPositioning();
 
 	}
 
-	function initSunBand() {
 
-		var geometry, material, color = 0xffff00;
+// draw, add or update the Three.js things
 
-		geometry = new THREE.SphereBufferGeometry( analemmaRadius, 50, 25, 0, pi2, pi05 - declination, 2 * declination );
-		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.05, side: 2, transparent: true });
-		sunBand = new THREE.Mesh( geometry, material );
+	function getSunPositionXYZ( radius, remoteTime, latitude, longitude ) {
 
-		scene.add( sunBand );
+		var sunPosition, x, y, z;
 
-	}
+		sunPosition = getSunPosition( remoteTime, latitude - 90, longitude );
 
-	function initNorthPoint() {
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
 
-		var geometry, material;
+		sun.userData.position = getSunPosition( remoteTime, latitude, longitude );
 
-		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
-		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
-		geometry.merge( new THREE.CylinderGeometry( 12, 0, 20, 3 ) );
-		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * pi ) );
-		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - pi ) );
-		material = new THREE.MeshNormalMaterial();
-		northPoint = new THREE.Mesh( geometry, material );
-		northPoint.scale.multiplyScalar( 0.5 );
-		northPoint.position.set( 50, -12, 25 );
-		scene.add( northPoint );
-
-	}
-
-	function initTrylonPerisphere() {
-
-// https://en.wikipedia.org/wiki/Trylon_and_Perisphere
-
-		var geometry, material, mesh;
-
-		trylonPerisphere = new THREE.Object3D();
-		trylonPerisphere.name = 'trylonPerisphere';
-
-// Perisphere
-		geometry = new THREE.SphereGeometry( 25, 50, 50 );
-		material = new THREE.MeshPhongMaterial( {
-			color: 0xffffff * Math.random(),
-			specular: 0xffffff * Math.random(),
-			shininess: 10
-		} );
-		mesh = new THREE.Mesh( geometry, material );
-		mesh.position.set( 0, 20, 0 );
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
-
-		trylonPerisphere.add( mesh );
-
-// Trylon
-		geometry = new THREE.CylinderGeometry( 0, 8, 100, 3 );
-		material = new THREE.MeshPhongMaterial( {
-			color: 0xffffff * Math.random(),
-			specular: 0xffffff * Math.random(),
-			shininess: 1
-		} );
-
-		mesh = new THREE.Mesh( geometry, material );
-		mesh.position.set( -15, 50, -30 );
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
-
-		trylonPerisphere.add( mesh );
-
-		trylonPerisphere.scale.set( 0.4, 0.4, 0.4 );
-
-		scene.add( trylonPerisphere );
-
-	}
-
-	function initPositioning() {
-
-		map = new google.maps.Map( contents, {
-
-			center: { lat: latDefault, lng: lonDefault },
-			zoom: zoom,
-			mapTypeControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT }
-
-		});
-
-		geocoder = new google.maps.Geocoder;
-		infoWindow = new google.maps.InfoWindow( { map: map } );
-
-		if ( window.self === window.top && navigator.geolocation ) {
-
-			navigator.geolocation.getCurrentPosition( function( position ) {
-
-				mapCenter = {
-
-					lat: position.coords.latitude,
-					lng: position.coords.longitude
-
-				};
-
-				infoWindow.setPosition( mapCenter );
-				infoWindow.setContent( 'Location found<br>latitude: ' + position.coords.latitude.toFixed( 3 ) + '<br>' +
-				'longitude: ' + position.coords.longitude.toFixed( 3 ) );
-
-				latitude = inpLatitude.value = position.coords.latitude;
-				longitude = inpLongitude.value = position.coords.longitude;
-
-				map.setCenter( mapCenter );
-
-				geocodeLatLng();
-
-				getDateOffsetThere();
-
-			}, function() {
-
-				handleLocationError( true, infoWindow, map.getCenter() );
-
-			});
-
-		} else {
-
-// Browser doesn't support Geolocation
-
-			handleLocationError( false, infoWindow, map.getCenter() );
-
-		}
-
-		origin_autocomplete = new google.maps.places.Autocomplete( inpAddress );
-		origin_autocomplete.bindTo( 'bounds', map );
-
-		origin_autocomplete.addListener('place_changed', function() {
-
-			var place;
-
-			place = origin_autocomplete.getPlace();
-
-			if ( place.geometry ) {
-
-				mapCenter = place.geometry.location;
-				map.setCenter( mapCenter );
-
-				latitude = inpLatitude.value = mapCenter.lat();
-				longitude = inpLongitude.value = mapCenter.lng();
-
-				getDateOffsetThere();
-
-				messagePlace.innerHTML = '';
-
-			} else {
-
-				messagePlace.innerHTML = 'Select a location from the list';
-
-			}
-
-		} );
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sun.userData.position.azimuth, altitude: sun.userData.position.altitude };
 
 	}
 
 
-// Location
+	function drawAnalemma() {
 
-	function setCenter() {
+		var geometry, vertices, material, line;
+		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
+		var sunPosition;
 
-		mapCenter = { lat: parseFloat( inpLatitude.value ), lng: parseFloat( inpLongitude.value ) };
+		scene.remove( analemma );
 
-		map.setCenter( mapCenter );
+		analemma = new THREE.Object3D();
 
-		zoom = inpZoom.valueAsNumber
+//		offsetHours = offsetThere / 3600;
 
-		map.setZoom( zoom );
+		for ( var hours = 0; hours < 24; hours++ ) {
 
-		geocodeLatLng();
+			geometry = new THREE.Geometry();
+			vertices = geometry.vertices;
 
-		messagePlace.innerHTML = 'Click & Select location from list';
+			for ( var month = 0; month < 12; month++ ) {
 
-	}
+				for ( var date = 1; date < daysOfMonth[ month ]; date++ ) {
 
-	function geocodeLatLng() {
+					analemmaDateUTC = new Date( Date.UTC( 2016, month, date, hours - offsetThere, 0, 0 ) );
+//					analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetThere );
+					analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
 
-		geocoder.geocode( { 'location': mapCenter }, function( results, status ) {
-
-			if ( status === google.maps.GeocoderStatus.OK ) {
-
-				if ( results[ 1 ] ) {
-
-					inpAddress.value = results[1].formatted_address;
-//					infoWindow.open( map, marker );
-
-
-				} else {
-
-					window.alert( 'No results found' );
+					vertices.push( analemmaSunPosition.xyz );
 
 				}
 
-			} else {
-
-				window.alert( 'Geocoder failed due to: ' + status );
-
 			}
 
-		});
+			analemmaColor = hours === 0 ? 0xff0000 : 0x000000;
+			analemmaColor = hours === 12 ? 0x00ff00 : analemmaColor;
 
-	}
+			material = new THREE.LineBasicMaterial( { color: analemmaColor } );
+			line = new THREE.Line( geometry, material );
+			analemma.add( line );
 
-	function handleLocationError( browserHasGeolocation, infoWindow, pos ) {
-
-		var message;
-
-		infoWindow.setPosition( pos );
-
-		message = browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t allow geolocation.' ;
-
-		infoWindow.setContent( message );
-		messagePlace.innerHTML = message;
-
-		latitude = inpLatitude.value = pos.lat();
-		longitude = inpLongitude.value = pos.lng();
-
-		getDateOffsetThere();
-
-	}
-
-
-// Date & Time
-
-	function getDateOffsetThere() {
-
-		var dateHere, offsetHere, timestamp, request;
-
-		dateHere = new Date();
-
-		offsetHere = dateHere.getTimezoneOffset();
-
-		utcZero = dateHere.getTime() + offsetHere * 60000;
-
-		timestamp = utcZero / 1000;
-
-		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + latitude + ',' + longitude + '&timestamp=' + timestamp;
-
-		requestTimeZoneThere( request );
-
-	}
-
-	function requestTimeZoneThere( url ) {
-
-		var xhr;
-
-		xhr = new XMLHttpRequest();
-		xhr.open( 'GET', url, true );
-		xhr.onload = callback;
-		xhr.send( null );
-
-		function callback() {
-
-			timeZoneThere = JSON.parse( xhr.responseText );
-
-			if ( timeZoneThere.status === 'OK' ) {
-
-				offsetThere = ( timeZoneThere.rawOffset + timeZoneThere.dstOffset ) /  3600;
-
-				setDateThereNow()
-
-			} else {
-
-				menuDates.innerHTML = 'the location is timeless - probably in the middle of an ocean...';
-
-			}
+			placard = drawPlacard( '' + hours, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
+			analemma.add( placard );
 
 		}
 
-	}
+		material = new THREE.LineBasicMaterial( { color: 0xbbbbbb } );
 
-	function setDateThereNow() {
+		for ( var month = 5; month < 12; month++ ) {
 
-		var dateThereNow;
+			geometry = new THREE.Geometry();
+			vertices = geometry.vertices;
 
-		dateThereNow = new Date( utcZero + 3600000 * offsetThere );
+			for ( var hours = 0; hours < 24; hours++ ) {
 
-		drawAnalemma();
+				analemmaDateUTC = new Date( Date.UTC( 2016, month, 21, hours - offsetThere, 0, 0 ) );
+//				analemmaDateUTC.setUTCHours( analemmaDateUTC.getUTCHours() - offsetThere );
+				analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
 
-		drawMapOverlay();
+				vertices.push( analemmaSunPosition.xyz );
 
-		inpMonth.valueAsNumber = dateThereNow.getMonth();
-		inpDate.valueAsNumber = dateThereNow.getDate();
-		inpHours.value = dateThereNow.getHours();
-		inpMinutes.value = dateThereNow.getMinutes();
+			}
 
-		setDateThere();
+			vertices.push( vertices[ 0 ] );
 
-	}
+			line = new THREE.Line( geometry, material );
+			analemma.add( line );
 
-	function setDateThere() {
+		}
 
-		var date, dateThere;
-		var year, month, day, hours, minutes;
+		scene.add( analemma );
 
-		date = new Date( utcZero + 3600000 * offsetThere );
 
-		year = document.getElementById( 'inpYear' ) ? inpYear.valueAsNumber : date.getFullYear();
-		month = document.getElementById( 'inpMonth' ) ? inpMonth.valueAsNumber : date.getMonth();
-		day = document.getElementById( 'inpDate' ) ? inpDate.valueAsNumber : date.getDate();
-		hours = document.getElementById( 'inpHours' ) ? inpHours.valueAsNumber: date.getHours();
-		minutes = document.getElementById( 'inpMinutes' ) ? inpMinutes.valueAsNumber: date.getMinutes();
+		dateUTC = new Date( Date.UTC( 2016, 5, 21, 12 - offsetThere, 0, 0 ) );  // vernal equinox
+		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetThere );
 
-		dateThere = new Date( Date.UTC( year, month, day, hours - offsetThere, minutes, date.getSeconds() ) );
+		sunPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
 
-		sun.userData.position = getSunPositionXYZ( analemmaRadius, dateThere, latitude, longitude );
-		sun.position.copy( sun.userData.position.xyz );
+ console.log( 'sunPosition ', sunPosition.altitude + 23.439281 );
 
-		setContentsDates();
+		decl = latitude > 0 ? 2 * declination : declination;
+		sunBand.rotation.x = sunPosition.altitude * d2r + decl;
 
 	}
 
-	function setContentsDates() {
-
-		var dateUTCZero, dateThere;
-
-		dateUTCZero = new Date ( utcZero );
-		dateThere = new Date( utcZero + 3600000 * offsetThere  ) ;
-
-		menuDates.innerHTML =
-
-			'<p>latitude:' + latitude.toFixed(3) + ' longitude:' + longitude.toFixed(3) + '</p>' +
-			'<p>Time Zone ID: ' + timeZoneThere.timeZoneId + '</p>' +
-			'<p>Time zone: ' + timeZoneThere.timeZoneName + '</p>' +
-			'<p>Offset in hours: ' + offsetThere + '</p>' +
-			'<p>Raw offset in minutes: ' + timeZoneThere.rawOffset + '</p>' +
-			'<p>Daylight saving offset in minutes: ' + timeZoneThere.dstOffset + '</p>' +
-			'<p>Date and time there is:<br>' + dateThere.toLocaleString() + '</p>' +
-			'<hr>' +
-			'<p title="GMT" >UTC time at 0&deg; longitude: ' +
-				( "0" + dateUTCZero.getHours() ).slice( - 2 ) + ':' + ( "0" + dateUTCZero.getMinutes() ).slice( - 2 ) + '</p>' +
-			'<p title= "number of milliseconds since 1 January, 1970" >UTC: ' + dateThere.getTime() + '</p>' +
-
-		'';
-
-		outMonth.value = inpMonth.valueAsNumber + 1;
-		outDate.value = inpDate.value;
-		outHours.value = ( '0' + inpHours.value ).slice( -2 );
-		outMinutes.value = ( '0' + inpMinutes.value ).slice( -2 );
-
-	}
-
-
-// Three.js
 
 	function drawMapOverlay() {
 
@@ -736,82 +425,153 @@ Shadows displayed on a 2D map.
 
 	}
 
-	function drawAnalemma() {
 
-		var year, month, date, hours, hour;
-		var geometry, vertices, material, line;
-		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
-		var dateUTC, sunBandPosition;
+// init functions
 
-		scene.remove( analemma );
-		analemma = new THREE.Object3D();
+	function initMapOverlays() {
 
-		year = ( new Date() ).getUTCFullYear();
+		placeMapCanvas = document.createElement( 'canvas' );
+		placeMapCanvas.width = placeMapCanvas.height = pixelsPerTile * tilesPerSide;
+//		document.body.appendChild( placeMapCanvas );  // for debug
+		placeMapCanvas.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:-10;';
+		placeMapContext = placeMapCanvas.getContext( '2d' );
 
-		for ( hours = 0; hours < 24; hours++ ) {
+		mapTypes = [
 
-			geometry = new THREE.Geometry();
-			vertices = geometry.vertices;
-			hour = hours - offsetThere;
+			['Google Maps','https://mt1.google.com/vt/x='],
+			['Google Maps Terrain','https://mt1.google.com/vt/lyrs=t&x='],
+			['Google Maps Satellite','https://mt1.google.com/vt/lyrs=s&x='],
+			['Google Maps Hybrid','https://mt1.google.com/vt/lyrs=y&x='],
+			['Open Street Map','https://tile.openstreetmap.org/'],
+			['Open Cycle Map', 'https://tile.opencyclemap.org/cycle/'],
+			['MapQuest OSM', 'https://otile3.mqcdn.com/tiles/1.0.0/osm/'],
+			['MapQuest Satellite', 'https://otile3.mqcdn.com/tiles/1.0.0/sat/'],
+			['Stamen terrain background','https://tile.stamen.com/terrain-background/']
 
-			for ( month = 0; month < 12; month++ ) {
+		];
 
-				for ( date = 1; date < daysOfMonth[ month ]; date++ ) {
+		for ( var i = 0; i < mapTypes.length; i++ ) {
 
-					analemmaDateUTC = new Date( Date.UTC( year, month, date, hour, 0, 0 ) );
-					analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
-
-					vertices.push( analemmaSunPosition.xyz );
-
-				}
-
-			}
-
-			analemmaColor = hours === 0 ? 0xff0000 : 0x000000;
-			analemmaColor = hours === 12 ? 0x00ff00 : analemmaColor;
-
-			material = new THREE.LineBasicMaterial( { color: analemmaColor } );
-			line = new THREE.Line( geometry, material );
-			analemma.add( line );
-
-			placard = drawPlacard( '' + hours, 0.05, 120, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
-			analemma.add( placard );
+			selMap.appendChild( document.createElement( 'option' ) );
+			selMap.children[ i ].text = mapTypes[ i ][ 0 ];
 
 		}
 
-		material = new THREE.LineBasicMaterial( { color: 0xbbbbbb } );
-
-		for ( month = 5; month < 12; month++ ) {
-
-			geometry = new THREE.Geometry();
-			vertices = geometry.vertices;
-
-			for ( hours = 0; hours < 24; hours++ ) {
-
-				analemmaDateUTC = new Date( Date.UTC( year, month, 21, hours, 0, 0 ) );
-				analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
-
-				vertices.push( analemmaSunPosition.xyz );
-
-			}
-
-			vertices.push( vertices[ 0 ] );
-
-			line = new THREE.Line( geometry, material );
-			analemma.add( line );
-
-		}
-
-		scene.add( analemma );
-
-
-		dateUTC = new Date( Date.UTC( year, 5, 21, 12 - timeZoneThere.rawOffset / 3600, 0, 0 ) );  // vernal equinox
-
-		sunBandPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
-
-		sunBand.rotation.x = sunBandPosition.altitude * d2r + declination - pi05;
+		selMap.selectedIndex = 0;
 
 	}
+
+	function initSunAndLight() {
+
+		var geometry, material;
+
+		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
+		material = new THREE.MeshPhongMaterial( { color: 0xffff00, emissive: 0x333333 } );
+		sun = new THREE.Mesh( geometry, material );
+		scene.add( sun );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+//		lightDirectional.position.set( -100, 100, 100 );
+		size = 100;
+		var d = size;
+		lightDirectional.shadow.camera.left = -d;
+		lightDirectional.shadow.camera.right = d;
+		lightDirectional.shadow.camera.top = d;
+		lightDirectional.shadow.camera.bottom = -d;
+
+		lightDirectional.shadow.camera.near = 0;
+		lightDirectional.shadow.camera.far = 2 * size;
+
+		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		sun.add( lightDirectional );
+
+//		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+
+	}
+
+
+	function initSunPath() {
+
+		geometry = new THREE.SphereBufferGeometry( analemmaRadius, 50, 25, 0, pi2, pi05 - declination, 2 * declination );
+
+//		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( pi05 ) );
+//		geometry.applyMatrix( new THREE.Matrix4().makeRotationZ( - declination ) );
+
+		var color = 0xffff00;
+		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.05, side: 2, transparent: true });
+		sunBand = new THREE.Mesh( geometry, material );
+
+		scene.add( sunBand );
+
+	}
+
+	function initNorthPoint() {
+
+		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
+		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
+		geometry.merge( new THREE.CylinderGeometry( 12, 0, 20, 3 ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * pi ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - pi ) );
+		material = new THREE.MeshNormalMaterial();
+		northPoint = new THREE.Mesh( geometry, material );
+		northPoint.scale.multiplyScalar( 0.5 );
+		northPoint.position.set( 50, -12, 25 );
+		scene.add( northPoint );
+
+	}
+
+	function initTrylonPerisphere() {
+
+// https://en.wikipedia.org/wiki/Trylon_and_Perisphere
+
+		var geometry, material, mesh;
+
+		trylonPerisphere = new THREE.Object3D();
+
+		trylonPerisphere.name = 'trylonPerisphere';
+
+// Perisphere
+		geometry = new THREE.SphereGeometry( 25, 50, 50 );
+		material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 10
+		} );
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( 0, 20, 0 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+
+		trylonPerisphere.add( mesh );
+
+// Trylon
+		geometry = new THREE.CylinderGeometry( 0, 8, 100, 3 );
+		material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 1
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( -15, 50, -30 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+
+		trylonPerisphere.add( mesh );
+
+		trylonPerisphere.scale.set( 0.4, 0.4, 0.4 );
+
+		scene.add( trylonPerisphere );
+
+	}
+
+
+// utilities
 
 	function drawPlacard( text, scale, color, x, y, z ) {
 
@@ -882,25 +642,6 @@ Shadows displayed on a 2D map.
 
 	}
 
-
-// Utilities
-
-	function toggleVisible( mesh ) {
-
-		mesh.visible = mesh.visible === true ? false : true;
-
-	}
-
-	function onWindowResize() {
-
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-
-		renderer.setSize( window.innerWidth, window.innerHeight );
-
-	}
-
-
 	function lon2tile( longitude, zoom ) {
 
 		return Math.floor( ( longitude + 180 ) / 360 * Math.pow( 2, zoom ) );
@@ -913,26 +654,290 @@ Shadows displayed on a 2D map.
 
 	}
 
-	function getSunPositionXYZ( radius, timeThere, latitude, longitude ) {
+	function toggleVisible( mesh ) {
 
-// timeThere: JavaScript Date object, lat & lon: degrees )
+		mesh.visible = mesh.visible === true ? false : true;
 
-		var sunPosition, x, y, z;
+	}
 
-		sunPosition = getSunPosition( timeThere, latitude - 90, longitude );
+//
 
-		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-		z = radius * Math.sin( sunPosition.altitude * d2r );
+	function initPositioning() {
 
-		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+		map = new google.maps.Map( contents, {
+
+			center: { lat: latDefault, lng: lonDefault },
+			zoom: zoom,
+			mapTypeControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT }
+
+		});
+
+		geocoder = new google.maps.Geocoder;
+		infoWindow = new google.maps.InfoWindow( { map: map } );
+
+		if ( window.self === window.top && navigator.geolocation ) {
+
+			navigator.geolocation.getCurrentPosition( function( position ) {
+
+				mapCenter = {
+
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+
+				};
+
+				infoWindow.setPosition( mapCenter );
+				infoWindow.setContent( 'Location found<br>latitude: ' + position.coords.latitude.toFixed( 3 ) + '<br>' +
+				'longitude: ' + position.coords.longitude.toFixed( 3 ) );
+
+				latitude = inpLatitude.value = position.coords.latitude;
+				longitude = inpLongitude.value = position.coords.longitude;
+
+				map.setCenter( mapCenter );
+
+				geocodeLatLng();
+
+				getDateOffsetThere();
+
+			}, function() {
+
+				handleLocationError( true, infoWindow, map.getCenter() );
+
+			});
+
+		} else {
+
+// Browser doesn't support Geolocation
+
+			handleLocationError( false, infoWindow, map.getCenter() );
+
+		}
+
+		origin_autocomplete = new google.maps.places.Autocomplete( inpAddress );
+		origin_autocomplete.bindTo( 'bounds', map );
+
+		origin_autocomplete.addListener('place_changed', function() {
+
+			place = origin_autocomplete.getPlace();
+
+			if ( place.geometry ) {
+
+				mapCenter = place.geometry.location;
+				map.setCenter( mapCenter );
+
+				latitude = inpLatitude.value = mapCenter.lat();
+				longitude = inpLongitude.value = mapCenter.lng();
+
+				getDateOffsetThere();
+
+				messagePlace.innerHTML = '';
+
+			} else {
+
+				messagePlace.innerHTML = 'Select a location from the list';
+
+			}
+
+		} );
+
+	}
+
+	function updateCenter() {
+
+		mapCenter = { lat: parseFloat( inpLatitude.value ), lng: parseFloat( inpLongitude.value ) };
+
+		map.setCenter( mapCenter );
+
+		zoom = inpZoom.valueAsNumber
+
+		map.setZoom( zoom );
+
+		geocodeLatLng();
+
+		messagePlace.innerHTML = 'Click & Select location from list';
+
+	}
+
+	function geocodeLatLng() {
+
+		geocoder.geocode( { 'location': mapCenter }, function( results, status ) {
+
+			if ( status === google.maps.GeocoderStatus.OK ) {
+
+				if ( results[ 1 ] ) {
+
+					inpAddress.value = results[1].formatted_address;
+//					infoWindow.open( map, marker );
+
+
+				} else {
+
+					window.alert( 'No results found' );
+
+				}
+
+			} else {
+
+				window.alert( 'Geocoder failed due to: ' + status );
+
+			}
+
+		});
+
+	}
+
+	function handleLocationError( browserHasGeolocation, infoWindow, pos ) {
+
+		infoWindow.setPosition( pos );
+
+		infoWindow.setContent( browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.');
+
+		latitude = inpLatitude.value = pos.lat();
+		longitude = inpLongitude.value = pos.lng();
+
+		getDateOffsetThere();
+
+	}
+
+
+//
+	function getDateOffsetThere() {
+
+		var dateHere, offsetHere, timestamp, request;
+
+		dateHere = new Date();
+
+		offsetHere = dateHere.getTimezoneOffset();
+
+		utcZero = dateHere.getTime() + offsetHere * 60000;
+
+		timestamp = utcZero / 1000;
+
+		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + latitude + ',' + longitude + '&timestamp=' + timestamp;
+
+		requestTimeZoneThere( request );
+
+	}
+
+	function requestTimeZoneThere( url ) {
+
+		var xhr;
+
+		xhr = new XMLHttpRequest();
+		xhr.open( 'GET', url, true );
+		xhr.onload = callback;
+		xhr.send( null );
+
+		function callback() {
+
+			timeZone = JSON.parse( xhr.responseText );
+
+			if ( timeZone.status === 'OK' ) {
+
+				offsetThere = ( timeZone.rawOffset + timeZone.dstOffset ) /  3600;
+
+				setDateThereNow()
+
+			} else {
+
+				menuDates.innerHTML = 'the location is timeless - probably in the middle of an ocean...';
+
+			}
+
+		}
+
+	}
+
+	function setDateThereNow() {
+
+		var dateThereNow;
+
+		dateThereNow = new Date( utcZero + 3600000 * offsetThere );
+
+		drawAnalemma();
+
+		drawMapOverlay();
+
+		inpMonth.valueAsNumber = dateThereNow.getMonth();
+		inpDate.valueAsNumber = dateThereNow.getDate();
+		inpHours.value = dateThereNow.getHours();
+		inpMinutes.value = dateThereNow.getMinutes();
+
+		setDateThere();
+//		setContentsDates( dateThereNow );
+
+	}
+
+	function setDateThere() {
+
+		var date, dateThere;
+
+		date = new Date( utcZero + 3600000 * offsetThere );
+
+		year = document.getElementById( 'inpYear' ) ? inpYear.valueAsNumber : date.getYear();
+		month = document.getElementById( 'inpMonth' ) ? inpMonth.valueAsNumber : date.getMonth();
+		day = document.getElementById( 'inpDate' ) ? inpDate.valueAsNumber : date.getDate();
+		hours = document.getElementById( 'inpHours' ) ? inpHours.valueAsNumber: date.getHours();
+		minutes = document.getElementById( 'inpMinutes' ) ? inpMinutes.valueAsNumber: date.getMinutes();
+
+		dateThere = new Date( year, month, day, hours - offsetThere, minutes, date.getSeconds() );
+
+		dateThere = new Date( Date.UTC( 2016, month, day, hours - offsetThere, minutes, 0 ) );
+		sun.userData.position = getSunPositionXYZ( analemmaRadius, dateThere, latitude, longitude );
+
+		sun.position.copy( sun.userData.position.xyz );
+
+		setContentsDates( dateThere );
+
+	}
+
+	function setContentsDates( dateThere ) {
+
+// console.log( 'dateThere', dateThere );
+
+		var locate, dateUTC;
+
+		dateUTC = new Date( dateThere - 3600000 * offsetThere  ) ;
+
+		menuDates.innerHTML =
+
+//			'<h3>' + locate[ 2 ] + '</h3>' +
+
+			'<p>Given a UTC time at 0&deg; longitude of: ' +
+				( "0" + dateUTC.getHours() ).slice( - 2 ) + ':' + ( "0" + dateUTC.getMinutes() ).slice( - 2 ) + '</p>' +
+//			'<p>At latitude: ' + locate[ 0 ] + ' longitude: ' + locate[ 1 ] + '</p>' +
+			'<p>Time Zone ID: ' + timeZone.timeZoneId + '</p>' +
+			'<p>Time zone: ' + timeZone.timeZoneName + '</p>' +
+			'<p>Offset in hours: ' + offsetThere + '</p>' +
+			'<p>Raw offset in minutes: ' + timeZone.rawOffset + '</p>' +
+			'<p>Daylight saving offset in minutes: ' + timeZone.dstOffset + '</p>' +
+//			'<p>Your date and time is:<br>' + dateThere.toLocaleString() + '</p>' +
+			'<p>The universal time is: ' + dateThere.getTime() + '</p>' +
+
+		'';
+
+		outMonth.value = inpMonth.valueAsNumber + 1;
+		outDate.value = inpDate.value;
+		outHours.value = ( '0' + inpHours.value ).slice( -2 );
+		outMinutes.value = ( '0' + inpMinutes.value ).slice( -2 );
+
+	}
+
+//
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
 
 	}
 
 	function animate() {
 
 		requestAnimationFrame( animate );
-		controls.update();
+//		controls.update();
 		stats.update();
 		renderer.render( scene, camera );
 
