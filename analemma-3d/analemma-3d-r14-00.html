@@ -60,9 +60,6 @@ Shadows displayed on a 2D map.
 
 	var analemma
 	var analemmaRadius = 50;
-	var analemmaScale = 1; 
-	var objectScale = 1;
-
 	var sun, sunBand;
 	var declination = 23.439281 * d2r;
 
@@ -163,12 +160,6 @@ Shadows displayed on a 2D map.
 					'<input type=checkbox checked onchange=toggleVisible(analemma); > Display Analemma <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(sunBand); > Display Sun Band <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(sun); > Display Sun <br>' +
-				'</p>' +
-				'<p>' +
-					'Analemma Scale<br><input type=range id=inpAnalemma max=2 min=0.05 step=0.05 value=1 oninput=outAnalemma.value=this.value;analemma.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
-						'<output id=outAnalemma >' + analemmaScale + '</output><br>' +
-					'Object Scele<br><input type=range id=inpObject min=0.05 max=2 step=0.05 value=1 oninput=outObject.value=this.value;trylonPerisphere.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
-						'<output id=outObject >' + objectScale + '</output>' +
 				'</p>' +
 
 				'<p>Map source<br><select id=selMap onchange=drawMapOverlay(); size=9 /></select></p>' +
@@ -836,6 +827,17 @@ Shadows displayed on a 2D map.
 
 				offsetThere = ( timeZone.rawOffset + timeZone.dstOffset ) /  3600;
 
+//				remoteTime = new Date( utcZero + 3600000 * offsetThere );
+
+//				inpMonth.valueAsNumber = remoteTime.getMonth();
+//				inpDate.valueAsNumber = remoteTime.getDate();
+//				inpHours.valueAsNumber = remoteTime.getHours();
+//				inpMinutes.valueAsNumber = remoteTime.getMinutes();
+//				drawAnalemma();
+//				drawMapOverlay();
+//				updateDate();
+//				updateUserInterface();
+
 				setDateThereNow()
 
 			} else {
@@ -891,6 +893,28 @@ Shadows displayed on a 2D map.
 
 	}
 
+/*
+	function updateDate() {
+
+		remoteTime.setMonth( inpMonth.valueAsNumber );
+		remoteTime.setDate( inpDate.valueAsNumber );
+		remoteTime.setHours( inpHours.valueAsNumber );
+		remoteTime.setMinutes( inpMinutes.valueAsNumber );
+
+		dateUTC = new Date( Date.UTC( 2016, remoteTime.getMonth(), remoteTime.getDate(), remoteTime.getHours(), remoteTime.getMinutes(), 0 ) );
+
+		dateUTC.setUTCHours( dateUTC.getUTCHours() - offsetHours );
+
+		sun.userData.position = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
+
+		sun.position.copy( sun.userData.position.xyz );
+
+		updateUserInterface();
+
+	}
+
+*/
+
 	function setContentsDates( dateThere ) {
 
 // console.log( 'dateThere', dateThere );
@@ -911,8 +935,8 @@ Shadows displayed on a 2D map.
 			'<p>Offset in hours: ' + offsetThere + '</p>' +
 			'<p>Raw offset in minutes: ' + timeZone.rawOffset + '</p>' +
 			'<p>Daylight saving offset in minutes: ' + timeZone.dstOffset + '</p>' +
-//			'<p>Your date and time is:<br>' + dateThere.toLocaleString() + '</p>' +
-			'<p>The universal time is: ' + dateThere.getTime() + '</p>' +
+//			'<p>The ' + locate[ 2 ] + ' date and time is : ' + dateThere.toLocaleString() + '</p>' +
+//			'<p>The ' + locate[ 2 ] + ' universal time is: ' + dateThere.getTime() + '</p>' +
 
 		'';
 
@@ -922,6 +946,32 @@ Shadows displayed on a 2D map.
 		outMinutes.value = ( '0' + inpMinutes.value ).slice( -2 );
 
 	}
+
+/*
+	function updateUserInterface() {
+
+		outMonth.value = remoteTime.getMonth() + 1;
+		outDate.value = remoteTime.getDate();
+		outHours.value = remoteTime.getHours();
+		outMinutes.value = remoteTime.getMinutes();
+
+		infoTime.innerHTML =
+
+//			'<h3>latitude: ' + latitude + '<br>longitude:' + longitude + '</h3>' +
+//			'<p>' + place[ 0 ] + '</p>' +
+			'<p>Given a time of ' + dateUTC.getHours() + ':' + dateUTC.getMinutes() + ' at your location</p>' +
+			'<p>Time ZoneID: ' + timeZone.timeZoneId + '</p>' +
+			'<p>Time zone: ' + timeZone.timeZoneName + '</p>' +
+			'<p>Offset in hours: ' + offsetThere + '</p>' +
+			'<p>The local date and time is: ' + remoteTime.toLocaleString() + '</p>' +
+			'<p>The local universal time is: ' + remoteTime.getTime() + '</p>' +
+			'<p>Sun azimuth is: ' + sun.userData.position.azimuth.toFixed() + '</p>' +
+			'<p>Sun altitude is: ' + sun.userData.position.altitude.toFixed() + '</p>' +
+		'';
+
+	}
+*/
+
 
 //
 
