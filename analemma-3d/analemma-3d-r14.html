@@ -70,8 +70,6 @@ Shadows displayed on a 2D map.
 
 	var analemma
 	var analemmaRadius = 50;
-	var analemmaScale = 1; 
-	var objectScale = 1;
 
 	var sun, sunBand;
 	var declination = 23.439281 * d2r;
@@ -88,10 +86,10 @@ Shadows displayed on a 2D map.
 	var tilesPerSideSquared = tilesPerSide * tilesPerSide;
 
 	var trylonPerisphere, northPoint;
+	var objectScale = 1;
 
 	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
-//	var v = new THREE.Vector3;
 
 	var stats, renderer, scene, camera, controls;
 
@@ -126,7 +124,7 @@ Shadows displayed on a 2D map.
 
 		contents = document.body.appendChild( document.createElement( 'div' ) );
 		contents.id = 'contents';
-		contents.innerHTML = '<h1>Stuff</h1>';
+//		contents.innerHTML = '<h1>Stuff</h1>';
 
 		hamburger = document.body.appendChild( document.createElement( 'div' ) );
 		hamburger.id = 'hamburger';
@@ -175,8 +173,9 @@ Shadows displayed on a 2D map.
 					'<input type=checkbox checked onchange=toggleVisible(sun); > Display Sun <br>' +
 				'</p>' +
 				'<p>' +
-					'Analemma Scale<br><input type=range id=inpAnalemma max=2 min=0.05 step=0.05 value=1 oninput=outAnalemma.value=this.value;analemma.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
-						'<output id=outAnalemma >' + analemmaScale + '</output><br>' +
+					'Analemma Radius<br><input type=range id=inpAnalemma max=200 min=10 step=5 value=75 ' +
+						'oninput=outAnalemma.value=analemmaRadius=this.valueAsNumber;drawAnalemma();setDateThere(); title="10 to 200: OK" > ' +
+						'<output id=outAnalemma >' + analemmaRadius + '</output><br>' +
 					'Object Scale<br><input type=range id=inpObject min=0.05 max=2 step=0.05 value=1 oninput=outObject.value=this.value;trylonPerisphere.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
 						'<output id=outObject >' + objectScale + '</output>' +
 				'</p>' +

@@ -81,7 +81,6 @@ Uses location.hash to set a variety of parameters.
 	var sun, lightDirectional, lightDirectionalHelper;
 
 	var analemma;
-//	var northPoint;
 
 	var stats, renderer, scene, camera, controls;
 
@@ -244,6 +243,7 @@ Uses location.hash to set a variety of parameters.
 
 	}
 
+
 	function onProgress( xhr ) {
 
 		if ( xhr.total ) {
@@ -271,7 +271,6 @@ Uses location.hash to set a variety of parameters.
 		handleMessage( message, parent.coreFileInfo );
 
 	};
-
 
 	function onLoadComplete( object ) {
 
@@ -550,7 +549,6 @@ Uses location.hash to set a variety of parameters.
 
 	}
 
-
 	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
 
 		var sunPosition, x, y, z;
@@ -730,6 +728,8 @@ Uses location.hash to set a variety of parameters.
 console.log( 'message: ', message );
 
 	}
+
+
 
 	function onWindowResize() {
 
