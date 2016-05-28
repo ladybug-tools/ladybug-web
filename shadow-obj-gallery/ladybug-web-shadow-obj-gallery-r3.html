@@ -103,6 +103,30 @@ according to latitude, longitude, date and time.
 
 	}
 
+	function getCoreParameters( message ) {
+
+		var r2d = 180 / Math.PI;
+
+		ifrContentWindow = ifr.contentWindow;
+		model = ifrContentWindow.model;
+		pud = ifr.contentWindow.pud;
+
+		outMonth.value = inpMonth.value = pud.month;
+		outDate.value = inpDate.value = pud.date;
+		outHours.value = inpHours.value = pud.hours;
+		outMinutes.value = inpMinutes.value = pud.minutes;
+
+		corePositionsMessage.innerHTML = 
+			'Latitude ' + pud.latitude + '<br> \
+			Longitude ' + pud.longitude + '<br> \
+			Azimuth ' + ( pud.sunPosition ? pud.sunPosition.azimuth.toFixed() : '' ) + '<br> \
+			Altitude ' + ( pud.sunPosition ? pud.sunPosition.altitude.toFixed() : '' ) + '<br> \
+		';
+
+// console.log( '', model );
+
+	}
+
 	function getCorePositions() {
 
 		var icw = ifr.contentWindow;

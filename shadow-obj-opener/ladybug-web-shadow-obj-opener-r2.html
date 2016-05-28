@@ -1,0 +1,353 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Web Shadow OBJ Opener R2</title>
+<meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name='description' content='
+View Three.js JSON Files from a variety of sources
+Basic slide in/slide out menu with three bar icon that adjusts for small screen size.
+'>
+<meta name='keywords' content='CSS, HTML,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name='date' content='2016-05-27' >
+</head>
+<body>
+<script>
+
+	var core = '../shadow-obj-core/index.html';
+//	var core = 'https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/index.html';
+
+	var model, ifrContentWindow, ifrContentWindowObject;
+
+	init();
+
+	function init() {
+
+		var css, hamburger, menu, contents, date;
+
+		css = document.body.appendChild( document.createElement('style') );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; margin: 0; }' +
+			'h2, h3 { margin: 0; }' +
+			'a { text-decoration: none; }' +
+			'button, input[type=button] { background-color: #ccc; border: 2px #ccc solid; color: #444; }' +
+			'iframe { border: 0px red solid; height: 100%;; overflow: hidden; position: absolute; top: 0; width: 100%; }' +
+
+			'input[type=number] { text-align: right; width: 60px; }' +
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
+			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+
+			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; left: -324px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
+				'opacity: 0.95; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
+			'#inpLatitude, #inpLongitude { width: 70px; }' +
+
+		'';
+
+		contents = document.body.appendChild( document.createElement( 'div' ) );
+		contents.id = 'contents';
+
+		hamburger = document.body.appendChild( document.createElement( 'div' ) );
+		hamburger.id = 'hamburger';
+		hamburger.innerHTML = '<div id=bars > &#9776; </div>';
+		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+
+		menu = hamburger.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href="" >' + document.title + '</a>' +
+				'<a href=index.html#readme.md > &#x24D8; </a>' +
+			'</h2>' +
+
+			'<p><a href=../shadow-json-gallery/index.html >Gallery</a></p>' +
+			'<p id=coreMessage style=color:crimson; /* onchange=console.log("msg",message); */ ></p>' +
+
+			'<div><b>URL</b><br>' +
+				'<small>Drag and drop file URL here</small>' +
+				'<textarea id=taURL cols=40 rows=8 placeholder="Drag and drop a URL here\nor\nsee read me for more tricks..."></textarea></div>' +
+
+
+			'<div>' +
+				'<button onclick=saveFile(); >Save file</button> &nbsp;' +
+				'<button onclick=openNewTab(); >Test in new tab</button>' +
+
+			'</div>' +
+
+			'<p>' + 
+				'Latitude &nbsp;<input id=inpLatitude min=-90 max=90 value=1 step=0.001 oninput=setPermalink(); title="0 to 90: OK" ><br>' +
+				'Longitude <input id=inpLongitude min=-180 max=180 value=1 step=0.001 oninput=setPermalink(); title="0 to 90: OK" ><br>' +
+
+				'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setPermalink(); title="1 to 12: OK" ><output id=outMonth ></output><br>' +
+				'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setPermalink(); title="1 to 31: OK" ><output id=outDate ></output><br>' +
+				'Hour &nbsp; <input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setPermalink(); title="0 to 23: OK" ><output id=outHours ></output><br>' +
+				'Minute <input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setPermalink(); title="0 to 59: OK" ><output id=outMinutes ></output><br>' +
+			'</p>' +
+
+			'<p>Model Scale <input type=number id=inpScale value=1 step=0.001 onchange = setPermalink(); ></p>' +
+			'<p>' +
+				'Model rotation<br>' +
+				'x <input type=number id=inpRotX value=0 onchange = setPermalink(); > ' +
+				'y <input type=number id=inpRotY value=0 onchange = setPermalink(); > ' +
+				'z <input type=number id=inpRotZ value=0 onchange = setPermalink(); >' +
+			'</p>' +
+			'<p>' +
+				'Model position<br>' +
+				'x <input type=number id=inpPosX value=0 onchange = setPermalink(); > ' +
+				'y <input type=number id=inpPosY value=0 onchange = setPermalink(); > ' +
+				'z <input type=number id=inpPosZ value=0 onchange = setPermalink(); >' +
+			'</p>' +
+			'<p>' + 
+				'Camera position<br>' +
+				'x <input type=number id=inpCamX value=0 onchange = setPermalink(); > ' +
+				'y <input type=number id=inpCamY value=0 onchange = setPermalink(); > ' +
+				'z <input type=number id=inpCamZ value=0 onchange = setPermalink(); >' +
+			'</p>' +
+			'<p>' + 
+				'Camera Target<br>' +
+				'x <input type=number id=inpTarX value=0 onchange = setPermalink(); > ' +
+				'y <input type=number id=inpTarY value=0 onchange = setPermalink(); > ' +
+				'z <input type=number id=inpTarZ value=0 onchange = setPermalink(); >' +
+			'</p>' +
+
+//			'<p><input type=checkbox onchange=ifrContentWindow.model.material.wireframe=!ifrContentWindow.model.material.wireframe; > Wireframe</p>' +
+
+			'<p>' +
+				'<button onclick=allPhong(); >All phong material</button> ' +
+				'<button onclick=allNormal(); >All normal material</button>' +
+			'</p>' +
+
+//			'<p><button onclick=zoomBoundary(); >Zoom boundary</button></p>' +
+
+			'<div id=info ></div>' +
+			'<div id=links ></div>' +
+
+			'<hr>' +
+			'<center><h1> <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 </h1></center>';
+		'';
+
+		date = new Date();
+
+		outMonth.value = inpMonth.value = date.getMonth();
+		outDate.value = inpDate.value = date.getDate() + 1;
+		outHours.value = inpHours.value = 12; // date.getHours();
+		outMinutes.value = inpMinutes.value = 0; // date.getMinutes();
+
+		window.addEventListener( 'hashchange', onHashChange, false );
+
+		taURL.addEventListener( 'dragover', function( event ){ event.preventDefault(); }, true );
+		taURL.addEventListener( 'drop', onDrop, false );
+		taURL.addEventListener( 'change', function() { setContents( '#' + taURL.value ); }, true );
+
+// let's go
+
+		onHashChange();
+
+	}
+
+	function onHashChange(){
+
+		url = location.hash.length ? location.hash.slice( 1 ) : '';
+
+		setContents( url );
+
+	}
+
+	function onDrop( event ) {
+
+		event.preventDefault(); 
+
+		url = event.dataTransfer.getData( 'URL' );
+
+		setContents( url );
+
+	}
+
+	function setContents( url ) {
+
+		taURL.value = url;
+		contents.innerHTML = '<iframe id=ifr src=' + core + '#' + url + ' scrolling="no" ></iframe>';
+
+		ifr.onload = function () {
+
+			getCoreParameters();
+
+			if ( window.self !== window.top ) { ifr.contentWindow.controls.enableZoom = false; }
+
+		}
+
+	}
+
+// called by core
+// could this be in core?
+
+	function getCoreParameters( message ) {
+
+		var r2d = 180 / Math.PI;
+
+		ifrContentWindow = ifr.contentWindow;
+		model = ifrContentWindow.model;
+		pud = ifr.contentWindow.pud;
+
+		inpLatitude.value = pud.latitude;
+		inpLongitude.value = pud.longitude;
+
+		outMonth.value = inpMonth.value = pud.month;
+		outDate.value = inpDate.value = pud.date;
+		outHours.value = inpHours.value = pud.hours;
+		outMinutes.value = inpMinutes.value = pud.minutes;
+
+		inpCamX.value = ifrContentWindow.camera.position.x.toFixed();
+		inpCamY.value = ifrContentWindow.camera.position.y.toFixed();
+		inpCamZ.value = ifrContentWindow.camera.position.z.toFixed();
+
+		inpTarX.value = ifrContentWindow.controls.target.x.toFixed();
+		inpTarY.value = ifrContentWindow.controls.target.y.toFixed();
+		inpTarZ.value = ifrContentWindow.controls.target.z.toFixed();
+
+		if ( model ) {
+
+			inpScale.value = model.scale.x;
+
+			inpRotX.value = model.rotation.x * r2d;
+			inpRotY.value = model.rotation.y * r2d;
+			inpRotZ.value = model.rotation.z * r2d;
+
+			inpPosX.value = model.position.x;
+			inpPosY.value = model.position.y;
+			inpPosZ.value = model.position.z;
+
+		}
+
+
+// console.log( '', model );
+
+	}
+
+	function setPermalink() {
+
+		var txt;
+
+		txt =
+
+			'#la=' + inpLatitude.value + '#lo=' + inpLongitude.value +
+			'#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
+			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber +
+
+		'';
+
+		txt += inpScale.valueAsNumber !== 1 ? '#sx=' + inpScale.valueAsNumber : '';
+		txt += inpScale.valueAsNumber !== 1 ? '#sy=' + inpScale.valueAsNumber : '';
+		txt += inpScale.valueAsNumber !== 1 ? '#sz=' + inpScale.valueAsNumber : '';
+
+		txt += inpRotX.valueAsNumber != 0 ? '#rx=' + inpRotX.valueAsNumber : '';
+		txt += inpRotY.valueAsNumber != 0 ? '#ry=' + inpRotY.valueAsNumber : '';
+		txt += inpRotZ.valueAsNumber != 0 ? '#rz=' + inpRotZ.valueAsNumber : '';
+
+		txt += inpPosX.valueAsNumber != 0 ? '#px=' + inpPosX.valueAsNumber : '';
+		txt += inpPosY.valueAsNumber != 0 ? '#py=' + inpPosY.valueAsNumber : '';
+		txt += inpPosZ.valueAsNumber != 0 ? '#pz=' + inpPosZ.valueAsNumber : '';
+
+		txt += inpCamX.valueAsNumber != 100 ? '#cx=' + inpCamX.valueAsNumber : '';
+		txt += inpCamY.valueAsNumber != 100 ? '#cy=' + inpCamY.valueAsNumber : '';
+		txt += inpCamZ.valueAsNumber != 100 ? '#cz=' + inpCamZ.valueAsNumber : '';
+
+		txt += inpTarX.valueAsNumber != 0 ? '#tx=' + inpTarX.valueAsNumber : '';
+		txt += inpTarY.valueAsNumber != 0 ? '#ty=' + inpTarY.valueAsNumber : '';
+		txt += inpTarZ.valueAsNumber != 0 ? '#tz=' + inpTarZ.valueAsNumber : '';
+
+		pud.permalink = taURL.value = core + '#' + ifrContentWindow.model.name + txt;
+
+		ifrContentWindow.location.hash = txt;
+
+		outMonth.value = inpMonth.value;
+		outDate.value = inpDate.value;
+		outHours.value = inpHours.value;
+		outMinutes.value = inpMinutes.value;
+
+	}
+
+
+	function allPhong() {
+
+		ifrContentWindow.model.traverse( function ( child ) {
+
+			if ( child instanceof ifrContentWindow.THREE.Mesh ) {
+
+				child.material = new ifrContentWindow.THREE.MeshPhongMaterial( { side: 2 } );
+				child.material.needsUpdate = true;
+
+			}
+
+		} );
+
+	}
+
+	function allNormal() {
+
+		ifrContentWindow.model.traverse( function ( child ) {
+
+			if ( child instanceof ifrContentWindow.THREE.Mesh ) {
+
+				child.material = new ifrContentWindow.THREE.MeshNormalMaterial( { side: 2 } );
+				child.material.needsUpdate = true;
+
+			}
+
+		} );
+
+	}
+
+	function zoomBoundary() {
+
+			var mode = ifrContentWindow.model;
+
+			bbh = new ifrContentWindow.THREE.BoundingBoxHelper( model );
+			bbh.update();
+//			bbh.geometry.computeBoundingSphere();
+//			radius = bbh.geometry.boundingSphere.radius;
+
+			distance = bbh.position.distanceTo( bbh.scale );
+			size = model.scale.y * 80 / distance;
+
+			model.scale.multiplyScalar( size );
+
+			bbh = new ifrContentWindow.THREE.BoundingBoxHelper( model );
+
+			ifrContentWindow.scene.add( bbh );
+			bbh.update();
+			inpScale.value = size.toFixed( 3 );
+
+			setPermalink();
+
+	}
+
+	function openNewTab() {
+
+		window.open( pud.permalink, '_blank' )
+
+	}
+
+
+	function saveFile() {
+
+		var blob, a;
+
+		blob = new Blob( [ JSON.stringify( ifrContentWindow.model.toJSON() ) ] );
+
+		a = document.body.appendChild( document.createElement( 'a' ) );
+		a.href = window.URL.createObjectURL( blob );
+		a.download = 'test' + '.json';
+		a.click();
+
+		delete a;
+
+	}
+
+</script>
+</body>
+</html>

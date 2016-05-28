@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R14.1</title>
+<title>Analemma 3D R14.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
@@ -32,8 +32,6 @@ Shadows displayed on a 2D map.
 <script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
-
-//	var places, place;
 
 	var latitude;
 	var longitude;
@@ -68,25 +66,27 @@ Shadows displayed on a 2D map.
 
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
+	var placeMap, placeMapCanvas, placeMapContext;
+
+	var googleMap, googleMapCenter, geocoder, infoWindow;
+
+	var pixelsPerTile = 256;
+	var tilesPerSide = 7; // odd number please
+	var tilesPerSideSquared = tilesPerSide * tilesPerSide;
+
+	var zoom = 14;
+	var opacity = 0.85;
+
 	var analemma
 	var analemmaRadius = 50;
 
 	var sun, sunBand;
 	var declination = 23.439281 * d2r;
 
-	var placeMap, gridHelper, axisHelper;
-	var placeMapCanvas, placeMapContext;
-
-	var map, mapCenter, geocoder, infoWindow;
-	var zoom = 14;
-	var opacity = 0.85;
-
-	var pixelsPerTile = 256;
-	var tilesPerSide = 7; // odd number please
-	var tilesPerSideSquared = tilesPerSide * tilesPerSide;
-
 	var trylonPerisphere, northPoint;
 	var objectScale = 1;
+
+	var gridHelper, axisHelper;
 
 	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
 	var d2r = pi / 180, r2d = 180 / pi;  // degrees / radians
@@ -122,14 +122,13 @@ Shadows displayed on a 2D map.
 
 		'';
 
-		contents = document.body.appendChild( document.createElement( 'div' ) );
-		contents.id = 'contents';
-//		contents.innerHTML = '<h1>Stuff</h1>';
-
 		hamburger = document.body.appendChild( document.createElement( 'div' ) );
 		hamburger.id = 'hamburger';
 		hamburger.innerHTML = '<div id=bars >  &#9776 </div>';
 		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+
+		mapDiv = document.body.appendChild( document.createElement( 'div' ) );
+		mapDiv.id = 'mapDiv';
 
 		menu = hamburger.appendChild( document.createElement( 'div' ) );
 		menu.id = 'menu';
@@ -219,7 +218,7 @@ Shadows displayed on a 2D map.
 
 		window.addEventListener( 'resize', onWindowResize, false );
 
-// 
+// Three.js
 
 		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
 //		renderer.setPixelRatio( window.devicePixelRatio ); // for iOS?
@@ -239,6 +238,8 @@ Shadows displayed on a 2D map.
 		controls.maxDistance = 500;
 
 		scene = new THREE.Scene();
+
+//
 
 		initHelpers();
 
@@ -401,7 +402,7 @@ Shadows displayed on a 2D map.
 
 	function initPositioning() {
 
-		map = new google.maps.Map( contents, {
+		googleMap = new google.maps.Map( mapDiv, {
 
 			center: { lat: latDefault, lng: lonDefault },
 			zoom: zoom,
@@ -410,27 +411,27 @@ Shadows displayed on a 2D map.
 		});
 
 		geocoder = new google.maps.Geocoder;
-		infoWindow = new google.maps.InfoWindow( { map: map } );
+		infoWindow = new google.maps.InfoWindow( { map: googleMap } );
 
 		if ( window.self === window.top && navigator.geolocation ) {
 
 			navigator.geolocation.getCurrentPosition( function( position ) {
 
-				mapCenter = {
+				googleMapCenter = {
 
 					lat: position.coords.latitude,
 					lng: position.coords.longitude
 
 				};
 
-				infoWindow.setPosition( mapCenter );
+				infoWindow.setPosition( googleMapCenter );
 				infoWindow.setContent( 'Location found<br>latitude: ' + position.coords.latitude.toFixed( 3 ) + '<br>' +
 				'longitude: ' + position.coords.longitude.toFixed( 3 ) );
 
 				latitude = inpLatitude.value = position.coords.latitude;
 				longitude = inpLongitude.value = position.coords.longitude;
 
-				map.setCenter( mapCenter );
+				googleMap.setCenter( googleMapCenter );
 
 				geocodeLatLng();
 
@@ -438,7 +439,7 @@ Shadows displayed on a 2D map.
 
 			}, function() {
 
-				handleLocationError( true, infoWindow, map.getCenter() );
+				handleLocationError( true, infoWindow, googleMap.getCenter() );
 
 			});
 
@@ -446,12 +447,12 @@ Shadows displayed on a 2D map.
 
 // Browser doesn't support Geolocation
 
-			handleLocationError( false, infoWindow, map.getCenter() );
+			handleLocationError( false, infoWindow, googleMap.getCenter() );
 
 		}
 
 		origin_autocomplete = new google.maps.places.Autocomplete( inpAddress );
-		origin_autocomplete.bindTo( 'bounds', map );
+		origin_autocomplete.bindTo( 'bounds', googleMap );
 
 		origin_autocomplete.addListener('place_changed', function() {
 
@@ -461,11 +462,11 @@ Shadows displayed on a 2D map.
 
 			if ( place.geometry ) {
 
-				mapCenter = place.geometry.location;
-				map.setCenter( mapCenter );
+				googleMapCenter = place.geometry.location;
+				googleMap.setCenter( googleMapCenter );
 
-				latitude = inpLatitude.value = mapCenter.lat();
-				longitude = inpLongitude.value = mapCenter.lng();
+				latitude = inpLatitude.value = googleMapCenter.lat();
+				longitude = inpLongitude.value = googleMapCenter.lng();
 
 				getDateOffsetThere();
 
@@ -486,13 +487,13 @@ Shadows displayed on a 2D map.
 
 	function setCenter() {
 
-		mapCenter = { lat: parseFloat( inpLatitude.value ), lng: parseFloat( inpLongitude.value ) };
+		googleMapCenter = { lat: parseFloat( inpLatitude.value ), lng: parseFloat( inpLongitude.value ) };
 
-		map.setCenter( mapCenter );
+		googleMap.setCenter( googleMapCenter );
 
 		zoom = inpZoom.valueAsNumber
 
-		map.setZoom( zoom );
+		googleMap.setZoom( zoom );
 
 		geocodeLatLng();
 
@@ -502,14 +503,14 @@ Shadows displayed on a 2D map.
 
 	function geocodeLatLng() {
 
-		geocoder.geocode( { 'location': mapCenter }, function( results, status ) {
+		geocoder.geocode( { 'location': googleMapCenter }, function( results, status ) {
 
 			if ( status === google.maps.GeocoderStatus.OK ) {
 
 				if ( results[ 1 ] ) {
 
 					inpAddress.value = results[1].formatted_address;
-//					infoWindow.open( map, marker );
+//					infoWindow.open( googleMap, marker );
 
 
 				} else {
@@ -634,36 +635,6 @@ Shadows displayed on a 2D map.
 		sun.position.copy( sun.userData.position.xyz );
 
 		setContentsDates();
-
-	}
-
-	function setContentsDates() {
-
-		var dateUTCZero, dateThere;
-
-		dateUTCZero = new Date ( utcZero );
-		dateThere = new Date( utcZero + 3600000 * offsetThere  ) ;
-
-		menuDates.innerHTML =
-
-			'<p>latitude:' + latitude.toFixed(3) + ' longitude:' + longitude.toFixed(3) + '</p>' +
-			'<p>Time Zone ID: ' + timeZoneThere.timeZoneId + '</p>' +
-			'<p>Time zone: ' + timeZoneThere.timeZoneName + '</p>' +
-			'<p>Offset in hours: ' + offsetThere + '</p>' +
-			'<p>Raw offset in minutes: ' + timeZoneThere.rawOffset + '</p>' +
-			'<p>Daylight saving offset in minutes: ' + timeZoneThere.dstOffset + '</p>' +
-			'<p>Date and time there is:<br>' + dateThere.toLocaleString() + '</p>' +
-			'<hr>' +
-			'<p title="GMT" >UTC time at 0&deg; longitude: ' +
-				( "0" + dateUTCZero.getHours() ).slice( - 2 ) + ':' + ( "0" + dateUTCZero.getMinutes() ).slice( - 2 ) + '</p>' +
-			'<p title= "number of milliseconds since 1 January, 1970" >UTC: ' + dateThere.getTime() + '</p>' +
-
-		'';
-
-		outMonth.value = inpMonth.valueAsNumber + 1;
-		outDate.value = inpDate.value;
-		outHours.value = ( '0' + inpHours.value ).slice( -2 );
-		outMinutes.value = ( '0' + inpMinutes.value ).slice( -2 );
 
 	}
 
@@ -878,6 +849,38 @@ Shadows displayed on a 2D map.
 			return texture;
 
 		}
+
+	}
+
+// UI
+
+	function setMenuDates() {
+
+		var dateUTCZero, dateThere;
+
+		dateUTCZero = new Date ( utcZero );
+		dateThere = new Date( utcZero + 3600000 * offsetThere  ) ;
+
+		menuDates.innerHTML =
+
+			'<p>latitude:' + latitude.toFixed(3) + ' longitude:' + longitude.toFixed(3) + '</p>' +
+			'<p>Time Zone ID: ' + timeZoneThere.timeZoneId + '</p>' +
+			'<p>Time zone: ' + timeZoneThere.timeZoneName + '</p>' +
+			'<p>Offset in hours: ' + offsetThere + '</p>' +
+			'<p>Raw offset in minutes: ' + timeZoneThere.rawOffset + '</p>' +
+			'<p>Daylight saving offset in minutes: ' + timeZoneThere.dstOffset + '</p>' +
+			'<p>Date and time there is:<br>' + dateThere.toLocaleString() + '</p>' +
+			'<hr>' +
+			'<p title="GMT" >UTC time at 0&deg; longitude: ' +
+				( "0" + dateUTCZero.getHours() ).slice( - 2 ) + ':' + ( "0" + dateUTCZero.getMinutes() ).slice( - 2 ) + '</p>' +
+			'<p title= "number of milliseconds since 1 January, 1970" >UTC: ' + dateThere.getTime() + '</p>' +
+
+		'';
+
+		outMonth.value = inpMonth.valueAsNumber + 1;
+		outDate.value = inpDate.value;
+		outHours.value = ( '0' + inpHours.value ).slice( -2 );
+		outMinutes.value = ( '0' + inpMinutes.value ).slice( -2 );
 
 	}
 
