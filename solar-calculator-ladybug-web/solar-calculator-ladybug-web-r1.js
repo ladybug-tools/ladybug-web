@@ -9,12 +9,12 @@
 	var pi05 = 0.5 * pi;
 	var d2r = pi / 180;
 	var r2d = 180 / pi;
-
+		var century, now;
 	function getSunPosition( date, latitude, longitude ) {
 
 // date is a JavaScript Date object
 
-		var century, now;
+
 
 		var azimuth, zenith, azimuthDenominator, atmosphere;
 

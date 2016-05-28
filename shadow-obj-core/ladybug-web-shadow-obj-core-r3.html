@@ -681,9 +681,9 @@ console.log( 'message: ', message );
 
 		pud.sunPosition = sun.userData.position;
 
-		parent.getCoreParameters();
-
 		if ( window.self !== window.top ) return;
+
+		parent.getCoreParameters();
 
 		var dateUTCZero, dateThere;
 		var b = '<br>';
