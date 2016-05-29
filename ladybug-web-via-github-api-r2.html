@@ -222,7 +222,21 @@ Uses GitHub API to obtain latest list of apps.
 
 		getMarkdown( urlSource + folder + 'readme.md', rm );
 
-console.log( 'that', that );
+
+thiss = that;
+if ( that.contentWindow && that.contentWindow.ifr && that.contentWindow.icw ) {
+
+console.log( 'that', that, that.contentWindow.ifr.contentWindow );
+
+console.log( 'controls', thiss, thiss.contentWindow.icw.controls );
+
+thiss.contentWindow.icw.controls.enableZoom = false
+
+} else {
+
+console.log( 'not here', that );
+
+}
 
 		if ( that.contentWindow.controls ) {
 

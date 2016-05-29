@@ -15,6 +15,7 @@ according to latitude, longitude, date and time.
 <script>
 
 	var core = '../shadow-obj-core/index.html';
+	var icw;
 
 	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
 
@@ -34,6 +35,7 @@ according to latitude, longitude, date and time.
 
 //			'iframe { border: 0px solid green; height: 100%; margin: 0; padding: 0; width: 100%; }' +
 			'iframe { border: 0px red solid; height: 100%;; overflow: hidden; position: absolute; top: 0; width: 100%; }' +
+//			'iframe { border: 2px solid green; height: 100%; margin: 0; padding: 0; width: 100%; }' +
 
 			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; }' +
 			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
@@ -46,12 +48,12 @@ according to latitude, longitude, date and time.
 
 		'';
 
-		contents = document.body.appendChild( document.createElement( 'div' ) );
-		contents.id = 'contents';
+//		contents = document.body.appendChild( document.createElement( 'div' ) );
+//		contents.id = 'contents';
 
-//		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
-//		ifr.id = 'ifr';
-//		ifr.scrolling = 'no';
+		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
+		ifr.id = 'ifr';
+		ifr.scrolling = 'no';
 
 		hamburger = document.body.appendChild( document.createElement( 'div' ) );
 		hamburger.id = 'hamburger';
@@ -102,10 +104,14 @@ according to latitude, longitude, date and time.
 
 	function onHashChange() {
 
-//		ifr.src = core + location.hash;
+		ifr.src = core + location.hash;
+		ifr.onload = function () {
 
-		contents.innerHTML = '<iframe id=ifr src=' + core +  location.hash + ' scrolling="no" ></iframe>';
-		ifr.id = 'ifr';
+			getCoreParameters();
+
+			if ( window.self !== window.top ) { ifr.contentWindow.controls.enableZoom = false; }
+
+		}
 
 		sendToOpener.innerHTML = '<a href=../shadow-obj-opener/index.html' + location.hash + ' >Send to Opener</a>';
 
@@ -113,11 +119,9 @@ according to latitude, longitude, date and time.
 
 	function getCoreParameters( message ) {
 
-		var r2d = 180 / Math.PI;
-
 		ifrContentWindow = ifr.contentWindow;
 		model = ifrContentWindow.model;
-		pud = ifr.contentWindow.pud;
+		pud = ifrContentWindow.pud;
 
 		outMonth.value = inpMonth.value = pud.month;
 		outDate.value = inpDate.value = pud.date;
