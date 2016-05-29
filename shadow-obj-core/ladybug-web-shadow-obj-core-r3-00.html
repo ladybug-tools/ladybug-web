@@ -2,17 +2,17 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow OBJ Core R3</title>
+<title>Ladybug Web Shadow OBJ Core R3.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Load OBJ and MTL files. Display Sun position and analemmas according to latitude, longitude, date and time.
 Uses location.hash to set a variety of parameters.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-22' >
+<meta name=date content='2016-05-29' >
 </head>
 <body>
-<!--
+
 <script src=https://mrdoob.github.io/three.js/build/three.min.js ></script>
 <script src=https://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
 <script src=https://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
@@ -20,7 +20,7 @@ Uses location.hash to set a variety of parameters.
 <script src=https://mrdoob.github.io/three.js/examples/js/loaders/DDSLoader.js ></script>
 <script src=https://mrdoob.github.io/three.js/examples/js/loaders/MTLLoader.js ></script>
 <script src=https://mrdoob.github.io/three.js/examples/js/loaders/OBJLoader.js ></script>
--->
+<!--
 <script src=https://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
@@ -28,7 +28,7 @@ Uses location.hash to set a variety of parameters.
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/DDSLoader.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/MTLLoader.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/OBJLoader.js ></script>
-
+-->
 <script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
@@ -58,32 +58,25 @@ Uses location.hash to set a variety of parameters.
 //		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=1';
 
 	var fullFilePath, fileName;
-
 	var model, edgesHelper;
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
 
-//	pud.fileName = '';
 	pud.analemmaRadius = 75;
 
 	pud.latitude = 37.796
 	pud.longitude = -122.398;
 
 // Paris
-	pud.latitude = 48.8566;
-	pud.longitude = 2.3522;
+//	pud.latitude = 48.8566;
+//	pud.longitude = 2.3522;
 
 	pud.sunlightIntensity = 0.85;
-
-//	var dateUTC, dateThere;  // could be local
-//	var offsetHours;
 
 	var timeZoneThere, offsetThere, utcZero;
 
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
-
-	var lightAmbient, lightDirectional, lightDirectionalHelper;
 
 	var analemma
 	var analemmaRadius = 50;
@@ -91,6 +84,7 @@ Uses location.hash to set a variety of parameters.
 	var sun, sunBand;
 	var declination = 23.439281 * d2r;
 
+	var lightAmbient, lightDirectional, lightDirectionalHelper;
 	var stats, renderer, scene, camera, controls;
 
 	init();
@@ -101,22 +95,20 @@ Uses location.hash to set a variety of parameters.
 		var css, hamburger, menu;
 		var geometry, material, mesh;
 
-		if ( window.self === window.top ) {
-
-			css = document.head.appendChild( document.createElement( 'style' ) );
-			css.innerHTML =
+		css = document.head.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
 
 			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
-			'a {text-decoration: none; }' +
-			'button, input[type=button] { background-color: #ccc; border: 2px #ccc solid; color: #666; }' +
-			'h2 { margin: 0 }' +
+			'a { color: crimson; text-decoration: none; }' +
 
 			'#bars { color: pink; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
 			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
 			'#menu { background-color: #eee; border: 1px #ccc solid; left: -324px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
 				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
 
-			'';
+		'';
+
+		if ( window.self === window.top ) {
 
 			hamburger = document.body.appendChild( document.createElement( 'div' ) );
 			hamburger.id = 'hamburger';
@@ -126,6 +118,7 @@ Uses location.hash to set a variety of parameters.
 			menu = hamburger.appendChild( document.createElement( 'div' ) );
 			menu.id = 'menu';
 			menu.innerHTML =
+
 				'<div id=menuTitle >' +
 					'<h2>' +
 						'<a href="" >' + document.title + '</a> ' +
@@ -135,10 +128,9 @@ Uses location.hash to set a variety of parameters.
 
 				'<p id=coreFileInfo ></p>' +
 				'<p id=coreMessage ></p>' +
-				'<p id=coreSunInfo ></p>' +
-				'<p id=menuInfo ></p>' +
+				'<p id=menuDates ></p>' +
+				'<p id=menuModel ></p>' +
 
-//				'<p id=menuMessage ></p>' +
 			'';
 
 		}
@@ -150,6 +142,10 @@ Uses location.hash to set a variety of parameters.
 		window.addEventListener( 'resize', onWindowResize, false );
 		window.addEventListener ( 'hashchange', onHashChange, false );
 		document.body.addEventListener("mouseup", function() { if ( parent.getCoreParameters ) { parent.getCoreParameters('mouseup'); } }, false );
+		document.body.addEventListener("mouseup", onMouseUp, false );
+
+
+//
 
 		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
 		renderer.setClearColor( 0xfafafa );
@@ -176,6 +172,46 @@ Uses location.hash to set a variety of parameters.
 
 	}
 
+	function initSunAndLight() {
+
+		var geometry, material;
+		var d = 50;
+
+		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
+		material = new THREE.MeshPhongMaterial( { color: 0xcccc00, emissive: 0xaaaaaa } );
+
+		sun = new THREE.Mesh( geometry, material );
+		sun.position.set( 50, 30, 50 );
+		scene.add( sun );
+
+		lightAmbient = new THREE.AmbientLight( 0x888888 );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, pud.sunlightIntensity );
+
+		lightDirectional.shadow.camera.left = -d;
+		lightDirectional.shadow.camera.right = d;
+		lightDirectional.shadow.camera.top = d;
+		lightDirectional.shadow.camera.bottom = -d;
+
+		lightDirectional.shadow.camera.near = 0;
+		lightDirectional.shadow.camera.far = 5 * d;
+
+		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		sun.add( lightDirectional );
+
+		lightDirectionalHelper = new THREE.CameraHelper( lightDirectional.shadow.camera );
+		scene.add( lightDirectionalHelper );
+
+	}
+
+// Events
+
 	function onHashChange() {
 
 		var fileNameSplit;
@@ -199,11 +235,9 @@ Uses location.hash to set a variety of parameters.
 
 			} else {
 
-				handleMessage( 'File oops: ' + fileName + '<br><br>' + fullFilePath, parent.coreFileInfo )
+				setMessageToTarget( 'File oops: ' + fileName + '<br><br>' + fullFilePath, parent.coreFileInfo )
 
 			}
-
-			return;
 
 		} else {
 
@@ -213,7 +247,10 @@ Uses location.hash to set a variety of parameters.
 
 	}
 
-	function loadOBJFileByURL( filePath ) {
+
+// Model
+
+	function loadOBJFileByURL( fullFilePath ) {
 
 		var loader = new THREE.OBJLoader();
 		loader.crossOrigin = 'Anonymous';
@@ -221,12 +258,12 @@ Uses location.hash to set a variety of parameters.
 
 	}
 
-	function loadMTLFileByURL( file ) {
+	function loadMTLFileByURL( fullFilePath ) {
 
 		var index, fileNameOBJ, mtlLoader, loader;
 
-		index = file.lastIndexOf( '/' ) + 1;
-		filePath = file.slice( 0, index );
+		index = fullFilePath.lastIndexOf( '/' ) + 1;
+		filePath = fullFilePath.slice( 0, index );
 
 		fileNameOBJ = fileName.replace( '_dds.mtl', '.obj' );
 		fileNameOBJ = fileNameOBJ.replace( '.obj.mtl', '.mtl' );
@@ -255,10 +292,12 @@ Uses location.hash to set a variety of parameters.
 
 	function onProgress( xhr ) {
 
+		var percentComplete, message;
+
 		if ( xhr.total ) {
 
-			var percentComplete = xhr.loaded / xhr.total * 100;
-			var message = fileName + ': ' + percentComplete.toFixed() + '% or ' + xhr.loaded + ' bytes of ' + xhr.total + ' downloaded';
+			percentComplete = xhr.loaded / xhr.total * 100;
+			message = fileName + ': ' + percentComplete.toFixed() + '% or ' + xhr.loaded + ' bytes of ' + xhr.total + ' downloaded';
 
 		} else {
 
@@ -266,24 +305,25 @@ Uses location.hash to set a variety of parameters.
 
 		}
 
-		handleMessage( message, parent.coreFileInfo );
+		setMessageToTarget( message, parent.coreFileInfo );
 
 	}
 
 	function onError ( xhr ) {
 
 		var message =
-			'<p>An error happened:</p>' +
-			xhr.target.responseURL + '<br><br>' +
-			xhr.target.statusText; console.log( '', xhr );
 
-		handleMessage( message, parent.coreFileInfo );
+			'<p>An error happened:</p>' +
+			'<p>' + xhr.target.responseURL + '</p>' +
+			'<p>' + xhr.target.statusText + '</p>' +
+
+		'';
+
+		setMessageToTarget( message, parent.coreFileInfo );
 
 	};
 
 	function onLoadComplete( object ) {
-
-		var date;
 
 // for the parent
 
@@ -306,21 +346,14 @@ Uses location.hash to set a variety of parameters.
 
 		scene.add( model );
 
-		date = new Date();
-		pud.year = date.getFullYear();
-		pud.month = date.getMonth();
-		pud.date = date.getDate();
-
-		pud.hours = date.getHours();
-		pud.minutes = date.getMinutes();
-
 		getHashParameters();
-
-		handleMessage( fileName + ': load complete', parent.coreFileInfo );
 
 		document.title = fileName + ' - ' + document.title;
 
+		setMessageToTarget( fileName + ': load complete', parent.coreFileInfo );
+
 	}
+
 
 //
 
@@ -328,7 +361,6 @@ Uses location.hash to set a variety of parameters.
 
 		var hashes, hash, parameter, value;
 		var d2r = Math.PI / 180;
-		var b = '<br>';
 
 		hashes = location.hash.length ? location.hash : fullFilePathDefault;
 		hashes = hashes.split( '#' );
@@ -393,34 +425,15 @@ Uses location.hash to set a variety of parameters.
 
 		}
 
-		message =
-			'Latitude: ' + pud.latitude + b +
-			'Longitude: ' + pud.longitude + b + b +
+		if ( analemma ) {
 
-			'Year: ' + pud.year + b +
-			'Month: ' + ( pud.month + 1 ) + b +
-			'Date: ' + pud.date + b +
+			setDateThere();
 
-			'Hours: ' + pud.hours + b +
-			'Minutes: ' + pud.minutes + b + b +
+		} else {
 
-			'Position X: ' + model.position.x + b +
-			'Position Y: ' + model.position.y + b +
-			'Position Z: ' + model.position.z + b +
+			getDateOffsetThere();
 
-			'Rotation X: ' + ( model.rotation.x * r2d ) + b +
-			'Rotation Y: ' + ( model.rotation.y * r2d ) + b +
-			'Rotation Z: ' + ( model.rotation.z * r2d ) + b +
-
-			'Scale: ' + model.scale.z + b + b +
-
-			'Camera position: ' + camera.position.x.toFixed() + ', '+ camera.position.y.toFixed() + ', '+ camera.position.z.toFixed() + ', ' + b +
-			'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b +
-		'';
-
-		handleMessage( message, parent.menuInfo );
-
-		getDateOffsetThere();
+		}
 
 	}
 
@@ -445,50 +458,6 @@ Uses location.hash to set a variety of parameters.
 
 	}
 
-/*
-	function getTimezone( fileName ) {
-
-		var xhr, timeZonePlace, offsetPlace;
-
-		xhr = new XMLHttpRequest();
-		xhr.open( 'GET', fileName, true );
-		xhr.onreadystatechange = callback;
-		xhr.send( null );
-
-		function callback() {
-
-			if ( xhr.readyState !== 4  ) { return; }
-
-			var timeZonePlace = JSON.parse( xhr.responseText );
-
-			if ( timeZonePlace.status === 'OK' ) {
-
-				offsetPlace = timeZonePlace.rawOffset + timeZonePlace.dstOffset;
-
-				dateThere = new Date( dateUTC.getTime() + ( 1000 * offsetPlace ) );
-
-				offsetHours = offsetPlace / 3600;
-
-				handleMessage( 'Added dateThere' );
-
-
-			} else {
-
-				var message =
-					'<p style=color:crimson; >The location is timeless</p>' +
-					'<p>' + fileName + '</p>' +
-					xhr.responseText +
-				'';
-
-				handleMessage( message, parent.coreMessage );
-
-			}
-
-		}
-
-	}
-*/
-
 	function requestTimeZoneThere( url ) {
 
 		var xhr;
@@ -510,7 +479,11 @@ Uses location.hash to set a variety of parameters.
 
 			} else {
 
-				menuDates.innerHTML = 'the location is timeless - probably in the middle of an ocean...';
+				if ( window.self === window.top ) {
+
+					menuDates.innerHTML = 'the location is timeless - probably in the middle of an ocean...';
+
+				}
 
 			}
 
@@ -524,14 +497,14 @@ Uses location.hash to set a variety of parameters.
 
 		dateThereNow = new Date( utcZero + 3600000 * offsetThere );
 
+		pud.year = dateThereNow.getFullYear();
+		pud.month = dateThereNow.getMonth();
+		pud.date = dateThereNow.getDate();
+
+		pud.hours = dateThereNow.getHours();
+		pud.minutes = dateThereNow.getMinutes();
+
 		drawAnalemma();
-
-//		drawMapOverlay();
-
-//		inpMonth.valueAsNumber = dateThereNow.getMonth();
-//		inpDate.valueAsNumber = dateThereNow.getDate();
-//		inpHours.value = dateThereNow.getHours();
-//		inpMinutes.value = dateThereNow.getMinutes();
 
 		setDateThere();
 
@@ -539,110 +512,19 @@ Uses location.hash to set a variety of parameters.
 
 	function setDateThere() {
 
-		var date, dateThere;
-		var year, month, day, hours, minutes;
+		var dateThere;
 
-		date = new Date( utcZero + 3600000 * offsetThere );
-
-		year = document.getElementById( 'inpYear' ) ? inpYear.valueAsNumber : date.getFullYear();
-		month = document.getElementById( 'inpMonth' ) ? inpMonth.valueAsNumber : date.getMonth();
-		day = document.getElementById( 'inpDate' ) ? inpDate.valueAsNumber : date.getDate();
-		hours = document.getElementById( 'inpHours' ) ? inpHours.valueAsNumber: date.getHours();
-		minutes = document.getElementById( 'inpMinutes' ) ? inpMinutes.valueAsNumber: date.getMinutes();
-
-		dateThere = new Date( Date.UTC( year, month, day, hours - offsetThere, minutes, date.getSeconds() ) );
+		dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, pud.hours - offsetThere, pud.minutes ) );
 
 		sun.userData.position = getSunPositionXYZ( analemmaRadius, dateThere, pud.latitude, pud.longitude );
 		sun.position.copy( sun.userData.position.xyz );
 
-//		setContentsDates();
-
-	}
-//
-
-	function initSunAndLight() {
-
-		var geometry, material, lightAmbient;
-		var d = 50;
-
-		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
-		material = new THREE.MeshPhongMaterial( { color: 0xcccc00, emissive: 0xaaaaaa } );
-
-		sun = new THREE.Mesh( geometry, material );
-		sun.position.set( 50, 30, 50 );
-		scene.add( sun );
-
-		lightAmbient = new THREE.AmbientLight( 0x888888 );
-		scene.add( lightAmbient );
-
-		lightDirectional = new THREE.DirectionalLight( 0xffffff, pud.sunlightIntensity );
-
-		lightDirectional.shadow.camera.left = -d;
-		lightDirectional.shadow.camera.right = d;
-		lightDirectional.shadow.camera.top = d;
-		lightDirectional.shadow.camera.bottom = -d;
-
-		lightDirectional.shadow.camera.near = 0;
-		lightDirectional.shadow.camera.far = 5 * d;
-
-		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
-
-		lightDirectional.shadow.mapSize.width = 2048;  // default 512
-		lightDirectional.shadow.mapSize.height = 2048;
-
-		lightDirectional.castShadow = true;
-		sun.add( lightDirectional );
-
-		lightDirectionalHelper = new THREE.CameraHelper( lightDirectional.shadow.camera );
-		scene.add( lightDirectionalHelper );
-
-	}
-
-	function updateSunPosition() {
-
-//		var sunPosition, sunDate;
-
-		dateThere.setMonth( pud.month );
-		dateThere.setDate( pud.date );
-		dateThere.setHours( pud.hours );
-		dateThere.setMinutes( pud.minutes );
-
-		sunDate = new Date( Date.UTC( 2016, dateThere.getMonth(), dateThere.getDate(), dateThere.getHours(), dateThere.getMinutes(), 0 ) );
-
-		sunDate.setUTCHours( sunDate.getUTCHours() - offsetHours );
-
-		pud.sunPosition = getSunPositionXYZ( pud.analemmaRadius, sunDate, pud.latitude, pud.longitude );
-
-		sun.position.copy( pud.sunPosition.xyz );
-
-		message =
-			'Sun azimuth : ' + pud.sunPosition.azimuth + '<br>' +
-			'Sun altitude: ' + pud.sunPosition.altitude +
-		'';
-
-		handleMessage( message, parent.coreSunInfo );
-
-		handleMessage( 'Added Sun' );
-
-	}
-
-	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
-
-		var sunPosition, x, y, z;
-
-		sunPosition = getSunPosition( dateUTC, latitude - 90, longitude );
-
-		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-		z = radius * Math.sin( sunPosition.altitude * d2r );
-
-		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+		onMouseUp();
 
 	}
 
 
-//
-
+// Three.js
 
 	function drawAnalemma() {
 
@@ -712,13 +594,6 @@ Uses location.hash to set a variety of parameters.
 
 		scene.add( analemma );
 
-
-//		dateUTC = new Date( Date.UTC( year, 5, 21, 12 - timeZoneThere.rawOffset / 3600, 0, 0 ) );  // vernal equinox
-
-//		sunBandPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
-
-//		sunBand.rotation.x = sunBandPosition.altitude * d2r + declination - pi05;
-
 	}
 
 	function drawPlacard( text, scale, color, x, y, z ) {
@@ -785,21 +660,78 @@ Uses location.hash to set a variety of parameters.
 
 	}
 
-//
 
-	function handleMessage( message, target ) {
+// UI
 
-		if ( message === 'Added dateThere' ) {
+	function getCoreParameters( message ) {
 
-				updateSunPosition();
+// for parent...
 
-				drawAnalemma();
+console.log( 'message: ', message );
 
-		} else if ( message === 'Added Sun' ) {
+	}
 
-			parent.getCoreParameters( message );
+	function onMouseUp() {
 
-		} else if ( target ) {
+		var dateUTCZero, dateThere;
+		var b = '<br>';
+
+//		dateUTCZero = new Date ( utcZero );
+//		dateThere = new Date( utcZero + 3600000 * offsetThere );
+		dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, pud.hours - offsetThere, pud.minutes ) );
+
+		pud.sunPosition = getSunPosition( dateThere, pud.latitude, pud.longitude );
+
+		parent.getCoreParameters( 'onMouseUp' );
+
+		if ( window.self !== window.top ) return;
+
+		menuDates.innerHTML =
+
+			'Latitude: ' + pud.latitude.toFixed(3) + b +
+			'Longitude: ' + pud.longitude.toFixed(3) + b + b +
+
+			'Sun azimuth: ' + pud.sunPosition.azimuth.toFixed() + b +
+			'Sun altitude: ' + pud.sunPosition.altitude.toFixed() + b + b +
+
+			'Time Zone ID: ' + timeZoneThere.timeZoneId + b +
+			'Time zone: ' + timeZoneThere.timeZoneName + b + b +
+			'Offset in hours: ' + offsetThere + b +
+			'Raw offset in minutes: ' + timeZoneThere.rawOffset + b +
+			'Daylight saving offset in minutes: ' + timeZoneThere.dstOffset + b + b +
+			'Date and time there is:<br>' + dateThere.toLocaleString() + b + b +
+
+			'<div title="GMT" >UTC time at 0&deg; longitude: ' +
+//				( "0" + dateUTCZero.getHours() ).slice( - 2 ) + ':' + ( "0" + dateUTCZero.getMinutes() ).slice( - 2 ) + '</div>' +
+				( "0" + dateThere.getUTCHours() ).slice( - 2 ) + ':' + ( "0" + dateThere.getUTCMinutes() ).slice( - 2 ) + '</div>' +
+
+
+			'<div title= "number of milliseconds since 1 January, 1970" >UTC: ' + dateThere.getTime() + '</div>' +
+			'<hr>' +
+		'';
+
+		menuModel.innerHTML =
+
+			'Position X: ' + model.position.x + b +
+			'Position Y: ' + model.position.y + b +
+			'Position Z: ' + model.position.z + b + b +
+
+			'Rotation X: ' + ( model.rotation.x * r2d ) + b +
+			'Rotation Y: ' + ( model.rotation.y * r2d ) + b +
+			'Rotation Z: ' + ( model.rotation.z * r2d ) + b + b +
+
+			'Scale: ' + model.scale.z + b + b +
+
+			'Camera position: ' + camera.position.x.toFixed() + ', '+ camera.position.y.toFixed() + ', '+ camera.position.z.toFixed() + ', ' + b +
+			'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b +
+
+		'';
+
+	}
+
+	function setMessageToTarget( message, target ) {
+
+		if ( target ) {
 
 			target.innerHTML = message;
 
@@ -807,13 +739,22 @@ Uses location.hash to set a variety of parameters.
 
 	}
 
-	function getCoreParameters( message) {
 
-console.log( 'message: ', message );
+// Utilities
+
+	function getSunPositionXYZ( radius, timeThere, latitude, longitude ) {
+
+		var sunPosition, x, y, z;
+
+		sunPosition = getSunPosition( timeThere, latitude - 90, longitude );
+
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
 
 	}
-
-
 
 	function onWindowResize() {
 

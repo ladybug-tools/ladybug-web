@@ -15,7 +15,6 @@ according to latitude, longitude, date and time.
 <script>
 
 	var core = '../shadow-obj-core/index.html';
-	var icw;
 
 	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
 
@@ -29,13 +28,11 @@ according to latitude, longitude, date and time.
 		css.innerHTML =
 
 			'html { height: 100%; }' +
-			'body { font: 12pt monospace; height: 100%; margin: 0; overflow: hidden; }' +
+			'body { font: 12pt monospace; height: 100%; margin: 0; overflow: hidden; padding: 0; }' +
 			'a { color: crimson; text-decoration: none; }' +
 			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
 
-//			'iframe { border: 0px solid green; height: 100%; margin: 0; padding: 0; width: 100%; }' +
-			'iframe { border: 0px red solid; height: 100%;; overflow: hidden; position: absolute; top: 0; width: 100%; }' +
-//			'iframe { border: 2px solid green; height: 100%; margin: 0; padding: 0; width: 100%; }' +
+			'iframe { border: 0px solid green; height: 100%; margin: 0; position: absolute; top: 0; padding: 0; width: 100%; }' +
 
 			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; }' +
 			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
@@ -47,9 +44,6 @@ according to latitude, longitude, date and time.
 				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
 
 		'';
-
-//		contents = document.body.appendChild( document.createElement( 'div' ) );
-//		contents.id = 'contents';
 
 		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
 		ifr.id = 'ifr';
@@ -68,17 +62,23 @@ according to latitude, longitude, date and time.
 				'<a href="" >' + document.title + '</a> ' +
 				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-gallery/index.html#readme.md >&#x24D8;</a>' +
 			'</h2>' +
-			'<p id=coreMessage >messages<br>appear here...</p>' +
+//			'<p id=coreMessage >messages<br>appear here...</p>' +
+
+			'<p id=coreFileInfo ></p>' +
+			'<p id=coreMessage style=color:crimson; /* onchange=console.log("msg",message); */ ></p>' +
+
 			'<p id=sendToOpener > </p>' +
 			'<hr>' +
+
 			'<h3>Time & Positions</h3>' +
 			'<p>' + 
-				'Month<br><input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" ><output id=outMonth ></output><br>' +
-				'Day<br><input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" ><output id=outDate ></output><br>' +
-				'Hour<br><input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDate(); title="0 to 23: OK" ><output id=outHours ></output><br>' +
-				'Minute<br><input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDate(); title="0 to 59: OK" ><output id=outMinutes ></output><br>' +
+				'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setLocationHash(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
+				'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setLocationHash(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
+				'Hour &nbsp; <input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setLocationHash(); title="0 to 23: OK" > <output id=outHours ></output><br>' +
+				'Minute <input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setLocationHash(); title="0 to 59: OK" > <output id=outMinutes ></output><br>' +
 			'</p>' +
 			'<p id=corePositionsMessage >Latitude<br>Longitude<br><Azimuth<br>Altitude</p>' +
+
 			'<hr>' +
 			'<div id=menuItems ></div>' +
 			'<hr>' +
@@ -86,13 +86,13 @@ according to latitude, longitude, date and time.
 
 		'';
 
-		date = new Date();
+//		date = new Date();
 
-		outMonth.value = inpMonth.value = date.getMonth();
-		outMonth.value = inpMonth.valueAsNumber + 1;
-		outDate.value = inpDate.value = date.getDate();
-		outHours.value = inpHours.value = date.getHours();
-		outMinutes.value = inpMinutes.value = date.getMinutes();
+//		outMonth.value = inpMonth.value = date.getMonth();
+//		outMonth.value = inpMonth.valueAsNumber + 1;
+//		outDate.value = inpDate.value = date.getDate();
+//		outHours.value = inpHours.value = date.getHours();
+//		outMinutes.value = inpMinutes.value = date.getMinutes();
 
 		window.addEventListener ( 'hashchange', onHashChange, false );
 
@@ -106,8 +106,6 @@ according to latitude, longitude, date and time.
 
 		ifr.src = core + location.hash;
 		ifr.onload = function () {
-
-			getCoreParameters();
 
 			if ( window.self !== window.top ) { ifr.contentWindow.controls.enableZoom = false; }
 
@@ -123,7 +121,8 @@ according to latitude, longitude, date and time.
 		model = ifrContentWindow.model;
 		pud = ifrContentWindow.pud;
 
-		outMonth.value = inpMonth.value = pud.month;
+		inpMonth.value = pud.month;
+		outMonth.value = pud.month + 1;
 		outDate.value = inpDate.value = pud.date;
 		outHours.value = inpHours.value = pud.hours;
 		outMinutes.value = inpMinutes.value = pud.minutes;
@@ -135,7 +134,7 @@ according to latitude, longitude, date and time.
 			Altitude ' + ( pud.sunPosition ? pud.sunPosition.altitude.toFixed() : '' ) + '<br> \
 		';
 
-// console.log( '', model );
+ console.log( 'message', message );
 
 	}
 
@@ -152,15 +151,15 @@ according to latitude, longitude, date and time.
 
 	}
 
-	function setDate() {
+	function setLocationHash() {
 
 		ifr.contentWindow.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
 			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber ;
 
-		outMonth.value = inpMonth.valueAsNumber + 1;
-		outDate.value = inpDate.value;
-		outHours.value = inpHours.value;
-		outMinutes.value = inpMinutes.value;
+//		outMonth.value = inpMonth.valueAsNumber + 1;
+//		outDate.value = inpDate.value;
+//		outHours.value = inpHours.value;
+//		outMinutes.value = inpMinutes.value;
 
 	}
 

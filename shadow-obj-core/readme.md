@@ -77,6 +77,13 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### Change Log
 
+
+### 2016-05-29
+
+* Too many minor changes to document easily
+* Whole thing seems to be settling down and becoming more stable
+* Light intensity to zero if Sun.position.y < 0
+
 ### 2016-05-22
 
 * Simplify messaging
