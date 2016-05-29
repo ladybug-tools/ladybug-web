@@ -16,8 +16,8 @@ Uses GitHub API to obtain latest list of apps.
 
 	var urlAPIContents = 'https://api.github.com/repos/ladybug-analysis-tools/ladybug-web/git/trees/gh-pages?recursive=1';
 
-//	var urlSource = 'https://ladybug-analysis-tools.github.io/ladybug-web/';
-	var urlSource = './';
+	var urlSource = 'https://ladybug-analysis-tools.github.io/ladybug-web/';
+//	var urlSource = './';
 
 	var iframeContainers = [];
 	var iframesActive = [];
@@ -255,14 +255,12 @@ Uses GitHub API to obtain latest list of apps.
 
 		var xhr = new XMLHttpRequest();
 		xhr.open( 'GET', fileName, true );
-		xhr.onreadystatechange = callback;
+		xhr.onload = callback;
 		xhr.send( null );
 
 		function callback() {
 
-			if ( xhr.readyState != 4  ) { return; }
-
-			target.innerHTML = converter.makeHtml( xhr.responseText );
+			target.innerHTML=converter.makeHtml( xhr.responseText );
 
 		}
 
@@ -276,7 +274,7 @@ Uses GitHub API to obtain latest list of apps.
 
 			var iframeContainer = iframeContainers[ i ];
 
-			var rect = iframeContainer.getBoundingClientRect();
+			var rect=iframeContainer.getBoundingClientRect();
 
 			if ( rect.bottom < 0 || rect.top > window.innerHeight ) { continue; }
 

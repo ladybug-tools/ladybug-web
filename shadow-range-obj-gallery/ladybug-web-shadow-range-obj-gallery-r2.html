@@ -295,7 +295,7 @@ console.log( 'getCoreParameters', message, target );
 
 		xhr = new XMLHttpRequest();
 		xhr.open( 'GET', fileName, true );
-		xhr.onload = function () { target.innerHTML = converter.makeHtml(  xhr.responseText ); };
+		xhr.onload = function () { target.innerHTML = converter.makeHtml( xhr.responseText ); };
 		xhr.send( null );
 
 	}
