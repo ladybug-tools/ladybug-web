@@ -21,8 +21,6 @@ according to latitude, longitude, date and time.
 
 	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#la=33.5731#lo=7.5859#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23';
 
-	var icw;
-
 	var lights;
 	var lightsCount = 10;
 	var shadowHelpers;
@@ -81,8 +79,8 @@ according to latitude, longitude, date and time.
 			'<p id=sendToOpener > </p>' +
 			'<hr>' +
 			'<p>' + 
-				'Month <input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
-				'Day &nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
+				'Month <input type=range id=inpMonth min=0 max=11 value=1 step=1 onchange=setDate(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
+				'Day &nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 onchange=setDate(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
 			'</p>' +
 			'<p id=positions ></p>' +
 			'<hr>' +

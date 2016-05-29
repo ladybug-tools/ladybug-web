@@ -12,7 +12,7 @@ Uses location.hash to set a variety of parameters.
 <meta name=date content='2016-05-29' >
 </head>
 <body>
-
+<!--
 <script src=https://mrdoob.github.io/three.js/build/three.min.js ></script>
 <script src=https://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
 <script src=https://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
@@ -20,7 +20,7 @@ Uses location.hash to set a variety of parameters.
 <script src=https://mrdoob.github.io/three.js/examples/js/loaders/DDSLoader.js ></script>
 <script src=https://mrdoob.github.io/three.js/examples/js/loaders/MTLLoader.js ></script>
 <script src=https://mrdoob.github.io/three.js/examples/js/loaders/OBJLoader.js ></script>
-<!--
+-->
 <script src=https://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
@@ -28,7 +28,7 @@ Uses location.hash to set a variety of parameters.
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/DDSLoader.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/MTLLoader.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/OBJLoader.js ></script>
--->
+
 <script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
@@ -141,7 +141,6 @@ Uses location.hash to set a variety of parameters.
 
 		window.addEventListener( 'resize', onWindowResize, false );
 		window.addEventListener ( 'hashchange', onHashChange, false );
-		document.body.addEventListener("mouseup", function() { if ( parent.getCoreParameters ) { parent.getCoreParameters('mouseup'); } }, false );
 		document.body.addEventListener("mouseup", onMouseUp, false );
 
 //
