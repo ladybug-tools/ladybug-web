@@ -679,7 +679,7 @@ console.log( 'message: ', message );
 
 		pud.sunPosition = getSunPosition( dateThere, pud.latitude, pud.longitude );
 
-		parent.getCoreParameters( 'onMouseUp' );
+		if ( parent.getCoreParameters ) { parent.getCoreParameters( 'onMouseUp' ); }
 
 		if ( window.self !== window.top ) return;
 
