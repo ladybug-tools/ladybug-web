@@ -1,0 +1,305 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Web Shadow Range OBJ Gallery R2</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='Uses location.hash to load OBJ and MTL files and display a daily Sun range -
+according to latitude, longitude, date and time.
+' >
+<meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-05-28' >
+</head>
+<body>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
+<script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
+<script>
+
+	var core = '../shadow-range-obj-core/index.html';
+
+//	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
+
+	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#la=33.5731#lo=7.5859#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23';
+
+	var icw;
+
+	var lights;
+	var lightsCount = 10;
+	var shadowHelpers;
+
+	init();
+
+	function init() {
+
+		var css, menu, date;
+
+		css = document.body.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'html { height: 100%; }' +
+			'body { font: 12pt monospace; height: 100%; margin: 0; overflow: hidden; }' +
+			'a { color: crimson; text-decoration: none; }' +
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
+
+			'iframe { border: 1px solid green; height: 100%; margin: 0; padding: 0; width: 100%; }' +
+
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; }' +
+			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; opacity: 0.85; width: 10px; }' +
+
+			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; left: -325px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
+				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
+
+			'#contents { height: 100%; }' +
+
+		'';
+
+		contents = document.body.appendChild( document.createElement( 'div' ) );
+		contents.id = 'contents';
+
+		hamburger = document.body.appendChild( document.createElement( 'div' ) );
+		hamburger.id = 'hamburger';
+		hamburger.innerHTML = '<div id=bars >☰</div>';
+		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+
+		menu = hamburger.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href="" >' + document.title + '</a> ' +
+				'<a href=index.html#readme.md >&#x24D8;</a>' +
+			'</h2>' +
+
+			'<p id=coreFileInfo ></p>' +
+			'<p id=coreMessage ></p>' +
+			'<p id=coreSunInfo ></p>' +
+			'<p id=menuInfo ></p>' +
+
+			'<p id=sendToOpener > </p>' +
+			'<hr>' +
+			'<p>' + 
+				'Month <input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDate(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
+				'Day &nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDate(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
+			'</p>' +
+			'<p id=positions ></p>' +
+			'<hr>' +
+
+			'<div id=info ></div>' +
+			'<hr>' +
+			'<center><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></center>' +
+
+		'';
+
+		date = new Date();
+
+		inpMonth.value = date.getMonth();
+		outMonth.value = inpMonth.valueAsNumber + 1;
+		outDate.value = inpDate.value = date.getDate();
+
+		window.addEventListener ( 'hashchange', onHashChange, false );
+
+		getMarkdown( 'menu.md', info );
+
+		onHashChange();
+
+	}
+
+	function onHashChange() {
+
+		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : ''; //defaultFile;
+
+		contents.innerHTML = '<iframe id=ifr src=' + core + '#' + fullFilePath + ' scrolling="no" ></iframe>';
+
+		ifr.id = 'ifr';
+		icw = ifr.contentWindow;
+		ifr.onload = function() {
+
+			icw.drawAnalemma = function(){};
+			icw.updateSunPosition = function(){};
+
+			icw.sun.remove( icw.directionalLight );
+			icw.scene.remove( icw.sun, icw.directionalLight, icw.lightDirectionalHelper );
+
+			var message = 
+				'Latitude ' + icw.pud.latitude + '<br>' +
+				'Longitude ' + icw.pud.longitude + '<br>' +
+			'';
+
+			getCoreParameters( message, positions );
+
+		}
+
+		sendToOpener.innerHTML = '<a href=../shadow-obj-opener/index.html' + location.hash + ' >Send to Opener</a>';
+
+	}
+
+	function setDate() {
+
+//		if ( contents.innerText === '' ) {
+
+			icw.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
+				'';
+
+//		}
+
+		outMonth.value = inpMonth.valueAsNumber + 1;
+		outDate.value = inpDate.value;
+
+	}
+
+	function initLights() {
+
+		var size = 200;
+
+		var THREE = icw.THREE;
+		var scene = icw.scene;
+		var lightAmbient, lightDirectional;
+		var date, position;
+
+		for ( var i = 0; i < lightsCount; i++ ) {
+
+			lightDirectional = new THREE.DirectionalLight( 0xffffff, 1 / ( 0.25 * lightsCount ) );
+
+			lightDirectional.shadow.camera.scale.multiplyScalar( 15 );
+
+			date = new Date(  2016, 5, 20, i + 8, 0, 0  );
+
+//console.log( 'date', i, date.toLocaleTimeString() );
+
+			position = icw.getSunPositionXYZ( 150, date, icw.pud.latitude, icw.pud.longitude  );
+
+			lightDirectional.position.copy( position.xyz );
+
+//			position = convertPosition( 100, 0.2 + i * 0.3, 0.8 );
+
+//			lightDirectional.position.set( i * 200 - 1000 , 2 * size,  0.9 * size );
+//			lightDirectional.position.copy( position );
+
+			lightDirectional.castShadow = true;
+			lightDirectional.shadow.mapSize.width = 2048;  // default 512
+			lightDirectional.shadow.mapSize.height = 2048;
+
+			icw.scene.add( lightDirectional );
+//			lights.push( lightDirectional );
+
+			shadowHelper = new THREE.CameraHelper( lightDirectional.shadow.camera )
+			scene.add( shadowHelper );
+//			shadowHelpers.push( shadowHelper );
+
+		}
+
+//		icw.scene.name = 'hasLights';
+
+	}
+
+	function updateLights() {
+
+//		outAltitude.value = inpAltitude.valueAsNumber;
+
+		for ( var i = 0; i < lightsCount; i++ ) {
+
+			date = new Date( Date.UTC( 2016, 5, 20, i + 8, 0, 0 ) );
+
+			position = getSunPositionXYZ( 200, date, icw.pud.latitude, icw.pud.longitude  );
+
+			lights[ i ].position.copy( position.xyz );
+
+		}
+
+	}
+
+	function getSunPositionXYZ( radius, dateUTC, latitude, longitude ) {
+
+		var sunPosition, x, y, z;
+
+		sunPosition = getSunPosition( dateUTC, latitude, longitude );
+
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+
+	}
+
+	function initGroundPlane( sx, sy, sz, px, py, pz ) {
+
+		var THREE = icw.THREE;
+		var scene = icw.scene;
+		var geometry, material;
+
+		geometry = new THREE.BoxGeometry( sx || 100, sy || 2, sz || 100 );
+		material = new THREE.MeshPhongMaterial();
+		groundPlane = new THREE.Mesh( geometry, material );
+		groundPlane.receiveShadow = true;
+		groundPlane.position.set( px || 0, py || -3, pz || 0 );
+		scene.add( groundPlane );
+
+		edgesGPHelper = new THREE.EdgesHelper( groundPlane, 0x444444 );
+		scene.add( edgesGPHelper );
+
+	}
+
+	function initNorthPoint( x, y, z, scale ) {
+
+		var THREE = icw.THREE;
+		var scene = icw.scene;
+		var geometry, material;
+
+		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
+		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
+		geometry.merge( new THREE.CylinderGeometry( 12, 0, 20, 3 ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - Math.PI ) );
+
+		material = new THREE.MeshNormalMaterial();
+
+		northPoint = new THREE.Mesh( geometry, material );
+		northPoint.scale.multiplyScalar( scale || 0.5 );
+		northPoint.position.set( x || 50, y || -12, z || 25 );
+
+		icw.scene.add( northPoint );
+
+	}
+
+	function getCoreParameters( message, target ) {
+
+console.log( 'getCoreParameters', message, target );
+
+		if ( !icw.model ) { 
+
+			initLights();
+
+			initGroundPlane();
+
+			initNorthPoint();
+
+		} 
+
+		if ( target && message ) {
+
+			target.innerHTML = message;
+
+		}
+
+	}
+
+	function getMarkdown( fileName, target ) {
+
+		var converter, xhr;
+
+		converter = new showdown.Converter( { strikethrough: true, literalMidWordUnderscores: true, simplifiedAutoLink: true, tables: true });
+
+		xhr = new XMLHttpRequest();
+		xhr.open( 'GET', fileName, true );
+		xhr.onload = function () { target.innerHTML = converter.makeHtml(  xhr.responseText ); };
+		xhr.send( null );
+
+	}
+
+</script>
+</body>
+</html>
