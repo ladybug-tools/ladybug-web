@@ -105,6 +105,7 @@ according to latitude, longitude, date and time.
 //		ifr.src = core + location.hash;
 
 		contents.innerHTML = '<iframe id=ifr src=' + core +  location.hash + ' scrolling="no" ></iframe>';
+		ifr.id = 'ifr';
 
 		sendToOpener.innerHTML = '<a href=../shadow-obj-opener/index.html' + location.hash + ' >Send to Opener</a>';
 
