@@ -9,7 +9,7 @@ Load OBJ and MTL files. Display Sun position and analemmas according to latitude
 Uses location.hash to set a variety of parameters.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-28' >
+<meta name=date content='2016-05-30' >
 </head>
 <body>
 <!--
@@ -43,7 +43,8 @@ Uses location.hash to set a variety of parameters.
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/campfire/campfire.obj';
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/campfire/campfire.mtl';
 
-	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#sx=50#sy=50#sz=50';
+//	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#mo=5#da=21#sx=50#sy=50#sz=50';
+	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#mo=11#da=21#sx=50#sy=50#sz=50';
 
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/tparisi/WebGLBook/master/models/LampPost/LampPost.obj#la=33#lo=7#cx=-19#cy=4#cz=21#tx=3#ty=8'
 
@@ -63,7 +64,6 @@ Uses location.hash to set a variety of parameters.
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
 
-
 // Paris
 //	pud.latitude = 48.8566;
 //	pud.longitude = 2.3522;
@@ -71,18 +71,16 @@ Uses location.hash to set a variety of parameters.
 	pud.latitude = 37.796
 	pud.longitude = -122.398;
 
-//	pud.sunlightIntensity = 0.85;
-
-	var timeZoneThere, offsetThere, utcZero;
+	pud.sunRangeIntensity = 0.5;
+	pud.sunRangePositions = 8;
+	pud.sunRangeRadius = 75;
+	pud.sunRangeStart = 9;
 
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
-	var sunRange;
+	var utcZero, timeZoneThere, offsetThere;
 	var suns = [];
 	var sunHelpers = [];
-
-	var sunRangeCount = 10;
-	var sunRangeRadius = 75;
 
 	var stats, renderer, scene, camera, controls;
 
@@ -363,8 +361,9 @@ Uses location.hash to set a variety of parameters.
 
 			switch( parameter ) {
 
-				case 'ar': pud.analemmaRadius = parseFloat( value ); break;
 				case 'aa': pud.analemmaColor = value; break;
+				case 'ar': pud.analemmaRadius = parseFloat( value ); break;
+				case 'av': pud.analemmaVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
 
 				case 'la': pud.latitude = parseFloat( value ); break;
 				case 'lo': pud.longitude = parseFloat( value ); break;
@@ -378,9 +377,12 @@ Uses location.hash to set a variety of parameters.
 
 				case 'go': pud.groundPlaneOpacity = parseFloat( value ); break;
 				case 'gv': pud.groundPlaneVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
-				case 'av': pud.analemmaVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
 
-//				case 'sl': lightDirectional ? lightDirectional.intensity = pud.sunlightIntensity = parseFloat( value ) : ''; break;
+				case 'si': pud.sunRangeIntensity = parseFloat( value ) ; break;
+				case 'sp': pud.sunRangePositions = parseInt( value, 10 ); break;
+				case 'sr': pud.sunRangeRadius = parseFloat( value ) ; break;
+				case 'ss': pud.sunRangeStart = parseInt( value, 10 ); break;
+
 
 				case 'rx': model.rotation.x = parseFloat( value * d2r ); break;
 				case 'ry': model.rotation.y = parseFloat( value * d2r ); break;
@@ -402,9 +404,9 @@ Uses location.hash to set a variety of parameters.
 				case 'ty': controls.target.y = parseFloat( value ); break;
 				case 'tz': controls.target.z = parseFloat( value ); break;
 
-				case  '':
-				case 'sp' :
-					break;
+//				case  '':
+
+//					break;
 
 				default: console.log( 'oops', hash, parameter, i, hashes );
 
@@ -412,7 +414,7 @@ Uses location.hash to set a variety of parameters.
 
 		}
 
-		if ( sunRange ) {
+		if ( suns.length ) {
 
 			setDateThere();
 
@@ -508,29 +510,32 @@ Uses location.hash to set a variety of parameters.
 
 	function drawSunRange() {
 
-		var sun, dateThere;
-		var d;
+		var sun, sunHelper, dateThere, d;
 
-		d = 50;
+		for ( var i = 0; i < pud.sunRangePositions; i++ ) {
 
-		for ( var i = 0; i < sunRangeCount; i++ ) {
+			sun = suns[ i ];
+			sunHelper = sunHelpers[ i ];
 
-			if ( !suns[ i ] ) {
+			if ( !sun || sun.intensity !== pud.sunRangeIntensity ) {
 
-				sun = new THREE.DirectionalLight( 0xffffff, 1 / ( 0.6 * sunRangeCount ) );
+				scene.remove( sun, sunHelper );
 
+				sun = new THREE.DirectionalLight( 0xffffff, 0.5 * pud.sunRangeIntensity );
+
+				d = 50;
 				sun.shadow.camera.left = -d;
 				sun.shadow.camera.right = d;
 				sun.shadow.camera.top = d;
 				sun.shadow.camera.bottom = -d;
 
+/*
 				sun.shadow.camera.near = 0;
 				sun.shadow.camera.far = 5 * d;
-
-				sun.shadow.bias = -0.001; // default 0 ~ distance from corners?
-
+				sun.shadow.bias = -0.001; // default 0
 				sun.shadow.mapSize.width = 2048;  // default 512
 				sun.shadow.mapSize.height = 2048;
+*/
 
 				sun.castShadow = true;
 
@@ -538,17 +543,23 @@ Uses location.hash to set a variety of parameters.
 
 				scene.add( sun, sunHelper );
 
-				suns.push( sun );
+				suns[ i ] =  sun;
+				sunHelpers[ i ] = sunHelper;
 
 			}
 
-			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + 8 - offsetThere, pud.minutes ) );
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - offsetThere, pud.minutes ) );
 
-			suns[ i ].userData.position = getSunPositionXYZ( sunRangeRadius, dateThere, pud.latitude, pud.longitude );
-
-			suns[ i ].position.copy( suns[ i ].userData.position.xyz );
+			sun.userData.position = getSunPositionXYZ( pud.sunRangeRadius, dateThere, pud.latitude, pud.longitude );
+			sun.position.copy( suns[ i ].userData.position.xyz );
 
 		}
+
+			for ( var i = pud.sunRangePositions; i < suns.length; i++ ) {
+
+				scene.remove( suns[ i ], sunHelpers[ i ] );
+
+			}
 
 		getCoreParameters( 'Added Suns' );
 
@@ -559,28 +570,6 @@ Uses location.hash to set a variety of parameters.
 
 	function getCoreParameters( message) {
 
-		if ( message === 'Added Suns' ) {
-
-			txt = '';
-
-			for ( var i = 0; i < sunRangeCount; i++ ) {
-
-				dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + 8 - offsetThere, pud.minutes ) );
-
-				position = getSunPosition( dateThere, pud.latitude, pud.longitude );
-
-				txt += ( '0' + ( i + 8 ) ).slice( - 2 ) +
-
-					' azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
-					' altitude:' + position.altitude.toFixed() + '<br>' +
-
-				'';
-
-			}
-
-			setMessageToTarget( txt, parent.coreSunInfo );
-
-		}
 
 	}
 
@@ -588,20 +577,40 @@ Uses location.hash to set a variety of parameters.
 
 		var dateUTCZero, dateThere;
 		var b = '<br>';
+		var txt = '';
+
+		if ( parent.getCoreParameters ) { parent.getCoreParameters( 'onMouseUp' ); }
+
+		if ( window.self !== window.top ) return;
+
+
+		for ( var i = 0; i < pud.sunRangePositions; i++ ) {
+
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - offsetThere, pud.minutes ) );
+
+			position = getSunPosition( dateThere, pud.latitude, pud.longitude );
+
+			txt += ( '0' + ( i + 8 ) ).slice( - 2 ) +
+
+				' azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
+				' altitude:' + position.altitude.toFixed() + b +
+
+			'';
+
+		}
+
+		coreSunInfo.innerHTML = txt;
+
 
 		dateUTCZero = new Date ( utcZero );
 		dateThere = new Date( utcZero + 3600000 * offsetThere  ) ;
 
 		pud.sunPosition = getSunPosition( dateThere, pud.latitude, pud.longitude );
 
-		parent.getCoreParameters( 'onMouseUp' );
-
-		if ( window.self !== window.top ) return;
-
 		menuDates.innerHTML =
 
-			'latitude:' + pud.latitude.toFixed(3) + b +
-			'longitude:' + pud.longitude.toFixed(3) + b + b +
+			'Latitude:' + pud.latitude.toFixed(3) + b +
+			'Longitude:' + pud.longitude.toFixed(3) + b + b +
 
 			'Sun azimuth:' + pud.sunPosition.azimuth.toFixed() + b +
 			'Sun altitude:' + pud.sunPosition.altitude.toFixed() + b + b +
@@ -633,9 +642,11 @@ Uses location.hash to set a variety of parameters.
 			'Scale: ' + model.scale.z + b + b +
 
 			'Camera position: ' + camera.position.x.toFixed() + ', '+ camera.position.y.toFixed() + ', '+ camera.position.z.toFixed() + ', ' + b +
-			'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b +
+			'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b + b +
 
-		'<hr>';
+			'Sun Intensity: ' + pud.sunRangeIntensity + b +
+
+		'';
 
 	}
 
