@@ -28,14 +28,52 @@ _Ladybug Web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), sola
 then possibilities arise for the more complex, sophisticated and even extravagant ideas to turn into realities
 * RIP Zaha Hadid. Let us continue to design with your disruptive yet aways elegant spirit
 
+## Content
+
+There are four different types of scripts here
+
+### Analemmas
+
+The traditional figure eight ( or infinity symbol on its side) representation of Sun positions. In 3D with geolocation and maps.
+
+
+### Shadows
+
+View the shadows on a 3D model of your choice - given latitude, longitude, data and time. Displays OBJ and MTL files using drag and drop.
+Also displays analemmas and is adjustable using a variety of parameters.
+
+Three types of file
+
+* Core
+* Opener
+* Gallery
+
+
+### Shadow Range
+
+View the shadows cast by your 3D model at hourly intervals - up to 15 - for any month, day latitude and longitude.
+
+Types of files are the same as the Shadow range
+
+
+### Solar Calculator
+
+The process of calculating the position of the sun is moderately complex. We have four:
+
+* LLadybug Web
+* NOAA
+* Bostock
+* Agafokin
+
+There is also a script that compares the output for all four scripts
 
 ## Features
 
 Generally the following scripts are:
 
 * Free and open source
-* Built using entry level JavaScript with no dependencies other than the [Three.js]( https://threejs.org) JavaScript library
-
+* Built using entry level JavaScript with no dependencies other than the [Three.js]( https://threejs.org ) JavaScript library
+* Follow the guidelines of the [Ladybug Web Coding Style]( https://ladybug-analysis-tools.github.io/ladybug-web/index.html#coding-style.md )
 
 The 3D views below enable you to rotate and pan using one three fingers or left button, scroll wheel and right button on a mouse. 
 In these views only, zooming is disabled because it interferes with scrolling the page
