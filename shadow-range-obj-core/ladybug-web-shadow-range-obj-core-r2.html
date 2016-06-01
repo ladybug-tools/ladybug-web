@@ -2,14 +2,14 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Core R2</title>
+<title>Ladybug Web Shadow Range OBJ Core R2.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 Load OBJ and MTL files. Display Sun position and analemmas according to latitude, longitude, date and time.
 Uses location.hash to set a variety of parameters.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-30' >
+<meta name=date content='2016-05-31' >
 </head>
 <body>
 <!--
@@ -44,7 +44,7 @@ Uses location.hash to set a variety of parameters.
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/campfire/campfire.mtl';
 
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#mo=5#da=21#sx=50#sy=50#sz=50';
-	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#mo=11#da=21#sx=50#sy=50#sz=50';
+//	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#mo=11#da=21#sx=50#sy=50#sz=50';
 
 //	var fullFilePathDefault = 'https://cdn.rawgit.com/tparisi/WebGLBook/master/models/LampPost/LampPost.obj#la=33#lo=7#cx=-19#cy=4#cz=21#tx=3#ty=8'
 
@@ -54,9 +54,9 @@ Uses location.hash to set a variety of parameters.
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 
-//	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
-//		'#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
-//		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=1';
+	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
+		'#la=-33#lo=151#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
+//		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#si=0.55#gv=0#av=1';
 
 	var fullFilePath, fileName;
 	var model, edgesHelper;
