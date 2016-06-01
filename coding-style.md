@@ -21,6 +21,10 @@ Built to fork edit and share - all FOSS in GitHub
 Explore new ways of visualizing in 3D - use the graphics processing units (GPUs ) to their maximum
 
 
+For much more detail about the coding style you can have a look at the [Jaanga Practice Notes]( http://jaanga.github.io/documents/jaanga-practice-notes/#code-mission-vision-r1.md )
+Some of the notes there could come here as and when there is agreement on the good styles for this effort.
+ 
+
 <!--
 Everything is in between two `<script>` tags and written JavaScript
 

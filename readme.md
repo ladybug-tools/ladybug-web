@@ -60,10 +60,10 @@ Types of files are the same as the Shadow range
 
 The process of calculating the position of the sun is moderately complex. We have four:
 
-* LLadybug Web
+* Ladybug Web
 * NOAA
 * Bostock
-* Agafokin
+* Agafonkin
 
 There is also a script that compares the output for all four scripts
 
