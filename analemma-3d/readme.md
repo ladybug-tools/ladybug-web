@@ -65,8 +65,8 @@ _If you are in '[Home Page View]( https://ladybug-analysis-tools.github.io/ladyb
 
 <iframe class=ifr src=../ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html width=100% height=600px ></iframe>
 
-<input type=button onclick=window.location.href=' https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r14.html';
-value='_Ladybug Web Analemma 3D: the entire source code listing_' >
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r14.html';
+value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 
 * Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r14.html
