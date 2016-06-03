@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R14.2</title>
+<title>Analemma 3D R14.3</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
@@ -10,7 +10,7 @@ Calculates for any latitude and longitude or select location using the Google Ma
 Shadows displayed on a 2D map.
 ' >
 <meta name=keywords content='Ladybug Web,WebGL,Three.js,Tween.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-26' >
+<meta name=date content='2016-06-03' >
 </head>
 <body>
 <!--
@@ -188,8 +188,6 @@ Shadows displayed on a 2D map.
 				'</p>' +
 			'</details>' +
 
-
-
 			'<details open >' +
 				'<summary><h3>Date & Time There</h3></summary>' +
 				'<p id=menuDates ></p>' +
@@ -307,16 +305,15 @@ Shadows displayed on a 2D map.
 		scene.add( lightAmbient );
 
 		lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
-//		lightDirectional.position.set( -100, 100, 100 );
-		size = 100;
-		var d = size;
+
+		var d = 100;
 		lightDirectional.shadow.camera.left = -d;
 		lightDirectional.shadow.camera.right = d;
 		lightDirectional.shadow.camera.top = d;
 		lightDirectional.shadow.camera.bottom = -d;
 
 		lightDirectional.shadow.camera.near = 0;
-		lightDirectional.shadow.camera.far = 2 * size;
+		lightDirectional.shadow.camera.far = 2 * d;
 
 		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
 
@@ -648,8 +645,6 @@ Shadows displayed on a 2D map.
 
 		var baseURL, tileX, tileY, tileOffset, count;
 
-//		placeMap.visible = chkMap.checked === true ? true : false ;
-
 		if ( placeMap.visible === false ) { return; }
 
 		baseURL = mapTypes[ selMap.selectedIndex ][ 1 ];
@@ -919,8 +914,6 @@ Shadows displayed on a 2D map.
 	}
 
 	function getSunPositionXYZ( radius, timeThere, latitude, longitude ) {
-
-// timeThere: JavaScript Date object, lat & lon: degrees )
 
 		var sunPosition, x, y, z;
 

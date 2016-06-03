@@ -17,9 +17,9 @@ _Ladybug Web provides [analemma]( https://en.wikipedia.org/wiki/Analemma ), sola
 
 ### Mission
 
-* Fabricate free, fast, fun fantasies
-* Write code you can fork, edit and share
-* Build engineering tools you can understand
+<!-- * Fabricate free, fast, fun fantasies -->
+* Write cookbook scripts that are ready to use, cut and paste
+* Build engineering tools built to solve specific problems 
 * Develop skills you can use everywhere
 
 ### Vision
@@ -44,9 +44,9 @@ Also displays analemmas and is adjustable using a variety of parameters.
 
 Three types of file
 
-* Core
-* Opener
-* Gallery
+* Core - the basic 'engine' you can share and and embed
+* Opener - the 'editor' that helps adjust the parameters used by core 
+* Gallery - display your projects in a variety of way
 
 
 ### Shadow Range

@@ -9,6 +9,21 @@ value='You are now in the home page view - Click this button to view the read me
 Ladybug Web Coding Style
 ===
 
+### Mission
+
+<!-- * Fabricate free, fast, fun fantasies -->
+* Write cookbook scripts that are ready to use, cut and paste
+* Build engineering tools built to solve specific problems 
+* Develop skills you can use everywhere
+
+<!--
+### Vision
+
+* If the mundane engineering tasks become easy, inexpensive and swift to carry out, 
+then possibilities arise for the more complex, sophisticated and even extravagant ideas to turn into realities
+* RIP Zaha Hadid. Let us continue to design with your disruptive yet aways elegant spirit
+-->
+
 
 [Cookbook examples]( https://en.wikipedia.org/wiki/Cookbook#Usage_outside_the_world_of_food )
 

@@ -2,11 +2,13 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Core R2.1</title>
+<title>Ladybug Web Shadow Range OBJ Core R2.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
-Load OBJ and MTL files. Display Sun position and analemmas according to latitude, longitude, date and time.
-Uses location.hash to set a variety of parameters.
+Display Sun shadow range according to date, latitude and longitude.
+Load OBJ and MTL files.
+Adjust a wide variety of parameters.
+Uses location.hash or 'permalinks' to save parameters.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
 <meta name=date content='2016-05-31' >
@@ -54,6 +56,7 @@ Uses location.hash to set a variety of parameters.
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 
+// Sydney
 	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
 		'#la=-33#lo=151#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
 //		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#si=0.55#gv=0#av=1';
@@ -175,8 +178,6 @@ Uses location.hash to set a variety of parameters.
 
 	function initGroundPlane( sx, sy, sz, px, py, pz ) {
 
-//		var THREE = icw.THREE;
-//		var scene = icw.scene;
 		var geometry, material;
 
 		geometry = new THREE.BoxGeometry( sx || 100, sy || 2, sz || 100 );
@@ -190,6 +191,7 @@ Uses location.hash to set a variety of parameters.
 		scene.add( edgesGPHelper );
 
 	}
+
 
 // Events
 
@@ -405,7 +407,6 @@ Uses location.hash to set a variety of parameters.
 				case 'tz': controls.target.z = parseFloat( value ); break;
 
 //				case  '':
-
 //					break;
 
 				default: console.log( 'oops', hash, parameter, i, hashes );
