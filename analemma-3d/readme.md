@@ -5,7 +5,6 @@ value='You are now in the home page view - Click this button to view the read me
 
 [Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
 
-
 [Analemma 3D Read Me]( index.html#readme.md )
 ===
 
@@ -126,6 +125,7 @@ _Ladybug Web Analemma 3D: the entire source code listing_
 ### 2016-06-02
 
 * Add much to this read me
+
 
 ### 2016-05-23
 

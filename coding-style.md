@@ -10,7 +10,10 @@ Ladybug Web Coding Style
 ===
 
 
-Cookbook examples - small easy-to-understand scripts that you can use to hack your own apps
+[Cookbook examples]( https://en.wikipedia.org/wiki/Cookbook#Usage_outside_the_world_of_food )
+
+* ready to use, cut and paste scripts built to solve specific problems in a single programming language - JavaScript
+* small easy-to-understand scripts that you can use to hack your own apps
 
 For STEM peeps - not 'full-stack programmers'
 
@@ -24,6 +27,14 @@ Explore new ways of visualizing in 3D - use the graphics processing units (GPUs 
 For much more detail about the coding style you can have a look at the [Jaanga Practice Notes]( http://jaanga.github.io/documents/jaanga-practice-notes/#code-mission-vision-r1.md )
 Some of the notes there could come here as and when there is agreement on the good styles for this effort.
  
+
+## Cookbook Meaning
+
+* http://english.stackexchange.com/questions/70799/meaning-of-cookbook-in-title-of-instructional-book
+* https://en.wikipedia.org/wiki/Cookbook#Usage_outside_the_world_of_food 
+* https://en.wikibooks.org/wiki/Coding_Cookbook
+* https://www.quora.com/Computer-Programming-How-should-I-study-the-OReilly-cookbook-books-I-dont-feel-I-internalize-much-just-by-reading-them-as-Im-a-very-hands-on-learner
+
 
 <!--
 Everything is in between two `<script>` tags and written JavaScript
