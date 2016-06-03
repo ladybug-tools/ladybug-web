@@ -36,12 +36,15 @@ _Ladybug Web Analemma 3D_
 	* Displays current position of sun
 	* Displays a transparent yellow band indicating the total annual sun path
 	* Displays shadow and shade
-	* Deisplays a reference object - currently a [Trylon and Perisphere]( https://en.wikipedia.org/wiki/Trylon_and_Perisphere ) - to indicate shade and shadow coverage
+	* Displays a reference object - currently a [Trylon and Perisphere]( https://en.wikipedia.org/wiki/Trylon_and_Perisphere ) - to indicate shade and shadow coverage
 	* 3D arrow shows direction of north
-* Menu panel - displays a variety of information including
+* Menu panel - display and set a variety of information including
 	* Latitude and longitude
 	* Local and UTC time
 	* Time zone name, id and offset in hours
+	* Display of elements
+	* Type of map and map parameters
+
 
 ## Things you can do using the script
 
@@ -50,8 +53,20 @@ _Ladybug Web Analemma 3D_
 * Click in the location box and update the current center 
 * Drag the date and time sliders to change the position of the sun
 * Click the triangles in the menu to open and close menu items
+* Toggle the display of any of items in the 'Display & Map' panel
+* Use the slider to update the radius of the analemma or the scale of the reference objects
+* Selected a different source for the maps
+	* 2016-06-02 - only Google Maps working right now. ;-(
+* Edit the map zoom level and opacity
+
+
+_If you are in '[Home Page View]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/#readme.md )', you can do all this in the window just above._
 
 ## Things you can do by editing the code
+
+<iframe class=ifr src=../ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html width=100% height=600px ></iframe>
+
+_Ladybug Web Analemma 3D: the entire source code listing_
 
 * Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r14.html
 * Click the 'Raw' icon and save the raw file to your computer
@@ -63,13 +78,14 @@ _Ladybug Web Analemma 3D_
 
 
 
- 
-### Issues
+## Issues
 
 * Open Street Maps - and other maps - not showing because of HTTPS issues
 
-### Things To Do / Road Map / Wish List
+## Things To Do / Road Map / Wish List
 
+* Set intensity of Sun light
+* Add display of current map source and copy right notices
 * Add ability to turn off casting and receiving of shadows whenever the sun is below the ground plane/horizon.
 * Add choice of 3D objects
 * Add the ability to change the north point based on an angle
@@ -85,7 +101,7 @@ _Ladybug Web Analemma 3D_
 	* As in lower left of [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
 * Permalink support
 
-### Goals
+## Goals
 
 * Do everything the following scripts do:
 	* Animations from [Sun Position Calculator]( http://www.pveducation.org/pvcdrom/properties-of-sunlight/sun-position-calculator )
@@ -106,6 +122,10 @@ _Ladybug Web Analemma 3D_
 
 
 ## Change Log
+
+### 2016-06-02
+
+* Add much to this read me
 
 ### 2016-05-23
 
