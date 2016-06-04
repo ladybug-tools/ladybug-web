@@ -14,10 +14,11 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Concept
 
-
-<iframe src=http://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/index.html width=100% height=600px ></iframe>
+<!--
+<iframe src=https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/index.html width=100% height=600px ></iframe>
 
 <img src=shadow-range-obj-core-r3.jpg style=display:none; >
+-->
 
 _Ladybug Web Shadow Range OBJ Core_
 
