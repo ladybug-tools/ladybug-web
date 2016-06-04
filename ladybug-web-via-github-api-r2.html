@@ -92,12 +92,10 @@ Uses GitHub API to obtain latest list of apps.
 
 		var xhr = new XMLHttpRequest();
 		xhr.open( 'GET', urlAPIContents, true );
-		xhr.onreadystatechange = callback;
+		xhr.onload = callback;
 		xhr.send( null );
 
 		function callback() {
-
-			if ( xhr.readyState !== 4  ) { return; }
 
 			var response, file;
 
@@ -214,13 +212,13 @@ Uses GitHub API to obtain latest list of apps.
 				'<b>Date</b>' + b + date + b +
 				'<b>Full screen: <a href=index.html#' + folder + 'readme.md >Read Me</a></b>' +
 			'</div>' +
-			'<div class=readme id=readme' + index + ' ></div>' +
+//			'<div class=readme id=readme' + index + ' ></div>' +
 
 		'';
 
-		var rm = document.getElementById( 'readme' + index )
+//		var rm = document.getElementById( 'readme' + index )
 
-		getMarkdown( urlSource + folder + 'readme.md', rm );
+//		getMarkdown( urlSource + folder + 'readme.md', rm );
 
 		if ( that.contentWindow.controls ) {
 
