@@ -15,7 +15,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 <iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html" width="100%" height=600 ></iframe>
 
-<img src=https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r12.png style=display:none; >
+<img src=analemma-3d-r12.png style=display:none; >
 
 
 _Ladybug Web Analemma 3D_
