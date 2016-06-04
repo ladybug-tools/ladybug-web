@@ -52,5 +52,5 @@ value='You are now in the home page view - Click this button to view the read me
 ***
 
 <center title="dingbat" >
-# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="http://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
 </center
