@@ -128,5 +128,3 @@ To provide a simple user-interface for adding end aditing parameters used by Lad
 
 * Add Ladybug Web Shadow Core Bostock R1
 * Rename from 'Ladybug Web Shadow Core' to 'Ladybug Web Shadow Core NOAA'
-
--->
