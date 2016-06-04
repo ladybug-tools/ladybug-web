@@ -15,7 +15,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 <iframe src=https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html width=100% height=600 ></iframe>
 
-<img src=analemma-3d-r12.png style=display:none; >
+<img src=https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r12.png style=display:none; >
 
 _Ladybug Web Analemma 3D_
 
@@ -63,7 +63,7 @@ _If you are in '[Home Page View]( https://ladybug-analysis-tools.github.io/ladyb
 
 ## Things you can do by editing the code
 
-<iframe class=ifr src=../ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html width=100% height=600px ></iframe>
+<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html width=100% height=600 ></iframe>
 
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r14.html';
 value='Ladybug Web Analemma 3D: the entire source code listing' >
