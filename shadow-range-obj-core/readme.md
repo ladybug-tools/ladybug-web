@@ -39,7 +39,7 @@ _Ladybug Web Shadow Range OBJ Core_
 
 ## Things you can do by editing the code
 
-<iframe class=ifr src=../ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html width=100% height=600px ></iframe>
+<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web//ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html width=100% height=600px ></iframe>
 
 
 _Source code Ladybug Web Shadow Range OBJ Core_
