@@ -12,6 +12,14 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Full screen: [Ladybug Web Shadow OBJ Core]( http://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/ )
 
+
+<img src="https://cloud.githubusercontent.com/assets/547626/15868428/abb213ce-2c9c-11e6-92d5-b79c0e36dd7e.png" style=display:none; width=800 >
+
+<iframe src="http://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/" width="100%" height=600 ></iframe>
+
+_Ladybug Web Shadow OBJ Core_
+
+
 ***
 
 ## Concept
@@ -69,6 +77,13 @@ value='You are now in the home page view - Click this button to view the read me
 * Small discrepancy with NOAA/Bostacl calcs
 
 
+## Editing the code
+
+<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#http://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html width=100% height=600 ></iframe>
+
+<input type=button onclick=window.location.href='http://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html';
+value='Source code listing' >
+
 
 ## Wish List
 
@@ -76,6 +91,11 @@ value='You are now in the home page view - Click this button to view the read me
 
 
 ### Change Log
+
+### 2016-06-07
+
+* Add images to Read Me
+
 
 
 ### 2016-05-29

@@ -8,25 +8,28 @@ value='You are now in the home page view - Click this button to view the read me
 [Analemma 3D Read Me]( index.html#readme.md )
 ===
 
+
 ## Full screen: [Analemma 3D]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
 
-
-## Concept
-
-<img src=https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r12.png style=display:none; >
-
-
+<img src="https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r12.png" style=display:none; width=800 >
 
 <iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html" width="100%" height=600 ></iframe>
 
-
 _Ladybug Web Analemma 3D_
+
+***
+
+## Concept
 
 ### Mission
 
 * To display one [analemma]( https://en.wikipedia.org/wiki/Analemma ) for every hour of the day in 3D at any location on Earth as displayed on a 2D map
 * To display the position of the Sun - using [azimuth and altitude]( https://en.wikipedia.org/wiki/Azimuth ) - for any date and time at any location on Earth
 * To display the shade and shadows cast by 3D objects onto themselves and the ground 
+
+### Vision
+
+* To experience, understand and make more useful the powers of sunlight
 
 
 ### Features
@@ -126,6 +129,10 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 
 ## Change Log
+
+### 2016-06-07
+
+* Tweaks
 
 ### 2016-06-02
 
