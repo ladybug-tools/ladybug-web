@@ -23,13 +23,39 @@ _Ladybug Web Analemma 3D_
 
 ***
 
-## Edit the code
+## Concept
+
+### Mission
+
+* Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
+	* According to latitude, longitude, date and time
+* Select a variety of curated OBJ and MTL files from menu
+* Adjust a variety of parameters
+
+
+### Vision
+
+* TBD
+
+### Features
+
+* TBD
+
+
+## Things you can do using the script
+
+* TBD
+
+
+
+## Things you can do by editing the code
 
 <iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html width=100% height=600 ></iframe>
 
-<input type=button onclick=window.location.href='https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html';
-value='Ladybug Web Analemma 3D: the entire source code listing' >
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html';
+value='Source code listing' >
 
+* TBD
 
 
 ## Issues / To Do
@@ -44,8 +70,10 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 ### 2016-06-07
 
-* Teaking code
+* Tweaking code
 * Add iframes and images to Read me
+* Add text
+* Add back to top links
 
 ### 2016-05-31
 

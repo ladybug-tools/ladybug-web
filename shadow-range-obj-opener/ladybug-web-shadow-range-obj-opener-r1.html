@@ -3,13 +3,14 @@
 <head>
 <meta charset=utf-8 >
 <title>Ladybug Web Shadow Range OBJ Opener R1</title>
-<meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name='description' content='
-View Three.js JSON Files from a variety of sources
-Basic slide in/slide out menu with three bar icon that adjusts for small screen size.
+Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
+according to latitude, longitude, date and time.
+Select a variety of curated OBJ and MTL files from menu. Adjust a variety of parameters.
 '>
-<meta name='keywords' content='CSS, HTML,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name='date' content='2016-05-29' >
+<meta name='keywords' content='Ladybug Web,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name='date' content='2016-06-07' >
 </head>
 <body>
 <script>
@@ -134,7 +135,8 @@ Basic slide in/slide out menu with three bar icon that adjusts for small screen 
 			'<div id=links ></div>' +
 
 			'<hr>' +
-			'<center><h1> <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 </h1></center>';
+			'<center><a href=javascript:menu.scrollTop=0; ><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></a></center>' +
+
 		'';
 
 		window.addEventListener( 'hashchange', onHashChange, false );

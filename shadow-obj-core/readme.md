@@ -81,7 +81,7 @@ _Ladybug Web Shadow OBJ Core_
 
 <iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html width=100% height=600 ></iframe>
 
-<input type=button onclick=window.location.href='https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html';
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html';
 value='Source code listing' >
 
 

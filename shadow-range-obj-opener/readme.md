@@ -9,7 +9,7 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Web Shadow Range OBJ Opener Read Me]( index.html#readme.md )
 ===
 
-## Full screen: [Ladybug Web Shadow Range OBJ Opener]( index.html )
+## Full screen: [Ladybug Web Shadow Range OBJ Opener]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ )
 
 Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opener
 
@@ -22,11 +22,24 @@ Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opene
 * https://jaanga.github.io/3d-models/obj/architecture/sydney-opera-house/sydney-opera-house.obj
 	* Use 'zoom boundary' button
 
-## Concept
 
-To provide a simple user-interface for adding end aditing parameters used by Ladybug Web Shadow OBJ Core
+<img src="https://cloud.githubusercontent.com/assets/547626/15871740/0675c73e-2cab-11e6-88c6-0a412f8c24fd.png" style=display:none; width=800 >
+
+<iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html" width="100%" height=600 ></iframe>
+
+_Ladybug Web Shadow Range OBJ Opener_
 
 ***
+
+## Concept
+
+### Mission
+
+* To provide a simple user-interface for adding and editing parameters used by Ladybug Web Shadow OBJ Core
+
+### Vision
+
+* TBD
 
 ## Features
 
@@ -71,8 +84,26 @@ To provide a simple user-interface for adding end aditing parameters used by Lad
 	* tz - controls.target.z
 
 
+
+## Things you can do using the script
+
+* TBD
+
+
+
+## Things you can do by editing the code
+
+<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html width=100% height=600 ></iframe>
+
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html';
+value='Source code listing' >
+
+* TBD
+
 ## Issues
 
+* UI too sensitive. Clicking fast on number parameters cause WebGL to crash
+	* May meed to go to slower data entry method ;-(
 * Not easy to return to start position, rotation etc. Because defaults are ignored
 	* Workaround: set position px equal to 0.1, for example
 
@@ -84,9 +115,20 @@ To provide a simple user-interface for adding end aditing parameters used by Lad
 
 ## Change Log
 
+### 2016-06-07
+
+* Tweak code
+* Update readme
+
 
 ### 2016-05-31
 
 First commit
 
+
+***
+
+<center title="Ladybug Web" >
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+</center>
 
