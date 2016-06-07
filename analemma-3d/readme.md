@@ -220,3 +220,8 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 * Many new UI features
 * Gazetteer
 
+***
+
+<center title="Ladybug Web" >
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+</center>

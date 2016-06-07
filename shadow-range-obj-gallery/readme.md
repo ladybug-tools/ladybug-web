@@ -13,6 +13,24 @@ value='You are now in the home page view - Click this button to view the read me
 ## full screen: [Ladybug Web Shadow Range OBJ Gallery]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ )
 
 
+## Concept
+
+<img src="https://cloud.githubusercontent.com/assets/547626/15700117/dbb0685c-2786-11e6-80ed-12df0a37adf9.png" style=display:none; width=800 >
+
+<iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/" width="100%" height=600 ></iframe>
+
+_Ladybug Web Analemma 3D_
+
+***
+
+## Edit the code
+
+<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html width=100% height=600 ></iframe>
+
+<input type=button onclick=window.location.href='https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html';
+value='Ladybug Web Analemma 3D: the entire source code listing' >
+
+
 
 ## Issues / To Do
 
@@ -23,6 +41,11 @@ value='You are now in the home page view - Click this button to view the read me
 
 
 ## Change Log
+
+### 2016-06-07
+
+* Teaking code
+* Add iframes and images to Read me
 
 ### 2016-05-31
 
@@ -51,6 +74,6 @@ value='You are now in the home page view - Click this button to view the read me
 
 ***
 
-<center title="dingbat" >
+<center title="Ladybug Web" >
 # <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
-</center
+</center>

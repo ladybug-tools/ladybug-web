@@ -10,20 +10,21 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Web Shadow Range OBJ Core Read Me]( index.html#readme.md )
 ===
 
+
 ## full screen: [Ladybug Web Shadow Range OBJ Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ )
 
-## Concept
-
-<img src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/shadow-range-obj-core-r3.jpg" style="display:none;" >
-
+<img src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/shadow-range-obj-core-r3.jpg" style=display:none; width=800 >
 
 
 <iframe src=https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/index.html width=100% height=600px ></iframe>
 
 
-
-
 _Ladybug Web Shadow Range OBJ Core_
+
+
+***
+
+## Concept
 
 ### Mission
 
@@ -85,6 +86,6 @@ _Source code Ladybug Web Shadow Range OBJ Core_
 
 ***
 
-<center title="dingbat" >
+<center title="Ladybug Web" >
 # <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
-</center
+</center>

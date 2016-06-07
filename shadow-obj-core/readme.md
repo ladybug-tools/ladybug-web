@@ -152,3 +152,8 @@ value='Source code listing' >
 * Add Ladybug Web Shadow Core Bostock R1
 * Rename from 'Ladybug Web Shadow Core' to 'Ladybug Web Shadow Core NOAA'
 
+***
+
+<center title="Ladybug Web" >
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+</center>
