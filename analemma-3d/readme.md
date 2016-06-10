@@ -69,7 +69,8 @@ _If you are in '[Home Page View]( https://ladybug-analysis-tools.github.io/ladyb
 
 ## Things you can do by editing the code
 
-<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html width=100% height=600 ></iframe>
+<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#' +
+	'https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html' width=100% height=600 ></iframe>
 
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r14.html';
 value='Ladybug Web Analemma 3D: the entire source code listing' >
@@ -82,12 +83,15 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 * Scroll to line 39 and comment out - add '//' - the default location of Sydney 
 * Uncomment - remove the '//' - on Paris or Chile.
 * Save and reload
+* Press Control-U/Command-Option-U to view the source code
+* Press Control-Shift-J/Command-Option-J to see if the JavaScript console reports any errors
 
 
 
 ## Issues
 
 * Open Street Maps - and other maps - not showing because of HTTPS issues
+
 
 ## Things To Do / Road Map / Wish List
 
