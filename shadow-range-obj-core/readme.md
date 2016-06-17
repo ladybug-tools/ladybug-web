@@ -13,7 +13,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## full screen: [Ladybug Web Shadow Range OBJ Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ )
 
-<img src='https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/shadow-range-obj-core-r3.jpg' style=display:none; width=800 >
+<img src='https://cloud.githubusercontent.com/assets/547626/16139094/2be7e97a-33f9-11e6-9847-7e13d8280e6f.png' style=display:none; width=800 >
 
 <iframe src=https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/index.html width=100% height=600px ></iframe>
 
@@ -143,6 +143,7 @@ tz= controls.target.z
 
 ### 2016-06-16
 
+* Update read me with permalink/location hash parameters
 * Fix display of sun positions in menu
 * Add to and edit location hash parameters
 	* Add set number of minutes between sun positions
