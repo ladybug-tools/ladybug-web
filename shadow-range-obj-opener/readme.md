@@ -115,10 +115,14 @@ value='Source code listing' >
 
 ## Change Log
 
+### 2016-06-17
+
+* Add display Sun positions read out and Sun controls
+
 ### 2016-06-07
 
 * Tweak code
-* Update readme
+* Update read me
 
 
 ### 2016-05-31

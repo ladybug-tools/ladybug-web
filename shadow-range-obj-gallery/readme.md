@@ -69,9 +69,13 @@ value='Source code listing' >
 
 ## Change Log
 
+### 2016-06-17 ~ R4
+
+* Add display of Sun positions
+
 ### 2016-06-16 ~ R3.2
 
-* Add Interval in minutes
+* Add interval in minutes
 
 ### 2016-06-07
 

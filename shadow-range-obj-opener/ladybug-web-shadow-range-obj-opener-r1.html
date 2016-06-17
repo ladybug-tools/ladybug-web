@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Opener R1</title>
+<title>Ladybug Web Shadow Range OBJ Opener R1.1</title>
 <meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name='description' content='
 Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
@@ -10,7 +10,7 @@ according to latitude, longitude, date and time.
 Select a variety of curated OBJ and MTL files from menu. Adjust a variety of parameters.
 '>
 <meta name='keywords' content='Ladybug Web,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name='date' content='2016-06-07' >
+<meta name='date' content='2016-06-17' >
 </head>
 <body>
 <script>
@@ -40,6 +40,9 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
 			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
 			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+
+			'details h3 { display: inline; margin: 0; }' +
+			'summary { outline: none; }' +
 
 			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
 			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
@@ -96,31 +99,44 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 //				'Minute <input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setLocationHash(); title="0 to 59: OK" > <output id=outMinutes ></output><br>' +
 			'</p>' +
 
-			'<p>Model Scale <input type=number id=inpScale value=1 step=0.001 onchange = setLocationHash(); ></p>' +
-			'<p>' +
-				'Model rotation<br>' +
-				'x <input type=number id=inpRotX value=0 onchange = setLocationHash(); > ' +
-				'y <input type=number id=inpRotY value=0 onchange = setLocationHash(); > ' +
-				'z <input type=number id=inpRotZ value=0 onchange = setLocationHash(); >' +
-			'</p>' +
-			'<p>' +
-				'Model position<br>' +
-				'x <input type=number id=inpPosX value=0 onchange = setLocationHash(); > ' +
-				'y <input type=number id=inpPosY value=0 onchange = setLocationHash(); > ' +
-				'z <input type=number id=inpPosZ value=0 onchange = setLocationHash(); >' +
-			'</p>' +
-			'<p>' +
-				'Camera position<br>' +
-				'x <input type=number id=inpCamX value=0 onchange = setLocationHash(); > ' +
-				'y <input type=number id=inpCamY value=0 onchange = setLocationHash(); > ' +
-				'z <input type=number id=inpCamZ value=0 onchange = setLocationHash(); >' +
-			'</p>' +
-			'<p>' +
-				'Camera Target<br>' +
-				'x <input type=number id=inpTarX value=0 onchange = setLocationHash(); > ' +
-				'y <input type=number id=inpTarY value=0 onchange = setLocationHash(); > ' +
-				'z <input type=number id=inpTarZ value=0 onchange = setLocationHash(); >' +
-			'</p>' +
+			'<details open >' +
+				'<summary><h3>Sun Positions</h3></summary>' +
+				'<p id=menuSunPositions ></p>' +
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Sun Controls</h3></summary>' +
+				'<p id=menuSunControls ></p>' +
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Model Controls</h3></summary>' +
+					'<p>Model Scale <input type=number id=inpScale value=1 step=0.001 onchange = setLocationHash(); ></p>' +
+					'<p>' +
+						'Model rotation<br>' +
+						'x <input type=number id=inpRotX value=0 onchange = setLocationHash(); > ' +
+						'y <input type=number id=inpRotY value=0 onchange = setLocationHash(); > ' +
+						'z <input type=number id=inpRotZ value=0 onchange = setLocationHash(); >' +
+					'</p>' +
+					'<p>' +
+						'Model position<br>' +
+						'x <input type=number id=inpPosX value=0 onchange = setLocationHash(); > ' +
+						'y <input type=number id=inpPosY value=0 onchange = setLocationHash(); > ' +
+						'z <input type=number id=inpPosZ value=0 onchange = setLocationHash(); >' +
+					'</p>' +
+					'<p>' +
+						'Camera position<br>' +
+						'x <input type=number id=inpCamX value=0 onchange = setLocationHash(); > ' +
+						'y <input type=number id=inpCamY value=0 onchange = setLocationHash(); > ' +
+						'z <input type=number id=inpCamZ value=0 onchange = setLocationHash(); >' +
+					'</p>' +
+					'<p>' +
+						'Camera Target<br>' +
+						'x <input type=number id=inpTarX value=0 onchange = setLocationHash(); > ' +
+						'y <input type=number id=inpTarY value=0 onchange = setLocationHash(); > ' +
+						'z <input type=number id=inpTarZ value=0 onchange = setLocationHash(); >' +
+					'</p>' +
+			'</details>' +
 
 //			'<p><input type=checkbox onchange=ifrContentWindow.model.material.wireframe=!ifrContentWindow.model.material.wireframe; > Wireframe</p>' +
 
@@ -133,6 +149,11 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 			'<div id=info ></div>' +
 			'<div id=links ></div>' +
+
+			'<details>' +
+				'<summary><h3>About</h3></summary>' +
+				'<p>Copyright &copy; 2016 Ladybug authors. GPL 3 license.</p>' +
+			'</details>' +
 
 			'<hr>' +
 			'<center><a href=javascript:menu.scrollTop=0; ><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></a></center>' +
@@ -188,6 +209,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 	function getCoreParameters( message ) {
 
+//		var ifrContentWindow, dateUTCZero, dateThere;
 		var r2d = 180 / Math.PI;
 
 		ifrContentWindow = ifr.contentWindow;
@@ -222,7 +244,59 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		inpPosY.value = model.position.y;
 		inpPosZ.value = model.position.z;
 
-	setLocationHash();
+
+
+		var b = '<br>';
+		var txt = '';
+
+		model = ifrContentWindow.model;
+		pud = ifrContentWindow.pud;
+
+		txt = 
+
+			'<p>Sun Intensity<br><input type=range id=inpIntensity min=0.01 max=1 value=0.2 step=0.01 onchange=setLocationHash(); title="0.1 to 2: OK" > <output id=outIntensity ></output></p>' +
+			'<p>Start Time<br><input type=range id=inpStart min=0 max=23 step=1 value=9 onchange=setLocationHash(); title="0 to 23: OK" > <output id=outStart ></output></p>' +
+			'<p>Number of Positions<br><input type=range id=inpPositions min=1 max=15 step=1 value=8 onchange=setLocationHash(); title="1 to 15: OK" > <output id=outPositions ></output></p>' +
+			'<p>Interval in Minutes<br><input type=range id=inpMinutes min=1 max=120 step=1 value=60 onchange=setLocationHash(); title="1 to 120: OK" > <output id=outMinutes ></output></p>' +
+
+		'';
+
+		menuSunControls.innerHTML = txt;
+
+		inpMonth.value = pud.month;
+		outMonth.value = pud.month + 1;
+		outDate.value = inpDate.value = pud.date;
+		outIntensity.value = inpIntensity.value = pud.sunRangeIntensity;
+		outPositions.value = inpPositions.value = pud.sunRangeCount;
+		outMinutes.value = inpMinutes.value = pud.sunRangeMinutes;
+		outStart.value = inpStart.value = pud.sunRangeStart;
+
+//		corePositionsMessage.innerHTML = 
+//			'Latitude ' + pud.latitude + '<br>' +
+//			'Longitude ' + pud.longitude +
+//		'';
+
+		txt = '';
+
+		for ( var i = 0; i < pud.sunRangeCount; i++ ) {
+
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - pud.offsetThere, pud.minutes ) );
+
+			position = ifrContentWindow.getSunPosition( dateThere, pud.latitude, pud.longitude );
+
+			txt += ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
+				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) + 
+
+				' azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
+				' altitude:' + position.altitude.toFixed() + b +
+
+			'';
+
+		}
+
+		menuSunPositions.innerHTML = txt;
+
+		setLocationHash();
 
 // console.log( 'message', message );
 

@@ -162,29 +162,11 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 		txt = '';
 
-		for ( var i = 0; i < pud.sunRangePositions; i++ ) {
-
-			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - ifrContentWindow.offsetThere, pud.minutes ) );
-
-			position = ifrContentWindow.getSunPosition( dateThere, pud.latitude, pud.longitude );
-
-			txt += ( '0' + ( i +  pud.sunRangeStart ) ).slice( - 2 ) +
-
-				':00 azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
-				' altitude:' + position.altitude.toFixed() + b +
-
-			'';
-
-		}
-
-		menuSunControls.innerHTML += txt;
-
-
 		for ( var i = 0; i < pud.sunRangeCount; i++ ) {
 
-			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - offsetThere, pud.minutes ) );
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - pud.offsetThere, pud.minutes ) );
 
-			position = getSunPosition( dateThere, pud.latitude, pud.longitude );
+			position = ifrContentWindow.getSunPosition( dateThere, pud.latitude, pud.longitude );
 
 			txt += ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
 				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) + 
@@ -196,9 +178,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 		}
 
-		coreSunPositions.innerHTML = txt;
-
-// console.log( 'message', message );
+		menuSunPositions.innerHTML = txt;
 
 	}
 
