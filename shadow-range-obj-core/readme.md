@@ -121,6 +121,7 @@ tz= controls.target.z
 
 ## Issues / To Do
 
+* Add north point
 * Suns not being deleted properly
 * Need more examples with parameters
 * Add ways of improving shadow quality
