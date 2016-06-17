@@ -1,0 +1,795 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Web Shadow Range OBJ Core R3</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
+<meta name=description content='
+Display Sun shadow range according to date, latitude and longitude.
+Load OBJ and MTL files.
+Adjust a wide variety of parameters.
+Uses location.hash or 'permalinks' to save parameters.
+' >
+<meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-05-31' >
+</head>
+<body>
+<!--
+<script src=https://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+
+<script src=https://mrdoob.github.io/three.js/examples/js/loaders/DDSLoader.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/loaders/MTLLoader.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/loaders/OBJLoader.js ></script>
+-->
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/loaders/DDSLoader.js ></script>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/loaders/MTLLoader.js ></script>
+<script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/loaders/OBJLoader.js ></script>
+
+<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+
+<script>
+
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/female02/female02.obj';
+//	var fullFilePathDefault = 'https://rawgit.com/mrdoob/three.js/dev/examples/obj/female02/female02.mtl';
+
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/male02/male02.obj';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/male02/male02.mtl';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/male02/male02_dds.mtl';
+
+//	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/campfire/campfire.obj';
+//	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/campfire/campfire.mtl';
+
+//	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#mo=5#da=21#sx=50#sy=50#sz=50';
+//	var fullFilePathDefault = 'https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/obj/tree.obj#mo=11#da=21#sx=50#sy=50#sz=50';
+
+//	var fullFilePathDefault = 'https://cdn.rawgit.com/tparisi/WebGLBook/master/models/LampPost/LampPost.obj#la=33#lo=7#cx=-19#cy=4#cz=21#tx=3#ty=8'
+
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/models/campfire/brownrock.obj';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/models/campfire/brownrock.mtl';
+
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
+//	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
+
+// Sydney lat lon
+	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
+		'#la=-33#lo=151#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
+//		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#si=0.55#gv=0#av=1';
+
+	var fullFilePath, fileName;
+	var model, edgesHelper;
+
+	var parameters = new THREE.Object3D();
+	var pud = parameters.userData;
+
+// Paris
+//	pud.latitude = 48.8566;
+//	pud.longitude = 2.3522;
+
+	pud.latitude = 37.796
+	pud.longitude = -122.398;
+
+	pud.sunRangeCount = 8;
+	pud.sunRangeHelpers = 1;
+	pud.sunRangeIntensity = 0.5;
+	pud.sunRangeMinutes = 30;
+	pud.sunRangePlacards = 1;
+	pud.sunRangeRadius = 75;
+	pud.sunRangeStart = 9;
+
+	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+	var utcZero, timeZoneThere, offsetThere;
+	var suns = [];
+	var sunHelpers = [];
+
+	var stats, renderer, scene, camera, controls;
+
+	init();
+	animate();
+
+	function init() {
+
+		var css, hamburger, menu;
+		var geometry, material, mesh;
+
+		css = document.head.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+			'a { color: crimson; text-decoration: none; }' +
+
+			'#bars { color: pink; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; left: -324px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
+				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
+
+		'';
+
+		if ( window.self === window.top ) {
+
+			hamburger = document.body.appendChild( document.createElement( 'div' ) );
+			hamburger.id = 'hamburger';
+			hamburger.innerHTML = '<div id=bars >  &#9776 </div>';
+			bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+
+			menu = hamburger.appendChild( document.createElement( 'div' ) );
+			menu.id = 'menu';
+			menu.innerHTML =
+
+				'<div id=menuTitle >' +
+					'<h2>' +
+						'<a href="" >' + document.title + '</a> ' +
+						'<a href=index.html#readme.md >&#x24D8;</a>' +
+					'</h2>' +
+				'</div>' +
+
+				'<p id=coreFileInfo ></p>' +
+				'<p id=coreMessage ></p>' +
+				'<p id=coreSunInfo >cccc</p>' +
+				'<p id=menuDates ></p>' +
+				'<p id=menuModel ></p>' +
+
+			'';
+
+		}
+
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0;' ;
+		document.body.appendChild( stats.domElement );
+
+		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener ( 'hashchange', onHashChange, false );
+//		document.body.addEventListener("mouseup", function() { if ( parent.getCoreParameters ) { parent.getCoreParameters('mouseup'); } }, false );
+		document.body.addEventListener("mouseup", onMouseUp, false );
+
+//
+
+		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
+		renderer.setClearColor( 0xfafafa );
+//		renderer.setPixelRatio( window.devicePixelRatio ); // for iOS?
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.renderReverseSided = true;
+//		renderer.gammaInput = true;
+//		renderer.gammaOutput = true;
+//		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		document.body.appendChild( renderer.domElement );
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+		camera.position.set( 0, 80, 120 );
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.maxDistance = 1000;
+
+		scene = new THREE.Scene();
+
+//
+		axisHelper = new THREE.AxisHelper( 75 );
+		scene.add( axisHelper );
+
+		initGroundPlane();
+
+		onHashChange();
+
+	}
+
+	function initGroundPlane( sx, sy, sz, px, py, pz ) {
+
+		var geometry, material;
+
+		geometry = new THREE.BoxGeometry( sx || 100, sy || 2, sz || 100 );
+		material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+		groundPlane = new THREE.Mesh( geometry, material );
+		groundPlane.receiveShadow = true;
+		groundPlane.position.set( px || 0, py || -3, pz || 0 );
+		scene.add( groundPlane );
+
+		edgesGPHelper = new THREE.EdgesHelper( groundPlane, 0x444444 );
+		scene.add( edgesGPHelper );
+
+	}
+
+
+// Events
+
+	function onHashChange() {
+
+		var fileNameSplit;
+
+		fullFilePath = location.hash.length ? location.hash.slice( 1 ) : fullFilePathDefault;
+
+		if ( !model ) {
+
+			fileName = fullFilePath.split( '/' ).pop();
+			fileNameSplit = fileName.split( '#' );
+
+			if ( fileNameSplit.length ) { fileName = fileNameSplit[ 0 ]; }
+
+			if ( fileName.endsWith( '.obj' )  ){
+
+				loadOBJFileByURL( fullFilePath );
+
+			} else if ( fileName.endsWith( '.mtl'  ) ) {
+
+				loadMTLFileByURL( fullFilePath );
+
+			} else {
+
+				setMessageToTarget( 'File oops: ' + fileName + '<br><br>' + fullFilePath, parent.coreFileInfo )
+
+			}
+
+			return;
+
+		} else {
+
+			getHashParameters();
+
+		}
+
+	}
+
+
+// Model
+
+	function loadOBJFileByURL( fullFilePath ) {
+
+		var loader = new THREE.OBJLoader();
+		loader.crossOrigin = 'Anonymous';
+		loader.load( fullFilePath, onLoadComplete, onProgress, onError );
+
+	}
+
+	function loadMTLFileByURL( fullFilePath ) {
+
+		var index, filePath, fileNameOBJ, mtlLoader, loader;
+
+		index = fullFilePath.lastIndexOf( '/' ) + 1;
+		filePath = fullFilePath.slice( 0, index );
+
+		fileNameOBJ = fileName.replace( '_dds.mtl', '.obj' );
+		fileNameOBJ = fileNameOBJ.replace( '.obj.mtl', '.mtl' );
+		fileNameOBJ = fileNameOBJ.replace( '.mtl', '.obj' );
+
+		THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+
+		mtlLoader = new THREE.MTLLoader();
+		mtlLoader.crossOrigin = 'Anonymous';
+		mtlLoader.setTexturePath( filePath );
+		mtlLoader.setPath( filePath );
+		mtlLoader.load( fileName, function( materials ) {
+
+			materials.preload();
+
+			loader = new THREE.OBJLoader();
+			loader.crossOrigin = 'Anonymous';
+			loader.setMaterials( materials );
+			loader.setPath( filePath );
+			loader.load( fileNameOBJ, onLoadComplete, onProgress, onError );
+
+		}, onProgress, onError );
+
+	}
+
+
+	function onProgress( xhr ) {
+
+		var percentComplete, message;
+
+		if ( xhr.total ) {
+
+			percentComplete = xhr.loaded / xhr.total * 100;
+			message = fileName + ': ' + percentComplete.toFixed() + '% or ' + xhr.loaded + ' bytes of ' + xhr.total + ' downloaded';
+
+		} else {
+
+			message = fileName + ': ' + xhr.loaded + ' bytes loaded';
+
+		}
+
+		setMessageToTarget( message, parent.coreFileInfo );
+
+	}
+
+	function onError ( xhr ) {
+
+		var message;
+
+		message =
+
+			'<p>An error happened:</p>' +
+			'<p>' + xhr.target.responseURL + '</p>' +
+			'<p>' + xhr.target.statusText + '</p>' +
+
+		'';
+
+		setMessageToTarget( message, parent.coreFileInfo );
+
+	};
+
+	function onLoadComplete( object ) {
+
+// for the parent
+
+		model = object;
+		model.name = fullFilePath;
+		model.traverse( function ( child ) {
+
+			if ( child instanceof THREE.Mesh ) {
+
+				child.material.side = 2;
+				child.castShadow = true;
+				child.receiveShadow = true;
+
+				edgesHelper = new THREE.EdgesHelper( child, 0x444444 );
+				scene.add( edgesHelper );
+
+			}
+
+		} );
+
+		scene.add( model );
+
+		getHashParameters();
+
+		document.title = fileName + ' - ' + document.title;
+
+		setMessageToTarget( fileName + ': load complete', parent.coreFileInfo );
+
+	}
+
+
+//
+
+	function getHashParameters() {
+
+		var hashes, hash, parameter, value;
+		var d2r = Math.PI / 180;
+
+		hashes = location.hash.length ? location.hash : fullFilePathDefault;
+		hashes = hashes.split( '#' );
+
+		for ( var i = 0; i < hashes.length; i++ ) {
+
+			hash = hashes[ i ].split( '=' );
+
+			if ( hash.length < 2 ) { continue; }
+
+			parameter = hash[ 0 ];
+			value = hash[ 1 ];
+
+			switch( parameter ) {
+
+				case 'aa': pud.analemmaColor = value; break;
+				case 'ar': pud.analemmaRadius = parseFloat( value ); break;
+				case 'av': pud.analemmaVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
+
+				case 'la': pud.latitude = parseFloat( value ); break;
+				case 'lo': pud.longitude = parseFloat( value ); break;
+
+				case 'yr': pud.year = parseInt( value, 10 ); break;
+				case 'mo': pud.month = parseInt( value, 10 ); break;
+				case 'da': pud.date = parseInt( value, 10 ); break;
+
+				case 'hr': pud.hours = parseInt( value, 10 ); break;
+				case 'mn': pud.minutes = parseInt( value, 10 ); break;
+
+				case 'go': pud.groundPlaneOpacity = parseFloat( value ); break;
+				case 'gv': pud.groundPlaneVisible = parseInt( value, 10 ) === 0 ? false : true ; break;
+
+				case 'sc': pud.sunRangeCount = parseInt( value, 10 ); break;
+				case 'sh': pud.sunRangeHelpers = parseInt( value, 10 ); break;
+				case 'si': pud.sunRangeIntensity = parseFloat( value ) ; break;
+				case 'sm': pud.sunRangeMinutes = parseInt( value, 10 ); break;
+				case 'sp': pud.sunRangePlacards = parseInt( value, 10 ); break;
+				case 'sr': pud.sunRangeRadius = parseInt( value, 10 ); break;
+				case 'ss': pud.sunRangeStart = parseInt( value, 10 ); break;
+
+
+				case 'rx': model.rotation.x = parseFloat( value * d2r ); break;
+				case 'ry': model.rotation.y = parseFloat( value * d2r ); break;
+				case 'rz': model.rotation.z = parseFloat( value * d2r ); break;
+
+				case 'px': model.position.x = parseFloat( value ); break;
+				case 'py': model.position.y = parseFloat( value ); break;
+				case 'pz': model.position.z = parseFloat( value ); break;
+
+				case 'sx': model.scale.x = parseFloat( value ) || 1 ; break;
+				case 'sy': model.scale.y = parseFloat( value ) || 1; break;
+				case 'sz': model.scale.z = parseFloat( value ) || 1; break;
+
+
+				case 'cx': camera.position.x = parseFloat( value ); break;
+				case 'cy': camera.position.y = parseFloat( value ); break;
+				case 'cz': camera.position.z = parseFloat( value ); break;
+
+				case 'tx': controls.target.x = parseFloat( value ); break;
+				case 'ty': controls.target.y = parseFloat( value ); break;
+				case 'tz': controls.target.z = parseFloat( value ); break;
+
+//				case  '':
+//					break;
+
+				default: console.log( 'oops', hash, parameter, i, hashes );
+
+			}
+
+		}
+
+		if ( suns.length ) {
+
+			setDateThere();
+
+		} else {
+
+			getDateOffsetThere();
+
+		}
+
+	}
+
+
+// Date & Time
+
+	function getDateOffsetThere() {
+
+		var dateHere, offsetHere, timestamp, request;
+
+		dateHere = new Date();
+
+		offsetHere = dateHere.getTimezoneOffset();
+
+		utcZero = dateHere.getTime() + offsetHere * 60000;
+
+		timestamp = utcZero / 1000;
+
+		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + pud.latitude + ',' + pud.longitude + '&timestamp=' + timestamp;
+
+		requestTimeZoneThere( request );
+
+	}
+
+	function requestTimeZoneThere( url ) {
+
+		var xhr;
+
+		xhr = new XMLHttpRequest();
+		xhr.open( 'GET', url, true );
+		xhr.onload = callback;
+		xhr.send( null );
+
+		function callback() {
+
+			timeZoneThere = JSON.parse( xhr.responseText );
+
+			if ( timeZoneThere.status === 'OK' ) {
+
+				offsetThere = ( timeZoneThere.rawOffset + timeZoneThere.dstOffset ) /  3600;
+
+				setDateThereNow();
+
+			} else {
+
+				if ( window.self === window.top ) {
+
+					menuDates.innerHTML = 'the location is timeless - probably in the middle of an ocean...';
+
+				}
+
+			}
+
+		}
+
+	}
+
+	function setDateThereNow() {
+
+		var dateThereNow;
+
+		dateThereNow = new Date( utcZero + 3600000 * offsetThere );
+
+		pud.year = pud.year ? pud.year : dateThereNow.getFullYear();
+		pud.month = pud.month ? pud.month : dateThereNow.getMonth();
+		pud.date = pud.date ? pud.date : dateThereNow.getDate();
+
+		pud.hours = pud.hours ? pud.hours : dateThereNow.getHours();
+		pud.minutes = pud.minutes ? pud.minutes : dateThereNow.getMinutes();
+
+		setDateThere();
+
+	}
+
+	function setDateThere() {
+
+		drawSunRange()
+
+		onMouseUp();
+
+	}
+
+
+// Three.js
+
+	function drawSunRange() {
+
+//		var sun, sunHelper, dateThere, d;
+
+		for ( var i = 0; i < pud.sunRangeCount; i++ ) {
+
+			sun = suns[ i ];
+			sunHelper = sunHelpers[ i ];
+
+			if ( !sun || sun.intensity !== pud.sunRangeIntensity ) {
+
+				scene.remove( sun, sunHelper );
+
+				sun = new THREE.DirectionalLight( 0xffffff, 0.5 * pud.sunRangeIntensity );
+
+				geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
+				material = new THREE.MeshPhongMaterial( { color: 0xffff00, emissive: 0x333333 } );
+				mesh = new THREE.Mesh( geometry, material );
+				sun.add( mesh );
+
+				d = 50;
+				sun.shadow.camera.left = -d;
+				sun.shadow.camera.right = d;
+				sun.shadow.camera.top = d;
+				sun.shadow.camera.bottom = -d;
+
+/*
+				sun.shadow.camera.near = 0;
+				sun.shadow.camera.far = 5 * d;
+				sun.shadow.bias = -0.001; // default 0
+				sun.shadow.mapSize.width = 2048;  // default 512
+				sun.shadow.mapSize.height = 2048;
+*/
+
+				sun.castShadow = true;
+				scene.add( sun );
+				suns[ i ] =  sun;
+
+				if ( pud.sunRangeHelpers === 1 ) {
+
+					sunHelper = new THREE.CameraHelper( sun.shadow.camera );
+					scene.add( sunHelper );
+					sunHelpers[ i ] = sunHelper;
+
+				}
+
+			}
+
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, pud.sunRangeStart - offsetThere, pud.minutes + i * pud.sunRangeMinutes ) );
+
+			sun.userData.position = getSunPositionXYZ( pud.sunRangeRadius, dateThere, pud.latitude, pud.longitude );
+			sun.position.copy( suns[ i ].userData.position.xyz );
+
+			if ( pud.sunRangePlacards === 1 ) {
+
+				txt = ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
+				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 );
+				placard = drawPlacard( txt, 0.05, 120, 0, 10, 0 );
+				sun.add( placard );
+
+			}
+
+		}
+
+			for ( var i = pud.sunRangePositions; i < suns.length; i++ ) {
+
+				scene.remove( suns[ i ], sunHelpers[ i ] );
+
+			}
+
+		getCoreParameters( 'Added Suns' );
+
+	}
+
+	function drawPlacard( text, scale, color, x, y, z ) {
+
+// 2016-02-27 ~ https://github.com/jaanga/jaanga.github.io/tree/master/cookbook-threejs/functions/placards
+
+		var placard = new THREE.Object3D();
+		var texture = canvasMultilineText( text, { backgroundColor: color }   );
+		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 0.9, transparent: true } );
+		var sprite = new THREE.Sprite( spriteMaterial );
+		sprite.position.set( x * 1.1, y * 1.1, z * 1.1) ;
+		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+/*
+		var geometry = new THREE.Geometry();
+		geometry.vertices = [ v( 0, 0, 0 ),  v( x, y, z ) ];
+		var material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );
+		var line = new THREE.Line( geometry, material );
+*/
+		placard.add( sprite /*,  line */ );
+
+		return placard;
+
+		function canvasMultilineText( textArray, parameters ) {
+
+			var parameters = parameters || {} ;
+
+			var canvas = document.createElement( 'canvas' );
+			var context = canvas.getContext( '2d' );
+			var width = parameters.width ? parameters.width : 0;
+			var font = parameters.font ? parameters.font : '48px monospace';
+			var color = parameters.backgroundColor ? parameters.backgroundColor : 120 ;
+
+			if ( typeof textArray === 'string' ) textArray = [ textArray ];
+
+			context.font = font;
+
+			for ( var i = 0; i < textArray.length; i++) {
+
+				width = context.measureText( textArray[ i ] ).width > width ? context.measureText( textArray[ i ] ).width : width;
+
+			}
+
+			canvas.width = width + 20;
+			canvas.height =  parameters.height ? parameters.height : textArray.length * 60;
+
+			context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
+			context.fillRect( 0, 0, canvas.width, canvas.height);
+
+			context.lineWidth = 1 ;
+			context.strokeStyle = '#000';
+			context.strokeRect( 0, 0, canvas.width, canvas.height );
+
+			context.fillStyle = '#000' ;
+			context.font = font;
+
+			for ( i = 0; i < textArray.length; i++) {
+
+				context.fillText( textArray[ i ], 10, 48  + i * 60 );
+
+			}
+
+			var texture = new THREE.Texture( canvas );
+			texture.minFilter = texture.magFilter = THREE.NearestFilter;
+			texture.needsUpdate = true;
+
+			return texture;
+
+		}
+
+	}
+
+// UI
+
+	function getCoreParameters( message) {
+
+
+	}
+
+	function onMouseUp() {
+
+		var dateUTCZero, dateThere;
+		var b = '<br>';
+		var txt = '';
+
+		if ( parent.getCoreParameters ) { parent.getCoreParameters( 'onMouseUp' ); }
+
+		if ( window.self !== window.top ) return;
+
+
+		for ( var i = 0; i < pud.sunRangeCount; i++ ) {
+
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - offsetThere, pud.minutes ) );
+
+			position = getSunPosition( dateThere, pud.latitude, pud.longitude );
+
+			txt += ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
+				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) + 
+
+				' azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
+				' altitude:' + position.altitude.toFixed() + b +
+
+			'';
+
+		}
+
+		coreSunInfo.innerHTML = txt;
+
+
+		dateUTCZero = new Date ( utcZero );
+		dateThere = new Date( utcZero + 3600000 * offsetThere  ) ;
+
+		pud.sunPosition = getSunPosition( dateThere, pud.latitude, pud.longitude );
+
+		menuDates.innerHTML =
+
+			'Latitude:' + pud.latitude.toFixed(3) + b +
+			'Longitude:' + pud.longitude.toFixed(3) + b + b +
+
+			'Currently:' + b +
+			'Sun azimuth:' + pud.sunPosition.azimuth.toFixed() + b +
+			'Sun altitude:' + pud.sunPosition.altitude.toFixed() + b + b +
+
+			'Time Zone ID: ' + timeZoneThere.timeZoneId + b +
+			'Time zone: ' + timeZoneThere.timeZoneName + b + b +
+			'Offset in hours: ' + offsetThere + b +
+			'Raw offset in minutes: ' + timeZoneThere.rawOffset + b +
+			'Daylight saving offset in minutes: ' + timeZoneThere.dstOffset + b + b +
+			'Date and time there is:<br>' + dateThere.toLocaleString() + b + b +
+
+			'<div title="GMT" >UTC time at 0&deg; longitude: ' +
+				( "0" + dateUTCZero.getHours() ).slice( - 2 ) + ':' + ( "0" + dateUTCZero.getMinutes() ).slice( - 2 ) + '</div>' +
+			'<div title= "number of milliseconds since 1 January, 1970" >UTC: ' + dateThere.getTime() + '</div>' +
+			'<hr>' +
+
+		'';
+
+		menuModel.innerHTML =
+
+			'Position X: ' + model.position.x + b +
+			'Position Y: ' + model.position.y + b +
+			'Position Z: ' + model.position.z + b + b +
+
+			'Rotation X: ' + ( model.rotation.x * r2d ) + b +
+			'Rotation Y: ' + ( model.rotation.y * r2d ) + b +
+			'Rotation Z: ' + ( model.rotation.z * r2d ) + b + b +
+
+			'Scale: ' + model.scale.z + b + b +
+
+			'Camera position: ' + camera.position.x.toFixed() + ', '+ camera.position.y.toFixed() + ', '+ camera.position.z.toFixed() + ', ' + b +
+			'Camera target: ' + controls.target.x.toFixed() + ', '+ controls.target.y.toFixed() + ', '+ controls.target.z.toFixed() + ', ' + b + b +
+
+			'Sun Intensity: ' + pud.sunRangeIntensity + b +
+
+		'';
+
+	}
+
+	function setMessageToTarget( message, target ) {
+
+		if ( target ) {
+
+			target.innerHTML = message;
+
+		}
+
+	}
+
+
+// Utilities
+
+	function getSunPositionXYZ( radius, timeThere, latitude, longitude ) {
+
+		var sunPosition, x, y, z;
+
+		sunPosition = getSunPosition( timeThere, latitude - 90, longitude );
+
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+
+	}
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+	}
+
+	function animate() {
+
+		requestAnimationFrame( animate );
+		controls.update();
+		stats.update();
+		renderer.render( scene, camera );
+
+	}
+
+</script>
+</body>
+</html>

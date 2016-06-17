@@ -13,8 +13,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## full screen: [Ladybug Web Shadow Range OBJ Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ )
 
-<img src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/shadow-range-obj-core-r3.jpg" style=display:none; width=800 >
-
+<img src='https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/shadow-range-obj-core-r3.jpg' style=display:none; width=800 >
 
 <iframe src=https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/index.html width=100% height=600px ></iframe>
 
@@ -30,7 +29,7 @@ _Ladybug Web Shadow Range OBJ Core_
 
 * Display a shadow range for any date at any latitude and longitude
 * Open and display the 3D model of your choice
-* Adjust all parameters so as to create a meaningful and useful display
+* Adjust all parameters so as to create a meaningful and useful displays
 
 
 ### Features
@@ -41,10 +40,20 @@ _Ladybug Web Shadow Range OBJ Core_
 * Uses location.hash or 'permalinks' to save parameters
 
 
+## Things you can do using this script
+
+* Use one/two/three fingers to rotate/zoom/pan the display in 3D
+	* Or left/scroll/right with your pointing device 
+* Click the three bars( 'hamburger menu icon' ) to slide the menu in and out
+* Click the [Stats]( https://github.com/mrdoob/stats.js/ ) box in the top corner to toggle FPS / MS / MB views
+* Press Control-U/Command-Option-U to view the source code
+* Press Control-Shift-J/Command-Option-J to see if the JavaScript console reports any errors
+
 
 ## Things you can do by editing the code
 
-<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html width=100% height=600px ></iframe>
+<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#'
+	'https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html' width=100% height=600px ></iframe>
 
 
 _Source code Ladybug Web Shadow Range OBJ Core_
@@ -57,11 +66,65 @@ _Source code Ladybug Web Shadow Range OBJ Core_
 * Uncomment - remove the '//' - on any of the other default file names.
 * Save and reload
 
+
+## Permalink codes
+
+The following are the currently available permalink or location.hash codes.
+See [Ladybug Web Shadow Range OBJ Core Source Code](https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html] ) for examples of usage.
+
+aa= analemmaColor  
+ar= analemmaRadius  
+av= analemmaVisible  
+la= latitude  
+lo= longitude  
+
+yr= year  
+mo= month  
+da= date  
+  
+hr= hours  
+mn= minutes  
+  
+go= groundPlaneOpacity  
+gv= groundPlaneVisible  
+
+
+sc= sunRangeCount  
+sh= sunRangeHelpers  
+si= sunRangeIntensity  
+sm= sunRangeMinutes  
+sp= sunRangePlacards  
+sr= sunRangeRadius  
+ss= sunRangeStart  
+  
+  
+rx= model.rotation.x  
+ry= model.rotation.y  
+rz= model.rotation.z  
+  
+px= model.position.x  
+py= model.position.y  
+pz= model.position.z  
+  
+sx= model.scale.x  
+sy= model.scale.y  
+sz= model.scale.z  
+  
+cx= camera.position.x  
+cy= camera.position.y  
+cz= camera.position.z  
+  
+tx= controls.target.x  
+ty= controls.target.y  
+tz= controls.target.z  
+
+
 ## Issues / To Do
+
 
 * Need more examples with parameters
 * Add ways of improving shadow quality
-
+* Should parameters and model be a single Three.js ovject instead of two?
 
 ## Links of Interest
 
@@ -74,15 +137,28 @@ _Source code Ladybug Web Shadow Range OBJ Core_
 * https://lumion3d.com/ ??
 
 
+
 ## Change Log
 
-## 2016-06-03
 
-* Update readme
+### 2016-06-16
+
+* Fix display of sun positions in menu
+* Add to and edit location hash parameters
+	* Add set number of minutes between sun positions
+	* Add toggle helpers
+	* Add toggle placards
+* Add display of yellow spheres as suns
+* Add placards above te suns with time display
+
+### 2016-06-03
+
+* Update read me
 * Add iframe and image
 * Add source code view
 
 ## 2016-05-23 / R1
+
 
 ***
 
