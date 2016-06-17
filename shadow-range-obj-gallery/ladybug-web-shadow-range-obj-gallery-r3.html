@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Gallery R3.1</title>
+<title>Ladybug Web Shadow Range OBJ Gallery R3.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
 according to latitude, longitude, date and time.
@@ -139,6 +139,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 			'<p>Start Time<br><input type=range id=inpStart min=0 max=23 step=1 value=9 onchange=setLocationHash(); title="0 to 23: OK" > <output id=outStart ></output></p>' +
 			'<p>Number of Positions<br><input type=range id=inpPositions min=1 max=15 step=1 value=8 onchange=setLocationHash(); title="1 to 15: OK" > <output id=outPositions ></output></p>' +
+			'<p>Interval in Minutes<br><input type=range id=inpMinutes min=1 max=120 step=1 value=60 onchange=setLocationHash(); title="1 to 120: OK" > <output id=outMinutes ></output></p>' +
 
 		'';
 
@@ -148,7 +149,8 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		outMonth.value = pud.month + 1;
 		outDate.value = inpDate.value = pud.date;
 		outIntensity.value = inpIntensity.value = pud.sunRangeIntensity;
-		outPositions.value = inpPositions.value = pud.sunRangePositions;
+		outPositions.value = inpPositions.value = pud.sunRangeCount;
+		outMinutes.value = inpMinutes.value = pud.sunRangeMinutes;
 		outStart.value = inpStart.value = pud.sunRangeStart;
 
 		corePositionsMessage.innerHTML = 
@@ -186,7 +188,8 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 			'#mo=' + inpMonth.valueAsNumber + 
 			'#da=' + inpDate.valueAsNumber + 
 			'#si=' + inpIntensity.valueAsNumber +
-			'#sp=' + inpPositions.valueAsNumber +
+			'#sc=' + inpPositions.valueAsNumber +
+			'#sm=' + inpMinutes.valueAsNumber +
 	//		'#sr=' + inpRadius.valueAsNumber +
 			'#ss=' + inpStart.valueAsNumber +
 

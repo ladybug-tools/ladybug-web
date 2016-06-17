@@ -60,13 +60,18 @@ value='Source code listing' >
 
 ## Issues / To Do
 
-* Nice and useful to let users define the hours to show.
+* Suns not always deleted properly
+* Nice and useful ways to let users define the hours to show.
 * Should add some type of azimuth and altitude data
 	* At Solar noon maybe
 * Rendering quality is still low/primitive
 
 
 ## Change Log
+
+### 2016-06-16 ~ R3.2
+
+* Add Interval in minutes
 
 ### 2016-06-07
 
