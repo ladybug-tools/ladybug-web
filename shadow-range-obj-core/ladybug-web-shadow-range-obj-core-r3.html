@@ -81,10 +81,11 @@ Uses location.hash or 'permalinks' to save parameters.
 	pud.sunRangePlacards = 1;
 	pud.sunRangeRadius = 75;
 	pud.sunRangeStart = 9;
+	pud.offsetThere = -7
 
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
-	var utcZero, timeZoneThere, offsetThere;
+	var utcZero, timeZoneThere;
 	var suns = [];
 	var sunHelpers = [];
 
@@ -470,7 +471,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 			if ( timeZoneThere.status === 'OK' ) {
 
-				offsetThere = ( timeZoneThere.rawOffset + timeZoneThere.dstOffset ) /  3600;
+				pud.offsetThere = ( timeZoneThere.rawOffset + timeZoneThere.dstOffset ) /  3600;
 
 				setDateThereNow();
 
@@ -492,7 +493,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		var dateThereNow;
 
-		dateThereNow = new Date( utcZero + 3600000 * offsetThere );
+		dateThereNow = new Date( utcZero + 3600000 * pud.offsetThere );
 
 		pud.year = pud.year ? pud.year : dateThereNow.getFullYear();
 		pud.month = pud.month ? pud.month : dateThereNow.getMonth();
@@ -564,7 +565,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 			}
 
-			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, pud.sunRangeStart - offsetThere, pud.minutes + i * pud.sunRangeMinutes ) );
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, pud.sunRangeStart - pud.offsetThere, pud.minutes + i * pud.sunRangeMinutes ) );
 
 			sun.userData.position = getSunPositionXYZ( pud.sunRangeRadius, dateThere, pud.latitude, pud.longitude );
 			sun.position.copy( suns[ i ].userData.position.xyz );
@@ -679,7 +680,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		for ( var i = 0; i < pud.sunRangeCount; i++ ) {
 
-			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - offsetThere, pud.minutes ) );
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - pud.offsetThere, pud.minutes ) );
 
 			position = getSunPosition( dateThere, pud.latitude, pud.longitude );
 
@@ -697,7 +698,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 
 		dateUTCZero = new Date ( utcZero );
-		dateThere = new Date( utcZero + 3600000 * offsetThere  ) ;
+		dateThere = new Date( utcZero + 3600000 * pud.offsetThere  ) ;
 
 		pud.sunPosition = getSunPosition( dateThere, pud.latitude, pud.longitude );
 
@@ -712,7 +713,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 			'Time Zone ID: ' + timeZoneThere.timeZoneId + b +
 			'Time zone: ' + timeZoneThere.timeZoneName + b + b +
-			'Offset in hours: ' + offsetThere + b +
+			'Offset in hours: ' + pud.offsetThere + b +
 			'Raw offset in minutes: ' + timeZoneThere.rawOffset + b +
 			'Daylight saving offset in minutes: ' + timeZoneThere.dstOffset + b + b +
 			'Date and time there is:<br>' + dateThere.toLocaleString() + b + b +

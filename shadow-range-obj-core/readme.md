@@ -121,6 +121,7 @@ tz= controls.target.z
 
 ## Issues / To Do
 
+* All time parameters in pud
 * Add north point
 * Suns not being deleted properly
 * Need more examples with parameters
