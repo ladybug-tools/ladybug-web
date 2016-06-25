@@ -37,14 +37,14 @@ _Ladybug Web Analemma 3D_
 * 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the year.
 	* Varying colors indicate the months
 	* Lines connect each hour on the 21st of the month
-	* Midnight placaed highlighted in blue. Noon highlighted in yellow
+	* Midnight placard highlighted in blue. Noon highlighted in yellow
 	* Placards indicate the hour of each analemma
 	* Displays current position of sun
 	* Displays a transparent yellow band indicating the total annual sun path
 	* Displays shadow and shade
 	* Displays a reference object - currently a [Trylon and Perisphere]( https://en.wikipedia.org/wiki/Trylon_and_Perisphere ) - to indicate shade and shadow coverage
 	* 3D arrow shows direction of north
-* Menu panel - display and set a variety of information including
+* Menu panel - display and set a variety of information including:
 	* Latitude and longitude
 	* Local and UTC time
 	* Time zone name, id and offset in hours
@@ -136,7 +136,7 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 ### 2016-06-25 ~ R15
 
-* Analemma colors by vertex to indicate month
+* Analemma line colors by vertex to indicate month
 * Placard colors indicate noon and midnight
 * Correct display of source code
 
