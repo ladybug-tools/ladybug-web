@@ -35,8 +35,9 @@ _Ladybug Web Analemma 3D_
 ### Features
 
 * 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the year.
+	* Varying colors indicate the months
 	* Lines connect each hour on the 21st of the month
-	* Midnight highlighted is red. Noon highlighted in green
+	* Midnight placaed highlighted in blue. Noon highlighted in yellow
 	* Placards indicate the hour of each analemma
 	* Displays current position of sun
 	* Displays a transparent yellow band indicating the total annual sun path
