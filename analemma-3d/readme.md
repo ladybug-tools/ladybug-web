@@ -69,14 +69,13 @@ _If you are in '[Home Page View]( https://ladybug-analysis-tools.github.io/ladyb
 
 ## Things you can do by editing the code
 
-<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#' +
-	'https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r14.html' width=100% height=600 ></iframe>
+<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r15.html' width=100% height=600 ></iframe>
 
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r14.html';
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r15.html';
 value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 
-* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r14.html
+* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r15.html
 * Click the 'Raw' icon and save the raw file to your computer
 * Once you've downloaded the file, you can click it to run it.
 * Open the file with a text editor
@@ -133,6 +132,13 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 
 ## Change Log
+
+### 2016-06-25 ~ R15
+
+* Analemma colors by vertex to indicate month
+* Placard colors indicate noon and midnight
+* Correct display of source code
+
 
 ### 2016-06-07
 
