@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Core R3.1</title>
+<title>Ladybug Web Shadow Range OBJ Core R3.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='
 Display Sun shadow range according to date, latitude and longitude.
@@ -11,7 +11,7 @@ Adjust a wide variety of parameters.
 Uses location.hash or 'permalinks' to save parameters.
 ' >
 <meta name=keywords content='Ladybug Web,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-06-17' >
+<meta name=date content='2016-06-25' >
 </head>
 <body>
 <!--
@@ -71,6 +71,7 @@ Uses location.hash or 'permalinks' to save parameters.
 //	pud.latitude = 48.8566;
 //	pud.longitude = 2.3522;
 
+// San Francisco
 	pud.latitude = 37.796
 	pud.longitude = -122.398;
 
@@ -533,7 +534,7 @@ Uses location.hash or 'permalinks' to save parameters.
 				sun = new THREE.DirectionalLight( 0xffffff, 0.5 * pud.sunRangeIntensity );
 
 				geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
-				material = new THREE.MeshPhongMaterial( { color: 0xffff00, emissive: 0x333333 } );
+				material = new THREE.MeshBasicMaterial( { color: 0xffee00 } );
 				mesh = new THREE.Mesh( geometry, material );
 				sun.add( mesh );
 
@@ -552,6 +553,7 @@ Uses location.hash or 'permalinks' to save parameters.
 */
 
 				sun.castShadow = true;
+
 				scene.add( sun );
 				suns[ i ] =  sun;
 

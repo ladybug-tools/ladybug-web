@@ -52,13 +52,13 @@ _Ladybug Web Shadow Range OBJ Core_
 
 ## Things you can do by editing the code
 
-<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#'
-	'https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html' width=100% height=600px ></iframe>
+<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
+	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r3.html' width=100% height=600px ></iframe>
 
 
 _Source code Ladybug Web Shadow Range OBJ Core_
 
-* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r2.html
+* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r3.html
 * Click the 'Raw' icon and save the raw file to your computer
 * Once you've downloaded the file, you can click it to run it.
 * Open the file with a text editor
@@ -126,7 +126,7 @@ tz= controls.target.z
 * Suns not being deleted properly
 * Need more examples with parameters
 * Add ways of improving shadow quality
-* Should parameters and model be a single Three.js ovject instead of two?
+* Should parameters and model be a single Three.js object instead of two?
 * Should analemmas be added?
 
 ## Links of Interest
@@ -147,6 +147,10 @@ Note that [Ladybug Web Shadow Range OBJ Opener ]( https://ladybug-analysis-tools
 [Ladybug Web Shadow Range OBJ Gallery ]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ ) are automatically updated
 as a well since they rely on core for all Three.js operations.
 
+### 2016-06-25 ~ R3.2
+
+* Sun is no longer shaded
+* Source code displays properly in read me
 
 ### 2016-06-16
 
