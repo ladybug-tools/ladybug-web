@@ -162,7 +162,8 @@ Shadows display on a 2D map.
 			'<details>' +
 				'<summary><h3>Display & Map</h3></summary>' +
 				'<p>' +
-					'<input type=checkbox checked onchange=toggleVisible(placeMap); > Display Map <br>' +
+					'<input type=checkbox checked onchange=placeMap.visible=!placeMap.visible; > Display Map <br>' +
+//					'<input type=checkbox checked onchange=toggleVisible(placeMap); > Display Map <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(gridHelper); > Display Grid <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(axisHelper); > Display Axis <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
@@ -897,9 +898,10 @@ Shadows display on a 2D map.
 
 // Utilities
 
-	function toggleVisible( mesh ) {
+	function toggleVisible( obj ) {
 
-		mesh.visible = mesh.visible === true ? false : true;
+//		obj.visible = obj.visible === true ? false : true;
+		obj.visible = !obj.visible;
 
 	}
 

@@ -89,6 +89,7 @@ Uses location.hash or "permalinks" to save parameters.
 	var suns;
 	var sunHelpers = [];
 
+	var axisHelper, groundPlane
 	var stats, renderer, scene, camera, controls;
 
 	init();
@@ -188,11 +189,14 @@ Uses location.hash or "permalinks" to save parameters.
 		material = new THREE.MeshPhongMaterial( { color: 0xffffff } );
 		groundPlane = new THREE.Mesh( geometry, material );
 		groundPlane.receiveShadow = true;
-		groundPlane.position.set( px || 0, py || -3, pz || 0 );
-		scene.add( groundPlane );
 
 		edgesGPHelper = new THREE.EdgesHelper( groundPlane, 0x444444 );
 		scene.add( edgesGPHelper );
+
+		groundPlane.position.set( px || 0, py || -3, pz || 0 );
+		scene.add( groundPlane );
+
+
 
 	}
 

@@ -75,13 +75,10 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 			'<p id=sendToOpener > </p>' +
 			'<hr>' +
 
-			'<h3>Date & Location</h3>' +
-			'<p>' + 
-				'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 onchange=setLocationHash(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
-				'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 onchange=setLocationHash(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
-			'</p>' +
-
-			'<p id=corePositionsMessage >Latitude<br>Longitude</p>' +
+			'<details open >' +
+				'<summary><h3>Date & Location</h3></summary>' +
+				'<div id=menuDateLocation >Latitude<br>Longitude</div>' +
+			'</details>' +
 
 			'<details open >' +
 				'<summary><h3>Sun Positions</h3></summary>' +
@@ -91,6 +88,11 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 			'<details open >' +
 				'<summary><h3>Sun Controls</h3></summary>' +
 				'<p id=menuSunControls ></p>' +
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Display</h3></summary>' +
+				'<p id=menuDisplay ></p>' +
 			'</details>' +
 
 			'<hr>' +
@@ -137,29 +139,19 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		model = ifrContentWindow.model;
 		pud = ifrContentWindow.pud;
 
-		txt = 
-
-			'<p>Sun Intensity<br><input type=range id=inpIntensity min=0.01 max=2 value=0.2 step=0.01 onchange=setLocationHash(); title="0.1 to 2: OK" > <output id=outIntensity ></output></p>' +
-			'<p>Start Time<br><input type=range id=inpStart min=0 max=23 step=1 value=9 onchange=setLocationHash(); title="0 to 23: OK" > <output id=outStart ></output></p>' +
-			'<p>Number of Positions<br><input type=range id=inpPositions min=1 max=15 step=1 value=8 onchange=setLocationHash(); title="1 to 15: OK" > <output id=outPositions ></output></p>' +
-			'<p>Interval in Minutes<br><input type=range id=inpMinutes min=1 max=120 step=1 value=60 onchange=setLocationHash(); title="1 to 120: OK" > <output id=outMinutes ></output></p>' +
-
+		menuDateLocation.innerHTML =
+			'<p>' + 
+				'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 onchange=setLocationHash(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
+				'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 onchange=setLocationHash(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
+			'</p>' +
+			'<p>Latitude ' + pud.latitude + '<br>' +
+			'Longitude ' + pud.longitude + '</p>' +
+			'<p>Time zone: ' + pud.timeZoneThere.timeZoneName + '</p>' +
 		'';
-
-		menuSunControls.innerHTML = txt;
 
 		inpMonth.value = pud.month;
 		outMonth.value = pud.month + 1;
 		outDate.value = inpDate.value = pud.date;
-		outIntensity.value = inpIntensity.value = pud.sunRangeIntensity;
-		outPositions.value = inpPositions.value = pud.sunRangeCount;
-		outMinutes.value = inpMinutes.value = pud.sunRangeMinutes;
-		outStart.value = inpStart.value = pud.sunRangeStart;
-
-		corePositionsMessage.innerHTML = 
-			'Latitude ' + pud.latitude + '<br>' +
-			'Longitude ' + pud.longitude +
-		'';
 
 		txt = '';
 
@@ -180,6 +172,37 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		}
 
 		menuSunPositions.innerHTML = txt;
+
+		menuSunControls.innerHTML = 
+
+			'<p>Sun Intensity<br><input type=range id=inpIntensity min=0.01 max=2 value=0.2 step=0.01 onchange=setLocationHash(); title="0.1 to 2: OK" > <output id=outIntensity ></output></p>' +
+			'<p>Start Time<br><input type=range id=inpStart min=0 max=23 step=1 value=9 onchange=setLocationHash(); title="0 to 23: OK" > <output id=outStart ></output></p>' +
+			'<p>Number of Positions<br><input type=range id=inpPositions min=1 max=15 step=1 value=8 onchange=setLocationHash(); title="1 to 15: OK" > <output id=outPositions ></output></p>' +
+			'<p>Interval in Minutes<br><input type=range id=inpMinutes min=1 max=120 step=1 value=60 onchange=setLocationHash(); title="1 to 120: OK" > <output id=outMinutes ></output></p>' +
+
+		'';
+
+		outIntensity.value = inpIntensity.value = pud.sunRangeIntensity;
+		outPositions.value = inpPositions.value = pud.sunRangeCount;
+		outMinutes.value = inpMinutes.value = pud.sunRangeMinutes;
+		outStart.value = inpStart.value = pud.sunRangeStart;
+
+
+		menuDisplay.innerHTML = 
+				'<p>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifr.contentWindow.groundPlane);toggleVisible(ifr.contentWindow.edgesGPHelper); > Grouund plane<br>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifr.contentWindow.axisHelper); > Display XYZ Axis <br>' +
+//					'<input type=checkbox checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(northPoint); > Display North Point <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifr.contentWindow.suns); > Display Sun <br>' +
+
+					'<input type=checkbox checked onchange=ifr.contentWindow.controls.autoRotate=!ifr.contentWindow.controls.autoRotate; > Auto-rotate <br>' +
+				'</p>' +
+			'';
+
+		initNorthPoint();
+
+		ifr.contentWindow.controls.autoRotate = true;
 
 	}
 
@@ -209,6 +232,34 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		xhr.open( 'GET', fileName, true );
 		xhr.onload = function () { target.innerHTML = converter.makeHtml(  xhr.responseText ); };
 		xhr.send( null );
+
+	}
+
+	function initNorthPoint() {
+
+		var THREE = ifr.contentWindow.THREE;
+
+		var geometry, material;
+
+		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
+		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
+		geometry.merge( new THREE.CylinderGeometry( 12, 0, 20, 3 ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - Math.PI ) );
+		material = new THREE.MeshNormalMaterial();
+
+		northPoint = new THREE.Mesh( geometry, material );
+		northPoint.scale.multiplyScalar( 0.5 );
+		northPoint.position.set( 50, -20, 25 );
+
+		ifr.contentWindow.scene.add( northPoint );
+
+	}
+
+	function toggleVisible( obj ) {
+
+//		obj.visible = obj.visible === true ? false : true;
+		obj.visible = !obj.visible;
 
 	}
 

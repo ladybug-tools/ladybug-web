@@ -35,35 +35,50 @@ _Ladybug Web Analemma 3D_
 
 ### Vision
 
-* TBD
+* To help engineers and architects design in more Sun-aware ways  
 
 ### Features
 
 * TBD
+* Display Sun shadow range according to date, latitude and longitude
+* Load OBJ and MTL files
+* Adjust a wide variety of parameters
+* Uses location.hash or 'permalinks' to save parameters
 
 
 ## Things you can do using the script
 
 * TBD
+* Use one/two/three fingers to rotate/zoom/pan the display in 3D
+	* Or left/scroll/right with your pointing device 
+* Click the three bars( 'hamburger menu icon' ) to slide the menu in and out
+* Click the [Stats]( https://github.com/mrdoob/stats.js/ ) box in the top corner to toggle FPS / MS / MB views
+* Press Control-U/Command-Option-U to view the source code
+* Press Control-Shift-J/Command-Option-J to see if the JavaScript console reports any errors
 
 
 
 ## Things you can do by editing the code
 
-<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html width=100% height=600 ></iframe>
+<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
+	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html' width=100% height=600 ></iframe>
 
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html';
 value='Source code listing' >
 
-* TBD
+* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r3.html
+* Click the 'Raw' icon and save the raw file to your computer
+* Once you've downloaded the file, you can click it to run it.
+* Open the file with a text editor
+<!--
+//* Scroll to line 57 and 88 and comment out - add '//' - the default location of Sydney 
+//* Uncomment - remove the '//' - on any of the other default file names.
+-->
+* Edit, save and reload
 
 
 ## Issues / To Do
 
-* Suns not always deleted properly
-* Nice and useful ways to let users define the hours to show.
-* Should add some type of azimuth and altitude data
-	* At Solar noon maybe
 * Rendering quality is still low/primitive
 
 
@@ -71,7 +86,12 @@ value='Source code listing' >
 
 ### 2016-06-25 ~ R5
 
-
+* Code clean up
+	* All menu items use HTML5 details
+* Add display time zone
+* Add north arrow
+* Add toggle elements display
+* Add auto-rotate 
 
 
 ### 2016-06-17 ~ R4
