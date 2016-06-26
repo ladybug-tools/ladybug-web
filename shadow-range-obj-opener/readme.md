@@ -11,7 +11,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Full screen: [Ladybug Web Shadow Range OBJ Opener]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ )
 
-Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opener
+Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opener:
 
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
 * https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
@@ -88,17 +88,32 @@ _Ladybug Web Shadow Range OBJ Opener_
 ## Things you can do using the script
 
 * TBD
+* Use one/two/three fingers to rotate/zoom/pan the display in 3D
+	* Or left/scroll/right with your pointing device 
+* Click the three bars( 'hamburger menu icon' ) to slide the menu in and out
+* Click the check box to display mesh as solid or wireframe
+* Click the 'I' in the circle to go to the read me file
+* Click on the title to reload the script
+* Click the [Stats]( https://github.com/mrdoob/stats.js/ ) box in the top corner to toggle FPS / MS / MB views
+* Press Control-U/Command-Option-U to view the source code
+* Press Control-Shift-J/Command-Option-J to see if the JavaScript console reports any errors
+
 
 
 
 ## Things you can do by editing the code
 
-<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html width=100% height=600 ></iframe>
+<iframe src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
+	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html width=100% height=600 ></iframe>
 
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html';
 value='Source code listing' >
 
-* TBD
+* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/
+* Click the 'Raw' icon and save the raw file to your computer
+* Once you've downloaded the file, you can click it to run it.
+* Open the file with a text editor
+
 
 ## Issues
 

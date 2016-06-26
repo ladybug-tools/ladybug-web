@@ -66,6 +66,27 @@ _Source code Ladybug Web Shadow Range OBJ Core_
 * Uncomment - remove the '//' - on any of the other default file names.
 * Save and reload
 
+## Creating Visualizations
+
+There are two methods for creating Sun range visualizations
+
+### Method 1: Edit Permalinks
+
+1. Copy and paste a URL into your browser
+2. Edit the parameters
+3. Refresh the page to view the updates
+
+Here is a typical URL that you can practice with:
+
+    https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/#https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#la=-33#lo=151#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
+
+A full list of parameters is provided below. Not all parameters work with Sun Range as some parameters are for the Shadow series 
+
+
+### Method 2: Use Shadow Range OBJ Opener
+
+Edit the parameters using [Ladybug Web Shadow Range OBJ Opener]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ )
+
 
 ## Permalink codes
 
@@ -123,7 +144,6 @@ tz= controls.target.z
 
 * All time parameters in pud
 * Add north point
-* Suns not being deleted properly
 * Need more examples with parameters
 * Add ways of improving shadow quality
 * Should parameters and model be a single Three.js object instead of two?
@@ -147,8 +167,10 @@ Note that [Ladybug Web Shadow Range OBJ Opener ]( https://ladybug-analysis-tools
 [Ladybug Web Shadow Range OBJ Gallery ]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ ) are automatically updated
 as a well since they rely on core for all Three.js operations.
 
-### 2016-06-25 ~ R3.2
+### 2016-06-25 ~ R3.2 / R4
 
+* Lights add and remove as expected
+* Add time time data to global parameters object
 * Sun is no longer shaded
 * Source code displays properly in read me
 

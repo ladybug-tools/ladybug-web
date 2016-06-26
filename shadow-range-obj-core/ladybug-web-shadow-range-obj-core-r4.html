@@ -2,13 +2,13 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Core R3.2</title>
+<title>Ladybug Web Shadow Range OBJ Core R4</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='
-Display Sun shadow range according to date, latitude and longitude.
-Load OBJ and MTL files.
+Displays Sun shadow range according to date, latitude and longitude.
+Loads OBJ and MTL files.
 Adjust a wide variety of parameters.
-Uses location.hash or 'permalinks' to save parameters.
+Uses location.hash or "permalinks" to save parameters.
 ' >
 <meta name=keywords content='Ladybug Web,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
 <meta name=date content='2016-06-25' >
@@ -86,8 +86,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
-	var utcZero, timeZoneThere;
-	var suns = [];
+	var suns;
 	var sunHelpers = [];
 
 	var stats, renderer, scene, camera, controls;
@@ -424,7 +423,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		}
 
-		if ( suns.length ) {
+		if ( suns ) {
 
 			setDateThere();
 
@@ -447,9 +446,9 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		offsetHere = dateHere.getTimezoneOffset();
 
-		utcZero = dateHere.getTime() + offsetHere * 60000;
+		pud.utcZero = dateHere.getTime() + offsetHere * 60000;
 
-		timestamp = utcZero / 1000;
+		timestamp = pud.utcZero / 1000;
 
 		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + pud.latitude + ',' + pud.longitude + '&timestamp=' + timestamp;
 
@@ -468,11 +467,11 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		function callback() {
 
-			timeZoneThere = JSON.parse( xhr.responseText );
+			pud.timeZoneThere = JSON.parse( xhr.responseText );
 
-			if ( timeZoneThere.status === 'OK' ) {
+			if ( pud.timeZoneThere.status === 'OK' ) {
 
-				pud.offsetThere = ( timeZoneThere.rawOffset + timeZoneThere.dstOffset ) /  3600;
+				pud.offsetThere = ( pud.timeZoneThere.rawOffset + pud.timeZoneThere.dstOffset ) /  3600;
 
 				setDateThereNow();
 
@@ -494,7 +493,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		var dateThereNow;
 
-		dateThereNow = new Date( utcZero + 3600000 * pud.offsetThere );
+		dateThereNow = new Date( pud.utcZero + 3600000 * pud.offsetThere );
 
 		pud.year = pud.year ? pud.year : dateThereNow.getFullYear();
 		pud.month = pud.month ? pud.month : dateThereNow.getMonth();
@@ -522,55 +521,48 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		var sun, sunHelper, dateThere, d;
 
+		scene.remove( suns )
+
+		suns = new THREE.Object3D();
+
 		for ( var i = 0; i < pud.sunRangeCount; i++ ) {
 
-			sun = suns[ i ];
-			sunHelper = sunHelpers[ i ];
+			sun = new THREE.DirectionalLight( 0xffffff, 0.5 * pud.sunRangeIntensity );
 
-			if ( !sun || sun.intensity !== pud.sunRangeIntensity ) {
+			geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
+			material = new THREE.MeshBasicMaterial( { color: 0xffee00 } );
+			mesh = new THREE.Mesh( geometry, material );
+			sun.add( mesh );
 
-				scene.remove( sun, sunHelper );
-
-				sun = new THREE.DirectionalLight( 0xffffff, 0.5 * pud.sunRangeIntensity );
-
-				geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
-				material = new THREE.MeshBasicMaterial( { color: 0xffee00 } );
-				mesh = new THREE.Mesh( geometry, material );
-				sun.add( mesh );
-
-				d = 50;
-				sun.shadow.camera.left = -d;
-				sun.shadow.camera.right = d;
-				sun.shadow.camera.top = d;
-				sun.shadow.camera.bottom = -d;
+			d = 50;
+			sun.shadow.camera.left = -d;
+			sun.shadow.camera.right = d;
+			sun.shadow.camera.top = d;
+			sun.shadow.camera.bottom = -d;
 
 /*
-				sun.shadow.camera.near = 0;
-				sun.shadow.camera.far = 5 * d;
-				sun.shadow.bias = -0.001; // default 0
-				sun.shadow.mapSize.width = 2048;  // default 512
-				sun.shadow.mapSize.height = 2048;
+			sun.shadow.camera.near = 0;
+			sun.shadow.camera.far = 5 * d;
+			sun.shadow.bias = -0.001; // default 0
+			sun.shadow.mapSize.width = 2048;  // default 512
+			sun.shadow.mapSize.height = 2048;
 */
 
-				sun.castShadow = true;
+			sun.castShadow = true;
 
-				scene.add( sun );
-				suns[ i ] =  sun;
+			suns.add( sun );
 
-				if ( pud.sunRangeHelpers === 1 ) {
+			if ( pud.sunRangeHelpers === 1 ) {
 
-					sunHelper = new THREE.CameraHelper( sun.shadow.camera );
-					scene.add( sunHelper );
-					sunHelpers[ i ] = sunHelper;
-
-				}
+				sunHelper = new THREE.CameraHelper( sun.shadow.camera );
+				suns.add( sunHelper );
 
 			}
 
 			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, pud.sunRangeStart - pud.offsetThere, pud.minutes + i * pud.sunRangeMinutes ) );
 
 			sun.userData.position = getSunPositionXYZ( pud.sunRangeRadius, dateThere, pud.latitude, pud.longitude );
-			sun.position.copy( suns[ i ].userData.position.xyz );
+			sun.position.copy( sun.userData.position.xyz );
 
 			if ( pud.sunRangePlacards === 1 ) {
 
@@ -583,11 +575,7 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		}
 
-			for ( var i = pud.sunRangePositions; i < suns.length; i++ ) {
-
-				scene.remove( suns[ i ], sunHelpers[ i ] );
-
-			}
+		scene.add( suns );
 
 		getCoreParameters( 'Added Suns' );
 
@@ -698,8 +686,8 @@ Uses location.hash or 'permalinks' to save parameters.
 
 		coreSunInfo.innerHTML = txt;
 
-		dateUTCZero = new Date ( utcZero );
-		dateThere = new Date( utcZero + 3600000 * pud.offsetThere  ) ;
+		dateUTCZero = new Date ( pud.utcZero );
+		dateThere = new Date( pud.utcZero + 3600000 * pud.offsetThere  ) ;
 
 		pud.sunPosition = getSunPosition( dateThere, pud.latitude, pud.longitude );
 
@@ -712,11 +700,11 @@ Uses location.hash or 'permalinks' to save parameters.
 			'Sun azimuth:' + pud.sunPosition.azimuth.toFixed() + b +
 			'Sun altitude:' + pud.sunPosition.altitude.toFixed() + b + b +
 
-			'Time Zone ID: ' + timeZoneThere.timeZoneId + b +
-			'Time zone: ' + timeZoneThere.timeZoneName + b + b +
+			'Time Zone ID: ' + pud.timeZoneThere.timeZoneId + b +
+			'Time zone: ' + pud.timeZoneThere.timeZoneName + b + b +
 			'Offset in hours: ' + pud.offsetThere + b +
-			'Raw offset in minutes: ' + timeZoneThere.rawOffset + b +
-			'Daylight saving offset in minutes: ' + timeZoneThere.dstOffset + b + b +
+			'Raw offset in minutes: ' + pud.timeZoneThere.rawOffset + b +
+			'Daylight saving offset in minutes: ' + pud.timeZoneThere.dstOffset + b + b +
 			'Date and time there is:<br>' + dateThere.toLocaleString() + b + b +
 
 			'<div title="GMT" >UTC time at 0&deg; longitude: ' +

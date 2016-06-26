@@ -69,6 +69,11 @@ value='Source code listing' >
 
 ## Change Log
 
+### 2016-06-25 ~ R5
+
+
+
+
 ### 2016-06-17 ~ R4
 
 * Add display of Sun positions
