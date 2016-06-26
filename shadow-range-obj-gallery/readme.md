@@ -84,6 +84,10 @@ value='Source code listing' >
 
 ## Change Log
 
+### 2016-06-26 ~ R5.1
+
+* Improve auto-rotate behavior
+
 ### 2016-06-25 ~ R5
 
 * Code clean up

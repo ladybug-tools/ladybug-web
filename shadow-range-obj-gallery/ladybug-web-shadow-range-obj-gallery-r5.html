@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Gallery R5</title>
+<title>Ladybug Web Shadow Range OBJ Gallery R5.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
 according to latitude, longitude, date and time.
@@ -19,6 +19,9 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 	var core = '../shadow-range-obj-core/index.html';
 
 //	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
+
+	var ifrCW;
+	var northPoint;
 
 	init();
 
@@ -132,12 +135,13 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 	function getCoreParameters( message ) {
 
-		var ifrContentWindow, dateUTCZero, dateThere;
+		var dateThere;
 		var b = '<br>';
 		var txt = '';
-		ifrContentWindow = ifr.contentWindow;
-		model = ifrContentWindow.model;
-		pud = ifrContentWindow.pud;
+
+		ifrCW = ifr.contentWindow;
+		model = ifrCW.model;
+		pud = ifrCW.pud;
 
 		menuDateLocation.innerHTML =
 			'<p>' + 
@@ -159,7 +163,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - pud.offsetThere, pud.minutes ) );
 
-			position = ifrContentWindow.getSunPosition( dateThere, pud.latitude, pud.longitude );
+			position = ifrCW.getSunPosition( dateThere, pud.latitude, pud.longitude );
 
 			txt += ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
 				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) + 
@@ -190,25 +194,25 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 		menuDisplay.innerHTML = 
 				'<p>' +
-					'<input type=checkbox checked onchange=toggleVisible(ifr.contentWindow.groundPlane);toggleVisible(ifr.contentWindow.edgesGPHelper); > Grouund plane<br>' +
-					'<input type=checkbox checked onchange=toggleVisible(ifr.contentWindow.axisHelper); > Display XYZ Axis <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifrCW.groundPlane);toggleVisible(ifrCW.edgesGPHelper); > Grouund plane<br>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifrCW.axisHelper); > Display XYZ Axis <br>' +
 //					'<input type=checkbox checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(northPoint); > Display North Point <br>' +
-					'<input type=checkbox checked onchange=toggleVisible(ifr.contentWindow.suns); > Display Sun <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifrCW.suns); > Display Sun <br>' +
 
-					'<input type=checkbox checked onchange=ifr.contentWindow.controls.autoRotate=!ifr.contentWindow.controls.autoRotate; > Auto-rotate <br>' +
+					'<input type=checkbox id=chkRotate onchange=ifrCW.controls.autoRotate=!ifrCW.controls.autoRotate; > Auto-rotate <br>' +
 				'</p>' +
 			'';
 
-		initNorthPoint();
+		if ( !northPoint ) { initNorthPoint(); }
 
-		ifr.contentWindow.controls.autoRotate = true;
+		ifrCW.controls.autoRotate = chkRotate.checked;
 
 	}
 
 	function setLocationHash() {
 
-		ifr.contentWindow.location.hash = 
+		ifrCW.location.hash = 
 
 			'#mo=' + inpMonth.valueAsNumber + 
 			'#da=' + inpDate.valueAsNumber + 
@@ -237,7 +241,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 	function initNorthPoint() {
 
-		var THREE = ifr.contentWindow.THREE;
+		var THREE = ifrCW.THREE;
 
 		var geometry, material;
 
@@ -252,7 +256,9 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		northPoint.scale.multiplyScalar( 0.5 );
 		northPoint.position.set( 50, -20, 25 );
 
-		ifr.contentWindow.scene.add( northPoint );
+		ifrCW.scene.add( northPoint );
+
+		chkRotate.checked = true;
 
 	}
 
