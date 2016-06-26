@@ -25,7 +25,7 @@ Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opene
 
 <img src="https://cloud.githubusercontent.com/assets/547626/15871740/0675c73e-2cab-11e6-88c6-0a412f8c24fd.png" style=display:none; width=800 >
 
-<iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html" width="100%" height=600 ></iframe>
+<iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html" width="100%" height=600 ></iframe>
 
 _Ladybug Web Shadow Range OBJ Opener_
 
@@ -104,9 +104,9 @@ _Ladybug Web Shadow Range OBJ Opener_
 ## Things you can do by editing the code
 
 <iframe src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
-	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html width=100% height=600 ></iframe>
+	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html width=100% height=600 ></iframe>
 
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r1.html';
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html';
 value='Source code listing' >
 
 * Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/
@@ -129,6 +129,10 @@ value='Source code listing' >
 
 
 ## Change Log
+
+### 2016-06-26 ~ R2
+
+* Menu mostly complete and operational
 
 ### 2016-06-17
 

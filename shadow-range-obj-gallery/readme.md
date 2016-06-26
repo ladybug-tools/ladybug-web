@@ -15,9 +15,9 @@ value='You are now in the home page view - Click this button to view the read me
 
 ## Concept
 
-<img src="https://cloud.githubusercontent.com/assets/547626/15700117/dbb0685c-2786-11e6-80ed-12df0a37adf9.png" style=display:none; width=800 >
+<img src='https://cloud.githubusercontent.com/assets/547626/16360355/8e0b9900-3b13-11e6-97c7-e2b0375b1866.png' style=display:none; width=800 >
 
-<iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/" width="100%" height=600 ></iframe>
+<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/' width=100% height=600 ></iframe>
 
 _Ladybug Web Analemma 3D_
 
@@ -27,9 +27,9 @@ _Ladybug Web Analemma 3D_
 
 ### Mission
 
-* Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
+* Uses location.hash to load OBJ and MTL files and display a Sun range 
 	* According to latitude, longitude, date and time
-* Select a variety of curated OBJ and MTL files from menu
+* Select current model from a menu of a variety of curated OBJ and MTL files
 * Adjust a variety of parameters
 
 
@@ -39,11 +39,16 @@ _Ladybug Web Analemma 3D_
 
 ### Features
 
-* TBD
-* Display Sun shadow range according to date, latitude and longitude
-* Load OBJ and MTL files
-* Adjust a wide variety of parameters
-* Uses location.hash or 'permalinks' to save parameters
+* Calls [Ladybug Web Shadow Range OBJ Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/index.html#readme.md ) 
+	* Load OBJ and MTL files
+	* Uses Three.js to draw Sun shadow range according to date, latitude and longitude
+	* Uses Google Geolocation API to calculate time offsets from UTC 
+* Adjust a wide variety of parameters using menu UI
+	* Date and location
+* View Sun positions
+* Adjust Sun parameters
+* Toggle the display of a variety of elements
+* Select models from a curated menu of models
 
 
 ## Things you can do using the script
@@ -61,12 +66,12 @@ _Ladybug Web Analemma 3D_
 ## Things you can do by editing the code
 
 <iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
-	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html' width=100% height=600 ></iframe>
+	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r5.html' width=100% height=600 ></iframe>
 
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r3.html';
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-gallery/ladybug-web-shadow-range-obj-gallery-r5.html';
 value='Source code listing' >
 
-* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r3.html
+* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r5.html
 * Click the 'Raw' icon and save the raw file to your computer
 * Once you've downloaded the file, you can click it to run it.
 * Open the file with a text editor
@@ -80,6 +85,8 @@ value='Source code listing' >
 ## Issues / To Do
 
 * Rendering quality is still low/primitive
+* Combine multiple models
+* First person bcamera
 
 
 ## Change Log
@@ -87,6 +94,8 @@ value='Source code listing' >
 ### 2016-06-26 ~ R5.1
 
 * Improve auto-rotate behavior
+* Add to read me
+
 
 ### 2016-06-25 ~ R5
 

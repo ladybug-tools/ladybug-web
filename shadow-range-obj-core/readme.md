@@ -34,11 +34,25 @@ _Ladybug Web Shadow Range OBJ Core_
 
 ### Features
 
+* Loads and displays OBJ and MTL files
+	* Calls Three.js loaders based on routines from [Ladybug Web 3D Models]( https://ladybug-analysis-tools.github.io/3d-models/index.html#index.md )
+	* Loads and makes use of and display texture bitmaps
+* Calls Google Maps API > [Time Zone API]( https://developers.google.com/maps/documentation/timezone/start )to determine time zone, date and time information for the selected latitude and longitude
+* Calls on [Ladybug Web Solar Calculator]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md ) to perform essential solar calculations
+	* Supplies Sun azimuth and altitude given time, latitude and longitude
 * Display Sun shadow range according to date, latitude and longitude
-* Load OBJ and MTL files
-* Adjust a wide variety of parameters
-* Uses location.hash or 'permalinks' to save parameters
-
+	* Midnight highlighted is blue. Noon highlighted in yellow
+	* Placards indicate the hour of each sun
+	* Displays current position of sun
+	* Displays shadow and shade
+	* 3D arrow shows direction of north
+* Information panel displays a variety of information including
+	* Latitude and longitude
+	* Selected time
+	* If not top window - ie in an iframe - information panel does not display
+* Supports permalinks for the following parameters
+	* Only the parameters that need changing need to appear on the location.hash
+	* See below for complete list of parameters
 
 ## Things you can do using this script
 
@@ -53,7 +67,7 @@ _Ladybug Web Shadow Range OBJ Core_
 ## Things you can do by editing the code
 
 <iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
-	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r3.html' width=100% height=600px ></iframe>
+	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r4.html' width=100% height=600px ></iframe>
 
 
 _Source code Ladybug Web Shadow Range OBJ Core_
@@ -92,6 +106,8 @@ Edit the parameters using [Ladybug Web Shadow Range OBJ Opener]( https://ladybug
 
 The following are the currently available permalink or location.hash codes.
 See [Ladybug Web Shadow Range OBJ Core Source Code](https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html] ) for examples of usage.
+
+file name
 
 aa= analemmaColor  
 ar= analemmaRadius  
@@ -166,6 +182,10 @@ tz= controls.target.z
 Note that [Ladybug Web Shadow Range OBJ Opener ]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ ) and 
 [Ladybug Web Shadow Range OBJ Gallery ]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ ) are automatically updated
 as a well since they rely on core for all Three.js operations.
+
+### 2016-06-26
+
+* Update Read me
 
 ### 2016-06-25 ~ R3.2 / R4
 

@@ -31,19 +31,23 @@ _Ladybug Web Shadow OBJ Core_
 
 ## Features
 
-* 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
+* Loads and displays OBJ and MTL files
+	* Calls Three.js loaders based on routines from [Ladybug Web 3D Models]( https://ladybug-analysis-tools.github.io/3d-models/index.html#index.md )
+	* Loads and makes use of and display texture bitmaps
+* Calls Google Maps API > [Time Zone API]( https://developers.google.com/maps/documentation/timezone/start )to determine time zone, date and time information for the selected latitude and longitude
+* Calls on [Ladybug Web Solar Calculator]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md ) to perform essential solar calculations
+	* Supplies Sun azimuth and altitude given time, latitude and longitude
+* Creates 3D plots of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
 	* Lines connect each hour on the 21st of the month
-	* Midnight highlighted is red. Noon highlighted in green
+	* Midnight highlighted is blue. Noon highlighted in yellow
 	* Placards indicate the hour of each analemma
 	* Displays current position of sun
 	* Displays shadow and shade
 	* 3D arrow shows direction of north
-* Loads and displays OBJ and MTL files
-	* Loads and makes use of and display texture bitmaps
 * Information panel displays a variety of information including
 	* Latitude and longitude
 	* Selected time
-	* If not top window - ie in an iframe - Information panel does not display
+	* If not top window - ie in an iframe - information panel does not display
 * Supports permalinks for the following parameters
 	* Only the parameters that need changing need to appear on the location.hash
 	* file name
@@ -74,7 +78,7 @@ _Ladybug Web Shadow OBJ Core_
 
 ## Issues
 
-* Small discrepancy with NOAA/Bostacl calcs
+* Small discrepancy with NOAA/Bostock calcs
 
 
 ## Editing the code

@@ -4,7 +4,7 @@
 <meta charset=utf-8 >
 <title>Ladybug Web Shadow Range OBJ Gallery R5.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
-<meta name=description content='Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
+<meta name=description content='Uses location.hash to load OBJ and MTL files and display Sun position and analemmas
 according to latitude, longitude, date and time.
 Select a variety of curated OBJ and MTL files from menu. Adjust a variety of parameters.
 ' >
@@ -144,7 +144,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		pud = ifrCW.pud;
 
 		menuDateLocation.innerHTML =
-			'<p>' + 
+			'<p>' +
 				'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 onchange=setLocationHash(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
 				'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 onchange=setLocationHash(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
 			'</p>' +
@@ -166,7 +166,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 			position = ifrCW.getSunPosition( dateThere, pud.latitude, pud.longitude );
 
 			txt += ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
-				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) + 
+				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) +
 
 				' azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
 				' altitude:' + position.altitude.toFixed() + b +
@@ -177,7 +177,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 		menuSunPositions.innerHTML = txt;
 
-		menuSunControls.innerHTML = 
+		menuSunControls.innerHTML =
 
 			'<p>Sun Intensity<br><input type=range id=inpIntensity min=0.01 max=2 value=0.2 step=0.01 onchange=setLocationHash(); title="0.1 to 2: OK" > <output id=outIntensity ></output></p>' +
 			'<p>Start Time<br><input type=range id=inpStart min=0 max=23 step=1 value=9 onchange=setLocationHash(); title="0 to 23: OK" > <output id=outStart ></output></p>' +
@@ -192,7 +192,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		outStart.value = inpStart.value = pud.sunRangeStart;
 
 
-		menuDisplay.innerHTML = 
+		menuDisplay.innerHTML =
 				'<p>' +
 					'<input type=checkbox checked onchange=toggleVisible(ifrCW.groundPlane);toggleVisible(ifrCW.edgesGPHelper); > Grouund plane<br>' +
 					'<input type=checkbox checked onchange=toggleVisible(ifrCW.axisHelper); > Display XYZ Axis <br>' +
@@ -212,10 +212,11 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 	function setLocationHash() {
 
-		ifrCW.location.hash = 
+		ifrCW.location.hash =
 
-			'#mo=' + inpMonth.valueAsNumber + 
-			'#da=' + inpDate.valueAsNumber + 
+			'#mo=' + inpMonth.valueAsNumber +
+			'#da=' + inpDate.valueAsNumber +
+
 			'#si=' + inpIntensity.valueAsNumber +
 			'#sc=' + inpPositions.valueAsNumber +
 			'#sm=' + inpMinutes.valueAsNumber +

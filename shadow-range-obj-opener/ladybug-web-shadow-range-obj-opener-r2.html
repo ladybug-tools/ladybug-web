@@ -1,0 +1,481 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Ladybug Web Shadow Range OBJ Opener R2</title>
+<meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
+<meta name='description' content='
+Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
+according to latitude, longitude, date and time.
+Select a variety of curated OBJ and MTL files from menu. Adjust a variety of parameters.
+'>
+<meta name='keywords' content='Ladybug Web,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name='date' content='2016-06-26' >
+</head>
+<body>
+<script>
+
+	var core = '../shadow-range-obj-core/index.html';
+//	var core = 'https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/index.html';
+
+	var ifrCW, model, pud;
+
+	init();
+
+	function init() {
+
+		var css,ifr, hamburger, menu, contents, date;
+
+		css = document.body.appendChild( document.createElement('style') );
+		css.innerHTML =
+
+			'html { height: 100%; }' +
+			'body { font: 12pt monospace; height: 100%; margin: 0; overflow: hidden; padding: 0;}' +
+			'a { color: crimson; text-decoration: none; }' +
+			'button, input[type=button] { background-color: #eee; border: 2px #eee solid; color: #888; }' +
+
+			'iframe { border: 0px red solid; height: 100%; overflow: hidden; padding: 0; position: absolute; top: 0; width: 100%; }' +
+
+			'input[type=number] { text-align: right; width: 60px; }' +
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; width: 160px; }' +
+			'input[type=range]::-moz-range-thumb { background-color: #888; border-radius: 0; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+
+			'details h3 { display: inline; margin: 0; }' +
+			'summary { outline: none; }' +
+
+			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; left: -324px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
+				'opacity: 0.95; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
+			'#inpLatitude, #inpLongitude { width: 70px; }' +
+
+		'';
+
+//		contents = document.body.appendChild( document.createElement( 'div' ) );
+//		contents.id = 'contents';
+
+		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
+		ifr.id = 'ifr';
+		ifr.scrolling = 'no';
+
+		hamburger = document.body.appendChild( document.createElement( 'div' ) );
+		hamburger.id = 'hamburger';
+		hamburger.innerHTML = '<div id=bars > &#9776; </div>';
+		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+
+		menu = hamburger.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href="" >' + document.title + '</a>' +
+				'<a href=index.html#readme.md > &#x24D8; </a>' +
+			'</h2>' +
+
+			'<p><a href=../shadow-range-obj-gallery/index.html >Gallery</a></p>' +
+
+			'<p id=coreFileInfo ></p>' +
+			'<p id=coreMessage style=color:crimson; /* onchange=console.log("msg",message); */ ></p>' +
+
+			'<div><b>URL</b><br>' +
+				'<small>Drag and drop file URL here:</small>' +
+				'<textarea id=taURL cols=40 rows=10 placeholder="Drag and drop a URL here\nor\nsee read me for more tricks..."></textarea></div>' +
+
+
+			'<div>' +
+				'<button onclick=saveFile(); >Save file</button> &nbsp;' +
+				'<button onclick=openNewTab(); >Test in new tab</button>' +
+
+			'</div>' +
+
+
+			'<details open >' +
+				'<summary><h3>Date & Location</h3></summary>' +
+//				'<div id=menuDateLocation >Latitude<br>Longitude</div>' +
+
+				'<p>' +
+
+					'Latitude &nbsp;<input id=inpLatitude min=-90 max=90 value=1 step=0.001 oninput=setLocationHash(); title="0 to 90: OK" ><br>' +
+					'Longitude <input id=inpLongitude min=-180 max=180 value=1 step=0.001 oninput=setLocationHash(); title="0 to 90: OK" ><br>' +
+
+					'<p>Time zone: </p>' +
+
+					'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setLocationHash(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
+					'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setLocationHash(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
+	//				'Hour &nbsp; <input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setLocationHash(); title="0 to 23: OK" > <output id=outHours ></output><br>' +
+	//				'Minute <input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setLocationHash(); title="0 to 59: OK" > <output id=outMinutes ></output><br>' +
+
+
+
+
+				'</p>' +
+			'</details>' +
+
+
+			'<details open >' +
+				'<summary><h3>Sun Positions</h3></summary>' +
+				'<p id=menuSunPositions ></p>' +
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Sun Controls</h3></summary>' +
+				'<p>Sun Intensity<br>' +
+					'<input type=range id=inpIntensity min=0.01 max=1 value=0.2 step=0.01 onchange=setLocationHash(); title="0.1 to 2: OK" > <output id=outIntensity ></output></p>' +
+				'<p>Start Time<br><input type=range id=inpStart min=0 max=23 step=1 value=9 onchange=setLocationHash(); title="0 to 23: OK" > <output id=outStart ></output></p>' +
+				'<p>Number of Positions<br><input type=range id=inpPositions min=1 max=15 step=1 value=8 onchange=setLocationHash(); title="1 to 15: OK" > <output id=outPositions ></output></p>' +
+				'<p>Interval in Minutes<br><input type=range id=inpMinutes min=1 max=120 step=1 value=60 onchange=setLocationHash(); title="1 to 120: OK" > <output id=outMinutes ></output></p>' +
+				'<p id=menuSunControls ></p>' +
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Display Controls</h3></summary>' +
+//				'<p id=menuDisplay ></p>' +
+
+
+				'<p>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifrCW.groundPlane);toggleVisible(ifrCW.edgesGPHelper); > Grouund plane<br>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifrCW.axisHelper); > Display XYZ Axis <br>' +
+//					'<input type=checkbox checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(northPoint); > Display North Point <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(ifrCW.suns); > Display Sun <br>' +
+
+					'<input type=checkbox id=chkRotate onchange=ifrCW.controls.autoRotate=!ifrCW.controls.autoRotate; > Auto-rotate <br>' +
+				'</p>' +
+
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Model Controls</h3></summary>' +
+				'<p>Model Scale <input type=number id=inpScale value=1 step=0.001 onchange = setLocationHash(); ></p>' +
+				'<p>' +
+					'Model rotation<br>' +
+					'x <input type=number id=inpRotX value=0 onchange = setLocationHash(); > ' +
+					'y <input type=number id=inpRotY value=0 onchange = setLocationHash(); > ' +
+					'z <input type=number id=inpRotZ value=0 onchange = setLocationHash(); >' +
+				'</p>' +
+				'<p>' +
+					'Model position<br>' +
+					'x <input type=number id=inpPosX value=0 onchange = setLocationHash(); > ' +
+					'y <input type=number id=inpPosY value=0 onchange = setLocationHash(); > ' +
+					'z <input type=number id=inpPosZ value=0 onchange = setLocationHash(); >' +
+				'</p>' +
+				'<p>' +
+					'Camera position<br>' +
+					'x <input type=number id=inpCamX value=0 onchange = setLocationHash(); > ' +
+					'y <input type=number id=inpCamY value=0 onchange = setLocationHash(); > ' +
+					'z <input type=number id=inpCamZ value=0 onchange = setLocationHash(); >' +
+				'</p>' +
+				'<p>' +
+					'Camera Target<br>' +
+					'x <input type=number id=inpTarX value=0 onchange = setLocationHash(); > ' +
+					'y <input type=number id=inpTarY value=0 onchange = setLocationHash(); > ' +
+					'z <input type=number id=inpTarZ value=0 onchange = setLocationHash(); >' +
+				'</p>' +
+			'</details>' +
+
+//			'<p><input type=checkbox onchange=ifrCW.model.material.wireframe=!ifrCW.model.material.wireframe; > Wireframe</p>' +
+
+			'<p>' +
+				'<button onclick=allPhong(); >All phong material</button> ' +
+				'<button onclick=allNormal(); >All normal material</button>' +
+			'</p>' +
+
+//			'<p><button onclick=zoomBoundary(); >Zoom boundary</button></p>' +
+
+			'<div id=info ></div>' +
+			'<div id=links ></div>' +
+
+			'<details>' +
+				'<summary><h3>About</h3></summary>' +
+				'<p>Copyright &copy; 2016 Ladybug authors. GPL 3 license.</p>' +
+			'</details>' +
+
+			'<hr>' +
+			'<center><a href=javascript:menu.scrollTop=0; ><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></a></center>' +
+
+		'';
+
+		window.addEventListener( 'hashchange', onHashChange, false );
+
+		taURL.addEventListener( 'dragover', function( event ){ event.preventDefault(); }, true );
+		taURL.addEventListener( 'drop', onDrop, false );
+		taURL.addEventListener( 'change', function() { setContents( '#' + taURL.value ); }, true );
+
+
+
+// let's go
+
+		onHashChange();
+
+	}
+
+	function onHashChange(){
+
+		url = location.hash.length ? location.hash.slice( 1 ) : '';
+
+		setContents( url );
+
+	}
+
+	function onDrop( event ) {
+
+		event.preventDefault();
+
+		url = event.dataTransfer.getData( 'URL' );
+
+		setContents( url );
+
+	}
+
+	function setContents( url ) {
+
+		taURL.value = url;
+
+		ifr.src = core + '#' + url;
+
+		ifr.onload = function () {
+
+			if ( window.self !== window.top ) { ifr.contentWindow.controls.enableZoom = false; }
+
+		}
+
+	}
+
+// called by core
+// could this be in core?
+
+	function getCoreParameters( message ) {
+
+//		var ifrCW, dateUTCZero, dateThere;
+		var r2d = 180 / Math.PI;
+
+		ifrCW = ifr.contentWindow;
+		model = ifrCW.model;
+		pud = ifr.contentWindow.pud;
+
+		inpLatitude.value = pud.latitude;
+		inpLongitude.value = pud.longitude;
+
+		inpMonth.value = pud.month;
+		outMonth.value = pud.month + 1;
+
+		outDate.value = inpDate.value = pud.date;
+//		outHours.value = inpHours.value = pud.hours;
+//		outMinutes.value = inpMinutes.value = pud.minutes;
+
+		inpCamX.value = ifrCW.camera.position.x.toFixed();
+		inpCamY.value = ifrCW.camera.position.y.toFixed();
+		inpCamZ.value = ifrCW.camera.position.z.toFixed();
+
+		inpTarX.value = ifrCW.controls.target.x.toFixed();
+		inpTarY.value = ifrCW.controls.target.y.toFixed();
+		inpTarZ.value = ifrCW.controls.target.z.toFixed();
+
+		inpScale.value = model.scale.x;
+
+		inpRotX.value = model.rotation.x * r2d;
+		inpRotY.value = model.rotation.y * r2d;
+		inpRotZ.value = model.rotation.z * r2d;
+
+		inpPosX.value = model.position.x;
+		inpPosY.value = model.position.y;
+		inpPosZ.value = model.position.z;
+
+		var b = '<br>';
+		var txt = '';
+
+		model = ifrCW.model;
+		pud = ifrCW.pud;
+/*
+		txt = 
+
+			'<p>Sun Intensity<br><input type=range id=inpIntensity min=0.01 max=1 value=0.2 step=0.01 onchange=setLocationHash(); title="0.1 to 2: OK" > <output id=outIntensity ></output></p>' +
+			'<p>Start Time<br><input type=range id=inpStart min=0 max=23 step=1 value=9 onchange=setLocationHash(); title="0 to 23: OK" > <output id=outStart ></output></p>' +
+			'<p>Number of Positions<br><input type=range id=inpPositions min=1 max=15 step=1 value=8 onchange=setLocationHash(); title="1 to 15: OK" > <output id=outPositions ></output></p>' +
+			'<p>Interval in Minutes<br><input type=range id=inpMinutes min=1 max=120 step=1 value=60 onchange=setLocationHash(); title="1 to 120: OK" > <output id=outMinutes ></output></p>' +
+
+		'';
+
+		menuSunControls.innerHTML = txt;
+*/
+
+		inpMonth.value = pud.month;
+		outMonth.value = pud.month + 1;
+		outDate.value = inpDate.value = pud.date;
+
+		outIntensity.value = inpIntensity.value = pud.sunRangeIntensity;
+		outPositions.value = inpPositions.value = pud.sunRangeCount;
+		outMinutes.value = inpMinutes.value = pud.sunRangeMinutes;
+		outStart.value = inpStart.value = pud.sunRangeStart;
+
+//		corePositionsMessage.innerHTML = 
+//			'Latitude ' + pud.latitude + '<br>' +
+//			'Longitude ' + pud.longitude +
+//		'';
+
+		txt = '';
+
+		for ( var i = 0; i < pud.sunRangeCount; i++ ) {
+
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, i + pud.sunRangeStart - pud.offsetThere, pud.minutes ) );
+
+			position = ifrCW.getSunPosition( dateThere, pud.latitude, pud.longitude );
+
+			txt += ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
+				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) + 
+
+				' azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
+				' altitude:' + position.altitude.toFixed() + b +
+
+			'';
+
+		}
+
+		menuSunPositions.innerHTML = txt;
+
+		setLocationHash();
+
+// console.log( 'message', message );
+
+	}
+
+	function setLocationHash() {
+
+		var txt;
+
+		txt =
+
+			'#la=' + inpLatitude.value + '#lo=' + inpLongitude.value +
+			'#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber +
+//			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber +
+
+		'';
+
+
+
+//		outIntensity.value = inpIntensity.value = pud.sunRangeIntensity;
+//		outPositions.value = inpPositions.value = pud.sunRangeCount;
+//		outMinutes.value = inpMinutes.value = pud.sunRangeMinutes;
+//		outStart.value = inpStart.value = pud.sunRangeStart;
+
+
+		txt += inpIntensity.valueAsNumber !== 0.5 ? '#si=' + inpIntensity.valueAsNumber : '';
+		txt += inpPositions.valueAsNumber !== 8 ? '#sc=' + inpPositions.valueAsNumber : '';
+		txt += inpMinutes.valueAsNumber !== 8 ? '#sm=' + inpMinutes.valueAsNumber : '';
+		txt += inpStart.valueAsNumber !== 8 ? '#ss=' + inpStart.valueAsNumber : '';
+
+		txt += inpScale.valueAsNumber !== 1 ? '#sx=' + inpScale.valueAsNumber : '';
+		txt += inpScale.valueAsNumber !== 1 ? '#sy=' + inpScale.valueAsNumber : '';
+		txt += inpScale.valueAsNumber !== 1 ? '#sz=' + inpScale.valueAsNumber : '';
+
+		txt += inpRotX.valueAsNumber != 0 ? '#rx=' + inpRotX.valueAsNumber : '';
+		txt += inpRotY.valueAsNumber != 0 ? '#ry=' + inpRotY.valueAsNumber : '';
+		txt += inpRotZ.valueAsNumber != 0 ? '#rz=' + inpRotZ.valueAsNumber : '';
+
+		txt += inpPosX.valueAsNumber != 0 ? '#px=' + inpPosX.valueAsNumber : '';
+		txt += inpPosY.valueAsNumber != 0 ? '#py=' + inpPosY.valueAsNumber : '';
+		txt += inpPosZ.valueAsNumber != 0 ? '#pz=' + inpPosZ.valueAsNumber : '';
+
+		txt += inpCamX.valueAsNumber != 100 ? '#cx=' + inpCamX.valueAsNumber : '';
+		txt += inpCamY.valueAsNumber != 100 ? '#cy=' + inpCamY.valueAsNumber : '';
+		txt += inpCamZ.valueAsNumber != 100 ? '#cz=' + inpCamZ.valueAsNumber : '';
+
+		txt += inpTarX.valueAsNumber != 0 ? '#tx=' + inpTarX.valueAsNumber : '';
+		txt += inpTarY.valueAsNumber != 0 ? '#ty=' + inpTarY.valueAsNumber : '';
+		txt += inpTarZ.valueAsNumber != 0 ? '#tz=' + inpTarZ.valueAsNumber : '';
+
+		pud.permalink = taURL.value = core + '#' + ifrCW.model.name + txt;
+
+		ifrCW.location.hash = txt;
+
+	}
+
+
+	function allPhong() {
+
+		ifrCW.model.traverse( function ( child ) {
+
+			if ( child instanceof ifrCW.THREE.Mesh ) {
+
+				child.material = new ifrCW.THREE.MeshPhongMaterial( { side: 2 } );
+				child.material.needsUpdate = true;
+
+			}
+
+		} );
+
+	}
+
+	function allNormal() {
+
+		ifrCW.model.traverse( function ( child ) {
+
+			if ( child instanceof ifrCW.THREE.Mesh ) {
+
+				child.material = new ifrCW.THREE.MeshNormalMaterial( { side: 2 } );
+				child.material.needsUpdate = true;
+
+			}
+
+		} );
+
+	}
+
+
+// broken....
+	function zoomBoundary() {
+
+			var mode = ifrCW.model;
+
+			bbh = new ifrCW.THREE.BoundingBoxHelper( model );
+			bbh.update();
+//			bbh.geometry.computeBoundingSphere();
+//			radius = bbh.geometry.boundingSphere.radius;
+
+			distance = bbh.position.distanceTo( bbh.scale );
+			size = model.scale.y * 80 / distance;
+
+			model.scale.multiplyScalar( size );
+
+			bbh = new ifrCW.THREE.BoundingBoxHelper( model );
+
+			ifrCW.scene.add( bbh );
+			bbh.update();
+			inpScale.value = size.toFixed( 3 );
+
+			setLocationHash();
+
+	}
+
+	function openNewTab() {
+
+		window.open( pud.permalink, '_blank' )
+
+	}
+
+	function saveFile() {
+
+		var blob, a;
+
+		blob = new Blob( [ JSON.stringify( ifrCW.model.toJSON() ) ] );
+
+		a = document.body.appendChild( document.createElement( 'a' ) );
+		a.href = window.URL.createObjectURL( blob );
+		a.download = 'test' + '.json';
+		a.click();
+
+		delete a;
+
+	}
+
+	function toggleVisible( obj ) {
+
+//		obj.visible = obj.visible === true ? false : true;
+		obj.visible = !obj.visible;
+
+	}
+
+</script>
+</body>
+</html>
