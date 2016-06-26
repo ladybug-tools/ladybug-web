@@ -29,7 +29,8 @@ _Ladybug Web Analemma 3D_
 
 ### Vision
 
-* To experience, understand and make more useful the powers of sunlight
+* To experience, understand and make more useful the characteristics and power of sunlight
+* To help designers plan for sunlight - or lack of it
 
 
 ### Features
@@ -91,13 +92,15 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 ## Issues
 
 * Open Street Maps - and other maps - not showing because of HTTPS issues
-
+* When not top window gives error message - should just stay quiet
 
 ## Things To Do / Road Map / Wish List
 
-* Set intensity of Sun light
-* Add display of current map source and copy right notices
-* Add ability to turn off casting and receiving of shadows whenever the sun is below the ground plane/horizon.
+* If not top window, don't just go to Sydney but go to a location where the Sun is shining
+* Add more Solar calculations - from Solar calculator
+* Background: color, gradient or skybox
+* Add 3D cartography
+* Add display of current map source and copyright notices
 * Add choice of 3D objects
 * Add the ability to change the north point based on an angle
 	* Select type of north point
@@ -110,7 +113,7 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 * Start moving some of the code into libraries
 * How best to display daily sun path?
 	* As in lower left of [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
-* Permalink support
+* Permalink support << 2016-06-26 ~ Mostapha wants!
 
 ## Goals
 
@@ -118,6 +121,11 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 	* Animations from [Sun Position Calculator]( http://www.pveducation.org/pvcdrom/properties-of-sunlight/sun-position-calculator )
 	* Data from [SunCalc.org]( http://www.suncalc.org/ )
 	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
+
+## Dependencies
+
+This script depends on [Ladybug Web Solar Calculator]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ ).
+When that scripts add features - such as calculating solar noon - then those features will be added to Ladybug Web Analemma 3D.
 
 
 ## Links of Interest
@@ -133,6 +141,17 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 
 ## Change Log
+
+### 2016-06-26 
+
+* Update read me
+* Add intensity of Sun light slider
+* Add auto-rotate
+* Update menu wording
+* Add auto-rotate with check box toggle
+* Sun is now bright yellow
+* Default location displays properly
+* Add turn off casting and receiving of shadows whenever the sun is below the ground plane/horizon.
 
 ### 2016-06-25 ~ R15
 
