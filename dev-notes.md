@@ -12,6 +12,7 @@ Ladybug Web Dev Notes
 
 ## To Do
 
+* Update license page
 * Add Credits page
 	* Google Maps
 	* OSM
@@ -22,6 +23,16 @@ Ladybug Web Dev Notes
 
 
 ## Change Log
+
+
+### 2016-06-26
+
+There are currently twelve separate Scripts in this repo. The current practice seems to be that they are updated and looked at in order. The process starts with a solar calculator apps, then progresses to the Ana Lamas, then the Shadows, than the sun range scripts.
+
+During this 'pilgrimage', if a useful new feature is added then it is added to all subsequent scripts in the progression. It may take a while before a new feature is added back to the beginning of the list. In other words new features are not added to all scripts at the same time.
+
+
+
 
 ### 2016-06-02
 
