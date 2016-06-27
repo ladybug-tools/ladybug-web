@@ -61,7 +61,9 @@ _Ladybug Web Shadow Range OBJ Opener_
 	* Time zone
 	* Selected month and day slider bar
 * Sun positions panel display:
- 
+	* Displays azimuth and altitude in degrees for each sun position
+* Sun Controls panel
+	* Sun intensity, start time, number of positions, interval in mibutes
 * Creates  permalinks for the following parameters
 	* Only the parameters that need changing need to appear on the location.hash
 	* file name
@@ -93,7 +95,12 @@ _Ladybug Web Shadow Range OBJ Opener_
 
 ## Things you can do using the script
 
-* TBD
+* Set the latitude and longitude to your current location
+* Set the month and day to the longest and shortest days of the year
+* Set the start time a bit earlier and set the number of positions to 12
+* Turn off the display of the ground plane and turn on the auto-rotate
+* Adjust the scale, position and rotation of the model
+* Drag and drop a file UR into the text edit box and adjust its parameters
 * Use one/two/three fingers to rotate/zoom/pan the display in 3D
 	* Or left/scroll/right with your pointing device 
 * Click the three bars( 'hamburger menu icon' ) to slide the menu in and out
@@ -104,6 +111,16 @@ _Ladybug Web Shadow Range OBJ Opener_
 * Press Control-U/Command-Option-U to view the source code
 * Press Control-Shift-J/Command-Option-J to see if the JavaScript console reports any errors
 
+
+## Creating a URL for a file on your computer
+
+* Open the 3D model data file in your browser
+* Copy and paste the link in the address bar into the text box in Shadow Range OBJ Opener
+	* or
+* Drag and drop the icon to the left of the address bar into the text box in Shadow Range OBJ Opener
+
+
+_Probably needs a video..._
 
 
 
@@ -131,13 +148,22 @@ value='Source code listing' >
 ## Wishlist
 
 * Highlight a particular Sun Position - darken its shadow and dim the other shadows
-* Sun positions panel: number the items
+* Add geolocation?
+* Add analemmas?
+* Sun positions panel: number the items?
 
 * Mostapha: Finally, isn't it easier to scale and move sunpath instead of the geometry? I imagine cases that the user input a complex mesh and moving or scaling the geometry will be expensive performance wise.
 
 
 
 ## Change Log
+
+### 2016-06-27 ~ R2.1
+
+* Update read me
+* Add degree symbols to Sun Positions panel
+* Adjust css
+* Add time zone update
 
 ### 2016-06-26 ~ R2
 

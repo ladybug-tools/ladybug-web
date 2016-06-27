@@ -90,22 +90,23 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 ## Issues
 
+* Firefox: if script is top window and sharing 'not now' is selected, then script fails to complete loading - but does load if not in top window - see script running at top of read me
 * Open Street Maps - and other maps - not showing because of HTTPS issues
 
 
 
 ## Things To Do / Road Map / Wish List
 
+* Add wide lines
 * If not top window, don't just go to Sydney but go to a location where the Sun is shining
 * Add more Solar calculations - from Solar calculator
 * Background: color, gradient or skybox
 * Add 3D cartography
-* Add display of current map source and copyright notices
 * Add choice of 3D objects
-* Add the ability to change the north point based on an angle
+* Add the ability to change the north point based on an angle?
 	* Select type of north point
 * Add an option to re-scale the sun path
-* Add a button for top view and also save view to file.
+
 * Do something when Google API reports no time zone
 * Animations / lighten end darken sky
 	* Every hour of every day
@@ -115,6 +116,13 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 	* As in lower left of [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
 * Permalink support << 2016-06-26 ~ Mostapha wants!
 * Predict the amount of solar energy that arrives at any given location
+* Menu
+	* Move location to above lat & lon
+	* Add display of current map source and copyright notices
+	* Add a button for top view?
+	* Indicate time, azimuth and altitude of sun in current position
+	* Add degree symbols where appropriate
+
 
 
 
