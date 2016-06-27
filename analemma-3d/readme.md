@@ -115,6 +115,7 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 	* As in lower left of [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
 * Permalink support << 2016-06-26 ~ Mostapha wants!
 
+
 ## Goals
 
 * Do everything the following scripts do:
@@ -142,7 +143,7 @@ When that scripts add features - such as calculating solar noon - then those fea
 
 ## Change Log
 
-### 2016-06-26 
+### 2016-06-26 ~ R16
 
 * Update read me
 * Add intensity of Sun light slider

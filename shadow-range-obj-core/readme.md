@@ -185,7 +185,7 @@ as a well since they rely on core for all Three.js operations.
 
 ### 2016-06-26
 
-* Update Read me
+* Update read me
 
 ### 2016-06-25 ~ R3.2 / R4
 
