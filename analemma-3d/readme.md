@@ -76,7 +76,6 @@ _If you are in '[Home Page View]( https://ladybug-analysis-tools.github.io/ladyb
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r15.html';
 value='Ladybug Web Analemma 3D: the entire source code listing' >
 
-
 * Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r15.html
 * Click the 'Raw' icon and save the raw file to your computer
 * Once you've downloaded the file, you can click it to run it.
@@ -92,7 +91,8 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 ## Issues
 
 * Open Street Maps - and other maps - not showing because of HTTPS issues
-* When not top window gives error message - should just stay quiet
+
+
 
 ## Things To Do / Road Map / Wish List
 
@@ -114,6 +114,18 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 * How best to display daily sun path?
 	* As in lower left of [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
 * Permalink support << 2016-06-26 ~ Mostapha wants!
+* Predict the amount of solar energy that arrives at any given location
+
+
+
+## Development Stages
+
+The script appears to be ready for testing and commenting by a small number of knowledgeable computer users.
+
+The next major update is likely to focus in creating more dependencies. See Dependencies.
+
+A subsequent upgrade is likely to focus on adding new features such 3D cartography
+
 
 
 ## Goals
@@ -123,10 +135,23 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 	* Data from [SunCalc.org]( http://www.suncalc.org/ )
 	* UI aspects from [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
 
+Are there other analemma app or scripts that do things that this script could do as well?
+
+Add link to Wikipedia entry?
+
+
+
 ## Dependencies
 
 This script depends on [Ladybug Web Solar Calculator]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ ).
 When that scripts add features - such as calculating solar noon - then those features will be added to Ladybug Web Analemma 3D.
+
+See this script for credits and links of interest regarding solar calculations
+
+The drawAnalemma and associated functions are likely to be extracted and converted into standalone, more easily reusable .JS files
+
+The geolocation functions are likely to be extracted and converted into standalone, more easily reusable .JS files
+
 
 
 ## Links of Interest
@@ -138,7 +163,10 @@ When that scripts add features - such as calculating solar noon - then those fea
 * [Science Blog: Why Our Analemma Looks like a Figure 8]( http://scienceblogs.com/startswithabang/2009/08/26/why-our-analemma-looks-like-a/ )
 * [Stanford Solar Center: Viewing and Understanding the Analemma]( http://solar-center.stanford.edu/art/analemma.html )
 * [analemma.com]( http://www.analemma.com/pages/framespage.html ) << mostly broken
+* [Figure-Eight in the Sky]( http://www.astronomycorner.net/games/analemma.html ) - inclueds C Sun position code
 
+
+Please add links!
 
 
 ## Change Log
@@ -153,6 +181,7 @@ When that scripts add features - such as calculating solar noon - then those fea
 * Sun is now bright yellow
 * Default location displays properly
 * Add turn off casting and receiving of shadows whenever the sun is below the ground plane/horizon.
+* When not in top window does not give error message - just stays quiet
 
 ### 2016-06-25 ~ R15
 

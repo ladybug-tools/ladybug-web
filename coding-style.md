@@ -1,5 +1,5 @@
-<span style=display:none; >
-[You are now in a GitHub source code view - click this link to view the home page]( https://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
+<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( https://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
@@ -24,19 +24,17 @@ then possibilities arise for the more complex, sophisticated and even extravagan
 * RIP Zaha Hadid. Let us continue to design with your disruptive yet aways elegant spirit
 -->
 
-
-[Cookbook examples]( https://en.wikipedia.org/wiki/Cookbook#Usage_outside_the_world_of_food )
-
-* ready to use, cut and paste scripts built to solve specific problems in a single programming language - JavaScript
-* small easy-to-understand scripts that you can use to hack your own apps
-
-For STEM peeps - not 'full-stack programmers'
-
-All written in JavaScript - even the CSS and HTML - Experimental techniques designed to get you coding faster but documented
-
-Built to fork edit and share - all FOSS in GitHub
-
-Explore new ways of visualizing in 3D - use the graphics processing units (GPUs ) to their maximum
+* You can download a script easily and when you click it, it should just work.
+	* Everything you need to know about a script is in one place and written in the same way.
+* Ready to use, cut and paste scripts
+* Built to solve specific problems in a single programming language - JavaScript
+* Small easy-to-understand scripts that you can use to hack your own apps
+* All written in JavaScript
+	* Even the HTML and CSS is created and edited using JavaScript.
+	* Experimental techniques designed to get you coding faster but documented
+* Built to fork edit and share - all FOSS in GitHub
+* For STEM peeps - not 'full-stack programmers'
+* Explore new ways of visualizing in 3D - use the graphics processing units (GPUs ) to their maximum
 
 
 For much more detail about the coding style you can have a look at the [Jaanga Practice Notes]( http://jaanga.github.io/documents/jaanga-practice-notes/#code-mission-vision-r1.md )
@@ -53,10 +51,6 @@ Some of the notes there could come here as and when there is agreement on the go
 
 <!--
 Everything is in between two `<script>` tags and written JavaScript
-
-Even the HTML and CSS is created and edited using JavaScript.
-
-Everything you need to know about a script is in one place and written in the same way.
 
 What does mean?
 

@@ -32,6 +32,7 @@ _Ladybug Web Shadow Range OBJ Core_
 * Adjust all parameters so as to create a meaningful and useful displays
 
 
+
 ### Features
 
 * Loads and displays OBJ and MTL files
@@ -53,6 +54,8 @@ _Ladybug Web Shadow Range OBJ Core_
 * Supports permalinks for the following parameters
 	* Only the parameters that need changing need to appear on the location.hash
 	* See below for complete list of parameters
+
+
 
 ## Things you can do using this script
 
@@ -80,6 +83,8 @@ _Source code Ladybug Web Shadow Range OBJ Core_
 * Uncomment - remove the '//' - on any of the other default file names.
 * Save and reload
 
+
+
 ## Creating Visualizations
 
 There are two methods for creating Sun range visualizations
@@ -100,6 +105,7 @@ A full list of parameters is provided below. Not all parameters work with Sun Ra
 ### Method 2: Use Shadow Range OBJ Opener
 
 Edit the parameters using [Ladybug Web Shadow Range OBJ Opener]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ )
+
 
 
 ## Permalink codes
@@ -156,14 +162,28 @@ ty= controls.target.y
 tz= controls.target.z  
 
 
+
 ## Issues / To Do
 
-* All time parameters in pud
-* Add north point
+* All time parameters in pud ( project.userData object )
+* Add north point << or expect down stream apps to do that?
 * Need more examples with parameters
 * Add ways of improving shadow quality
 * Should parameters and model be a single Three.js object instead of two?
 * Should analemmas be added?
+
+
+
+## Dependencies
+
+This script depends on [Ladybug Web Solar Calculator]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ ).
+When that scripts add features - such as calculating solar noon - then those features will be added to Ladybug Web Analemma 3D.
+
+See this script for credits and links of interest regarding solar calculations.
+
+The permalink functions - and especially the list of supported parameters - should become their own area of activity.
+
+
 
 ## Links of Interest
 
@@ -182,6 +202,11 @@ tz= controls.target.z
 Note that [Ladybug Web Shadow Range OBJ Opener ]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ ) and 
 [Ladybug Web Shadow Range OBJ Gallery ]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ ) are automatically updated
 as a well since they rely on core for all Three.js operations.
+
+### 2016-06-27
+
+* Update read me
+
 
 ### 2016-06-26
 
@@ -211,7 +236,7 @@ as a well since they rely on core for all Three.js operations.
 * Add iframe and image
 * Add source code view
 
-## 2016-05-23 / R1
+### 2016-05-23 / R1
 
 
 ***

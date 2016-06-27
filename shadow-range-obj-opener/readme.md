@@ -35,11 +35,14 @@ _Ladybug Web Shadow Range OBJ Opener_
 
 ### Mission
 
-* To provide a simple user-interface for adding and editing parameters used by Ladybug Web Shadow OBJ Core
+* To provide a simple user-interface for adding and editing parameters used by [Ladybug Web Shadow OBJ Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ )
+* To prepare links for use by [Ladybug Web Shadow OBJ Gallery]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ )
 
 ### Vision
 
-* TBD
+* To demonstrate that creating, updateting and sending a wide variety of parameters to a script can be carried out by beginning to intermediate level programmers
+
+ 
 
 ## Features
 
@@ -51,11 +54,14 @@ _Ladybug Web Shadow Range OBJ Opener_
 	* Displays shadow and shade
 	* 3D arrow shows direction of north
 * Loads and displays OBJ and MTL files
-	* Loads and makes use of and display texture bitmaps
-* Information panel displays a variety of information including
-	* Latitude and longitude
-	* Selected time
-	* If not top window - ie in an iframe - Information panel does not display
+	* Loads, makes use of and displays texture bitmaps
+	* Displays progress messages and errors in menu when needed
+* Date and location panel displays:
+	* Latitude and longitude input
+	* Time zone
+	* Selected month and day slider bar
+* Sun positions panel display:
+ 
 * Creates  permalinks for the following parameters
 	* Only the parameters that need changing need to appear on the location.hash
 	* file name
@@ -123,6 +129,9 @@ value='Source code listing' >
 	* Workaround: set position px equal to 0.1, for example
 
 ## Wishlist
+
+* Highlight a particular Sun Position - darken its shadow and dim the other shadows
+* Sun positions panel: number the items
 
 * Mostapha: Finally, isn't it easier to scale and move sunpath instead of the geometry? I imagine cases that the user input a complex mesh and moving or scaling the geometry will be expensive performance wise.
 

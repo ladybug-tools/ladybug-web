@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Opener R2</title>
+<title>Ladybug Web Shadow Range OBJ Opener R2.1</title>
 <meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name='description' content='
 Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
@@ -10,7 +10,7 @@ according to latitude, longitude, date and time.
 Select a variety of curated OBJ and MTL files from menu. Adjust a variety of parameters.
 '>
 <meta name='keywords' content='Ladybug Web,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name='date' content='2016-06-26' >
+<meta name='date' content='2016-06-27' >
 </head>
 <body>
 <script>
@@ -46,14 +46,11 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
 			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
-			'#menu { background-color: #eee; border: 1px #ccc solid; left: -324px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
-				'opacity: 0.95; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; left: -325px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
+				'opacity: 0.95; overflow: auto; padding: 0 5px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
 			'#inpLatitude, #inpLongitude { width: 70px; }' +
 
 		'';
-
-//		contents = document.body.appendChild( document.createElement( 'div' ) );
-//		contents.id = 'contents';
 
 		ifr = document.body.appendChild( document.createElement( 'iframe' ) );
 		ifr.id = 'ifr';
@@ -80,7 +77,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 			'<div><b>URL</b><br>' +
 				'<small>Drag and drop file URL here:</small>' +
-				'<textarea id=taURL cols=40 rows=10 placeholder="Drag and drop a URL here\nor\nsee read me for more tricks..."></textarea></div>' +
+				'<textarea id=taURL cols=37 rows=12 placeholder="Drag and drop a URL here\nor\nsee read me for more tricks..."></textarea></div>' +
 
 
 			'<div>' +
@@ -99,17 +96,12 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 					'Latitude &nbsp;<input id=inpLatitude min=-90 max=90 value=1 step=0.001 oninput=setLocationHash(); title="0 to 90: OK" ><br>' +
 					'Longitude <input id=inpLongitude min=-180 max=180 value=1 step=0.001 oninput=setLocationHash(); title="0 to 90: OK" ><br>' +
 
-					'<p>Time zone: </p>' +
+					'<p id=menuTimeZone >Time zone: </p>' +
 
 					'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setLocationHash(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
 					'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setLocationHash(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
-	//				'Hour &nbsp; <input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setLocationHash(); title="0 to 23: OK" > <output id=outHours ></output><br>' +
-	//				'Minute <input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setLocationHash(); title="0 to 59: OK" > <output id=outMinutes ></output><br>' +
-
-
-
-
 				'</p>' +
+
 			'</details>' +
 
 
@@ -131,12 +123,9 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 			'<details open >' +
 				'<summary><h3>Display Controls</h3></summary>' +
 //				'<p id=menuDisplay ></p>' +
-
-
 				'<p>' +
 					'<input type=checkbox checked onchange=toggleVisible(ifrCW.groundPlane);toggleVisible(ifrCW.edgesGPHelper); > Grouund plane<br>' +
 					'<input type=checkbox checked onchange=toggleVisible(ifrCW.axisHelper); > Display XYZ Axis <br>' +
-//					'<input type=checkbox checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(northPoint); > Display North Point <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(ifrCW.suns); > Display Sun <br>' +
 
@@ -203,7 +192,6 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 		taURL.addEventListener( 'change', function() { setContents( '#' + taURL.value ); }, true );
 
 
-
 // let's go
 
 		onHashChange();
@@ -243,11 +231,11 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 	}
 
 // called by core
-// could this be in core?
+// could this be in core? No because not all the DOM objects - and thir names - will be known to Core
 
 	function getCoreParameters( message ) {
 
-//		var ifrCW, dateUTCZero, dateThere;
+
 		var r2d = 180 / Math.PI;
 
 		ifrCW = ifr.contentWindow;
@@ -256,6 +244,8 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 
 		inpLatitude.value = pud.latitude;
 		inpLongitude.value = pud.longitude;
+
+		menuTimeZone.innerHTML = 'Time zone: ' + pud.timeZoneThere.timeZoneName;
 
 		inpMonth.value = pud.month;
 		outMonth.value = pud.month + 1;
@@ -326,7 +316,7 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) + 
 
 				' azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
-				' altitude:' + position.altitude.toFixed() + b +
+				'&deg; altitude:' + position.altitude.toFixed() + '&deg;' + b +
 
 			'';
 
@@ -351,8 +341,6 @@ Select a variety of curated OBJ and MTL files from menu. Adjust a variety of par
 //			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber +
 
 		'';
-
-
 
 //		outIntensity.value = inpIntensity.value = pud.sunRangeIntensity;
 //		outPositions.value = inpPositions.value = pud.sunRangeCount;
