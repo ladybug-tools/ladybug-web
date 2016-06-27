@@ -193,7 +193,7 @@ Please add links!
 
 ### 2016-06-25 ~ R15
 
-* Analemma line colors by vertex to indicate month
+* Analemma line colors by vertex to indicate month << Thank you Art Scott
 * Placard colors indicate noon and midnight
 * Correct display of source code
 
