@@ -50,17 +50,17 @@ Shadows display on a 2D map.
 
 	var mapTypes = [
 
-			['Google Maps','https://mt1.google.com/vt/x='],
-			['Google Maps Terrain','https://mt1.google.com/vt/lyrs=t&x='],
-			['Google Maps Satellite','https://mt1.google.com/vt/lyrs=s&x='],
-			['Google Maps Hybrid','https://mt1.google.com/vt/lyrs=y&x='],
-			['Open Street Map','http://tile.openstreetmap.org/'],
-			['Open Cycle Map', 'http://tile.opencyclemap.org/cycle/'],
-			['MapQuest OSM', 'http://otile3.mqcdn.com/tiles/1.0.0/osm/'],
-			['MapQuest Satellite', 'http://otile3.mqcdn.com/tiles/1.0.0/sat/'],
-			['Stamen terrain background','http://tile.stamen.com/terrain-background/']
+		['Google Maps','https://mt1.google.com/vt/x='],
+		['Google Maps Terrain','https://mt1.google.com/vt/lyrs=t&x='],
+		['Google Maps Satellite','https://mt1.google.com/vt/lyrs=s&x='],
+		['Google Maps Hybrid','https://mt1.google.com/vt/lyrs=y&x='],
+		['Open Street Map','http://tile.openstreetmap.org/'],
+		['Open Cycle Map', 'http://tile.opencyclemap.org/cycle/'],
+		['MapQuest OSM', 'http://otile3.mqcdn.com/tiles/1.0.0/osm/'],
+		['MapQuest Satellite', 'http://otile3.mqcdn.com/tiles/1.0.0/sat/'],
+		['Stamen terrain background','http://tile.stamen.com/terrain-background/']
 
-		];
+	];
 
 	var timeZoneThere, offsetThere, utcZero;
 
@@ -296,7 +296,7 @@ Shadows display on a 2D map.
 		placeMapCanvas = document.createElement( 'canvas' );
 		placeMapCanvas.width = placeMapCanvas.height = pixelsPerTile * tilesPerSide;
 //		document.body.appendChild( placeMapCanvas );
-		placeMapCanvas.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:-10;';
+//		placeMapCanvas.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:-10;';
 		placeMapContext = placeMapCanvas.getContext( '2d' );
 
 	}
@@ -713,6 +713,8 @@ Shadows display on a 2D map.
 		}
 
 	}
+
+
 
 	function drawAnalemma() {
 
