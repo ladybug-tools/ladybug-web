@@ -75,7 +75,7 @@ Generally the following scripts are:
 * Free and open source. See the [License]( https://ladybug-analysis-tools.github.io/ladybug-web/index.htm#license.md )
 * Built using entry level JavaScript with no dependencies other than the [Three.js]( https://threejs.org ) JavaScript library
 * Follow the guidelines of the [Ladybug Web Coding Style]( https://ladybug-analysis-tools.github.io/ladybug-web/index.html#coding-style.md )
-* Linked together using this page. For more information on how this page obtains and displays its content see: [Project Explorer Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/index.htm#project-explorer-readme.md )
+* Linked together using this page. For more information on how this page obtains and displays its content see: [Project Explorer Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/index.html#project-explorer-readme.md )
 
 The 3D views below enable you to rotate and pan using one three fingers or left button, scroll wheel and right button on a mouse. 
 In these views only, zooming is disabled because it interferes with scrolling the page
