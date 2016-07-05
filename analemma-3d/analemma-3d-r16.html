@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R16.1</title>
+<title>Analemma 3D R16.2</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
@@ -10,7 +10,7 @@ Calculates for any latitude and longitude or selects location using the Google M
 Shadows display on a 2D map.
 ' >
 <meta name=keywords content='Ladybug Web,Three.js,WebGL,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-06-26' >
+<meta name=date content='2016-07-04' >
 </head>
 <body>
 <!--
@@ -21,12 +21,9 @@ Shadows display on a 2D map.
 <script src=https://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
-
 <script src=https://maps.googleapis.com/maps/api/js?libraries=places ></script>
 
 <!--
-<script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
-<script src=https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js></script>
 <script src= ../solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 -->
 <script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
@@ -86,7 +83,7 @@ Shadows display on a 2D map.
 
 	var lightAmbient, lightDirectional;
 
-	var trylonPerisphere, northPoint;
+	var trylonPerisphere, stonehenge, northPoint;
 	var objectScale = 1;
 
 	var gridHelper, axisHelper;
@@ -118,16 +115,16 @@ Shadows display on a 2D map.
 			'summary { outline: none; }' +
 
 			'.warning { color: crimson; }' +
-			'#bars { color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
-			'#hamburger { left: 325px; position: absolute; top: 20px; transition: left 1s; }' +
-			'#menu { background-color: #eee; border: 1px #ccc solid; left: -324px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
+			'#bars { background-color: #eee; color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#hamburger { left: 325px; position: absolute; opacity: 0.85; top: 20px; transition: left 1s; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; left: -325px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
 				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
 
 		'';
 
 		hamburger = document.body.appendChild( document.createElement( 'div' ) );
 		hamburger.id = 'hamburger';
-		hamburger.innerHTML = '<div id=bars >  &#9776 </div>';
+		hamburger.innerHTML = '<div id=bars title="Click this hamburger to slide the menu" > &#9776 </div>';
 		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
 
 		mapDiv = document.body.appendChild( document.createElement( 'div' ) );
@@ -138,8 +135,9 @@ Shadows display on a 2D map.
 		menu.innerHTML =
 
 			'<h2>' +
-				'<a href="" >' + document.title + '</a>' +
-				'<a href=index.html#readme.md > &#x24D8; </a>' +
+				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web title="Solar viz in a new light" > <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=24 ></a> ' +
+				'<a href="" title="Click here to refresh this page" >' + document.title + '</a> &bull; ' +
+				'<a href=index.html#readme.md title="Click here for help and information" >&#x24D8;</a>' +
 			'</h2>' +
 
 			'<details open>' +
@@ -169,7 +167,8 @@ Shadows display on a 2D map.
 //					'<input type=checkbox checked onchange=toggleVisible(placeMap); > Display Map <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(gridHelper); > Display Grid <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(axisHelper); > Display Axis <br>' +
-					'<input type=checkbox checked onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
+					'<input type=checkbox onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
+					'<input type=checkbox checked onchange=toggleStonehenge(); > Display Stonehenge <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(northPoint); > Display North Point <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(analemma); > Display Analemma <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(sunBand); > Display Sun Band <br>' +
@@ -265,6 +264,9 @@ Shadows display on a 2D map.
 		initNorthPoint();
 
 		initTrylonPerisphere();
+		toggleVisible( trylonPerisphere );
+
+		toggleStonehenge();
 
 		initPositioning();
 
@@ -406,6 +408,73 @@ Shadows display on a 2D map.
 		trylonPerisphere.scale.set( 0.4, 0.4, 0.4 );
 
 		scene.add( trylonPerisphere );
+
+	}
+
+	function toggleStonehenge() {
+
+		var stonehenge = scene.getObjectByName( 'stonehenge' );
+		var stonehengeHelpers = scene.getObjectByName( 'stonehengeHelpers' );
+
+		if ( stonehenge === undefined ) {
+
+			stonehenge = new THREE.Object3D();
+			stonehengeHelpers = new THREE.Object3D();
+
+			stonehenge.name = 'stonehenge';
+			stonehengeHelpers.name = 'stonehengeHelpers';
+
+			number = 20;
+			angle = 6.283 / number;
+			radius = 200;
+			for ( var i = 0; i < number; i++ ) {
+					var geometry = new THREE.BoxGeometry( 15, 100, 30 );
+					var color = 0xffffff * Math.random();
+					var material = new THREE.MeshPhongMaterial( { color: color, side: 2 });
+					var mesh = new THREE.Mesh( geometry, material );
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
+					mesh.rotation.y = - angle * i;
+					mesh.position.set( radius * Math.cos( angle * i ) , 50, radius * Math.sin( angle * i )  );
+
+					stonehenge.add( mesh );
+
+					helper = new THREE.EdgesHelper( mesh );
+					stonehengeHelpers.add( helper );
+
+			}
+
+			number = 9;
+			angle = 6.283 / number;
+			radius = 200;
+
+			for ( var i = 0; i < number; i++ ) {
+				var geometry = new THREE.BoxGeometry( 15, 20, 100 );
+				var color = 0xffffff * Math.random();
+				var material = new THREE.MeshPhongMaterial( { color: color, side: 2 });
+				var mesh = new THREE.Mesh( geometry, material );
+				mesh.castShadow = true;
+				mesh.receiveShadow = true;
+
+				mesh.rotation.y = -angle * i;
+				delta = 0.01 *  Math.random();
+				mesh.position.set( radius * Math.cos( ( delta + angle ) * i ) , 110, radius * Math.sin( ( delta + angle ) * i )  );
+
+				stonehenge.add( mesh );
+
+				helper = new THREE.EdgesHelper( mesh );
+				stonehengeHelpers.add( helper );
+
+			}
+
+			stonehenge.scale.set( 0.1, 0.1, 0.1 );
+			scene.add( stonehenge, stonehengeHelpers );
+
+		} else {
+
+			scene.remove( stonehenge, stonehengeHelpers );
+
+		}
 
 	}
 
@@ -731,8 +800,6 @@ Shadows display on a 2D map.
 
 		scene.remove( analemma );
 		analemma = new THREE.Object3D();
-
-
 
 		year = ( new Date() ).getUTCFullYear();
 
