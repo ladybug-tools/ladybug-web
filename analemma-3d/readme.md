@@ -108,7 +108,6 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 * Add more Solar calculations - from Solar calculator
 * Background: color, gradient or skybox
 * Add 3D cartography
-
 * Add the ability to change the north point based on an angle?
 	* Select type of north point
 * Add an option to re-scale the sun path
@@ -178,6 +177,10 @@ The geolocation functions are likely to be extracted and converted into standalo
 * [analemma.com]( http://www.analemma.com/pages/framespage.html ) << mostly broken
 * [Figure-Eight in the Sky]( http://www.astronomycorner.net/games/analemma.html ) - inclueds C Sun position code
 
+
+### Sun-related
+
+*  http://naturalnavigator.com/find-your-way-using/sun
 
 Please add links!
 
