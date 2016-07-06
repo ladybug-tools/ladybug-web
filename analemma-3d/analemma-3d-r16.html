@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R16.2</title>
+<title>Analemma 3D R16.3</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
@@ -10,7 +10,7 @@ Calculates for any latitude and longitude or selects location using the Google M
 Shadows display on a 2D map.
 ' >
 <meta name=keywords content='Ladybug Web,Three.js,WebGL,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-07-04' >
+<meta name=date content='2016-07-05' >
 </head>
 <body>
 <!--
@@ -167,8 +167,9 @@ Shadows display on a 2D map.
 //					'<input type=checkbox checked onchange=toggleVisible(placeMap); > Display Map <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(gridHelper); > Display Grid <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(axisHelper); > Display Axis <br>' +
-					'<input type=checkbox onchange=toggleVisible(trylonPerisphere); > Display Reference Object <br>' +
-					'<input type=checkbox checked onchange=toggleStonehenge(); > Display Stonehenge <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(trylonPerisphere); > Display Gnomen <br>' +
+					'<input type=checkbox onchange=toggleVisible(trylonPerisphere); > Display Trylon Perisphere <br>' +
+					'<input type=checkbox onchange=toggleStonehenge(); > Display Stonehenge <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(northPoint); > Display North Point <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(analemma); > Display Analemma <br>' +
 					'<input type=checkbox checked onchange=toggleVisible(sunBand); > Display Sun Band <br>' +
@@ -266,7 +267,9 @@ Shadows display on a 2D map.
 		initTrylonPerisphere();
 		toggleVisible( trylonPerisphere );
 
-		toggleStonehenge();
+//		toggleStonehenge();
+
+		toggleGnomen();
 
 		initPositioning();
 
@@ -311,6 +314,7 @@ Shadows display on a 2D map.
 		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
 		material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
 		sun = new THREE.Mesh( geometry, material );
+		sun.position.set( 0, 149597870700, 0 ); // 1 astronomical unit
 		scene.add( sun );
 
 		lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
@@ -367,6 +371,26 @@ Shadows display on a 2D map.
 
 	}
 
+	function toggleGnomen() {
+
+		var geometry, material, mesh;
+
+		geometry = new THREE.CylinderGeometry( 0, 2, 30, 24 );
+		material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 1
+		} );
+
+		gnomen = new THREE.Mesh( geometry, material );
+		gnomen.position.set( 0, 15, 0 );
+		gnomen.castShadow = true;
+		gnomen.receiveShadow = true;
+
+		scene.add( gnomen );
+
+	}
+
 	function initTrylonPerisphere() {
 
 // https://en.wikipedia.org/wiki/Trylon_and_Perisphere
@@ -406,6 +430,7 @@ Shadows display on a 2D map.
 		trylonPerisphere.add( mesh );
 
 		trylonPerisphere.scale.set( 0.4, 0.4, 0.4 );
+		trylonPerisphere.position.set( -25, 0, -50 );
 
 		scene.add( trylonPerisphere );
 

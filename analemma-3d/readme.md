@@ -71,12 +71,13 @@ _If you are in '[Home Page View]( https://ladybug-analysis-tools.github.io/ladyb
 
 ## Things you can do by editing the code
 
-<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r15.html' width=100% height=600 ></iframe>
+<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
+	https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r16.html' width=100% height=600 ></iframe>
 
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r15.html';
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r16.html';
 value='Ladybug Web Analemma 3D: the entire source code listing' >
 
-* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r15.html
+* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r16.html
 * Click the 'Raw' icon and save the raw file to your computer
 * Once you've downloaded the file, you can click it to run it.
 * Open the file with a text editor
@@ -97,16 +98,20 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 ## Things To Do / Road Map / Wish List
 
+* Add correct tilt to gnomen
+* Add multiple types of gnomen
+* Add choices of overlays of typical dial diagrams from history
+* Add shadow 'trail' - line of, say, last 100 points that tip of shadow has passed through
+	( Otherwise known as 'snail slime'
 * Add wide lines
 * If not top window, don't just go to Sydney but go to a location where the Sun is shining
 * Add more Solar calculations - from Solar calculator
 * Background: color, gradient or skybox
 * Add 3D cartography
-* Add choice of 3D objects
+
 * Add the ability to change the north point based on an angle?
 	* Select type of north point
 * Add an option to re-scale the sun path
-
 * Do something when Google API reports no time zone
 * Animations / lighten end darken sky
 	* Every hour of every day
@@ -178,6 +183,15 @@ Please add links!
 
 
 ## Change Log
+
+### 2016-07-06 ~ R16.3
+
+* Add Stonhenge
+* Add gnomen
+* Add toggle display of 3D objects
+* Set initial position of sun to 149,597,870,700 meters away from earth ( 1 astronomical unit)
+* Update title panel
+* Make hamburger more visible
 
 ### 2016-06-26 ~ R16
 
