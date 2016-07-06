@@ -102,7 +102,7 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 * Add multiple types of gnomen
 * Add choices of overlays of typical dial diagrams from history
 * Add shadow 'trail' - line of, say, last 100 points that tip of shadow has passed through
-	( Otherwise known as 'snail slime'
+	* Otherwise known as 'snail slime'
 * Add wide lines
 * If not top window, don't just go to Sydney but go to a location where the Sun is shining
 * Add more Solar calculations - from Solar calculator
