@@ -172,6 +172,7 @@ The geolocation functions are likely to be extracted and converted into standalo
 ## Links of Interest
 
 * https://en.wikipedia.org/wiki/Analemma
+* [Motions of the Sun Simulator]( http://astro.unl.edu/naap/motion3/animations/sunmotions.html )
 * [Imgur: How the sun looks when you take a pictures at the same place and time every week for a year]( http://imgur.com/61YTxQ2 )
 	* See also more links in the comments
 * [StackEchange: How does the appearance of the analemma vary with latitude?]( http://astronomy.stackexchange.com/questions/12590/how-does-the-appearance-of-the-analemma-vary-with-latitude )
@@ -179,7 +180,7 @@ The geolocation functions are likely to be extracted and converted into standalo
 * [Stanford Solar Center: Viewing and Understanding the Analemma]( http://solar-center.stanford.edu/art/analemma.html )
 * [analemma.com]( http://www.analemma.com/pages/framespage.html ) << mostly broken
 * [Figure-Eight in the Sky]( http://www.astronomycorner.net/games/analemma.html ) - inclueds C Sun position code
-
+* [The Analemma Dilemma]( http://www.math.nus.edu.sg/aslaksen/projects/Hannalemma.pdf )
 
 ### Sun-related
 
