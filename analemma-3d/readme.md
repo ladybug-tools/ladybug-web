@@ -8,6 +8,7 @@ value='You are now in the home page view - Click this button to view the read me
 [Analemma 3D Read Me]( index.html#readme.md )
 ===
 
+[Watch the Analemma 3 video!]( https://www.youtube.com/watch?v=6vk6M_8jOuY&feature=em-share_video_user )
 
 ## Full screen: [Analemma 3D]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
 
@@ -18,6 +19,8 @@ value='You are now in the home page view - Click this button to view the read me
 _Ladybug Web Analemma 3D_
 
 ***
+
+[Watch the Analemma 3 video!]( https://www.youtube.com/watch?v=6vk6M_8jOuY&feature=em-share_video_user )
 
 ## Concept
 
