@@ -114,7 +114,9 @@ Shadows display on a 2D map.
 			'h3 { display: inline; margin: 0; }' +
 			'summary { outline: none; }' +
 
+			'.popUp { background-color: white; left: 300px; border: 1px solid red; opacity: 1.0; padding: 5px; position: absolute; width: 120px; }' +
 			'.warning { color: crimson; }' +
+
 			'#bars { background-color: #eee; color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
 			'#hamburger { left: 325px; position: absolute; opacity: 0.85; top: 20px; transition: left 1s; }' +
 			'#menu { background-color: #eee; border: 1px #ccc solid; left: -325px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
@@ -125,6 +127,7 @@ Shadows display on a 2D map.
 		hamburger = document.body.appendChild( document.createElement( 'div' ) );
 		hamburger.id = 'hamburger';
 		hamburger.innerHTML = '<div id=bars title="Click this hamburger to slide the menu" > &#9776 </div>';
+
 		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
 
 		mapDiv = document.body.appendChild( document.createElement( 'div' ) );
@@ -133,14 +136,18 @@ Shadows display on a 2D map.
 		mapCopyright = document.body.appendChild( document.createElement( 'div' ) );
 		mapCopyright.id = 'mapCopyright';
 
+		pop1 = document.body.appendChild( document.createElement( 'div' ) );
+		pop1.id = 'pop1';
+		pop1.innerHTML = '<div class=popUp  ><p>Hi there!</p>Click the i-in-circle, info icon for latest updates.</div>';
+
 		menu = hamburger.appendChild( document.createElement( 'div' ) );
 		menu.id = 'menu';
 		menu.innerHTML =
 
 			'<h2>' +
-				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web title="Solar viz in a new light" > <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=24 ></a> ' +
+				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web title="Solar viz in a new light" > <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=24 ></a><br>' +
 				'<a href="" title="Click here to refresh this page" >' + document.title + '</a> &bull; ' +
-				'<a href=index.html#readme.md title="Click here for help and information" >&#x24D8;</a>' +
+				'<a href=index.html#readme.md onmouseover=pop1.style.display="block"; onmouseout=pop1.style.display="none"; > &#x24D8; </a>' +
 			'</h2>' +
 
 			'<details open>' +
@@ -220,6 +227,8 @@ Shadows display on a 2D map.
 			'<center><a href=javascript:menu.scrollTop=0; style=text-decoration:none; title="Click the Ladybug Web icon to go to the top of the page" ><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></a></center>' +
 
 		'';
+
+		pop1.style.display="none";
 
 		for ( var i = 0; i < mapTypes.length; i++ ) {
 
@@ -538,7 +547,7 @@ Shadows display on a 2D map.
 		geocoder = new google.maps.Geocoder;
 		infoWindow = new google.maps.InfoWindow( { map: googleMap } );
 
-		if ( window.self === window.top && navigator.geolocation ) {
+		if ( window.self === window.top && navigator.geolocation && !location.hash ) {
 
 			navigator.geolocation.getCurrentPosition( function( position ) {
 
