@@ -101,6 +101,8 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 ## Things To Do / Road Map / Wish List
 
+* Fix permalink support
+* Fix display of altitude and azimuth numbers
 * Add correct tilt to gnomen
 * Add multiple types of gnomen
 * Add choices of overlays of typical dial diagrams from history
@@ -121,16 +123,9 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 * Start moving some of the code into libraries
 * How best to display daily sun path?
 	* As in lower left of [Sun Path 3]( http://andrewmarsh.com/apps/releases/sunpath3d.html )
-* Permalink support << 2016-06-26 ~ Mostapha wants!
 * Predict the amount of solar energy that arrives at any given location
 * Menu
-	* Move location to above lat & lon
-	* Add display of current map source and copyright notices
 	* Add a button for top view?
-	* Indicate time, azimuth and altitude of sun in current position
-	* Add degree symbols where appropriate
-
-
 
 
 ## Development Stages
@@ -181,6 +176,8 @@ The geolocation functions are likely to be extracted and converted into standalo
 * [analemma.com]( http://www.analemma.com/pages/framespage.html ) << mostly broken
 * [Figure-Eight in the Sky]( http://www.astronomycorner.net/games/analemma.html ) - inclueds C Sun position code
 * [The Analemma Dilemma]( http://www.math.nus.edu.sg/aslaksen/projects/Hannalemma.pdf )
+* [Analemmas on the gnomon and on the dial plate]( http://www.illustratingshadows.com/analemma.pdf )
+* [analemma.space]( http://analemma.space/ ]
 
 ### Sun-related
 
@@ -190,6 +187,18 @@ Please add links!
 
 
 ## Change Log
+
+### 2016-07-09 ~ R17
+
+* Move location to above lat & lon
+* Edit error messages
+* Add degree symbols where appropriate
+* Indicate azimuth and altitude of sun in current position
+	* Error in numbers as displayed: to be fixed
+* All map types now display properly
+* Add display of current map source and copyright notice to lower right corner
+* Fix toggle display on gnomen
+* Permalink support started << 2016-06-26 ~ Mostapha wants!
 
 ### 2016-07-06 ~ R16.3
 

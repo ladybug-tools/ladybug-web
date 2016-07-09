@@ -1,0 +1,1100 @@
+﻿<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<title>Analemma 3D R17</title>
+<meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
+<meta name=description content='
+3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
+Calculates for any latitude and longitude or selects location using the Google Maps gazetteer.
+Shadows display on a 2D map.
+' >
+<meta name=keywords content='Ladybug Web,Three.js,WebGL,JavaScript,GitHub,FOSS,3D,STEM' >
+<meta name=date content='2016-07-09' >
+</head>
+<body>
+<!--
+<script src=https://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=https://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+-->
+<script src=https://rawgit.com/mrdoob/three.js/dev/build/three.min.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js ></script>
+<script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/libs/stats.min.js ></script>
+<script src=https://maps.googleapis.com/maps/api/js?libraries=places ></script>
+
+<!--
+<script src= ../solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+-->
+<script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+
+<script>
+
+	var latitude;
+	var longitude;
+
+	var placeDefault = 'Sydney, Australia';
+	var defaultLatitude = -33.8675;
+	var defaultLongitude = 151.207;
+
+//	var placeDefault = 'Paris, France';
+//	var defaultLatitude = 48.8566;
+//	var defaultLongitude = 2.3522;
+
+//	var placeDefault = 'Chile';
+//	var defaultLatitude = -35.6751;
+//	var defaultLongitude = -71.5430;
+
+	var mapTypes = [
+
+		['Google Maps','https://mt1.google.com/vt/x='],
+		['Google Maps Terrain','https://mt1.google.com/vt/lyrs=t&x='],
+		['Google Maps Satellite','https://mt1.google.com/vt/lyrs=s&x='],
+		['Google Maps Hybrid','https://mt1.google.com/vt/lyrs=y&x='],
+		['Open Street Map','http://tile.openstreetmap.org/'],
+		['Open Cycle Map', 'http://tile.opencyclemap.org/cycle/'],
+		['MapQuest OSM', 'http://otile3.mqcdn.com/tiles/1.0.0/osm/'],
+		['MapQuest Satellite', 'http://otile3.mqcdn.com/tiles/1.0.0/sat/'],
+		['Stamen terrain background','http://tile.stamen.com/terrain-background/']
+
+	];
+
+	var timeZoneThere, offsetThere, utcZero;
+
+	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+	var placeMap, placeMapCanvas, placeMapContext;
+
+	var googleMap, googleMapCenter, geocoder, infoWindow;
+
+	var pixelsPerTile = 256;
+	var tilesPerSide = 7; // odd number please
+	var tilesPerSideSquared = tilesPerSide * tilesPerSide;
+
+	var zoom = 14;
+	var opacity = 0.85;
+
+	var analemma;
+	var analemmaRadius = 50;
+
+	var sun, sunBand;
+	var sunIntensity = 0.5;
+	var declination = 23.439281 * d2r;
+
+	var lightAmbient, lightDirectional;
+
+	var trylonPerisphere, stonehenge, northPoint;
+	var objectScale = 1;
+
+	var gridHelper, axisHelper;
+
+	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi * 2;
+	var d2r = pi / 180, r2d = 180 / pi;
+
+	var stats, renderer, scene, camera, controls;
+
+	init();
+	animate();
+
+	function init() {
+
+		var css, contents, hamburger, menu;
+
+		css = document.head.appendChild( document.createElement( 'style' ) );
+		css.innerHTML =
+
+			'body { font: 12pt monospace; margin: 0; overflow: hidden; }' +
+			'a { color: crimson; text-decoration: none; }' +
+			'button, input[type=button] { background-color: #ccc; border: 2px #ccc solid; color: #333; }' +
+
+			'input[type=range] { -webkit-appearance: none; -moz-appearance: none; background-color: silver; height: 20px; width: 180px; }' +
+			'input[type=range]::-moz-range-thumb { -moz-appearance: none; background-color: #888; height: 20px; width: 10px; }' +
+			'input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; background-color: #888; height: 20px; opacity: 0.85; width: 10px; }' +
+
+			'h3 { display: inline; margin: 0; }' +
+			'summary { outline: none; }' +
+
+			'.warning { color: crimson; }' +
+			'#bars { background-color: #eee; color: crimson; cursor: pointer; font-size: 24pt; text-decoration: none; }' +
+			'#hamburger { left: 325px; position: absolute; opacity: 0.85; top: 20px; transition: left 1s; }' +
+			'#menu { background-color: #eee; border: 1px #ccc solid; left: -325px; max-height: ' + ( window.innerHeight - 10 ) + 'px; ' +
+				'opacity: 0.85; overflow: auto; padding: 0 10px; position: absolute; top: -20px; transition: left 1s; width: 300px; }' +
+			'#mapCopyright { font-size: 10px; bottom: 10px; position: absolute; opacity: 0.5; right: 10px; }' +
+		'';
+
+		hamburger = document.body.appendChild( document.createElement( 'div' ) );
+		hamburger.id = 'hamburger';
+		hamburger.innerHTML = '<div id=bars title="Click this hamburger to slide the menu" > &#9776 </div>';
+		bars.onclick = function() { hamburger.style.left = hamburger.style.left === "0px" ? "325px" : 0; };
+
+		mapDiv = document.body.appendChild( document.createElement( 'div' ) );
+		mapDiv.id = 'mapDiv';
+
+		mapCopyright = document.body.appendChild( document.createElement( 'div' ) );
+		mapCopyright.id = 'mapCopyright';
+
+		menu = hamburger.appendChild( document.createElement( 'div' ) );
+		menu.id = 'menu';
+		menu.innerHTML =
+
+			'<h2>' +
+				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web title="Solar viz in a new light" > <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=24 ></a> ' +
+				'<a href="" title="Click here to refresh this page" >' + document.title + '</a> &bull; ' +
+				'<a href=index.html#readme.md title="Click here for help and information" >&#x24D8;</a>' +
+			'</h2>' +
+
+			'<details open>' +
+				'<summary><h3>Location</h3></summary>' +
+
+				'<p><input id=inpAddress placeholder="Default: ' + placeDefault + '" onchange=geocodeAddress(geocoder,map); style=width:100%; >' +
+				'<p>Latitude &nbsp;<input id=inpLatitude placeholder=' + defaultLatitude + ' onchange=setCenter(); size=10 ></p>' +
+				'<p>Longitude <input id=inpLongitude placeholder=' + defaultLongitude + ' onchange=setCenter(); size=10 ></p>' +
+				'<p id=messagePlace class=warning ></p>' +
+
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Set Date and Time</h3></summary>' +
+				'<p>Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setDateThere(); title="1 to 12: OK" > <output id=outMonth ></output></p>' +
+				'<p>Day &nbsp; &nbsp;<input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setDateThere(); title="1 to 31: OK" > <output id=outDate ></output></p>' +
+				'<p>Hour &nbsp; <input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setDateThere(); title="0 to 23: OK" > <output id=outHours ></output></p>' +
+				'<p>Minute <input type=range id=inpMinutes min=0 max=59 step=1 value=1 oninput=setDateThere(); title="0 to 59: OK" > <output id=outMinutes ></output></p>' +
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Sun Position</h3></summary>' +
+				'<div id=menuSun></div>' +
+			'</details>' +
+			'<details>' +
+				'<summary><h3>Display & Map</h3></summary>' +
+				'<p>' +
+					'<input type=checkbox checked onchange=placeMap.visible=!placeMap.visible; > Display Map <br>' +
+//					'<input type=checkbox checked onchange=toggleVisible(placeMap); > Display Map <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(gridHelper); > Display Grid <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(axisHelper); > Display Axis <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(gnomen; > Display Gnomen <br>' +
+					'<input type=checkbox onchange=toggleVisible(trylonPerisphere); > Display Trylon Perisphere <br>' +
+					'<input type=checkbox onchange=toggleStonehenge(); > Display Stonehenge <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(northPoint); > Display North Point <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(analemma); > Display Analemma <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(sunBand); > Display Sun Band <br>' +
+					'<input type=checkbox checked onchange=toggleVisible(sun); > Display Sun <br>' +
+					'<input type=checkbox checked onchange=stats.domElement.style.display=stats.domElement.style.display===""?"none":""; > Display Stats <br>' +
+					'<input type=checkbox id=chkRotate checked onchange=controls.autoRotate=!controls.autoRotate; > Auto Rotate <br>' +
+				'</p>' +
+				'<p>' +
+
+					'Sun Intensity<br><input type=range id=inpSunIntensity max=2 min=0.1 step=0.1 value=0.5 ' +
+						'oninput=outSunIntensity.value=sunIntensity=this.valueAsNumber;drawAnalemma();setDateThere(); title="0.1 to 2: OK" > ' +
+						'<output id=outSunIntensity >' + sunIntensity + '</output><br>' +
+
+					'Analemma Radius<br><input type=range id=inpAnalemma max=200 min=10 step=5 value=75 ' +
+						'oninput=outAnalemma.value=analemmaRadius=this.valueAsNumber;drawAnalemma();setDateThere(); title="10 to 200: OK" > ' +
+						'<output id=outAnalemma >' + analemmaRadius + '</output><br>' +
+
+					'Object Scale<br><input type=range id=inpObject min=0.05 max=2 step=0.05 value=1 oninput=outObject.value=this.value;trylonPerisphere.scale.set(this.valueAsNumber,this.valueAsNumber,this.valueAsNumber); title="-1 to 2: OK" > ' +
+						'<output id=outObject >' + objectScale + '</output>' +
+				'</p>' +
+
+				'<p>Map source<br><select id=selMap onchange=drawMapOverlay(); size=9 /></select></p>' +
+				'<p>' +
+					'Map zoom<br><input type=range id=inpZoom max=20 min=3 step=1 value=12 oninput=outZoom.value=zoom=this.value;drawMapOverlay(); title="1 to 20: OK" > ' +
+						'<output id=outZoom >' + zoom + '</output><br>' +
+					'Map opacity<br><input type=range id=inpOpacity min=0.05 max=1 step=0.05 value=0.85 oninput=outOpacity.value=opacity=this.value;drawMapOverlay(); title="0 to 1: OK" > ' +
+						'<output id=outOpacity >' + opacity + '</output>' +
+				'</p>' +
+			'</details>' +
+
+			'<details open >' +
+				'<summary><h3>Date & Time at Location</h3></summary>' +
+				'<div id=menuDates ></div>' +
+			'</details>' +
+
+			'<details>' +
+				'<summary><h3>About</h3></summary>' +
+				'<p>red = midnight ~ green = noon</p>' +
+				'<p>Copyright &copy; 2016 Ladybug authors. GPL 3 license.</p>' +
+			'</details>' +
+
+			'<hr>' +
+			'<center><a href=javascript:menu.scrollTop=0; style=text-decoration:none; title="Click the Ladybug Web icon to go to the top of the page" ><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></a></center>' +
+
+		'';
+
+		for ( var i = 0; i < mapTypes.length; i++ ) {
+
+			selMap.appendChild( document.createElement( 'option' ) );
+			selMap.children[ i ].text = mapTypes[ i ][ 0 ];
+
+		}
+
+		selMap.selectedIndex = 0;
+
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0; z-index: 100;' ;
+		document.body.appendChild( stats.domElement );
+
+		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener( 'mousedown', onMouseDown, false );
+// Three.js
+
+		renderer = new THREE.WebGLRenderer( {  alpha: 1, antialias: true }  );
+//		renderer.setPixelRatio( window.devicePixelRatio ); // for iOS?
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.flipSidedFaces = false;
+//		renderer.gammaInput = true;
+//		renderer.gammaOutput = true;
+//		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+		document.body.appendChild( renderer.domElement );
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
+		camera.position.set( 0, 80, 120 );
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.maxDistance = 500;
+
+		scene = new THREE.Scene();
+
+//
+
+		onHashChange();
+
+		initHelpers();
+
+		initMapOverlays();
+
+		initSunAndLight();
+
+		initSunBand();
+
+		initNorthPoint();
+
+		initTrylonPerisphere();
+		toggleVisible( trylonPerisphere );
+
+//		toggleStonehenge();
+
+		initGnomen();
+
+		initPositioning();
+
+		controls.autoRotate = true;
+
+	}
+
+	function onHashChange() {
+
+		if ( location.hash ) {
+
+			hashes = location.hash.split( '#' );
+
+			inpLatitude.value = defaultLatitude = parseFloat( hashes[ 1 ] );
+			inpLongitude.value = defaultLongitude = parseFloat( hashes[ 2 ] );
+			inpAddress.value = inpAddress.placeholder = hashes[ 3 ];
+
+		}
+
+	}
+
+
+	function initHelpers() {
+
+		var geometry, material, mesh;
+
+		geometry = new THREE.PlaneBufferGeometry( 150, 150 );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
+		material = new THREE.MeshPhongMaterial();
+		placeMap = new THREE.Mesh( geometry, material );
+		placeMap.receiveShadow = true;
+		scene.add( placeMap );
+
+		gridHelper = new THREE.GridHelper( 75, 10 );
+		gridHelper.position.set( 0, 0.1, 0 );
+		scene.add( gridHelper );
+
+		axisHelper = new THREE.AxisHelper( 75 );
+		scene.add( axisHelper );
+
+	}
+
+	function initMapOverlays() {
+
+		placeMapCanvas = document.createElement( 'canvas' );
+		placeMapCanvas.width = placeMapCanvas.height = pixelsPerTile * tilesPerSide;
+//		document.body.appendChild( placeMapCanvas );
+//		placeMapCanvas.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:-10;';
+		placeMapContext = placeMapCanvas.getContext( '2d' );
+
+	}
+
+	function initSunAndLight() {
+
+		var geometry, material, d;
+
+		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
+		material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+		sun = new THREE.Mesh( geometry, material );
+		sun.position.set( 0, 149597870700, 0 ); // 1 astronomical unit
+		scene.add( sun );
+
+		lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
+		scene.add( lightAmbient );
+
+		lightDirectional = new THREE.DirectionalLight( 0xffffff, sunIntensity );
+
+		d = 100;
+		lightDirectional.shadow.camera.left = -d;
+		lightDirectional.shadow.camera.right = d;
+		lightDirectional.shadow.camera.top = d;
+		lightDirectional.shadow.camera.bottom = -d;
+
+		lightDirectional.shadow.camera.near = 0;
+		lightDirectional.shadow.camera.far = 2 * d;
+
+		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
+		lightDirectional.shadow.mapSize.width = 2048;  // default 512
+		lightDirectional.shadow.mapSize.height = 2048;
+
+		lightDirectional.castShadow = true;
+		sun.add( lightDirectional );
+
+//		scene.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
+
+	}
+
+	function initSunBand() {
+
+		var geometry, material, color = 0xffff00;
+
+		geometry = new THREE.SphereBufferGeometry( analemmaRadius, 50, 25, 0, pi2, pi05 - declination, 2 * declination );
+		material = new THREE.MeshPhongMaterial( { color: color, opacity: 0.05, side: 2, transparent: true });
+		sunBand = new THREE.Mesh( geometry, material );
+
+		scene.add( sunBand );
+
+	}
+
+	function initNorthPoint() {
+
+		var geometry, material;
+
+		geometry = new THREE.CylinderGeometry( 10, 5, 80, 3 );
+		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 50, 0 ) );
+		geometry.merge( new THREE.CylinderGeometry( 12, 0, 20, 3 ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * pi ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationY( - pi ) );
+		material = new THREE.MeshNormalMaterial();
+		northPoint = new THREE.Mesh( geometry, material );
+		northPoint.scale.multiplyScalar( 0.5 );
+		northPoint.position.set( 50, -12, 25 );
+		scene.add( northPoint );
+
+	}
+
+	function initGnomen() {
+
+		var geometry, material, mesh;
+
+		geometry = new THREE.CylinderGeometry( 0, 2, 30, 24 );
+		material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 1
+		} );
+
+		gnomen = new THREE.Mesh( geometry, material );
+		gnomen.position.set( 0, 15, 0 );
+		gnomen.castShadow = true;
+		gnomen.receiveShadow = true;
+
+		scene.add( gnomen );
+
+	}
+
+	function initTrylonPerisphere() {
+
+// https://en.wikipedia.org/wiki/Trylon_and_Perisphere
+
+		var geometry, material, mesh;
+
+		trylonPerisphere = new THREE.Object3D();
+		trylonPerisphere.name = 'trylonPerisphere';
+
+// Perisphere
+		geometry = new THREE.SphereGeometry( 25, 50, 50 );
+		material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 10
+		} );
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( 0, 20, 0 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+
+		trylonPerisphere.add( mesh );
+
+// Trylon
+		geometry = new THREE.CylinderGeometry( 0, 8, 100, 3 );
+		material = new THREE.MeshPhongMaterial( {
+			color: 0xffffff * Math.random(),
+			specular: 0xffffff * Math.random(),
+			shininess: 1
+		} );
+
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( -15, 50, -30 );
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+
+		trylonPerisphere.add( mesh );
+
+		trylonPerisphere.scale.set( 0.4, 0.4, 0.4 );
+		trylonPerisphere.position.set( -25, 0, -50 );
+
+		scene.add( trylonPerisphere );
+
+	}
+
+	function toggleStonehenge() {
+
+		var stonehenge = scene.getObjectByName( 'stonehenge' );
+		var stonehengeHelpers = scene.getObjectByName( 'stonehengeHelpers' );
+
+		if ( stonehenge === undefined ) {
+
+			stonehenge = new THREE.Object3D();
+			stonehengeHelpers = new THREE.Object3D();
+
+			stonehenge.name = 'stonehenge';
+			stonehengeHelpers.name = 'stonehengeHelpers';
+
+			number = 20;
+			angle = 6.283 / number;
+			radius = 200;
+			for ( var i = 0; i < number; i++ ) {
+					var geometry = new THREE.BoxGeometry( 15, 100, 30 );
+					var color = 0xffffff * Math.random();
+					var material = new THREE.MeshPhongMaterial( { color: color, side: 2 });
+					var mesh = new THREE.Mesh( geometry, material );
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
+					mesh.rotation.y = - angle * i;
+					mesh.position.set( radius * Math.cos( angle * i ) , 50, radius * Math.sin( angle * i )  );
+
+					stonehenge.add( mesh );
+
+					helper = new THREE.EdgesHelper( mesh );
+					stonehengeHelpers.add( helper );
+
+			}
+
+			number = 9;
+			angle = 6.283 / number;
+			radius = 200;
+
+			for ( var i = 0; i < number; i++ ) {
+				var geometry = new THREE.BoxGeometry( 15, 20, 100 );
+				var color = 0xffffff * Math.random();
+				var material = new THREE.MeshPhongMaterial( { color: color, side: 2 });
+				var mesh = new THREE.Mesh( geometry, material );
+				mesh.castShadow = true;
+				mesh.receiveShadow = true;
+
+				mesh.rotation.y = -angle * i;
+				delta = 0.01 *  Math.random();
+				mesh.position.set( radius * Math.cos( ( delta + angle ) * i ) , 110, radius * Math.sin( ( delta + angle ) * i )  );
+
+				stonehenge.add( mesh );
+
+				helper = new THREE.EdgesHelper( mesh );
+				stonehengeHelpers.add( helper );
+
+			}
+
+			stonehenge.scale.set( 0.1, 0.1, 0.1 );
+			scene.add( stonehenge, stonehengeHelpers );
+
+		} else {
+
+			scene.remove( stonehenge, stonehengeHelpers );
+
+		}
+
+	}
+
+	function initPositioning() {
+
+		googleMap = new google.maps.Map( mapDiv, {
+
+			center: { lat: defaultLatitude, lng: defaultLongitude },
+			zoom: zoom,
+			mapTypeControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT }
+
+		});
+
+		geocoder = new google.maps.Geocoder;
+		infoWindow = new google.maps.InfoWindow( { map: googleMap } );
+
+		if ( window.self === window.top && navigator.geolocation ) {
+
+			navigator.geolocation.getCurrentPosition( function( position ) {
+
+				googleMapCenter = {
+
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+
+				};
+
+				infoWindow.setPosition( googleMapCenter );
+				infoWindow.setContent( 'Location found<br>latitude: ' + position.coords.latitude.toFixed( 3 ) + '<br>' +
+				'longitude: ' + position.coords.longitude.toFixed( 3 ) );
+
+				latitude = inpLatitude.value = position.coords.latitude;
+				longitude = inpLongitude.value = position.coords.longitude;
+
+				googleMap.setCenter( googleMapCenter );
+
+				geocodeLatLng();
+
+				getDateOffsetThere();
+
+			}, function() {
+
+				handleGeoocationError( true, infoWindow, googleMap.getCenter() );
+
+			});
+
+		} else {
+
+			handleGeoocationError( false, infoWindow, googleMap.getCenter() );
+
+		}
+
+		origin_autocomplete = new google.maps.places.Autocomplete( inpAddress );
+		origin_autocomplete.bindTo( 'bounds', googleMap );
+
+		origin_autocomplete.addListener('place_changed', function() {
+
+			var place;
+
+			place = origin_autocomplete.getPlace();
+
+			if ( place.geometry ) {
+
+				googleMapCenter = place.geometry.location;
+				googleMap.setCenter( googleMapCenter );
+
+				latitude = inpLatitude.value = googleMapCenter.lat();
+				longitude = inpLongitude.value = googleMapCenter.lng();
+
+				getDateOffsetThere();
+
+				messagePlace.innerHTML = '';
+
+			} else {
+
+				messagePlace.innerHTML = 'You must select one of the locations on the drop-down list';
+
+			}
+
+		} );
+
+	}
+
+
+// Location
+
+	function setCenter() {
+
+		googleMapCenter = { lat: parseFloat( inpLatitude.value ), lng: parseFloat( inpLongitude.value ) };
+
+		googleMap.setCenter( googleMapCenter );
+
+		zoom = inpZoom.valueAsNumber
+
+		googleMap.setZoom( zoom );
+
+		geocodeLatLng();
+
+		messagePlace.innerHTML = 'Now click in this box & select a location from the drop-down list';
+
+	}
+
+	function geocodeLatLng() {
+
+		geocoder.geocode( { 'location': googleMapCenter }, function( results, status ) {
+
+			if ( status === google.maps.GeocoderStatus.OK ) {
+
+				if ( results[ 1 ] ) {
+
+					inpAddress.value = results[1].formatted_address;
+//					infoWindow.open( googleMap, marker );
+
+
+				} else {
+
+					window.alert( 'No results found' );
+
+				}
+
+			} else {
+
+				window.alert( 'Geocoder failed due to: ' + status );
+
+			}
+
+		});
+
+	}
+
+	function handleGeoocationError( browserHasGeolocation, infoWindow, pos ) {
+
+		var message;
+
+		infoWindow.setPosition( pos );
+
+		message = browserHasGeolocation ? 'The geolocation service is blocked, not enabled or failed to complete. Map set to default location and time.' : 'Error: Your browser doesn\'t allow geolocation.' ;
+		message = window.self === window.top ? message : 'Default location';
+  
+		infoWindow.setContent( message );
+		messagePlace.innerHTML = message;
+
+		latitude = inpLatitude.value = pos.lat();
+		longitude = inpLongitude.value = pos.lng();
+
+		getDateOffsetThere();
+
+	}
+
+
+// Date & Time
+
+	function getDateOffsetThere() {
+
+		var dateHere, offsetHere, timestamp, request;
+
+		dateHere = new Date();
+
+		offsetHere = dateHere.getTimezoneOffset();
+
+		utcZero = dateHere.getTime() + offsetHere * 60000;
+
+		timestamp = utcZero / 1000;
+
+		request = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + latitude + ',' + longitude + '&timestamp=' + timestamp;
+
+		requestTimeZoneThere( request );
+
+	}
+
+	function requestTimeZoneThere( url ) {
+
+		var xhr;
+
+		xhr = new XMLHttpRequest();
+		xhr.open( 'GET', url, true );
+		xhr.onload = callback;
+		xhr.send( null );
+
+		function callback() {
+
+			timeZoneThere = JSON.parse( xhr.responseText );
+
+			if ( timeZoneThere.status === 'OK' ) {
+
+				offsetThere = ( timeZoneThere.rawOffset + timeZoneThere.dstOffset ) /  3600;
+
+				setDateThereNow()
+
+			} else {
+
+				menuDates.innerHTML = 'the location is timeless - probably in the middle of an ocean...';
+
+			}
+
+		}
+
+	}
+
+	function setDateThereNow() {
+
+		var dateThereNow;
+
+		dateThereNow = new Date( utcZero + 3600000 * offsetThere );
+
+		drawAnalemma();
+
+		drawMapOverlay();
+
+		inpMonth.valueAsNumber = dateThereNow.getMonth();
+		inpDate.valueAsNumber = dateThereNow.getDate();
+		inpHours.value = dateThereNow.getHours();
+		inpMinutes.value = dateThereNow.getMinutes();
+
+		setDateThere();
+
+	}
+
+	function setDateThere() {
+
+		var date, dateThere;
+		var year, month, day, hours, minutes;
+
+		date = new Date( utcZero + 3600000 * offsetThere );
+
+		year = document.getElementById( 'inpYear' ) ? inpYear.valueAsNumber : date.getFullYear();
+		month = document.getElementById( 'inpMonth' ) ? inpMonth.valueAsNumber : date.getMonth();
+		day = document.getElementById( 'inpDate' ) ? inpDate.valueAsNumber : date.getDate();
+		hours = document.getElementById( 'inpHours' ) ? inpHours.valueAsNumber: date.getHours();
+		minutes = document.getElementById( 'inpMinutes' ) ? inpMinutes.valueAsNumber: date.getMinutes();
+
+		dateThere = new Date( Date.UTC( year, month, day, hours - offsetThere, minutes, date.getSeconds() ) );
+
+		sun.userData.position = getSunPositionXYZ( analemmaRadius, dateThere, latitude, longitude );
+		sun.position.copy( sun.userData.position.xyz );
+
+		lightDirectional.intensity = sunIntensity;
+		lightDirectional.castShadow = sun.position.y > 0 ? true : false; 
+
+		setMenuDates();
+
+	}
+
+
+// Three.js
+
+	function drawMapOverlay() {
+
+		var baseURL, tileX, tileY, tileOffset, count;
+
+		if ( placeMap.visible === false ) { return; }
+
+		baseURL = mapTypes[ selMap.selectedIndex ][ 1 ];
+
+		tileOffset = Math.floor( 0.5 * tilesPerSide );
+		tileX = lon2tile( longitude, zoom ) - tileOffset;
+		tileY = lat2tile( latitude, zoom ) - tileOffset;
+
+		outZoom.value = zoom;
+
+		mapCopyright.innerHTML = 'Map graphics copyright ' + mapTypes[ selMap.selectedIndex ][ 0 ];
+
+		count = 0;
+
+		for ( var x = 0; x < tilesPerSide; x++ ) {
+
+			for ( var y = 0; y < tilesPerSide; y++ ) {
+
+				if ( selMap.selectedIndex < 4 ) {
+
+					loadImage( ( x + tileX ) + '&y=' + ( y + tileY ) + '&z=' + zoom, x, y );
+
+				} else {
+
+					loadImage( zoom + '/' + ( x + tileX ) + '/' + ( y + tileY ) + '.png', x , y );
+
+				}
+
+			}
+
+		}
+
+		function loadImage( fileName, x, y ) {
+
+			var img = document.createElement( 'img' );
+			img.crossOrigin = 'anonymous';
+			img.src = baseURL + fileName;
+
+			var texture = new THREE.Texture( placeMapCanvas );
+			texture.minFilter = texture.magFilter = THREE.NearestFilter;
+			texture.needsUpdate = true;
+
+			img.onload = function(){
+
+				placeMapContext.drawImage( img, 0, 0, 256, 256, x * pixelsPerTile, y * pixelsPerTile, pixelsPerTile, pixelsPerTile );
+
+				count++;
+
+				if ( count === tilesPerSideSquared ) {
+
+					placeMap.material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: texture, side: 2, opacity: opacity , transparent: true } );
+					placeMap.material.needsUpdate = true;
+
+				}
+
+			}
+
+		}
+
+	}
+
+
+
+	function drawAnalemma() {
+
+		var year, month, date, hours, hour;
+//		var geometry, vertices, material, line;
+		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
+		var dateUTC, sunBandPosition;
+		var colors;
+
+		colors = [ 'bisque', 'deeppink', 'sienna', 'darkorange', 'indigo', 'lime',
+		'purple', 'honeydew', 'coral', 'gold', 'gray', 'maroon' ];
+
+
+		scene.remove( analemma );
+		analemma = new THREE.Object3D();
+
+		year = ( new Date() ).getUTCFullYear();
+
+		for ( hours = 0; hours < 24; hours++ ) {
+
+			geometry = new THREE.Geometry();
+			vertices = geometry.vertices;
+			hour = hours - offsetThere;
+		i = 0;
+			for ( month = 0; month < 12; month++ ) {
+
+				for ( date = 1; date < daysOfMonth[ month ]; date++ ) {
+
+					analemmaDateUTC = new Date( Date.UTC( year, month, date, hour, 0, 0 ) );
+					analemma.sunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
+
+					vertices.push( analemma.sunPosition.xyz );
+
+					geometry.colors[ i++ ] = new THREE.Color(  THREE.ColorKeywords[ colors[ month ] ] );
+
+				}
+
+			}
+
+			analemmaColor = hours === 0 ? 200 : 120;
+			analemmaColor = hours === 12 ? 60 : analemmaColor;
+
+			material = new THREE.LineBasicMaterial( {
+
+				linewidth: 2,
+//				color: 0xffffff,
+				vertexColors: THREE.VertexColors
+
+			} );
+
+			line = new THREE.Line( geometry, material );
+			analemma.add( line );
+
+			placard = drawPlacard( '' + hours, 0.05, analemmaColor, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
+			analemma.add( placard );
+
+		}
+
+		material = new THREE.LineBasicMaterial( { color: 0xbbbbbb } );
+
+		for ( month = 5; month < 12; month++ ) {
+
+			geometry = new THREE.Geometry();
+			vertices = geometry.vertices;
+
+			for ( hours = 0; hours < 24; hours++ ) {
+
+				analemmaDateUTC = new Date( Date.UTC( year, month, 21, hours, 0, 0 ) );
+				analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, latitude, longitude );
+
+				vertices.push( analemmaSunPosition.xyz );
+
+			}
+
+			vertices.push( vertices[ 0 ] );
+
+			line = new THREE.Line( geometry, material );
+			analemma.add( line );
+
+		}
+
+		scene.add( analemma );
+
+		dateUTC = new Date( Date.UTC( year, 5, 21, 12 - timeZoneThere.rawOffset / 3600, 0, 0 ) );  // vernal equinox
+
+		sunBandPosition = getSunPositionXYZ( analemmaRadius, dateUTC, latitude, longitude );
+
+		sunBand.rotation.x = sunBandPosition.altitude * d2r + declination - pi05;
+
+	}
+
+	function drawPlacard( text, scale, color, x, y, z ) {
+
+// 2016-02-27 ~ https://github.com/jaanga/jaanga.github.io/tree/master/cookbook-threejs/functions/placards
+
+		var placard = new THREE.Object3D();
+		var texture = canvasMultilineText( text, { backgroundColor: color }   );
+		var spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 0.9, transparent: true } );
+		var sprite = new THREE.Sprite( spriteMaterial );
+		sprite.position.set( x * 1.1, y * 1.1, z * 1.1) ;
+		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
+/*
+		var geometry = new THREE.Geometry();
+		geometry.vertices = [ v( 0, 0, 0 ),  v( x, y, z ) ];
+		var material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );
+		var line = new THREE.Line( geometry, material );
+*/
+		placard.add( sprite /*,  line */ );
+
+		return placard;
+
+		function canvasMultilineText( textArray, parameters ) {
+
+			var parameters = parameters || {} ;
+
+			var canvas = document.createElement( 'canvas' );
+			var context = canvas.getContext( '2d' );
+			var width = parameters.width ? parameters.width : 0;
+			var font = parameters.font ? parameters.font : '48px monospace';
+			var color = parameters.backgroundColor ? parameters.backgroundColor : 120 ;
+
+			if ( typeof textArray === 'string' ) textArray = [ textArray ];
+
+			context.font = font;
+
+			for ( var i = 0; i < textArray.length; i++) {
+
+				width = context.measureText( textArray[ i ] ).width > width ? context.measureText( textArray[ i ] ).width : width;
+
+			}
+
+			canvas.width = width + 20;
+			canvas.height =  parameters.height ? parameters.height : textArray.length * 60;
+
+			context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
+			context.fillRect( 0, 0, canvas.width, canvas.height);
+
+			context.lineWidth = 1 ;
+			context.strokeStyle = '#000';
+			context.strokeRect( 0, 0, canvas.width, canvas.height );
+
+			context.fillStyle = '#000' ;
+			context.font = font;
+
+			for ( i = 0; i < textArray.length; i++) {
+
+				context.fillText( textArray[ i ], 10, 48  + i * 60 );
+
+			}
+
+			var texture = new THREE.Texture( canvas );
+			texture.minFilter = texture.magFilter = THREE.NearestFilter;
+			texture.needsUpdate = true;
+
+			return texture;
+
+		}
+
+	}
+
+// UI
+
+	function setMenuDates() {
+
+		var dateUTCZero, dateThere;
+
+		dateUTCZero = new Date ( utcZero );
+		dateThere = new Date( utcZero + 3600000 * offsetThere  ) ;
+
+		menuDates.innerHTML =
+
+			'<p>Latitude : ' + latitude.toFixed(3) + '&deg;</p>' +
+			'<p>Longitude: ' + longitude.toFixed(3) + '&deg;</p>' +
+			'<p>Time Zone ID: ' + timeZoneThere.timeZoneId + '</p>' +
+			'<p>Time zone: ' + timeZoneThere.timeZoneName + '</p>' +
+			'<p>Offset in hours: ' + offsetThere + '</p>' +
+			'<p>Raw offset in minutes: ' + timeZoneThere.rawOffset + '</p>' +
+			'<p>Daylight saving offset in minutes: ' + timeZoneThere.dstOffset + '</p>' +
+			'<p>Date and time at location is:<br>' + dateThere.toLocaleString() + '</p>' +
+			'<hr>' +
+			'<p title="GMT" >UTC time at 0&deg; longitude: ' +
+				( "0" + dateUTCZero.getHours() ).slice( - 2 ) + ':' + ( "0" + dateUTCZero.getMinutes() ).slice( - 2 ) + '</p>' +
+			'<p title= "number of milliseconds since 1 January, 1970" >UTC: ' + dateThere.getTime() + '</p>' +
+
+		'';
+
+		menuSun.innerHTML =
+
+			'<p>Azimuth: ' + sun.userData.position.azimuth.toFixed() + '&deg;</p>' +
+			'<p>Altitude: ' + sun.userData.position.altitude.toFixed() + '&deg;</p>' +
+
+		'';
+
+		outMonth.value = inpMonth.valueAsNumber + 1;
+		outDate.value = inpDate.value;
+		outHours.value = ( '0' + inpHours.value ).slice( -2 );
+		outMinutes.value = ( '0' + inpMinutes.value ).slice( -2 );
+
+	}
+
+
+// Utilities
+
+	function toggleVisible( obj ) {
+
+//		obj.visible = obj.visible === true ? false : true;
+		obj.visible = !obj.visible;
+
+	}
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+
+	}
+
+	function onMouseDown() {
+
+		chkRotate.checked = controls.autoRotate = false;
+
+	}
+
+	function lon2tile( longitude, zoom ) {
+
+		return Math.floor( ( longitude + 180 ) / 360 * Math.pow( 2, zoom ) );
+
+	}
+
+	function lat2tile( latitude, zoom ) {
+
+		return Math.floor( ( 1 - Math.log( Math.tan( latitude * pi / 180 ) + 1 / Math.cos( latitude * pi / 180) ) / pi ) / 2 * Math.pow( 2, zoom ) );
+
+	}
+
+	function getSunPositionXYZ( radius, timeThere, latitude, longitude ) {
+
+		var sunPosition, x, y, z;
+
+		sunPosition = getSunPosition( timeThere, latitude - 90, longitude );
+
+		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
+		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
+		z = radius * Math.sin( sunPosition.altitude * d2r );
+
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: ( sunPosition.altitude > 0 ? 90 - sunPosition.altitude: sunPosition.altitude ) };
+		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: sunPosition.altitude };
+
+	}
+
+	function animate() {
+
+		requestAnimationFrame( animate );
+		controls.update();
+		stats.update();
+		renderer.render( scene, camera );
+
+	}
+
+</script>
+</body>
+</html>
