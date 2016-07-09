@@ -46,14 +46,25 @@ _Ladybug Web Analemma 3D_
 	* Displays current position of sun
 	* Displays a transparent yellow band indicating the total annual sun path
 	* Displays shadow and shade
-	* Displays a reference object - currently a [Trylon and Perisphere]( https://en.wikipedia.org/wiki/Trylon_and_Perisphere ) - to indicate shade and shadow coverage
+* Maps
+	* Displays nine types of map
+	* Update map zoom and opacity
+* Reference Objects
+	* Displays a reference object - to indicate shade and shadow coverage
+		* [Trylon and Perisphere]( https://en.wikipedia.org/wiki/Trylon_and_Perisphere )
+		* Stonehenge
+		* Gnomen
 	* 3D arrow shows direction of north
+	* Toggle visibility o
 * Menu panel - display and set a variety of information including:
 	* Latitude and longitude
 	* Local and UTC time
+	* WIP: Sun azimuth and altitude
 	* Time zone name, id and offset in hours
 	* Display of elements
 	* Type of map and map parameters
+* WIP: Permalink support
+	* Supports latitude, longitude and place name
 
 
 ## Things you can do using the script
@@ -95,7 +106,7 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 ## Issues
 
 * Firefox: if script is top window and sharing 'not now' is selected, then script fails to complete loading - but does load if not in top window - see script running at top of read me
-* Open Street Maps - and other maps - not showing because of HTTPS issues
+
 
 
 
@@ -126,6 +137,8 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 * Predict the amount of solar energy that arrives at any given location
 * Menu
 	* Add a button for top view?
+* Permalink support
+	* Add date and time
 
 
 ## Development Stages
@@ -196,9 +209,10 @@ Please add links!
 * Indicate azimuth and altitude of sun in current position
 	* Error in numbers as displayed: to be fixed
 * All map types now display properly
+	* Open Street Maps - and other maps - not showing because of HTTPS issues
 * Add display of current map source and copyright notice to lower right corner
 * Fix toggle display on gnomen
-* Permalink support started << 2016-06-26 ~ Mostapha wants!
+* WIP: Permalink support started << 2016-06-26 ~ Mostapha wants!
 
 ### 2016-07-06 ~ R16.3
 
