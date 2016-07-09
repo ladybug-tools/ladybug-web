@@ -64,13 +64,14 @@ _Ladybug Web Analemma 3D_
 	* Type of map and map parameters
 * WIP: Permalink support
 	* Supports latitude, longitude and place name
+	* Links you can try:
 	* [Paris]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#48.8566#2.3522#Paris )
 	* [Honolulu]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#21.3#-157.8167#Honolulu )
 	* [Isfahan]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#32.6333#51.6500#Isfahan )
 	* [London]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#51.5072#-0.1275#London )
-	* [New York]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#0.712#-74.0059#"New York" )
-	* [Rio de Janeiro]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#22.9068#-43.1729#"Rio de Janeiro"  )
-	* [San Francisco]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#37.796#-122.398#"San Francisco" )
+	* [New York]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#40.712#-74.0059#New_York )
+	* [Rio de Janeiro]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#22.9068#-43.1729#Rio_de_Janeiro  )
+	* [San Francisco]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#37.796#-122.398#San_Francisco )
 	* [Sydney]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#-33.8650#151.2094#Sydney )
 
 
