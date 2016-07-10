@@ -70,7 +70,7 @@ _Ladybug Web Analemma 3D_
 	* [Isfahan]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#32.6333#51.6500#Isfahan )
 	* [London]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#51.5072#-0.1275#London )
 	* [New York]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#40.712#-74.0059#New_York )
-	* [Rio de Janeiro]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#22.9068#-43.1729#Rio_de_Janeiro  )
+	* [Rio de Janeiro]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#22.9068#-43.1729#Rio_de_Janeiro ) << issues
 	* [San Francisco]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#37.796#-122.398#San_Francisco )
 	* [Sydney]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#-33.8650#151.2094#Sydney )
 
@@ -221,6 +221,7 @@ Please add links!
 * Add display of current map source and copyright notice to lower right corner
 * Fix toggle display on gnomen
 * WIP: Permalink support started << 2016-06-26 ~ Mostapha wants!
+* Add pop up message to encourage clicking the info icon
 
 ### 2016-07-06 ~ R16.3
 
