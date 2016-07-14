@@ -219,6 +219,7 @@ Please add links!
 * Add play appropriate Westminster chime on the quarter hour
 	* No hourly bongs yet
 	* No way to turn off sound yet
+	* Will only update if tab is visible
 
 ### 2016-07-09 ~ R17
 
