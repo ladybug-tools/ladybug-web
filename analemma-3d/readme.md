@@ -213,6 +213,13 @@ Please add links!
 
 ## Change Log
 
+### 2016-07-13 ~ R18
+
+* Adds update the time every minute
+* Add play appropriate Westminster chime on the quarter hour
+	* No hourly bongs yet
+	* No way to turn off sound yet
+
 ### 2016-07-09 ~ R17
 
 * Move location to above lat & lon

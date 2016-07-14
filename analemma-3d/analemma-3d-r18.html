@@ -35,7 +35,7 @@ Shadows display on a 2D map.
 	var hourHalf = new Audio('https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/93143__hyderpotter__quarter.wav');
 	var hourThreeQuarters = new Audio('https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/93143__hyderpotter__quarter.wav');
 
-	hourly.volume = hourQuarter.volume = hourHalf.volume = hourThreeQuarters.volume = 0.1;
+	hourly.volume = hourQuarter.volume = hourHalf.volume = hourThreeQuarters.volume = 0.5;
 
 	var latitude;
 	var longitude;
@@ -748,7 +748,6 @@ Shadows display on a 2D map.
 		offsetHere = dateHere.getTimezoneOffset();
 		utcZero = dateHere.getTime() + offsetHere * 60000;
 
-
 		dateThereNow = new Date( utcZero + 3600000 * offsetThere );
 
 		drawAnalemma();
@@ -762,7 +761,7 @@ Shadows display on a 2D map.
 
 		setDateThere();
 
-//console.log( '', dateThereNow );
+console.log( '', dateThereNow );
 
 	}
 
@@ -1125,7 +1124,6 @@ Shadows display on a 2D map.
 
 			playChimes();
 
-
 		}
 
 	}
@@ -1133,13 +1131,14 @@ Shadows display on a 2D map.
 	function playChimes() {
 
 		minute = dateThereNow.getUTCMinutes();
-
-		if ( minute === 5 ) hourly.play();
+console.log( '',  minute );
+		if ( minute === 0 ) hourly.play();
 		if ( minute === 15 ) hourQuarter.play();
 		if ( minute === 30 ) hourHalf.play();
 		if ( minute === 45 ) hourThreeQuarters.play();
 
 	}
+
 </script>
 </body>
 </html>
