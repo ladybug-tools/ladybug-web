@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Analemma 3D R17</title>
+<title>Analemma 3D R18</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='
 3D plot of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
@@ -10,7 +10,7 @@ Calculates for any latitude and longitude or selects location using the Google M
 Shadows display on a 2D map.
 ' >
 <meta name=keywords content='Ladybug Web,Three.js,WebGL,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-07-09' >
+<meta name=date content='2016-07-13' >
 </head>
 <body>
 <!--
@@ -30,9 +30,13 @@ Shadows display on a 2D map.
 
 <script>
 
+var audio = new Audio('93143__hyderpotter__quarter.wav');
+
 	var latitude;
 	var longitude;
 
+	var oneMinuteAgo = Date.now();
+ 
 	var placeDefault = 'Sydney, Australia';
 	var defaultLatitude = -33.8675;
 	var defaultLongitude = 151.207;
@@ -733,7 +737,12 @@ Shadows display on a 2D map.
 
 	function setDateThereNow() {
 
-		var dateThereNow;
+//		var dateThereNow;
+
+		dateHere = new Date();
+		offsetHere = dateHere.getTimezoneOffset();
+		utcZero = dateHere.getTime() + offsetHere * 60000;
+
 
 		dateThereNow = new Date( utcZero + 3600000 * offsetThere );
 
@@ -747,6 +756,8 @@ Shadows display on a 2D map.
 		inpMinutes.value = dateThereNow.getMinutes();
 
 		setDateThere();
+
+console.log( '', dateThereNow );
 
 	}
 
@@ -844,11 +855,10 @@ Shadows display on a 2D map.
 	}
 
 
-
 	function drawAnalemma() {
 
 		var year, month, date, hours, hour;
-//		var geometry, vertices, material, line;
+		var geometry, vertices, material, line;
 		var analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
 		var dateUTC, sunBandPosition;
 		var colors;
@@ -1102,6 +1112,16 @@ Shadows display on a 2D map.
 		controls.update();
 		stats.update();
 		renderer.render( scene, camera );
+
+		if ( Date.now() - oneMinuteAgo > 10000 ) { 
+
+			oneMinuteAgo = Date.now();
+			setDateThereNow();
+
+
+audio.play();
+
+		}
 
 	}
 

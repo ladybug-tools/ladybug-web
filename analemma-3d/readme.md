@@ -33,6 +33,7 @@ _Ladybug Web Analemma 3D_
 
 * To experience, understand and make more useful the characteristics and power of sunlight
 * To help designers plan for sunlight - or lack of it
+* To help you see time in new ways
 
 
 ### Features
@@ -113,6 +114,7 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 ## Issues
 
+* Sun band not updating properly
 * Firefox: if script is top window and sharing 'not now' is selected, then script fails to complete loading - but does load if not in top window - see script running at top of read me
 
 
@@ -120,6 +122,8 @@ value='Ladybug Web Analemma 3D: the entire source code listing' >
 
 ## Things To Do / Road Map / Wish List
 
+* Update sun position every minute
+* Ring bell every quater hour
 * Fix permalink support
 * Fix display of altitude and azimuth numbers
 * Add correct tilt to gnomen
