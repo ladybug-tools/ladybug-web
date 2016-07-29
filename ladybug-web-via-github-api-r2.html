@@ -176,7 +176,14 @@ Uses GitHub API to obtain latest list of apps.
 			var id = activeContainer.id;
 
 			activeContainer.innerHTML = '<iframe src="' + urlSource + files[ id ] + '" onload=getFile(this,' + id + '); scrolling="no" ></iframe>';
-
+			
+			if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {
+				
+				activeContainer.firstChild.style.width = getComputedStyle( activeContainer.firstChild ).width;
+				activeContainer.firstChild.style.height = getComputedStyle( activeContainer.firstChild ).height;
+				
+			}
+			
 			iframesActive.push( activeContainer );
 
 		}
