@@ -1,38 +1,38 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-compare/'; 
+( https://ladybug-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/solar-calculator-compare/';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
-[Solar Calculator Compare Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md )
+[Solar Calculator Compare Read Me]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md )
 ===
 
-## full screen: [Solar Calculator Compare]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/ )
+## full screen: [Solar Calculator Compare]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-compare/ )
 
 ***
 
 ## Concept
 
-We have looked at the efforts of:  
+We have looked at the efforts of:
 
-* [Agafonkin]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/ )
-* [Bostock]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
-* [NOAA]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md )
+* [Agafonkin]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-agafonkin/ )
+* [Bostock]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
+* [NOAA]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md )
 * And others (Hoffman )
 
 We have found issues with each one of these efforts.
 Therefore we propose a new effort that stands on their shoulders.
 
-* [Solar Calculator Ladybug Web]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ )
+* [Solar Calculator Ladybug Web]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ )
 
 
 ### Issues
 
 * The Bostock code contains about twenty lines of impenetrable code
 * The NOAA code requires Julian Century, local time in minutes and timezone for each calculation
-	* Much archaic style coding 
+	* Much archaic style coding
 	* Bostock and Agafonkin use the basic JavaScript Date object - which is simpler and more standard
 
 
@@ -53,30 +53,30 @@ Therefore we propose a new effort that stands on their shoulders.
 ## Links to Ladybug Web Sun Calculator Scripts
 
 
-### Solar Calculator Ladybug Web 
+### Solar Calculator Ladybug Web
 
-* [Script]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ )
-* [Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md )
+* [Script]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ )
+* [Read Me]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md )
 	* This read me supplies a number of links to relevant research and calculations and other links of interest
 
 
 ### Solar Calculator NOAA
 
-* [Script]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/ )
-* [Read Me](https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md )
+* [Script]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/ )
+* [Read Me](https://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md )
 * [Solcalc Home Page]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html )
 
 
 ### Solar Calculator Bostock
 
-* [Script]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
-* [Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
+* [Script]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
+* [Read Me]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
 * [Solar Calculator Page]( https://bl.ocks.org/mbostock/7784f4b2c7838b893e9b )
 
 ### Solar Calculator Agafonkin ~ SunCalc.js
 
-* [Script]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/ )
-* [Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/#readme.md )
+* [Script]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-agafonkin/ )
+* [Read Me]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-agafonkin/#readme.md )
 * [Agafonkin GitHub](https://github.com/mourner/suncalc )
 * [SunCalc]( http://suncalc.net/ )
 
@@ -90,6 +90,10 @@ Therefore we propose a new effort that stands on their shoulders.
 
 
 ## Change Log
+
+### 2017-03-11 ~ r5.3
+
+* web site name fixes
 
 ### 2016-05-20
 

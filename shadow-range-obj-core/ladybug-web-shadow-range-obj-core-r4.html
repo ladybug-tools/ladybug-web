@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Ladybug Web Shadow Range OBJ Core R4</title>
+<title>Ladybug Web Shadow Range OBJ Core R4.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' >
 <meta name=description content='
 Displays Sun shadow range according to date, latitude and longitude.
@@ -11,7 +11,7 @@ Adjust a wide variety of parameters.
 Uses location.hash or "permalinks" to save parameters.
 ' >
 <meta name=keywords content='Ladybug Web,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-06-25' >
+<meta name=date content='2017-03-11' >
 </head>
 <body>
 <!--
@@ -31,7 +31,7 @@ Uses location.hash or "permalinks" to save parameters.
 <script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/loaders/MTLLoader.js ></script>
 <script src=https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/loaders/OBJLoader.js ></script>
 
-<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+<script src=https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
 
@@ -57,7 +57,7 @@ Uses location.hash or "permalinks" to save parameters.
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 
 // Sydney lat lon
-	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
+	var fullFilePathDefault = 'https://ladybug-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
 		'#la=-33#lo=151#si=0.5#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180#cy=20';
 //		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#si=0.55#gv=0#av=1';
 
@@ -190,8 +190,15 @@ Uses location.hash or "permalinks" to save parameters.
 		groundPlane = new THREE.Mesh( geometry, material );
 		groundPlane.receiveShadow = true;
 
-		edgesGPHelper = new THREE.EdgesHelper( groundPlane, 0x444444 );
-		scene.add( edgesGPHelper );
+//		edgesGPHelper = new THREE.EdgesHelper( groundPlane, 0x444444 );
+//		scene.add( edgesGPHelper );
+
+		var edgesGeometry, edgesMaterial, edges,
+
+		edgesGeometry = new THREE.EdgesGeometry( geometry ); // or WireframeGeometry
+		edgesMaterial = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 5 } );
+		edges = new THREE.LineSegments( edgesGeometry, edgesMaterial );
+		groundPlane.add( edges ); // add wireframe as a child of the parent mesh
 
 		groundPlane.position.set( px || 0, py || -3, pz || 0 );
 		scene.add( groundPlane );
@@ -330,8 +337,16 @@ Uses location.hash or "permalinks" to save parameters.
 				child.castShadow = true;
 				child.receiveShadow = true;
 
-				edgesHelper = new THREE.EdgesHelper( child, 0x444444 );
-				scene.add( edgesHelper );
+//				edgesHelper = new THREE.EdgesHelper( child, 0x444444 );
+//				scene.add( edgesHelper );
+
+		var edgesGeometry, edgesMaterial, edges,
+
+		edgesGeometry = new THREE.EdgesGeometry( child.geometry ); // or WireframeGeometry
+		edgesMaterial = new THREE.LineBasicMaterial( { color: 0x000000 } );
+		edges = new THREE.LineSegments( edgesGeometry, edgesMaterial );
+		child.add( edges ); // add wireframe as a child of the parent mesh
+
 
 			}
 
@@ -677,7 +692,7 @@ Uses location.hash or "permalinks" to save parameters.
 			position = getSunPosition( dateThere, pud.latitude, pud.longitude );
 
 			txt += ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
-				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) + 
+				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 ) +
 
 				' azimuth:' + ( ' ' + position.azimuth.toFixed() ).slice( -3 ) +
 				' altitude:' + position.altitude.toFixed() + b +
