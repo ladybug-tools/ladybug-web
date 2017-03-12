@@ -29,7 +29,7 @@ Uses location.hash to set a variety of parameters.
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/MTLLoader.js ></script>
 <script src=https://rawgit.com/mrdoob/three.js/dev/examples/js/loaders/OBJLoader.js ></script>
 
-<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+<script src=https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
 
@@ -53,7 +53,7 @@ Uses location.hash to set a variety of parameters.
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 //	var fullFilePathDefault = 'https://mrdoob.github.io/three.js/examples/obj/walt/WaltHead.mtl';
 
-	var fullFilePathDefault = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
+	var fullFilePathDefault = 'https://ladybug-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl' +
 		'#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
 //		'#la=-33#lo=151#cx=0#cy=50#cz=-180#tx=-7#ty=6#tz=-15#hr=14#sx=0.1#sy=0.1#sz=0.1#px=10#pz=10#rx=90#ry=180#sp=0#sl=0.55#gv=0#av=1';
 
@@ -335,8 +335,15 @@ Uses location.hash to set a variety of parameters.
 				child.castShadow = true;
 				child.receiveShadow = true;
 
-				edgesHelper = new THREE.EdgesHelper( child, 0x444444 );
-				scene.add( edgesHelper );
+//				edgesHelper = new THREE.EdgesHelper( child, 0x444444 );
+//				scene.add( edgesHelper );
+
+				var edgesGeometry, edgesMaterial, edges,
+
+				edgesGeometry = new THREE.EdgesGeometry( child.geometry ); // or WireframeGeometry
+				edgesMaterial = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 5 } );
+				edges = new THREE.LineSegments( edgesGeometry, edgesMaterial );
+				child.add( edges ); // add wireframe as a child of the parent mesh
 
 			}
 

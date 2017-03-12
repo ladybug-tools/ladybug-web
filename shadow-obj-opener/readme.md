@@ -1,9 +1,9 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-opener/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-obj-opener'; 
+( https://ladybug-tools.github.io/ladybug-web/shadow-obj-opener/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/shadow-obj-opener';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
 
 [Ladybug Web Shadow OBJ Opener Read Me]( index.html#readme.md )
@@ -13,10 +13,10 @@ value='You are now in the home page view - Click this button to view the read me
 
 Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opener
 
-* https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
-* https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
-* https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl
-* https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.obj
+* https://ladybug-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
+* https://ladybug-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
+* https://ladybug-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl
+* https://ladybug-tools.github.io/3d-models/content/obj/urban_model_001/model.obj
 * https://jaanga.github.io/3d-models/obj/architecture/factory-complex/factory-complex.obj
 	* Scale to 0.1
 * https://jaanga.github.io/3d-models/obj/architecture/sydney-opera-house/sydney-opera-house.obj
@@ -118,7 +118,7 @@ To provide a simple user-interface for adding end aditing parameters used by Lad
 
 * Add Ladybug Web Shadow Core Bostock R2
 * Analemmas no longer upside down
-* Code and variable name logic clean-up 
+* Code and variable name logic clean-up
 * Add slide-out hamburger menu
 * Add Sun position read-out to menus of all core apps
 	* Finding issues with all of them. So it goes

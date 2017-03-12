@@ -2,14 +2,14 @@
 
 ### Ladybug Web 3D Models
 
-view [Urban Model]( #https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92 )  
-[Urban Model]( https://ladybug-analysis-tools.github.io/3d-models/content/obj/index.html#urban_model_001/readme.md )
+view [Urban Model]( #https://ladybug-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92 )
+[Urban Model]( https://ladybug-tools.github.io/3d-models/content/obj/index.html#urban_model_001/readme.md )
 
-view [Engel House]( #https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj#la=32.0717#lo=34.7797#rx=-90#px=-30#pz=25#cx=-11#cy=16#cz=51#tx=-4#ty=5#tz=-1#rx=-90#px=-30#pz=25#cx=-34#cy=40#cz=13#tx=-1#ty=2#tz=-7 )  
-home page [Engel House]( https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/ )
+view [Engel House]( #https://ladybug-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj#la=32.0717#lo=34.7797#rx=-90#px=-30#pz=25#cx=-11#cy=16#cz=51#tx=-4#ty=5#tz=-1#rx=-90#px=-30#pz=25#cx=-34#cy=40#cz=13#tx=-1#ty=2#tz=-7 )
+home page [Engel House]( https://ladybug-tools.github.io/3d-models/content/obj/engel-house/ )
 
-view [Seaside Villa]( #https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#la=33.5731#lo=7.5898#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23 'Lat/lon: center of Casablanca' )  
-[Seaside Villa]( http://ladybug-analysis-tools.github.io/3d-models/content/obj/index.html#seaside-villa-obj/readme.md )
+view [Seaside Villa]( #https://ladybug-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl#la=33.5731#lo=7.5898#mo=4#da=17#hr=12#mn=0#sx=0.03#sy=0.03#sz=0.03#cx=43#cy=11#cz=2#tx=-44#ty=13#tz=-23 'Lat/lon: center of Casablanca' )
+[Seaside Villa]( http://ladybug-tools.github.io/3d-models/content/obj/index.html#seaside-villa-obj/readme.md )
 
 ***
 

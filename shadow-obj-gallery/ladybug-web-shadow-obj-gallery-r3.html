@@ -4,19 +4,19 @@
 <meta charset=utf-8 >
 <title>Ladybug Web Shadow OBJ Gallery R3.1</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
-<meta name=description content='Uses location.hash to load OBJ and MTL files and display Sun position and analemmas 
+<meta name=description content='Uses location.hash to load OBJ and MTL files and display Sun position and analemmas
 according to latitude, longitude, date and time.
 ' >
 <meta name=keywords content='Ladybug Web,NOAA,Mike Bostock,Solar Calculator,JSON,WebGL,Three.js,JavaScript,GitHub,FOSS,3D,STEM' >
 <meta name=date content='2016-05-28' >
 </head>
 <body>
-<script src=https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js ></script>
+<script src=https://cdn.rawgit.com/showdownjs/showdown/master/dist/showdown.min.js ></script>
 <script>
 
 	var core = '../shadow-obj-core/index.html';
 
-	var defaultFile = 'https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
+	var defaultFile = 'https://ladybug-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#sx=0.1#sy=0.1#sz=0.1#rx=-90#px=-15#pz=-20#cx=-32#cy=39#cz=92';
 
 	init();
 
@@ -71,7 +71,7 @@ according to latitude, longitude, date and time.
 			'<hr>' +
 
 			'<h3>Time & Positions</h3>' +
-			'<p>' + 
+			'<p>' +
 				'Month &nbsp;<input type=range id=inpMonth min=0 max=11 value=1 step=1 oninput=setLocationHash(); title="1 to 12: OK" > <output id=outMonth ></output><br>' +
 				'Day &nbsp;&nbsp; <input type=range id=inpDate min=0 max=31 step=1 value=1 oninput=setLocationHash(); title="1 to 31: OK" > <output id=outDate ></output><br>' +
 				'Hour &nbsp; <input type=range id=inpHours min=0 max=23 step=1 value=1 oninput=setLocationHash(); title="0 to 23: OK" > <output id=outHours ></output><br>' +
@@ -82,7 +82,7 @@ according to latitude, longitude, date and time.
 			'<hr>' +
 			'<div id=menuItems ></div>' +
 			'<hr>' +
-			'<center><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></center>' +
+			'<center><img src=https://ladybug-tools.github.io/images/ladybug-logo.png width=48 ></center>' +
 
 		'';
 
@@ -119,7 +119,7 @@ according to latitude, longitude, date and time.
 		outHours.value = inpHours.value = pud.hours;
 		outMinutes.value = inpMinutes.value = pud.minutes;
 
-		corePositionsMessage.innerHTML = 
+		corePositionsMessage.innerHTML =
 			'Latitude ' + pud.latitude + '<br> \
 			Longitude ' + pud.longitude + '<br> \
 			Azimuth ' + ( pud.sunPosition ? pud.sunPosition.azimuth.toFixed() : '' ) + '<br> \
@@ -134,7 +134,7 @@ according to latitude, longitude, date and time.
 
 		var icw = ifr.contentWindow;
 
-		corePositionsMessage.innerHTML = 
+		corePositionsMessage.innerHTML =
 			'Latitude ' + icw.pud.latitude + '<br> \
 			Longitude ' + icw.pud.longitude + '<br> \
 			Azimuth ' + ( icw.pud.sunPosition ? icw.pud.sunPosition.azimuth.toFixed() : '' ) + '<br> \
@@ -145,7 +145,7 @@ according to latitude, longitude, date and time.
 
 	function setLocationHash() {
 
-		ifr.contentWindow.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber + 
+		ifr.contentWindow.location.hash = '#mo=' + inpMonth.valueAsNumber + '#da=' + inpDate.valueAsNumber +
 			'#hr=' + inpHours.valueAsNumber + '#mn=' + inpMinutes.valueAsNumber ;
 
 	}

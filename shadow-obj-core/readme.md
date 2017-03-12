@@ -1,21 +1,21 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-obj-core/'; 
+( https://ladybug-tools.github.io/ladybug-web/shadow-obj-core/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/shadow-obj-core/';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
 
 [Ladybug Web Shadow OBJ Core Read Me]( index.html#readme.md )
 ===
 
 
-## Full screen: [Ladybug Web Shadow OBJ Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/ )
+## Full screen: [Ladybug Web Shadow OBJ Core]( https://ladybug-tools.github.io/ladybug-web/shadow-obj-core/ )
 
 
 <img src="https://cloud.githubusercontent.com/assets/547626/15868428/abb213ce-2c9c-11e6-92d5-b79c0e36dd7e.png" style=display:none; width=800 >
 
-<iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/" width="100%" height=600 ></iframe>
+<iframe src="https://ladybug-tools.github.io/ladybug-web/shadow-obj-core/" width="100%" height=600 ></iframe>
 
 _Ladybug Web Shadow OBJ Core_
 
@@ -32,10 +32,10 @@ _Ladybug Web Shadow OBJ Core_
 ## Features
 
 * Loads and displays OBJ and MTL files
-	* Calls Three.js loaders based on routines from [Ladybug Web 3D Models]( https://ladybug-analysis-tools.github.io/3d-models/index.html#index.md )
+	* Calls Three.js loaders based on routines from [Ladybug Web 3D Models]( https://ladybug-tools.github.io/3d-models/index.html#index.md )
 	* Loads and makes use of and display texture bitmaps
 * Calls Google Maps API > [Time Zone API]( https://developers.google.com/maps/documentation/timezone/start )to determine time zone, date and time information for the selected latitude and longitude
-* Calls on [Ladybug Web Solar Calculator]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md ) to perform essential solar calculations
+* Calls on [Ladybug Web Solar Calculator]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md ) to perform essential solar calculations
 	* Supplies Sun azimuth and altitude given time, latitude and longitude
 * Creates 3D plots of analemmas of Sun azimuth and altitude once an hour for all the days of the month.
 	* Lines connect each hour on the 21st of the month
@@ -83,9 +83,9 @@ _Ladybug Web Shadow OBJ Core_
 
 ## Editing the code
 
-<iframe class=ifr src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-analysis-tools.github.io/ladybug-web/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html width=100% height=600 ></iframe>
+<iframe class=ifr src=https://ladybug-tools.github.io/ladybug-web/ace-view-r1.html#https://ladybug-tools.github.io/ladybug-web/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html width=100% height=600 ></iframe>
 
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html';
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/blob/gh-pages/shadow-obj-core/ladybug-web-shadow-obj-core-r3.html';
 value='Source code listing' >
 
 
@@ -145,7 +145,7 @@ value='Source code listing' >
 
 * Add Ladybug Web Shadow Core Bostock R2
 * Analemmas no longer upside down
-* Code and variable name logic clean-up 
+* Code and variable name logic clean-up
 * Add slide-out hamburger menu
 * Add Sun position read-out to menus of all core apps
 	* Finding issues with all of them. So it goes
@@ -159,5 +159,5 @@ value='Source code listing' >
 ***
 
 <center title="Ladybug Web" >
-# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-tools.github.io/images/ladybug-logo.png" width=48 ></a>
 </center>
