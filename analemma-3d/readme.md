@@ -1,20 +1,20 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/analemma-3d';
+( https://ladybug-tools.github.io/ladybug-web/analemma-3d/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/analemma-3d';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
 [Analemma 3D Read Me]( index.html#readme.md )
 ===
 
 Watch the [ Analemma 3D YouTube video]( https://www.youtube.com/watch?v=6vk6M_8jOuY&feature=em-share_video_user ) created by @Art!
 
-## Full screen: [Analemma 3D]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/ )
+## Full screen: [Analemma 3D]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/ )
 
-<img src="https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r12.png" style=display:none; width=800 >
+<img src="https://ladybug-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r12.png" style=display:none; width=800 >
 
-<iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/" width="100%" height=600 ></iframe>
+<iframe src="https://ladybug-tools.github.io/ladybug-web/analemma-3d/" width="100%" height=600 ></iframe>
 
 _Ladybug Web Analemma 3D_
 
@@ -27,7 +27,7 @@ _Ladybug Web Analemma 3D_
 
 * To display one [analemma]( https://en.wikipedia.org/wiki/Analemma ) for every hour of the day in 3D at any location on Earth as displayed on a 2D map
 * To display the position of the Sun - using [azimuth and altitude]( https://en.wikipedia.org/wiki/Azimuth ) - for any date and time at any location on Earth
-* To display the shade and shadows cast by 3D objects onto themselves and the ground 
+* To display the shade and shadows cast by 3D objects onto themselves and the ground
 
 ### Vision
 
@@ -66,21 +66,21 @@ _Ladybug Web Analemma 3D_
 * WIP: Permalink support
 	* Supports latitude, longitude and place name
 	* Links you can try:
-	* [Paris]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#48.8566#2.3522#Paris )
-	* [Honolulu]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#21.3#-157.8167#Honolulu )
-	* [Isfahan]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#32.6333#51.6500#Isfahan )
-	* [London]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#51.5072#-0.1275#London )
-	* [New York]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#40.712#-74.0059#New_York )
-	* [Rio de Janeiro]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#22.9068#-43.1729#Rio_de_Janeiro ) << issues
-	* [San Francisco]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#37.796#-122.398#San_Francisco )
-	* [Sydney]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/index.html#-33.8650#151.2094#Sydney )
+	* [Paris]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/index.html#48.8566#2.3522#Paris )
+	* [Honolulu]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/index.html#21.3#-157.8167#Honolulu )
+	* [Isfahan]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/index.html#32.6333#51.6500#Isfahan )
+	* [London]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/index.html#51.5072#-0.1275#London )
+	* [New York]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/index.html#40.712#-74.0059#New_York )
+	* [Rio de Janeiro]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/index.html#22.9068#-43.1729#Rio_de_Janeiro ) << issues
+	* [San Francisco]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/index.html#37.796#-122.398#San_Francisco )
+	* [Sydney]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/index.html#-33.8650#151.2094#Sydney )
 
 
 ## Things you can do using the script
 
 * Use one/two/three fingers to rotate/zoom/pan the display
 * Click the three bars( 'hamburger menu icon' ) to slide the menu in and out
-* Click in the location box and update the current center 
+* Click in the location box and update the current center
 * Drag the date and time sliders to change the position of the sun
 * Click the triangles in the menu to open and close menu items
 * Toggle the display of any of items in the 'Display & Map' panel
@@ -90,21 +90,21 @@ _Ladybug Web Analemma 3D_
 * Edit the map zoom level and opacity
 
 
-_If you are in '[Home Page View]( https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/#readme.md )', you can do all this in the window just above._
+_If you are in '[Home Page View]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/#readme.md )', you can do all this in the window just above._
 
 ## Things you can do by editing the code
 
-<iframe src='https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
-	https://ladybug-analysis-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r16.html' width=100% height=600 ></iframe>
+<iframe src='https://ladybug-tools.github.io/ladybug-web/ace-view-r1.html#
+	https://ladybug-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r16.html' width=100% height=600 ></iframe>
 
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r16.html';
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r16.html';
 value='Ladybug Web Analemma 3D: the entire source code listing' >
 
-* Open this file: https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r16.html
+* Open this file: https://github.com/ladybug-tools/ladybug-web/blob/gh-pages/analemma-3d/analemma-3d-r16.html
 * Click the 'Raw' icon and save the raw file to your computer
 * Once you've downloaded the file, you can click it to run it.
 * Open the file with a text editor
-* Scroll to line 39 and comment out - add '//' - the default location of Sydney 
+* Scroll to line 39 and comment out - add '//' - the default location of Sydney
 * Uncomment - remove the '//' - on Paris or Chile.
 * Save and reload
 * Press Control-U/Command-Option-U to view the source code
@@ -178,7 +178,7 @@ Add link to Wikipedia entry?
 
 ## Dependencies
 
-This script depends on [Ladybug Web Solar Calculator]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ ).
+This script depends on [Ladybug Web Solar Calculator]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/ ).
 When that scripts add features - such as calculating solar noon - then those features will be added to Ladybug Web Analemma 3D.
 
 See this script for credits and links of interest regarding solar calculations
@@ -356,5 +356,5 @@ Please add links!
 ***
 
 <center title="Ladybug Web" >
-# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-tools.github.io/images/ladybug-logo.png" width=48 ></a>
 </center>
