@@ -2,7 +2,7 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Calculations Compare R5.3</title>
+<title>Calculations Compare R5.2</title>
 
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='Compares output from Ladybug Web Solar Calculator, NOAA, Bostock and Agafonkin sun positions' >
@@ -17,13 +17,13 @@
 
 <script src=https://www.esrl.noaa.gov/gmd/grad/solcalc/main.js ></script>
 -->
-<script src=https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
-<script src=https://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/main.js ></script>
-<script src=https://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/ladybug-web-solar-calculator-noaa-r2.js ></script>
+<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/main.js ></script>
+<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/ladybug-web-solar-calculator-noaa-r2.js ></script>
 
 <script src=https://d3js.org/d3.v3.js ></script>
-<script src=https://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/bostock-solar-calculator-r1.js ></script>
+<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/bostock-solar-calculator-r1.js ></script>
 
 <script src=https://rawgit.com/mourner/suncalc/master/suncalc.js ></script>
 
@@ -63,7 +63,7 @@
 
 			'<h1>' +
 				'<a href="" >' + document.title + '</a>' +
-				'<a href=http://ladybug-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md > &#x24D8; </a>' +
+				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/#readme.md > &#x24D8; </a>' +
 			'</h1>' +
 			'<p><i>Compare Sun positions reported by four scripts given location, date and time at you location</i></p>' +
 
@@ -103,7 +103,7 @@
 		inpSeconds.value = date.getSeconds();
 		inpTimezone.value = date.getTimezoneOffset();
 
-		inpLatitude.onchange = inpLongitude.onchange = updateSunPosition;
+		inpLatitude.onchange = inpLongitude.onchange = updateSunPosition; 
 		inpYear.onchange = inpMonth.onchange = inpDate.onchange = updateSunPosition;
 		inpHours.onchange = inpMinutes.onchange = inpTimezone.onchange = updateSunPosition;
 
@@ -147,20 +147,20 @@
 
 		sunPosition = getSunPosition( date, latitude, longitude );
 
-		ladybugWebSolarCalculator.innerHTML =
+		ladybugWebSolarCalculator.innerHTML = 
 
 			'<h2>Ladybug Web Solar Calculator</h2>' +
 			'<p>' +
-				'source code: <a href="http://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js" target="_blank">Ladybug Web Solar Calculator R1</a>' +
-				' ~ <a href="http://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md" target="_blank" >Ladybug Web Solar Calculator Read Me</a>' +
+				'source code: <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js" target="_blank">Ladybug Web Solar Calculator R1</a>' +
+				' ~ <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md" target="_blank" >Ladybug Web Solar Calculator Read Me</a>' +
 			'</p>' +
 
 			'<h3>Sun Position</h3>' +
 
 			'<p class=red > Azimuth in degrees : ' + sunPosition.azimuth + '</p>' +
 			'<p class=red > Altitude in degrees: ' + sunPosition.altitude + '</p>' +
-			'<p><i>ad hoc</i> Ladybug Web Calculations<br>' +
-				'Julian Century: ' + sunPosition.century +
+			'<p><i>ad hoc</i> Ladybug Web Calculations<br>' + 
+				'Julian Century: ' + sunPosition.century + 
 			'</p>' +
 		'';
 
@@ -171,13 +171,13 @@
 
 		var julianDay, julianCentury, localTime;
 
-		noaaSolarCalculator.innerHTML =
+		noaaSolarCalculator.innerHTML = 
 
 			'<h2>NOAA Solar Calculator</h2>' +
 
 			'<p>' +
 				'source code: <a href="http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js" target="_blank">main.js</a>' +
-				' ~ <a href="http://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md" target="_blank" >NOAA Read Me</a>' +
+				' ~ <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md" target="_blank" >NOAA Read Me</a>' +
 			'</p>' +
 
 			'<p><i>ad hoc html needed to get things to work</i><br>' +
@@ -242,15 +242,15 @@
 
 		var az = calcAzEl( output, T, localtime, latitude, longitude, zone )
 
-		noaaSolarCalculator.innerHTML +=
+		noaaSolarCalculator.innerHTML += 
 
 			'<h3>Sun Position</h3>' +
 			'<p class=red >Azimuth in degrees : ' + az + '</p>' +
 			'<p class=red >Altitude in degrees: ' + elbox.value + '</p>' +
-			'<p><i>ad hoc</i>  NOAA Calculations<br>' +
+			'<p><i>ad hoc</i>  NOAA Calculations<br>' + 
 				'Julian Day: ' +  noaaCalculations[ 0 ] + '<br>' +
 				'Julian Century: ' +  noaaCalculations[ 1 ] + '<br>' +
-				'Local Time: ' +  noaaCalculations[ 2 ] +
+				'Local Time: ' +  noaaCalculations[ 2 ] + 
 			'</p>' +
 		'';
 
@@ -277,18 +277,18 @@
 		solar = solarCalculator( [ longitude, latitude ] );
 		position = solar.position( date );
 
-		bostockSolarCalculator.innerHTML =
+		bostockSolarCalculator.innerHTML = 
 
 			'<h2>Bostock Solar Calculator</h2>' +
 			'<p>' +
 				'source code: <a href="https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js" target="_blank">Solar Calculator</a>' +
-				' ~ <a href="http://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md" target="_blank" >Bostock Read Me</a>' +
+				' ~ <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md" target="_blank" >Bostock Read Me</a>' +
 			'</p>' +
 			'<h3>Sun Position</h3>' +
 			'<p class=red >Azimuth in degrees : ' + position[ 0 ] + '</p>' +
 			'<p class=red >Altitude in degrees: ' + position[ 1 ] + '</p>' +
-			'<p><i>ad hoc</i> Bostock Calculations<br>' +
-				'Julian Century: ' + bostockCalculations[ 0 ] +
+			'<p><i>ad hoc</i> Bostock Calculations<br>' + 
+				'Julian Century: ' + bostockCalculations[ 0 ] + 
 
 			'</p>' +
 
@@ -301,7 +301,7 @@
 
 		var dayMs, J1970, J2000;
 		var j, fj, td;
-		var sunPosition, agafonkinCalculations;
+		var sunPosition, agafonkinCalculations; 
 
 // sun calculations are based on http://aa.quae.nl/en/reken/zonpositie.html formulas
 
@@ -323,13 +323,13 @@
 
 		agafonkinCalculations = [ j, fj, td ];
 
-		agafonkinSunCalc.innerHTML =
+		agafonkinSunCalc.innerHTML = 
 
 			'<h2>Agafonkin SunCalc</h2>' +
 
 			'<p>' +
 				'source code: <a href="https://github.com/mourner/suncalc" target="_blank">SunCalc</a>' +
-				' ~ <a href="http://ladybug-tools.github.io/ladybug-web/solar-calculator-agafonkin/#readme.md" target="_blank" >Agafonkin Read Me</a>' +
+				' ~ <a href="http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/#readme.md" target="_blank" >Agafonkin Read Me</a>' +
 			'</p>' +
 
 			'<h3>Sun Position</h3>' +

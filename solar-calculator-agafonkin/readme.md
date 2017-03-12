@@ -3,7 +3,7 @@
 <input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/solar-calculator-agafonkin';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug  Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
+[Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
 
 [Agafonkin SunCalc Sandbox Read Me]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-agafonkin/index.html#readme.md )

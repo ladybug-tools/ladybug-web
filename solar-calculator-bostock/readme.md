@@ -1,11 +1,11 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-bostock'; 
+( https://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/solar-calculator-bostock';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
-[Bostock Solar Calculator Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
+[Bostock Solar Calculator Read Me]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/#readme.md )
 ===
 
 Mike Bostock's Solar Calculator. Mike is the maintainer for D3 - a very powerful 2D JavaScript visualization library for HTML and SVG.
@@ -15,15 +15,15 @@ In particular, his code only asks for a JavaScript Date object - whereas the NOA
 
 Unfortunately for Ladybug, Mike's code requires D3 - and Ladybug Web discourages dependencies on multiple JavaScript libraries.
 We are trying to remove the dependency - and have had some success.
-See work discussed in the [Ladybug Web Solar Calculator Read Me ]( https://ladybug-analysis-tools.github.io/ladybug-web/#solar-calculator/readme.md )
+See work discussed in the [Ladybug Web Solar Calculator Read Me ]( https://ladybug-tools.github.io/ladybug-web/#solar-calculator/readme.md )
 
-## Full screen: [Bostock Solar Calculator Viewer R5]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/ )
+## Full screen: [Bostock Solar Calculator Viewer R5]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/ )
 
 * Viewer displays most of Bostocks calculations
 * [Core]( ./solar-calculator-bostock/bostock-solar-calculator-r2.js ) is partially re-written version of Bostock's code
 
 
-## Full screen: [Bostock Solar Calculator Original]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-bostock/bostock-solar-calculator-original.html )
+## Full screen: [Bostock Solar Calculator Original]( http://ladybug-tools.github.io/ladybug-web/solar-calculator-bostock/bostock-solar-calculator-original.html )
 
 
 ## Features
@@ -37,9 +37,9 @@ See work discussed in the [Ladybug Web Solar Calculator Read Me ]( https://ladyb
 
 * Requires [D3]( https://d3js.org/ ) for certain date calculations
 	* Unwanted external dependence
-	* D3 date method is used only once in calculations essential to Lasybug Web - but this single reference is embedded in a highly complex and opaque line of code: 
+	* D3 date method is used only once in calculations essential to Lasybug Web - but this single reference is embedded in a highly complex and opaque line of code:
 	* L24: var azimuth = ((date - d3.time.day.utc.floor(date)) / 864e5 * pi2 + equationOfTime( centuries ) + λ) % pi2 - pi;
-* Uses UTF-8 encoding - which is nice - but then embeds Greek characters - which is also cool 
+* Uses UTF-8 encoding - which is nice - but then embeds Greek characters - which is also cool
 	* But this makes it all even more remote and abstract for the layperson
 
 
@@ -50,7 +50,7 @@ See work discussed in the [Ladybug Web Solar Calculator Read Me ]( https://ladyb
 * https://bl.ocks.org/mbostock
 * https://bl.ocks.org/mbostock/c5504ab3cd25f93af26a
 * https://bl.ocks.org/mbostock/7784f4b2c7838b893e9b
-* Mike Bostock's Block 7784f4b2c7838b893e9b [Solar Path]( http://bl.ocks.org/mbostock/7784f4b2c7838b893e9b#solar-calculator.js ) 
+* Mike Bostock's Block 7784f4b2c7838b893e9b [Solar Path]( http://bl.ocks.org/mbostock/7784f4b2c7838b893e9b#solar-calculator.js )
 * Original version: [solar-caculator.js]( https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js )
 
 
