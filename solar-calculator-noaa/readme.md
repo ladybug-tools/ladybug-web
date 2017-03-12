@@ -9,7 +9,7 @@ value='You are now in the home page view - Click this button to view the read me
 [Solar Calculator NOAA Read Me]( index.html#readme.md )
 ===
 
-## [Solar Calculator NOAA]( http://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/ )
+## Full screen: [Solar Calculator NOAA]( http://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/ )
 
 Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
 The National Oceanic and Atmospheric Administration is one such source.
@@ -60,6 +60,9 @@ Its [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.htm
 
 ## Change Log
 
+## 2017-03-11
+
+* web site name change fixes
 
 ### 2016-05-20
 
