@@ -213,6 +213,11 @@ Please add links!
 
 ## Change Log
 
+### 2017-03-12
+
+* Fix ladybug tools rename issues
+* Fix color keyword issues
+
 ### 2016-07-13 ~ R18
 
 * Adds update the time every minute
