@@ -2,18 +2,18 @@
 <html lang=en >
 <head>
 <meta charset=utf-8 >
-<title>Solar Calculator NOAA R2.1</title>
+<title>Solar Calculator NOAA R2.2</title>
 
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
-<meta name=description content='' >
+<meta name=description content='NOAA Solar Calculator - Find Sunrise, Sunset, Solar Noon and Solar Position for Any Place on Earth' >
 <meta name=keywords content='JavaScript,GitHub,FOSS,3D,STEM' >
-<meta name=date content='2016-05-20' >
+<meta name=date content='udoduo@hotmail.com' >
 </head>
 <body>
 <!--
 <script src=https://www.esrl.noaa.gov/gmd/grad/solcalc/main.js ></script>
 -->
-<script src=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/main.js ></script>
+<script src=https://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/main.js ></script>
 <script>
 
 // [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html )
@@ -43,7 +43,7 @@
 
 			'<h2>' +
 			'	<a href="" >' + document.title + '</a>' +
-			'	<a href=https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md >&#x24D8;</a>' +
+			'	<a href=https://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md >&#x24D8;</a>' +
 			'</h2>' +
 			'<p>Displays the function names and the results the functions for most of the functions in <a href=http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js target="_blank" >main.js</a></p>' +
 			'<p>- which is part of the <a href=http://www.esrl.noaa.gov/gmd/grad/solcalc/index.html target="_blank" >NOAA Solar Calculator</a> </p>' +
@@ -132,7 +132,7 @@
 		scbox.value = date.getSeconds();
 
 		jday = getJD(); // Julian Day =  Julian Day ~ Day 0 = Monday, January 1, 4713 BC
-		t = calcTimeJulianCent( jday ); // returns a decimal fraction of 100 ~ Julian Century = a constant of exactly 36525 Julian 
+		t = calcTimeJulianCent( jday ); // returns a decimal fraction of 100 ~ Julian Century = a constant of exactly 36525 Julian
 		tl = getTimeLocal(); //
 		tz = readTextBox("zonebox", 5, 0, 0, -14, 13, 0 ); // timeZone ~ hours plus/minus GMT
 		dst = document.getElementById("dstCheckbox").checked;

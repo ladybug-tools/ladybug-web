@@ -1,15 +1,15 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-noaa/'; 
+( https://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/solar-calculator-noaa/';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
 
 [Solar Calculator NOAA Read Me]( index.html#readme.md )
 ===
 
-## [Solar Calculator NOAA]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-noaa/ )
+## [Solar Calculator NOAA]( http://ladybug-tools.github.io/ladybug-web/solar-calculator-noaa/ )
 
 Ladybug seeks accurate, fast and verifiable sources for its solar calculations.
 The National Oceanic and Atmospheric Administration is one such source.
@@ -44,8 +44,8 @@ Its [NOAA Solar Calculator]( http://www.esrl.noaa.gov/gmd/grad/solcalc/index.htm
 	* helps with debugging
 * Loads the NOAA Solar Calculator [main.js]( http://www.esrl.noaa.gov/gmd/grad/solcalc/main.js )
 * Displays the name of most functions along with the results returned by the function and and their units
-* Results from this script will be used to verify results produced by various Ladybug Web scripts 
-	* See [Calculations Compare]( http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-compare/ )
+* Results from this script will be used to verify results produced by various Ladybug Web scripts
+	* See [Calculations Compare]( http://ladybug-tools.github.io/ladybug-web/solar-calculator-compare/ )
 
 
 

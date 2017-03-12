@@ -1,11 +1,11 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/'; 
+( https://ladybug-tools.github.io/ladybug-web/ "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
-[Ladybug Web Project Explorer Read Me]( http://ladybug-analysis-tools.github.io/ladybug-web#project-explorer-readme.md )
+[Ladybug Web Project Explorer Read Me]( http://ladybug-tools.github.io/ladybug-web#project-explorer-readme.md )
 ===
 
 
@@ -35,7 +35,7 @@ Mission statements
 	* GitHub API rate limits are not abused because processing is done client-side
 	* Each individual client has their own separate quota
 * General mechanism is quite straightforward
-	* If a folder has a file titled 'index.html' then the folder is added to the list of items of interest 
+	* If a folder has a file titled 'index.html' then the folder is added to the list of items of interest
 	* Otherwise the folder is ignored
 * The index file points to the script in the folder that should be run at load time
 * If a folder has a readme.md' file than that file is read
@@ -46,13 +46,13 @@ Mission statements
 	* Iframes only become active once they scroll into view
 * Allows for easy scrolling
 	* Prevents full width apps from getting access to the scroll wheel or touch interactions
-	* Preventing such interactions is a work in progress 
+	* Preventing such interactions is a work in progress
 * Table of Contents box
 	* For experienced users who just want to get to a particular folder without too much scrolling involved
 
 ## Current Effort
 
-Two avenues of user guidance are being explored - 'All-in-one' and 'Read Me'. 
+Two avenues of user guidance are being explored - 'All-in-one' and 'Read Me'.
 Both types are exhibited below - just beneath the full-width app 'splash screen'.
 
 ### All-In-One
