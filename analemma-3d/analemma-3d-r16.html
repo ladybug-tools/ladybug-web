@@ -26,7 +26,7 @@ Shadows display on a 2D map.
 <!--
 <script src= ../solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 -->
-<script src= https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+<script src= https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
 
 <script>
 
@@ -135,7 +135,7 @@ Shadows display on a 2D map.
 		menu.innerHTML =
 
 			'<h2>' +
-				'<a href=http://ladybug-analysis-tools.github.io/ladybug-web title="Solar viz in a new light" > <img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=24 ></a> ' +
+				'<a href=http://ladybug-tools.github.io/ladybug-web title="Solar viz in a new light" > <img src=https://ladybug-tools.github.io/images/ladybug-logo.png width=24 ></a> ' +
 				'<a href="" title="Click here to refresh this page" >' + document.title + '</a> &bull; ' +
 				'<a href=index.html#readme.md title="Click here for help and information" >&#x24D8;</a>' +
 			'</h2>' +
@@ -212,7 +212,7 @@ Shadows display on a 2D map.
 			'</details>' +
 
 			'<hr>' +
-			'<center><a href=javascript:menu.scrollTop=0; style=text-decoration:none; ><img src=https://ladybug-analysis-tools.github.io/images/ladybug-logo.png width=48 ></a></center>' +
+			'<center><a href=javascript:menu.scrollTop=0; style=text-decoration:none; ><img src=https://ladybug-tools.github.io/images/ladybug-logo.png width=48 ></a></center>' +
 
 		'';
 
@@ -638,7 +638,7 @@ Shadows display on a 2D map.
 
 		message = browserHasGeolocation ? 'The geolocation service is not allowed or failed to complete.' : 'Error: Your browser doesn\'t allow geolocation.' ;
 		message = window.self === window.top ? message : 'Default location';
-  
+
 		infoWindow.setContent( message );
 		messagePlace.innerHTML = message;
 
@@ -737,7 +737,7 @@ Shadows display on a 2D map.
 		sun.position.copy( sun.userData.position.xyz );
 
 		lightDirectional.intensity = sunIntensity;
-		lightDirectional.castShadow = sun.position.y > 0 ? true : false; 
+		lightDirectional.castShadow = sun.position.y > 0 ? true : false;
 
 		setMenuDates();
 
@@ -843,7 +843,7 @@ Shadows display on a 2D map.
 
 					vertices.push( analemmaSunPosition.xyz );
 
-					geometry.colors[ i++ ] = new THREE.Color(  THREE.ColorKeywords[ colors[ month ] ] );
+					geometry.colors[ i++ ] = new THREE.Color(  colors[ month ] );
 
 				}
 

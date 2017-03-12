@@ -26,7 +26,7 @@
 
 // https://github.com/mourner/suncalc
 
-	var gazetteer = 'http://ladybug-analysis-tools.github.io/ladybug-web/gazetteer/places-2000.csv';
+	var gazetteer = 'http://ladybug-tools.github.io/ladybug-web/gazetteer/places-2000.csv';
 
 	var places, place;
 	var latitude;
@@ -97,7 +97,7 @@
 
 			'<h2>' +
 			'	<a href="" >' + document.title + '</a>' +
-			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
+			'	<a href=http://ladybug-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
 			'</h2>' +
 
 			'<details open>' +
@@ -335,7 +335,7 @@
 		outHours.value = datePlace.getHours();
 		outMinutes.value = datePlace.getMinutes();
 
-		info.innerHTML = 
+		info.innerHTML =
 
 			'<h3>latitude: ' + place[ 1 ] + '<br>longitude:' + place[ 2 ] + '</h3>' +  // or use latitude/longitude?
 			'<p>' + place[ 0 ] + '</p>' +

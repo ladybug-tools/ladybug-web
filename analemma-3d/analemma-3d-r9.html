@@ -5,7 +5,7 @@
 <title>Analemma 3D R9</title>
 <meta name=viewport content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' >
 <meta name=description content='
-* 3D plot of analemmas of Sun azimuth and altitude once an hour for days 1 through 28 of each month. 
+* 3D plot of analemmas of Sun azimuth and altitude once an hour for days 1 through 28 of each month.
 	* Midnight highlighted is red. Noon highlighted in green
 	* Placards indicate the hour of each analemma
 	* Displays current position of sun
@@ -22,7 +22,7 @@
 * Displays map of location
 	* Check boxes to toggle map display - also grid and axis
 	* Nine maps styles to choose from
-	* Sliders for map zoom factor and opacity 
+	* Sliders for map zoom factor and opacity
 * Information panel
 	* Displays a variety of information including
 	* Latitude and longitude
@@ -52,7 +52,7 @@
 
 // https://github.com/mourner/suncalc
 
-	var gazetteer = 'http://ladybug-analysis-tools.github.io/ladybug-web/gazetteer/places-2000.csv';
+	var gazetteer = 'http://ladybug-tools.github.io/ladybug-web/gazetteer/places-2000.csv';
 
 	var places, place;
 	var latitude;
@@ -123,7 +123,7 @@
 
 			'<h2>' +
 			'	<a href="" >' + document.title + '</a>' +
-			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
+			'	<a href=http://ladybug-tools.github.io/ladybug-web/ >&#x24D8;</a>' +
 			'</h2>' +
 
 			'<details open>' +
@@ -361,7 +361,7 @@
 		outHours.value = datePlace.getHours();
 		outMinutes.value = datePlace.getMinutes();
 
-		info.innerHTML = 
+		info.innerHTML =
 
 			'<h3>latitude: ' + place[ 1 ] + '<br>longitude:' + place[ 2 ] + '</h3>' +  // or use latitude/longitude?
 			'<p>' + place[ 0 ] + '</p>' +
