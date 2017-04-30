@@ -14,15 +14,6 @@ Ladybug Web Coding Style
 * Write cookbook scripts that are ready to use, cut and paste
 * Build engineering tools built to solve specific problems 
 * Develop skills you can use everywhere
-
-<!--
-### Vision
-
-* If the mundane engineering tasks become easy, inexpensive and swift to carry out, 
-then possibilities arise for the more complex, sophisticated and even extravagant ideas to turn into realities
-* RIP Zaha Hadid. Let us continue to design with your disruptive yet aways elegant spirit
--->
-
 * You can download a script easily and when you click it, it should just work.
 	* Everything you need to know about a script is in one place and written in the same way.
 * Ready to use, cut and paste scripts
@@ -47,6 +38,13 @@ Some of the notes there could come here as and when there is agreement on the go
 * https://en.wikibooks.org/wiki/Coding_Cookbook
 * https://www.quora.com/Computer-Programming-How-should-I-study-the-OReilly-cookbook-books-I-dont-feel-I-internalize-much-just-by-reading-them-as-Im-a-very-hands-on-learner
 
+<!--
+### Vision
+
+* If the mundane engineering tasks become easy, inexpensive and swift to carry out, 
+then possibilities arise for the more complex, sophisticated and even extravagant ideas to turn into realities
+* RIP Zaha Hadid. Let us continue to design with your disruptive yet aways elegant spirit
+-->
 
 <!--
 Everything is in between two `<script>` tags and written JavaScript
