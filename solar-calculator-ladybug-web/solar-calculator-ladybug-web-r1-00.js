@@ -83,13 +83,12 @@
 		var y = Math.pow( Math.tan( obliquityCorrection( century ) / 2 ), 2 );
 		var m = solarGeometricMeanAnomaly( century );
 		var l = solarGeometricMeanLongitude( century );
-		var sin = Math.sin, cos = Math.cos;
 
-		return y * sin( 2 * l )
-			- 2 * e * sin( m )
-			+ 4 * e * y * sin( m ) * cos( 2 * l )
-			- 0.5 * y * y * sin( 4 * l )
-			- 1.25 * e * e * sin( 2 * m );
+		return y * Math.sin( 2 * l )
+			- 2 * e * Math.sin( m )
+			+ 4 * e * y * Math.sin( m ) * Math.cos( 2 * l )
+			- 0.5 * y * y * Math.sin( 4 * l )
+			- 1.25 * e * e * Math.sin( 2 * m );
 
 	}
 

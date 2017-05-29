@@ -1,7 +1,7 @@
 ﻿<span style=display:none; >
 [You are now in a GitHub source code view - click this link to view the home page]
 ( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-ladybug-web/'; 
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-ladybug-web/';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
 [Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
@@ -56,6 +56,7 @@ value='You are now in the home page view - Click this button to view the read me
 
 * https://github.com/ladybug-analysis-tools/ladybug/blob/master/ladybug/sunpath.py
 	* Ladybug's Python Sun path calculator
+* https://books.google.com/books?id=cfCqBAAAQBAJ
 * https://en.wikipedia.org/wiki/Jean_Meeus
 * http://www.willbell.com/math/mc1.htm
 * https://sourceforge.net/projects/astroalgorithms/
@@ -66,6 +67,9 @@ value='You are now in the home page view - Click this button to view the read me
 * Short definitions: http://www.ephemeris.com/space-time.html
 
 ## Solar Calculation Details
+
+https://en.wikipedia.org/wiki/Position_of_the_Sun
+https://en.wikipedia.org/wiki/Astronomical_Almanac
 
 http://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
 
@@ -94,6 +98,7 @@ http://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
 * http://www.sundials.co.uk/equation.htm
 * http://www.astronomynotes.com/nakedeye/s9.htm
 
+### More
 
 * https://en.wikipedia.org/wiki/Orbital_elements
 * https://en.wikipedia.org/wiki/Mean_longitude

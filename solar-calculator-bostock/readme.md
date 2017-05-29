@@ -37,7 +37,7 @@ See work discussed in the [Ladybug Web Solar Calculator Read Me ]( https://ladyb
 
 * Requires [D3]( https://d3js.org/ ) for certain date calculations
 	* Unwanted external dependence
-	* D3 date method is used only once in calculations essential to Lasybug Web - but this single reference is embedded in a highly complex and opaque line of code:
+	* D3 date method is used only once in calculations essential to Ladybug Web - but this single reference is embedded in a highly complex and opaque line of code:
 	* L24: var azimuth = ((date - d3.time.day.utc.floor(date)) / 864e5 * pi2 + equationOfTime( centuries ) + λ) % pi2 - pi;
 * Uses UTF-8 encoding - which is nice - but then embeds Greek characters - which is also cool
 	* But this makes it all even more remote and abstract for the layperson
