@@ -12,9 +12,9 @@ Watch the [ Analemma 3D YouTube video]( https://www.youtube.com/watch?v=6vk6M_8j
 
 ## Full screen: [Analemma 3D]( https://ladybug-tools.github.io/ladybug-web/analemma-3d/ )
 
-<img src="https://ladybug-tools.github.io/ladybug-web/analemma-3d/analemma-3d-r12.png" style=display:none; width=800 >
+<img src="https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/analemma-3d/analemma-3d-r12.png" style=display:none; width=800 >
 
-<iframe src="https://ladybug-tools.github.io/ladybug-web/analemma-3d/" width="100%" height=600 ></iframe>
+<iframe src="https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/analemma-3d/" width="100%" height=600 ></iframe>
 
 _Ladybug Web Analemma 3D_
 
@@ -361,5 +361,5 @@ Please add links!
 ***
 
 <center title="Ladybug Web" >
-# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/images/ladybug-logo.png" width=48 ></a>
 </center>
