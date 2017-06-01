@@ -99,5 +99,5 @@ Very R1.
 ***
 
 <center title="dingbat" >
-# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://rawgit.com/ladybug-tools/ladybug-tools.github.io/master/images/ladybug_tools_logo.png" width=48 ></a>
 </center>
