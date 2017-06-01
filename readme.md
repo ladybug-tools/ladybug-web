@@ -4,10 +4,12 @@ value='You are now in the home page view - Click this button to view the read me
 
 ### [Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
-[Ladybug Web Project Explorer]( https://ladybug-tools.github.io/ladybug-web/ladybug-web-via-github-api-r2.html )
+[Ladybug Web Read Me]( https://ladybug-tools.github.io/ladybug-web/ladybug-web-via-github-api-r2.html )
 ===
 
+<!--
 _Scroll down a bit to have look/see first!_
+-->
 
 ## Concept
 
