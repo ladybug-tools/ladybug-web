@@ -7,7 +7,7 @@
 <meta name=description content='Default: Browse and view files on GitHub with remarkable ease.' >
 <meta name=keywords content='CSS,HTML,JavaScript,GitHub,FOSS' >
 
-<meta name=date content='2017-5-31 16:35' >
+<meta name=date content='2017-5-31 22:28' >
 
 <!--
 
@@ -57,7 +57,7 @@ summary h3 { display: inline; }
 #divMD {border: 0px orange solid; margin: 0 auto; max-width: 800px; overflow-x: hidden; position: adsolute; }
 
 #hamburger { background-color: #eee; left: 325px; position: absolute; top: 20px;  z-index: 1 }
-#hamburger h2, #menuItems h2, #menuItems h4 {margin: 0; }
+#hamburger h2, #menuItems h2, #menuItems h4 { margin: 0; }
 
 #ifr { /* border: 0px yellow solid; */ height: 500px; width: 100%; }
 #ifrHTML { border: 0px yellow solid; margin: 0 8%; height: 100%; padding: 0; width: 100%; }
@@ -96,7 +96,7 @@ summary h3 { display: inline; }
 
 		window.addEventListener ( 'hashchange', TOO.onHashChange, false );
 
-		if ( location.protocol === 'file:' ) { // can help with local testing. Needs work.
+		if ( location.protocol === 'vvvfile:' ) { // can help with local testing. Needs work.
 
 			pathFull1 = user.path.replace( /-/g, '' ).replace( /\w+/g, '..' ) + '/';
 			pathFull = pathFull1 === '/' ? './' : pathFull1;
@@ -801,35 +801,51 @@ console.log( '', response  );
 
 	var user = {
 		user : 'ladybug-tools',
-		subText : 'Browse & view stuff on Ladybug Web real fast!',
+
 		repo : 'ladybug-web',
-		rawgit: true,
 		branch : 'gh-pages',
+		rawgit: true,
 
 		path : '',
+		subText : 'Browse & view stuff on Ladybug Web real fast!',
 	};
 
 
 	MNU.tableOfContents =
-`## Ladybug Web
+`
+## Ladybug Web
 
-[Ladybug Web Read Me]( #readme.md )
-
+* [Ladybug Web Read Me]( #readme.md )
+* [Coding Style]( #coding-style.md )
+* [License]( #license.md )
+<!--[Project Explorer-readme]( #project-explorer-readme.md ) -->
 ### Analemma 3D
-[Annalema 3D Read Me]( #analemma-3d/readme.md )
+* [Analemma 3D Read Me]( #analemma-3d/readme.md )
 
 ### Ladybug Web Solar Calculator
-[Solar Calculator Read me]( #solar-calculator-ladybug-web/readme.md)
-[Solar Calculator](  #solar-calculator-ladybug-web/solar-calculator-ladybug-web-viewer-r3.html )
+#### Ladybug Solar Calculator
+* [Ladybug Solar Calculator Read me]( #solar-calculator-ladybug-web/readme.md)
+* [Ladybug Solar Calculator](  #solar-calculator-ladybug-web/solar-calculator-ladybug-web-viewer-r3.html )
 #### Agafonkin
-[Agafonkin Solar Calculator Read Me]( #solar-calculator-agafonkin/readme.md )
-[Agafonkin Solar Calculator]( #solar-calculator-agafonkin/suncalc-sandbox-r7.html )
+* [Agafonkin Solar Calculator Read Me]( #solar-calculator-agafonkin/readme.md )
+* [Agafonkin Solar Calculator]( #solar-calculator-agafonkin/suncalc-sandbox-r7.html )
 #### Bostock
-[Bostock Solar Calculator Read Me]( #solar-calculator-bostock/readme.md )
-[Bostock Solar Calculator]( #solar-calculator-bostock/bostock-solar-calculator-viewer-r5.html )
+* [Bostock Solar Calculator Read Me]( #solar-calculator-bostock/readme.md )
+* [Bostock Solar Calculator]( #solar-calculator-bostock/bostock-solar-calculator-viewer-r5.html )
 #### NOAA
-[NOAA Solar Calculator Read Me]( #solar-calculator-noaa/readme.md )
-[NOAA Solar Calculator]( #solar-calculator-noaa/ladybug-web-solar-calculator-noaa-viewer-r3.html )
+* [NOAA Solar Calculator Read Me]( #solar-calculator-noaa/readme.md )
+* [NOAA Solar Calculator]( #solar-calculator-noaa/ladybug-web-solar-calculator-noaa-viewer-r3.html )
+#### Solar Calculator Compare
+* [Solar Calculator Compare Read me]( #solar-calculator-compare/readme.md)
+* [Solar Calculator Compare](  #solar-calculator-compare/calculations-compare-r5.html )
+
+### Shadows
+#### Shadow OBJ Core
+* [Shadow OBJ Core Read Me]( #shadow-obj-core/readme.md )
+* [Shadow OBJ Core ]( #shadow-obj-core/ladybug-web-shadow-obj-core-r3.html )
+#### Shadow OBJ Gallery
+* [Shadow OBJ Gallery Read Me]( #shadow-obj-gallery/readme.md )
+* [Shadow OBJ Gallery ]( #shadow-obj-gallery/ladybug-web-shadow-obj-gallery-r3.html )
 `;
 
 	CON.massageText = function( response ){

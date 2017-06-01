@@ -7,6 +7,7 @@ value='You are now in the home page view - Click this button to view the read me
 [Ladybug Web Read Me]( https://ladybug-tools.github.io/ladybug-web/ladybug-web-via-github-api-r2.html )
 ===
 
+### Try new user interface: [ Ladybug Web ]( tootoo4-all-in-one-ladybug-web.html )
 <!--
 _Scroll down a bit to have look/see first!_
 -->
