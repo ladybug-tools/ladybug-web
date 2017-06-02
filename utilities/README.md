@@ -1,29 +1,31 @@
-<span style=display:none; >[You are now in a GitHub source code view - click this link to view Read Me file as a web page]( http://make-github-readme-r2.ht.github.io//Theo/Dropbox/Public/git-repos/ladybug-web/utilities/#/Theo/Dropbox/Public/git-repos/ladybug-web/utilities/README.md "View file as a web page." ) </span>
+<span style=display:none; >[You are now in a GitHub source code view - click this link to view Read Me file as a web page]( https://ladybug-tools.github.io/ladybug-web/utilities/#utilities/README.md "View file as a web page." ) </span>
+
+
+
+[Utilities Read Me]( https://ladybug-tools.github.io/ladybug-web/#utilities/README.md )
+===
 
 
 <!--
-<a href="https://make-github-readme-r2.ht.github.io/" >make-github-readme-r2.ht.github.io</a> &raquo;  <a href="https://make-github-readme-r2.ht.github.io//" ></a> &raquo; </h3> <a href="https://make-github-readme-r2.ht.github.io//Theo/" >Theo</a> &raquo; </h3> <a href="https://make-github-readme-r2.ht.github.io//Theo/Dropbox/" >Dropbox</a> &raquo; </h3> <a href="https://make-github-readme-r2.ht.github.io//Theo/Dropbox/Public/" >Public</a> &raquo; </h3> <a href="https://make-github-readme-r2.ht.github.io//Theo/Dropbox/Public/git-repos/" >git-repos</a> &raquo; </h3> <a href="https://make-github-readme-r2.ht.github.io//Theo/Dropbox/Public/git-repos/ladybug-web/" >ladybug-web</a> &raquo; </h3>
--->
-
-[Utilities Read Me]( https://make-github-readme-r2.ht.github.io/#/Theo/Dropbox/Public/git-repos/ladybug-web/utilities/README.md )
-===
 _say something fun here_
 
-<!--
 <img src="" style=display:none; width=800 >
--->
+
 
 <iframe id=ifr src=https://make-github-readme-r2.ht.github.io//Theo/Dropbox/Public/git-repos/ladybug-web/utilities/index.html width=100% height=600px ></iframe>
 _Utilities_
+-->
 
-## Full Screen: [ Utilities ]( https://make-github-readme-r2.ht.github.io//Theo/Dropbox/Public/git-repos/ladybug-web/utilities/index.html )
+## Full Screen: [ Utilities ]( https://ladybug-tools.github.io/ladybug-web/utilities/sponsor-links-bs2017/sponsor-links-bs2017-r1-r1.html )
+
+<!--
 
 ***
 
 ## Concept
 
 ### Issues / Problems that need solving
-<!--
+
 
 The general format is an adaptation of the ideas developed in Alexander's _et al_ [A Pattern Language]( https://books.google.com/books?id=hwAHmktpk5IC&pg=PR10#v=onepage&q&f=false ) - as summarized on page 10.
 
@@ -31,15 +33,13 @@ Each pattern describes a problem which occurs over and over again in our environ
 
 patterns are descriptions of common problems and proposal for the solutions that can be used repeatedly every time the problem is encountered and producing an different outcome.
 
--->
+
 
 ### Mission
-<!-- a statement of a rationale, applicable now as well as in the future -->
 
 * TBD
 
 ### Vision
-<!--  a descriptive picture of a desired future state -->
 
 * TBD
 
@@ -67,7 +67,6 @@ patterns are descriptions of common problems and proposal for the solutions that
 * Open the file with a text editor
 
 
-<!--
 ## Users
 _where used_
 
