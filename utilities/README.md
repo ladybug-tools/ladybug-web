@@ -1,8 +1,8 @@
-<span style=display:none; >[You are now in a GitHub source code view - click this link to view Read Me file as a web page]( https://ladybug-tools.github.io/ladybug-web/utilities/#utilities/README.md "View file as a web page." ) </span>
+<span style=display:none; >[You are now in a GitHub source code view - click this link to view Read Me file as a web page]( https://ladybug-tools.github.io/ladybug-web/tootoo4-all-in-one-ladybug-web.html#utilities/README.md "View file as a web page." ) </span>
 
 
 
-[Utilities Read Me]( https://ladybug-tools.github.io/ladybug-web/#utilities/README.md )
+[Utilities Read Me]( https://ladybug-tools.github.io/ladybug-web/tootoo4-all-in-one-ladybug-web.html#utilities/README.md )
 ===
 
 
@@ -16,7 +16,9 @@ _say something fun here_
 _Utilities_
 -->
 
-## Full Screen: [ Utilities ]( https://ladybug-tools.github.io/ladybug-web/utilities/sponsor-links-bs2017/sponsor-links-bs2017-r1-r1.html )
+## Full Screen: [ Links to Sponsors Building Simulation 2017 ]( https://ladybug-tools.github.io/ladybug-web/utilities/sponsor-links-bs2017/sponsor-links-bs2017-r1-r1.html )
+* Browse in a speedy way the web sites of sponsors of [Building Simulation 2017]( http://www.buildingsimulation2017.org/ )
+*
 
 <!--
 
