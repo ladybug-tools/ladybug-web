@@ -16,9 +16,9 @@ _say something fun here_
 _Utilities_
 -->
 
-## Full Screen: [ Links to Sponsors Building Simulation 2017 ]( https://ladybug-tools.github.io/ladybug-web/utilities/sponsor-links-bs2017/sponsor-links-bs2017-r1.html )
+## Full Screen: [ Links to Sponsors Building Simulation 2017 ]( http://rawgit.com/ladybug-tools/ladybug-web/gh-pages/utilities/sponsor-links-bs2017/sponsor-links-bs2017-r1.html )
 * Browse in a speedy way the web sites of sponsors of [Building Simulation 2017]( http://www.buildingsimulation2017.org/ )
-*
+
 
 <!--
 
