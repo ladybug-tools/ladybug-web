@@ -3,20 +3,20 @@
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-range-obj-opener';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://rawgit.com/ladybug-tools/ ) » [Ladybug Web ]( https://rawgit.com/ladybug-tools/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://rawgit.com/ladybug-tools/ladybug-tools.github.io/master/ ) » [Ladybug Web ]( https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/ ) »
 
 
 [Ladybug Web Shadow Range OBJ Opener Read Me]( index.html#readme.md )
 ===
 
-## Full screen: [Ladybug Web Shadow Range OBJ Opener]( https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-opener/ )
+## Full screen: [Ladybug Web Shadow Range OBJ Opener]( https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-opener/ )
 
 Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opener:
 
-* https://rawgit.com/ladybug-tools/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
-* https://rawgit.com/ladybug-tools/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
-* https://rawgit.com/ladybug-tools/3d-models/content/obj/urban_model_001/model.mtl
-* https://rawgit.com/ladybug-tools/3d-models/content/obj/urban_model_001/model.obj
+* https://rawgit.com/ladybug-tools/3d-models/gh-pages/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
+* https://rawgit.com/ladybug-tools/3d-models/gh-pages/content/obj/seaside-villa-obj/seaside-villa.mtl
+* https://rawgit.com/ladybug-tools/3d-models/gh-pages/content/obj/urban_model_001/model.mtl
+* https://rawgit.com/ladybug-tools/3d-models/gh-pages/content/obj/urban_model_001/model.obj
 * https://jaanga.github.io/3d-models/obj/architecture/factory-complex/factory-complex.obj
 	* Scale to 0.1
 * https://jaanga.github.io/3d-models/obj/architecture/sydney-opera-house/sydney-opera-house.obj
@@ -25,7 +25,7 @@ Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opene
 
 <img src="https://cloud.githubusercontent.com/assets/547626/15871740/0675c73e-2cab-11e6-88c6-0a412f8c24fd.png" style=display:none; width=800 >
 
-<iframe src="https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html" width="100%" height=600 ></iframe>
+<iframe src="https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html" width="100%" height=600 ></iframe>
 
 _Ladybug Web Shadow Range OBJ Opener_
 
@@ -35,12 +35,12 @@ _Ladybug Web Shadow Range OBJ Opener_
 
 ### Mission
 
-* To provide a simple user-interface for adding and editing parameters used by [Ladybug Web Shadow OBJ Core]( https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-core/ )
-* To prepare links for use by [Ladybug Web Shadow OBJ Gallery]( https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-gallery/ )
+* To provide a simple user-interface for adding and editing parameters used by [Ladybug Web Shadow OBJ Core]( https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-core/ )
+* To prepare links for use by [Ladybug Web Shadow OBJ Gallery]( https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-gallery/ )
 
 ### Vision
 
-* To demonstrate that creating, updateting and sending a wide variety of parameters to a script can be carried out by beginning to intermediate level programmers
+* To demonstrate that creating, updating and sending a wide variety of parameters to a script can be carried out by beginning to intermediate level programmers
 
 
 
@@ -126,8 +126,8 @@ _Probably needs a video..._
 
 ## Things you can do by editing the code
 
-<iframe src=https://rawgit.com/ladybug-tools/ladybug-web/ace-view-r1.html#
-	https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html width=100% height=600 ></iframe>
+<iframe src=https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/ace-view-r1.html#
+	https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html width=100% height=600 ></iframe>
 
 <input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/blob/gh-pages/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html';
 value='Source code listing' >
