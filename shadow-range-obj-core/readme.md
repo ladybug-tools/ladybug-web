@@ -75,7 +75,7 @@ _Ladybug Web Shadow Range OBJ Core_
 
 _Source code Ladybug Web Shadow Range OBJ Core_
 
-* Open this file: https://github.com/ladybug--tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r3.html
+* Open this file: https://github.com/ladybug-tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r3.html
 * Click the 'Raw' icon and save the raw file to your computer
 * Once you've downloaded the file, you can click it to run it.
 * Open the file with a text editor
@@ -97,7 +97,7 @@ There are two methods for creating Sun range visualizations
 
 Here is a typical URL that you can practice with:
 
-    https://ladybug--tools.github.io/ladybug-web/shadow-range-obj-core/#https://ladybug--tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#la=-33#lo=151#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
+    https://ladybug-tools.github.io/ladybug-web/shadow-range-obj-core/#https://ladybug--tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#la=-33#lo=151#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
 
 A full list of parameters is provided below. Not all parameters work with Sun Range as some parameters are for the Shadow series
 
