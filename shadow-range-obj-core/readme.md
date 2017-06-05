@@ -69,13 +69,13 @@ _Ladybug Web Shadow Range OBJ Core_
 
 ## Things you can do by editing the code
 
-<iframe src='https://ladybug--tools.github.io/ladybug-web/ace-view-r1.html#
-	https://ladybug--tools.github.io/ladybug-web/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r4.html' width=100% height=600px ></iframe>
+<iframe src='rawgit.com/ladybug-tools/ladybug-web/gh-pages/ace-view-r1.html#
+	https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r4.html' width=100% height=600px ></iframe>
 
 
 _Source code Ladybug Web Shadow Range OBJ Core_
 
-* Open this file: https://github.com/ladybug-tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r3.html
+* Open this file: https://github.com/ladybug-tools/ladybug-web/blob/gh-pages/ladybug-web-shadow-range-obj-core-r4.html
 * Click the 'Raw' icon and save the raw file to your computer
 * Once you've downloaded the file, you can click it to run it.
 * Open the file with a text editor
@@ -97,7 +97,7 @@ There are two methods for creating Sun range visualizations
 
 Here is a typical URL that you can practice with:
 
-    https://ladybug-tools.github.io/ladybug-web/shadow-range-obj-core/#https://ladybug--tools.github.io/3d-models/content/obj/urban_model_001/model.mtl#la=-33#lo=151#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
+    https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-core/#https://rawgit.com/ladybug-tools/3d-models/gh-pages/content/obj/urban_model_001/model.mtl#la=-33#lo=151#sx=0.1#sy=0.1#sz=0.1#px=20#rx=90#ry=180';
 
 A full list of parameters is provided below. Not all parameters work with Sun Range as some parameters are for the Shadow series
 
@@ -111,7 +111,7 @@ Edit the parameters using [Ladybug Web Shadow Range OBJ Opener]( https://ladybug
 ## Permalink codes
 
 The following are the currently available permalink or location.hash codes.
-See [Ladybug Web Shadow Range OBJ Core Source Code](https://github.com/ladybug--tools/ladybug-web/blob/gh-pages/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html] ) for examples of usage.
+See [Ladybug Web Shadow Range OBJ Core Source Code](https://github.com/ladybug-tools/ladybug-web/blob/gh-pages/shadow-range-obj-core/ladybug-web-shadow-range-obj-core-r2.html] ) for examples of usage.
 
 file name
 
@@ -178,7 +178,7 @@ tz= controls.target.z
 
 ## Dependencies
 
-This script depends on [Ladybug Web Solar Calculator]( https://ladybug--tools.github.io/ladybug-web/solar-calculator-ladybug-web/ ).
+This script depends on [Ladybug Web Solar Calculator]( https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/solar-calculator-ladybug-web/ ).
 When that scripts add features - such as calculating solar noon - then those features will be added to Ladybug Web Analemma 3D.
 
 See this script for credits and links of interest regarding solar calculations.
@@ -201,9 +201,8 @@ The permalink functions - and especially the list of supported parameters - shou
 
 ## Change Log
 
-Note that [Ladybug Web Shadow Range OBJ Opener ]( https://ladybug--tools.github.io/ladybug-web/shadow-range-obj-opener/ ) and
-[Ladybug Web Shadow Range OBJ Gallery ]( https://ladybug--tools.github.io/ladybug-web/shadow-range-obj-gallery/ ) are automatically updated
-as a well since they rely on core for all Three.js operations.
+Note that [Ladybug Web Shadow Range OBJ Opener ]( https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-opener/ ) and
+[Ladybug Web Shadow Range OBJ Gallery ]( https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-gallery/ ) are automatically updated as a well since they rely on core for all Three.js operations.
 
 
 ### 2017-03-11 ~ r4.1
@@ -249,5 +248,5 @@ as a well since they rely on core for all Three.js operations.
 ***
 
 <center title="Ladybug Web" >
-# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug--tools.github.io/images/ladybug-logo.png" width=48 ></a>
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="rawgit.com/ladybug-tools/images/ladybug-logo.png" width=48 ></a>
 </center>
