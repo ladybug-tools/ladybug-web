@@ -1,21 +1,21 @@
 ﻿
 <span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug--tools.github.io/ladybug-web/shadow-range-obj-core/index.html#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug--tools/ladybug-web/tree/gh-pages/shadow-range-obj-core/';
+( https://ladybug-tools.github.io/ladybug-web/shadow-range-obj-core/index.html#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/shadow-range-obj-core/';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug  Tools]( https://ladybug--tools.github.io/ ) » [Ladybug Web ]( https://ladybug--tools.github.io/ladybug-web/ ) »
+[Ladybug  Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
 
 [Ladybug Web Shadow Range OBJ Core Read Me]( index.html#readme.md )
 ===
 
 
-## full screen: [Ladybug Web Shadow Range OBJ Core]( https://ladybug--tools.github.io/ladybug-web/shadow-range-obj-core/ )
+## full screen: [Ladybug Web Shadow Range OBJ Core]( https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-core/ )
 
 <img src='https://cloud.githubusercontent.com/assets/547626/16139094/2be7e97a-33f9-11e6-9847-7e13d8280e6f.png' style=display:none; width=800 >
 
-<iframe src=https://ladybug--tools.github.io/ladybug-web/shadow-range-obj-core/index.html width=100% height=600px ></iframe>
+<iframe src=https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/shadow-range-obj-core/index.html width=100% height=600px ></iframe>
 
 
 _Ladybug Web Shadow Range OBJ Core_
