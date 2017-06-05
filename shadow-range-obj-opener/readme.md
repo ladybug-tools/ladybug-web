@@ -1,9 +1,9 @@
 ﻿<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-range-obj-opener'; 
+( https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-opener/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/shadow-range-obj-opener';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Analysis Tools]( https://rawgit.com/ladybug-tools/ ) » [Ladybug Web ]( https://rawgit.com/ladybug-tools/ladybug-web/ ) »
 
 
 [Ladybug Web Shadow Range OBJ Opener Read Me]( index.html#readme.md )
@@ -13,10 +13,10 @@ value='You are now in the home page view - Click this button to view the read me
 
 Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opener:
 
-* https://ladybug-analysis-tools.github.io/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
-* https://ladybug-analysis-tools.github.io/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
-* https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.mtl
-* https://ladybug-analysis-tools.github.io/3d-models/content/obj/urban_model_001/model.obj
+* https://rawgit.com/ladybug-tools/3d-models/content/obj/engel-house/AngelHouse_Bauhaus-in-Israel-r2.obj
+* https://rawgit.com/ladybug-tools/3d-models/content/obj/seaside-villa-obj/seaside-villa.mtl
+* https://rawgit.com/ladybug-tools/3d-models/content/obj/urban_model_001/model.mtl
+* https://rawgit.com/ladybug-tools/3d-models/content/obj/urban_model_001/model.obj
 * https://jaanga.github.io/3d-models/obj/architecture/factory-complex/factory-complex.obj
 	* Scale to 0.1
 * https://jaanga.github.io/3d-models/obj/architecture/sydney-opera-house/sydney-opera-house.obj
@@ -25,7 +25,7 @@ Links to files you can drag and drop the links into Ladybug Web Shadow OBJ Opene
 
 <img src="https://cloud.githubusercontent.com/assets/547626/15871740/0675c73e-2cab-11e6-88c6-0a412f8c24fd.png" style=display:none; width=800 >
 
-<iframe src="https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html" width="100%" height=600 ></iframe>
+<iframe src="https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html" width="100%" height=600 ></iframe>
 
 _Ladybug Web Shadow Range OBJ Opener_
 
@@ -35,14 +35,14 @@ _Ladybug Web Shadow Range OBJ Opener_
 
 ### Mission
 
-* To provide a simple user-interface for adding and editing parameters used by [Ladybug Web Shadow OBJ Core]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-core/ )
-* To prepare links for use by [Ladybug Web Shadow OBJ Gallery]( https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-gallery/ )
+* To provide a simple user-interface for adding and editing parameters used by [Ladybug Web Shadow OBJ Core]( https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-core/ )
+* To prepare links for use by [Ladybug Web Shadow OBJ Gallery]( https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-gallery/ )
 
 ### Vision
 
 * To demonstrate that creating, updateting and sending a wide variety of parameters to a script can be carried out by beginning to intermediate level programmers
 
- 
+
 
 ## Features
 
@@ -102,7 +102,7 @@ _Ladybug Web Shadow Range OBJ Opener_
 * Adjust the scale, position and rotation of the model
 * Drag and drop a file UR into the text edit box and adjust its parameters
 * Use one/two/three fingers to rotate/zoom/pan the display in 3D
-	* Or left/scroll/right with your pointing device 
+	* Or left/scroll/right with your pointing device
 * Click the three bars( 'hamburger menu icon' ) to slide the menu in and out
 * Click the check box to display mesh as solid or wireframe
 * Click the 'I' in the circle to go to the read me file
@@ -126,8 +126,8 @@ _Probably needs a video..._
 
 ## Things you can do by editing the code
 
-<iframe src=https://ladybug-analysis-tools.github.io/ladybug-web/ace-view-r1.html#
-	https://ladybug-analysis-tools.github.io/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html width=100% height=600 ></iframe>
+<iframe src=https://rawgit.com/ladybug-tools/ladybug-web/ace-view-r1.html#
+	https://rawgit.com/ladybug-tools/ladybug-web/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html width=100% height=600 ></iframe>
 
 <input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/blob/gh-pages/shadow-range-obj-opener/ladybug-web-shadow-range-obj-opener-r2.html';
 value='Source code listing' >
@@ -187,6 +187,6 @@ First commit
 ***
 
 <center title="Ladybug Web" >
-# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://ladybug-analysis-tools.github.io/images/ladybug-logo.png" width=48 ></a>
+# <a href=javascript:window.scrollTo(0,0); style=text-decoration:none; ><img src="https://rawgit.com/ladybug-tools/ladybug-tools.github.io/master/images/ladybug_tools_logo.png" width=48 ></a>
 </center>
 
