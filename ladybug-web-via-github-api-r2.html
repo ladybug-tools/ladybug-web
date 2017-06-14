@@ -68,7 +68,7 @@ Uses GitHub API to obtain latest list of apps.
 
 		window.addEventListener ( 'hashchange', onHashChange, false );
 
-		getMarkdown( 'readme.md', header );
+		getMarkdown( 'README.md', header );
 
 		if ( location.hash ) {
 
@@ -210,7 +210,7 @@ Uses GitHub API to obtain latest list of apps.
 				'<b>Description</b>' + b + description + b +
 				'<b>Keywords</b>' + b + keywords + b +
 				'<b>Date</b>' + b + date + b +
-				'<b>Full screen: <a href=index.html#' + folder + 'readme.md >Read Me</a></b>' +
+				'<b>Full screen: <a href=index.html#' + folder + 'README.md >Read Me</a></b>' +
 			'</div>' +
 //			'<div class=readme id=readme' + index + ' ></div>' +
 
@@ -218,7 +218,7 @@ Uses GitHub API to obtain latest list of apps.
 
 //		var rm = document.getElementById( 'readme' + index )
 
-//		getMarkdown( urlSource + folder + 'readme.md', rm );
+//		getMarkdown( urlSource + folder + 'README.md', rm );
 
 		if ( that.contentWindow.controls ) {
 
