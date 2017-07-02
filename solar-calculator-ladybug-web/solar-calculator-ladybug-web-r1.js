@@ -71,6 +71,7 @@
 
 		}
 
+// in degrees
 		return { azimuth: azimuth * r2d, altitude: 90 - zenith * r2d, century: century };
 
 	}
