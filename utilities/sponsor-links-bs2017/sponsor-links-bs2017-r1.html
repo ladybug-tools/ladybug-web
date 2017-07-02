@@ -53,7 +53,7 @@
 			'<div id=menu >' +
 
 				'<h2>' +
-					'<a href=http://jaanga.github.io title="Jaanga - your 3D happy place" > &#x2766 </a><br>' +
+					'<a href=http://ladybug-tools.github.io title="your AEC happy place" > &#x2766 </a><br>' +
 					'<a href="" title="Click here to refresh this page" >' + document.title + '</a>' +
 //					'<a href="" title="Click here to refresh this page" >' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
 					' ~ <a href=../index.html#README.md onmouseover=popHelp.style.display=""; onmouseout=popHelp.style.display="none"; > &#x24D8; </a>' +
@@ -112,6 +112,7 @@
 
 	}
 
+// https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fwww.buildingsimulation2017.org%2Fsponsors.html%22%20and%20compat%3D%22html5%22%20and%20xpath%3D%22%2F%2Fa%5B%40target%3D'_blank'%5D%22&callback=callbackBS
 
 	function setQueryBuildSim( url, callback ) {
 
@@ -119,11 +120,13 @@
 
 		var statement, encodedStatement, query, scr;
 
-		statement = 'select * from html where url="' + url + '" and compat="html5" and xpath="//a[@target=\'_blank\']"';
+//		statement = 'select * from html where url="' + url + '" and compat="html5" and xpath="//a[@target=\'_blank\']"';
+		statement = 'select * from html where url="' + url + '';
+
 		encodedStatement = encodeURIComponent( statement );
 
 		query =	'https://query.yahooapis.com/v1/public/yql?q=' + encodedStatement + '&callback=' + callback;
-
+console.log( 'qq', query );
 		scr = document.body.appendChild( document.createElement( 'script' ) );
 		scr.src = query;
 
@@ -132,8 +135,8 @@
 
 	function callbackBS( response ){
 
-		let links, link, title, url, test, string, txt;
-
+//		let links, link, title, url, test, string, txt;
+console.log( '', response );
 		links = response.results;
 
 		for ( var i = 0; i < links.length; i++ ) {

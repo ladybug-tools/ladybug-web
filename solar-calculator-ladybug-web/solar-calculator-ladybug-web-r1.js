@@ -7,13 +7,14 @@
 	var pi = Math.PI;
 	var pi2 = 2 * pi;
 	var pi05 = 0.5 * pi;
-	var d2r = pi / 180;
-	var r2d = 180 / pi;
+	var d2r = pi / 180; // degrees to radians
+	var r2d = 180 / pi; // radiand to degrees
 	var century, now;
+
 
 	function getSunPosition( date, latitude, longitude ) {
 
-// date is a JavaScript Date object
+// date is a JavaScript Date object which incorporates date and time
 
 		var azimuth, zenith, azimuthDenominator, atmosphere;
 
@@ -73,6 +74,7 @@
 		return { azimuth: azimuth * r2d, altitude: 90 - zenith * r2d, century: century };
 
 	}
+
 
 
 // https://en.wikipedia.org/wiki/Equation_of_time
