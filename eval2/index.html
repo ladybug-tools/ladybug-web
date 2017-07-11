@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang=en >
+<head>
+<meta charset=utf-8 >
+<html>
+<head>
+<style>
+
+body, html {
+	font: 12pt monospace;
+	height: 100%;
+	margin: 0;
+}
+
+a { color: crimson; }
+
+.sidenav {
+	background-color: lightgray;
+	height: 100%;
+	left: 0;
+	overflow-x: hidden;
+	padding: 60px 0 0 0;
+	position: fixed;
+	top: 0;
+	transition: 0.5s;
+	width: 250px;
+	z-index: 1;
+}
+
+.sidenav a {
+	padding: 0px 0px 0px 25px;
+	text-decoration: none;
+	font-size: 25px;
+/*	color: #818181; */
+	display: block;
+	transition: 0.3s;
+}
+
+.sidenav a:hover, a:focus{
+	color: #f1f1f1;
+}
+
+#hamburger {
+	background-color: #edd;
+	cursor:pointer;
+	font-size:30px;
+	left: 250px;
+	line-height: 30px;
+	margin: 0;
+	padding: 5px 15px 8px 10px;
+	position: absolute;
+	top: 20px;
+	transition: left .5s;
+	z-index: 1;
+}
+
+#main {
+/*	background-image: url( 'http://lorempixel.com/400/200' ); */
+	height: 100%;
+	margin-left: 250px;
+	transition: margin-left .5s;
+	padding: 16px;
+	position: relative;
+}
+
+#contents {
+	left: 0;
+	position: absolute;
+	margin: 0 auto;
+	max-width: 600px;
+	right: 0;
+}
+
+pre, blockquote { background-color: #eee; padding: 10px; }
+
+h1 { counter-reset: chapter; }
+body { counter-reset: paragraph;}
+h2 { counter-reset: section; }
+
+div.parCon h2:not( #preamble-and-nine-guiding-principles )::before { counter-increment: chapter; content: 'Chapter ' counter( chapter ) ': '; }
+div.parCon h3::before { counter-increment: section; content: 'Section ' counter( chapter ) '.' counter( section ); }
+div.parCon p::before { counter-increment: paragraph; content: '[' counter( paragraph ) '] '; }
+
+@media screen and (max-height: 450px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a {font-size: 18px;}
+}
+
+
+.logo-office { max-height: 64px; max-width: 96px; padding: 10px;}
+</style>
+
+</head>
+
+<script src=https://cdn.rawgit.com/showdownjs/showdown/master/dist/showdown.min.js ></script>
+
+<body>
+
+
+	<div id=menu class=sidenav ></div>
+
+
+	<div id=main >
+
+		<div id=contents ></div>
+
+	</div>
+
+
+	<div id=hamburger onclick=toggleNav(); > &#9776; slide</div>
+
+<a href="https://github.com/ladybug-tools/ladybug-tools.github.io" ><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+
+<script>
+
+// https://www.w3schools.com/howto/howto_js_off-canvas.asp
+
+	init();
+
+	function init() {
+
+		showdown.setFlavor( 'github' );
+
+		if ( location.hash.match( '.md' ) ) {
+
+
+		} else {
+
+			location.hash = 'home-page.md';
+
+		}
+
+		requestFile( 'menu.md', menu );
+
+		onHashChange();
+
+		window.addEventListener( 'hashchange', onHashChange, false );
+
+		}
+
+
+
+	function onHashChange() {
+
+		var converter;
+
+		converter = new showdown.Converter();
+
+		url = location.hash.slice( 1 );
+
+		requestFile( url, contents );
+
+		document.title = url.split( '/' ).pop();
+
+	}
+
+
+
+	function toggleNav() {
+
+		if ( !menu.style.width || menu.style.width === '250px' ) {
+
+			menu.style.width = '0';
+			hamburger.style.left = '0';
+			main.style.marginLeft = '0';
+
+		} else {
+
+			menu.style.width = '250px';
+			hamburger.style.left = '250px';
+			main.style.marginLeft = '250px';
+
+		}
+
+	}
+
+
+	function requestFile( url, target ) {
+
+		var converter, xhr;
+
+		converter = new showdown.Converter();
+
+		xhr = new XMLHttpRequest();
+		xhr.open( 'get', url, true );
+		xhr.onload = function() {
+
+			target.innerHTML = converter.makeHtml( xhr.responseText ); 
+
+		};
+
+		xhr.send( null );
+
+	}
+
+</script>
+</body>
+</html>
