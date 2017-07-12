@@ -107,7 +107,7 @@
 //					'<p><button onclick=getIt(); >get it</button></p>' +
 
 					'<p id=menuInfo >' +
-						'This is a template or boilerplate file that is frequently used to start-off a Jaanga projects. ' +
+//						'This is a template or boilerplate file that is frequently used to start-off a Jaanga projects. ' +
 					'</p>' +
 				'</details>' +
 
@@ -303,7 +303,7 @@
 
 				geo = new THREE.Geometry();
 				sun = suns.children[ j ].userData.position;
-				radius = 60;
+				radius = 100;
 
 				x = radius * Math.cos( sun.altitude * d2r ) * Math.sin( sun.azimuth * d2r );
 				y = radius * Math.cos( sun.altitude * d2r ) * Math.cos( sun.azimuth * d2r );
@@ -325,22 +325,23 @@
 					if ( p1.distanceTo( intersects[ k ].point ) > 0.1  ) {
 
 						count++;
-console.log( '', i, intersects.length );
+// console.log( '', i, intersects.length );
 
 					}
 
-					if ( i === 53 || i === 0 || i === 25 ) {
-						geo.vertices = [ p1, intersects[ k ].point];
+//					if ( i === 53 || i === 0 || i === 25 ) {
+//						geo.vertices = [ p1, intersects[ k ].point];
+						geo.vertices = [ p1, p1.clone( 0.5 * ( p2.sub( p1 ) ) ) ];
 						line = new THREE.Line( geo, materialLine );
-						scene.add( line );
+//						scene.add( line );
 
 						geometry2 = new THREE.BoxGeometry( 1, 1, 1 );
 						material = new THREE.MeshNormalMaterial();
 						mesh = new THREE.Mesh( geometry2, material );
 						mesh.position.copy( intersects[ k ].point );
-						scene.add( mesh );
+//						scene.add( mesh );
 
-					}
+//					}
 
 				}
 
@@ -348,7 +349,8 @@ console.log( '', i, intersects.length );
 
 			}
 
-	console.log( '', i, count );
+//	console.log( '', i, count );
+
 			box.userData.intersects.push( count );
 
 
