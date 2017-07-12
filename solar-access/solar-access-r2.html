@@ -39,13 +39,13 @@
 	pud.latitude = 37.796
 	pud.longitude = -122.398;
 
-	pud.sunRangeCount = 8;
+	pud.sunRangeCount = 11;
 	pud.sunRangeHelpers = 0;
 	pud.sunRangeIntensity = 0.5;
 	pud.sunRangeMinutes = 60;
 	pud.sunRangePlacards = 1;
 	pud.sunRangeRadius = 75;
-	pud.sunRangeStart = 9;
+	pud.sunRangeStart = 8;
 	pud.offsetThere = -7
 
 	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
@@ -274,68 +274,122 @@
 		var v = function ( x, y, z ){ return new THREE.Vector3( x, y, z ); };
 
 		geometry = new THREE.BoxGeometry( 50, 60, 50, 3, 3, 3 );
-		material = new THREE.MeshNormalMaterial( { wireframe: true } );
+//		material = new THREE.MeshNormalMaterial( { wireframe: true } );
+		material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+		
 		box = new THREE.Mesh( geometry, material );
-		box.position.set( 0, 30, 0 );
+//		box.position.set( 0, 30, 0 );
 
 		scene.add( box );
 		box.updateMatrixWorld( true );
-		box.name = ( 'box' )
-		material = new THREE.LineBasicMaterial( { color: 0x000000 } );
+		box.name = ( 'box' );
+		box.userData.intersects = [];
+		
+		materialLine = new THREE.LineBasicMaterial( { color: 0x000000 } );
 
 		for ( let i = 0; i < geometry.vertices.length; i++ ) {
 
-			pos = box.geometry.vertices[ i ].clone();
-			pos.applyMatrix4( box.matrixWorld );
+			p1 = box.geometry.vertices[ i ].clone();
+			p1.applyMatrix4( box.matrixWorld );
+
+			placard = drawPlacard( '' + i, 0.02, 80, p1.x, p1.y, p1.z );
+//			scene.add( placard );
+
+			count = 0;
 
 			for ( let j = 0; j < suns.children.length; j++ ) {
-			
+
 //				let geo, line, raycaster, intersects;
-				
+
 				geo = new THREE.Geometry();
 				sun = suns.children[ j ].userData.position;
-				radius = 10;
+				radius = 60;
 
 				x = radius * Math.cos( sun.altitude * d2r ) * Math.sin( sun.azimuth * d2r );
 				y = radius * Math.cos( sun.altitude * d2r ) * Math.cos( sun.azimuth * d2r );
 				z = radius * Math.sin( sun.altitude * d2r );
-				p2 = pos.clone().add( v( x, y, z ) );
-				
-				geo.vertices = [ p2, pos ];
-				line = new THREE.Line( geo, material );
-				scene.add( line );
+				p2 = p1.clone().add( v( x, y, z ) );
 
 				raycaster = new THREE.Raycaster();
-				directionVectorOne = p2.clone().sub( pos );
-				raycaster.set( pos, directionVectorOne.normalize() );
-	
+				directionVector = p1.clone().sub( p2 );
+				raycaster.set( p2, directionVector.normalize() );
+				raycaster.near = 0.1;
+
 				intersects = raycaster.intersectObject( box );
 
+//				count = intersects.length > 1 ? ++count : count;
+
 				for ( k = 0; k < intersects.length; k++ ) {
-						
-					if ( pos.distanceTo( intersects[ k ].point ) === 0 ) {
-					
-	console.log( '', intersects );
+
+
+					if ( p1.distanceTo( intersects[ k ].point ) > 0.1  ) {
+
+						count++;
+console.log( '', i, intersects.length );
+
+					}
+
+					if ( i === 53 || i === 0 || i === 25 ) {
+						geo.vertices = [ p1, intersects[ k ].point];
+						line = new THREE.Line( geo, materialLine );
+						scene.add( line );
 
 						geometry2 = new THREE.BoxGeometry( 1, 1, 1 );
 						material = new THREE.MeshNormalMaterial();
 						mesh = new THREE.Mesh( geometry2, material );
 						mesh.position.copy( intersects[ k ].point );
 						scene.add( mesh );
-					
+
 					}
-						
+
 				}
+
+
 
 			}
 
+	console.log( '', i, count );
+			box.userData.intersects.push( count );
 
+
+		}
+		
+		applyVertexColors( box )
+
+	}
+
+
+		function applyVertexColors( mesh ) {
+
+//		let colors = [ '#f00', '#d00', '#b00', '#900', '#700', '#005', '#007', '#009', '#00b', '#00d', '#00f' ];
+		
+		let colors = [ 'rgb(49, 54, 149)', 'rgb(69, 117, 180)', 'rgb(116, 173, 209)', 'rgb(171, 217, 233)', 'rgb(224, 243, 248)', 'rgb(255, 255, 191)', 
+			'rgb(254, 224, 144)', 'rgb(253, 174, 97)', 'rgb(244, 109, 67)', 'rgb(215, 48, 39)', 'rgb(165, 0, 38)' ];
+		for ( var i = 0, faces = mesh.geometry.faces, len = faces.length; i < len; i++) {
+
+			for ( var j = 0, color; j < 3; j ++ ) {
+
+				color = new THREE.Color();
+
+// random
+//				faces[ i ].vertexColors[ j ] = color.setHex( Math.random() * 0xffffff );
+
+// algorithm
+				var faceIndices = [ 'a', 'b', 'c' ];
+				vertexIndex = faces[ i ][ faceIndices[ j ] ];
+				point = mesh.geometry.vertices[ vertexIndex ];
+				col = colors[ 11 - mesh.userData.intersects[ vertexIndex ] ];
+				
+//				faces[ i ].vertexColors[ j ] = color.setHSL( ( point.y / 50 + 1 ) / 2, 1.0, 0.5 );
+				faces[ i ].vertexColors[ j ] = color.setStyle( col );
+			}
 
 		}
 
 	}
 
-
+	
+	
 	function drawPlacard( text, scale, color, x, y, z ) {
 
 // 2016-02-27 ~ https://github.com/jaanga/jaanga.github.io/tree/master/cookbook-threejs/functions/placards
@@ -423,7 +477,7 @@
 		material = new THREE.MeshNormalMaterial();
 
 		ground = new THREE.Mesh( geometry, material );
-		ground.position.set( 0, -10, 0 );
+		ground.position.set( 0, -50, 0 );
 
 		edgesGeometry = new THREE.EdgesGeometry( geometry ); // or WireframeGeometry
 		edgesMaterial = new THREE.LineBasicMaterial( { color: 0x000000 } );
@@ -436,7 +490,7 @@
 		scene.add( axisHelper );
 
 		gridHelper = new THREE.GridHelper( 100, 10 );
-		gridHelper.position.set( 0, -7.5, 0 );
+		gridHelper.position.set( 0, -47.5, 0 );
 		scene.add( gridHelper );
 
 	}
