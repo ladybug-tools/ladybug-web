@@ -3,7 +3,7 @@
 Solar Access Read Me
 ===
 
-<http://www.ladybug.tools/ladybug-web/solar-access/solar-access-r2.html>
+<http://www.ladybug.tools/ladybug-web/solar-access/solar-access-r3.html>
 
 
 ## To-Do
@@ -18,6 +18,7 @@ Solar Access Read Me
 * Face coloring implemented
 * A number of issues resolved - much learned in process
 * generally: looking good
+
 
 ### 2017-07-12 ~ Theo
 
