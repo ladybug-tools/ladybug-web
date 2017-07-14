@@ -30,6 +30,7 @@
 
 	var parameters = new THREE.Object3D();
 	var pud = parameters.userData;
+	let centroids;
 
 // Paris
 //	pud.latitude = 48.8566;
@@ -48,13 +49,19 @@
 	pud.sunRangeStart = 8;
 	pud.offsetThere = -7
 
-	var daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+	let daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+	let colors = [ 'rgb( 49, 54, 149 )', 'rgb( 69, 117, 180 )', 'rgb( 116, 173, 209 )', 'rgb( 171, 217, 233 )', 'rgb(224, 243, 248)', 'rgb(255, 255, 191)',
+			'rgb(254, 224, 144)', 'rgb(253, 174, 97)', 'rgb(244, 109, 67)', 'rgb(215, 48, 39)', 'rgb(165, 0, 38)' ];
+
 
 	var suns;
 	var sunHelpers = [];
 
 	let stats, renderer, scene, camera, controls, mesh;
 	let ground, gridHelper, axisHelper;
+	let v = function ( x, y, z ){ return new THREE.Vector3( x, y, z ); };
+
 
 	init();
 	animate();
@@ -95,7 +102,7 @@
 
 				'<h2>' +
 					'<a href=http://jaanga.github.io title="Jaanga - your 3D happy place" > &#x2766 </a>' + b +
-					'<a href="" title="Click here to refresh this page" >' + location.pathname.split( '/' ).pop().slice( 0, -5).replace( /-/g, ' ' ) + '</a>' +
+					'<a href="" title="Click here to refresh this page" >' + location.pathname.split( '/' ).pop().slice( 0, -5 ).replace( /-/g, ' ' ) + '</a>' +
 					' ~ <a href=index.html#READE.md onmouseover=popHelp.style.display=""; onmouseout=popHelp.style.display="none"; > &#x24D8; </a>' +
 				'</h2>' +
 				'<div class=popUp id=popHelp style=display:none; ><p>Hi there!</p>Click the i-in-circle, info icon for latest updates.</div>' +
@@ -193,9 +200,6 @@
 
 
 
-
-
-
 	function drawSunRange() {
 
 		var sun, sunHelper, dateThere, d;
@@ -212,22 +216,6 @@
 			material = new THREE.MeshBasicMaterial( { color: 0xffee00 } );
 			mesh = new THREE.Mesh( geometry, material );
 			sun.add( mesh );
-
-			d = 50;
-			sun.shadow.camera.left = -d;
-			sun.shadow.camera.right = d;
-			sun.shadow.camera.top = d;
-			sun.shadow.camera.bottom = -d;
-
-/*
-			sun.shadow.camera.near = 0;
-			sun.shadow.camera.far = 5 * d;
-			sun.shadow.bias = -0.001; // default 0
-			sun.shadow.mapSize.width = 2048;  // default 512
-			sun.shadow.mapSize.height = 2048;
-*/
-
-			sun.castShadow = true;
 
 			suns.add( sun );
 
@@ -271,29 +259,73 @@
 
 	function drawCube() {
 
-		var v = function ( x, y, z ){ return new THREE.Vector3( x, y, z ); };
 
 		geometry = new THREE.BoxGeometry( 50, 60, 50, 3, 3, 3 );
+
+//				geometry.computeFaceNormals();
+//				geometry.computeVertexNormals();
 //		material = new THREE.MeshNormalMaterial( { wireframe: true } );
-		material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors,  side: 2 } );  // 2 sides for intersects to work!
-		
+//		material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+		material = new THREE.MeshBasicMaterial( { color: 0xffffff, vertexColors: THREE.FaceColors, side: 2, wireframe: false } ); // 2 sides for intersects to work!
+
 		box = new THREE.Mesh( geometry, material );
-//		box.position.set( 0, 30, 0 );
+		box.position.set( 0, 10, 0 );
 
 		scene.add( box );
-		box.updateMatrixWorld( true );
+//		box.updateMatrixWorld( true );
 		box.name = ( 'box' );
-		box.userData.intersects = [];
-		
+
+		drawCentroids( box );
+
+	}
+
+
+	function drawCentroids( mesh ) {
+
+		let vertices;
+		let geometry, material;
+
+		helper = new THREE.FaceNormalsHelper( mesh, 5, 0x00ff00, 1 );
+		scene.add( helper );
+
+		vertices = helper.geometry.attributes.position.array;
+
+		geometry = new THREE.BoxBufferGeometry( 1, 1, 3 );
+		material = new THREE.MeshNormalMaterial();
+
+		centroids = [];
+
+		for ( let i = 0; i < vertices.length; ) {
+
+			vertex = v( vertices[ i++ ], vertices[ i++ ], vertices[ i++ ] );
+			i += 3;
+
+			centroid = new THREE.Mesh( geometry, material );
+			centroid.position.copy( vertex );
+			scene.add( centroid );
+			centroids.push( centroid );
+
+		}
+
+		getIntersectCount( mesh );
+
+	}
+
+
+	function getIntersectCount( mesh ) {
+
+		mesh.userData.intersects = [];
+
 		materialLine = new THREE.LineBasicMaterial( { color: 0x000000 } );
+		radius = 5;
 
-		for ( let i = 0; i < geometry.vertices.length; i++ ) {
 
-			p1 = box.geometry.vertices[ i ].clone();
-			p1.applyMatrix4( box.matrixWorld );
+		for ( let i = 0; i < centroids.length; i++ ) {
+
+			p1 = centroids[ i ].position;
 
 			placard = drawPlacard( '' + i, 0.02, 80, p1.x, p1.y, p1.z );
-//			scene.add( placard );
+			scene.add( placard );
 
 			count = 0;
 
@@ -301,26 +333,29 @@
 
 //				let geo, line, raycaster, intersects;
 
-				geo = new THREE.Geometry();
 				sun = suns.children[ j ].userData.position;
-				radius = 100;
 
 				x = radius * Math.cos( sun.altitude * d2r ) * Math.sin( sun.azimuth * d2r );
 				y = radius * Math.cos( sun.altitude * d2r ) * Math.cos( sun.azimuth * d2r );
 				z = radius * Math.sin( sun.altitude * d2r );
-				p2 = p1.clone().add( v( x, y, z ) );
+				p2 = v( x, y, z );
 
-				raycaster = new THREE.Raycaster();
-				directionVector = p1.clone().sub( p2 );
-				raycaster.set( p2, directionVector.normalize() );
-				raycaster.near = 0.1;
+				var raycaster = new THREE.Raycaster();
 
-				intersects = raycaster.intersectObject( box );
+				raycaster.set( p1, p2.clone().normalize() );
+
+				var intersects = raycaster.intersectObject( mesh );
+
+				geo = new THREE.Geometry();
+				geo.vertices = [ p1, p1.clone().add( p2 ) ];
+				line = new THREE.Line( geo, materialLine );
+				scene.add( line );
+
+//console.log( '', intersects.length );
 
 //				count = intersects.length > 1 ? ++count : count;
 
 				for ( k = 0; k < intersects.length; k++ ) {
-
 
 					if ( p1.distanceTo( intersects[ k ].point ) > 0.1  ) {
 
@@ -329,69 +364,58 @@
 
 					}
 
-//					if ( i === 53 || i === 0 || i === 25 ) {
-//						geo.vertices = [ p1, intersects[ k ].point];
-						geo.vertices = [ p1, p1.clone( 0.5 * ( p2.sub( p1 ) ) ) ];
-						line = new THREE.Line( geo, materialLine );
-//						scene.add( line );
+					if ( i === 0 || i === 26 || i === 99 ) {
 
-						geometry2 = new THREE.BoxGeometry( 1, 1, 1 );
-						material = new THREE.MeshNormalMaterial();
-						mesh = new THREE.Mesh( geometry2, material );
-						mesh.position.copy( intersects[ k ].point );
-//						scene.add( mesh );
+						geo2 = new THREE.Geometry();
+						geo2.vertices = [ p1, intersects[ k ].point];
+						line2 = new THREE.Line( geo2, materialLine );
+						scene.add( line2 );
 
-//					}
+//						geometry2 = new THREE.BoxGeometry( 1, 1, 1 );
+//						material2 = new THREE.MeshNormalMaterial();
+//						mesh2 = new THREE.Mesh( geometry2, material2 );
+//						mesh2.position.copy( intersects[ k ].point );
+//						scene.add( mesh2 );
+
+					}
 
 				}
 
-
-
 			}
 
-//	console.log( '', i, count );
+//console.log( '', i, count );
 
-			box.userData.intersects.push( count );
+			mesh.userData.intersects.push( count );
 
 
 		}
-		
-		applyVertexColors( box )
+
+		applyFaceColors( mesh );
 
 	}
 
 
-		function applyVertexColors( mesh ) {
 
-//		let colors = [ '#f00', '#d00', '#b00', '#900', '#700', '#005', '#007', '#009', '#00b', '#00d', '#00f' ];
-		
-		let colors = [ 'rgb(49, 54, 149)', 'rgb(69, 117, 180)', 'rgb(116, 173, 209)', 'rgb(171, 217, 233)', 'rgb(224, 243, 248)', 'rgb(255, 255, 191)', 
-			'rgb(254, 224, 144)', 'rgb(253, 174, 97)', 'rgb(244, 109, 67)', 'rgb(215, 48, 39)', 'rgb(165, 0, 38)' ];
-		for ( var i = 0, faces = mesh.geometry.faces, len = faces.length; i < len; i++) {
+	function applyFaceColors( mesh ) {
 
-			for ( var j = 0, color; j < 3; j ++ ) {
+		let faces;
 
-				color = new THREE.Color();
+		faces = mesh.geometry.faces;
 
-// random
-//				faces[ i ].vertexColors[ j ] = color.setHex( Math.random() * 0xffffff );
+		for ( var i = 0; i < faces.length; i++ ) {
 
-// algorithm
-				var faceIndices = [ 'a', 'b', 'c' ];
-				vertexIndex = faces[ i ][ faceIndices[ j ] ];
-				point = mesh.geometry.vertices[ vertexIndex ];
-				col = colors[ 11 - mesh.userData.intersects[ vertexIndex ] ];
-				
-//				faces[ i ].vertexColors[ j ] = color.setHSL( ( point.y / 50 + 1 ) / 2, 1.0, 0.5 );
-				faces[ i ].vertexColors[ j ] = color.setStyle( col );
-			}
+			color = new THREE.Color();
+			face = faces[ i ];
+			col = colors[ 11 - mesh.userData.intersects[ i ] ];
+
+			face.color = color.setStyle( col );
 
 		}
 
 	}
 
-	
-	
+
+
 	function drawPlacard( text, scale, color, x, y, z ) {
 
 // 2016-02-27 ~ https://github.com/jaanga/jaanga.github.io/tree/master/cookbook-threejs/functions/placards

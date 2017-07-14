@@ -12,6 +12,21 @@ Solar Access Read Me
 
 ## Change Log ~ 
 
+
+### 2017-07-13 ~ Theo
+
+* Face coloring implemented
+* A number of issues resolved - much learned in process
+* generally: looking good
+
+### 2017-07-12 ~ Theo
+
 * Correct number of intersections being found
 * Vertex colors added
 * Added standard Ladybug colors
+
+
+### 2017-07-11 ~ Theo
+
+* Started finding intersections
+* Added testing code and display 
