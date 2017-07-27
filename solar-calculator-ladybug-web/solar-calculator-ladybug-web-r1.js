@@ -3,6 +3,9 @@
 // Equations based on NOAA’s Solar Calculator; all angles in radians.
 // http://www.esrl.noaa.gov/gmd/grad/solcalc/
 // http://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
+// https://www.esrl.noaa.gov/gmd/grad/solcalc/main.js
+
+// https://gist.githubusercontent.com/mbostock/7784f4b2c7838b893e9b/raw/01ec896bf379c960c4cdb27150986ae5dffd4905/solar-calculator.js
 
 	var pi = Math.PI;
 	var pi2 = 2 * pi;
@@ -78,9 +81,10 @@
 
 
 
-// https://en.wikipedia.org/wiki/Equation_of_time
 
 	function equationOfTime( century ) {
+
+// https://en.wikipedia.org/wiki/Equation_of_time
 
 		var e = eccentricityEarthOrbit( century );
 		var y = Math.pow( Math.tan( obliquityCorrection( century ) / 2 ), 2 );
@@ -103,7 +107,7 @@
 	}
 
 	function solarApparentLongitude(century) {
-
+// 2x 2r??
 		return solarTrueLongitude( century ) - ( 0.00569 + 0.00478 * Math.sin( ( 125.04 - 1934.136 * century ) * d2r ) ) * d2r;
 
 	}
@@ -111,6 +115,8 @@
 	function solarTrueLongitude( century ) {
 
 		return solarGeometricMeanLongitude( century ) + solarEquationOfCenter( century );
+
+//https://github.com/mbostock/solar-calculator/blob/master/src/trueLongitude.js
 
 	}
 
@@ -145,6 +151,9 @@
 	}
 
 	function meanObliquityOfEcliptic( century ) {
+
+// https://en.wikipedia.org/wiki/Ecliptic#Obliquity_of_the_ecliptic
+// https://en.wikipedia.org/wiki/Axial_tilt
 
 		return ( 23 + ( 26 + ( 21.448 - century * ( 46.8150 + century * ( 0.00059 - century * 0.001813 ) ) ) / 60 ) / 60 ) * d2r;
 

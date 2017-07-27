@@ -583,13 +583,13 @@ Shadows display on a 2D map.
 
 			}, function() {
 
-				handleGeoocationError( true, infoWindow, googleMap.getCenter() );
+				handleGeoLocationError( true, infoWindow, googleMap.getCenter() );
 
 			});
 
 		} else {
 
-			handleGeoocationError( false, infoWindow, googleMap.getCenter() );
+			handleGeoLocationError( false, infoWindow, googleMap.getCenter() );
 
 		}
 
@@ -671,7 +671,7 @@ Shadows display on a 2D map.
 
 	}
 
-	function handleGeoocationError( browserHasGeolocation, infoWindow, pos ) {
+	function handleGeoLocationError( browserHasGeolocation, infoWindow, pos ) {
 
 		var message;
 

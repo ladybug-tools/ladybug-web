@@ -46,6 +46,8 @@ See work discussed in the [Ladybug Web Solar Calculator Read Me ]( https://ladyb
 
 ## Links of interest
 
+* https://github.com/mbostock/solar-calculator
+	* Well documented
 * https://bost.ocks.org/mike/
 * https://bl.ocks.org/mbostock
 * https://bl.ocks.org/mbostock/c5504ab3cd25f93af26a
