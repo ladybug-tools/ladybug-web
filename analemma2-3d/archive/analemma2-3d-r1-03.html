@@ -18,8 +18,8 @@
 	
 	body { font: 11pt monospace; margin: 0; overflow: hidden;  }
 	h2 { margin: 0; text-align: center; }
-	#header { left: 0; margin: 0 auto; max-width: 500px; position: absolute; right: 0; text-align: center;}
-	#menu { left: 0; margin: 20px; position: absolute; top: 50px; z-index: 10; }
+	#menu { left: 0; margin: 0 auto; max-width: 500px; position: absolute; right: 0; text-align: center;}
+	#debug { left: 0; margin: 20px; position: absolute; top: 50px; z-index: 10; }
 
 </style>
 </head>
@@ -28,38 +28,36 @@
 <script src = "https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js" ></script>
 <script src = "https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js" ></script>
 
-	<div id="header" >
+	<div id="menu" >
 		<div id="title" ></div>
 		<div id="logHeights" ></div>
 		<div id="logIntersect" ></div>
 		
 	</div>
 
-	<div id = "menu" >
-		<details>
-			<summary>Calculations</summary>
-			<div id="calculations"  style="background-color: white; "></div>
-
-		</details>
-		<details>
-			<summary>Images</summary>
-			<div id="heightmap" ></div>
-			<div id="raster" ></div>
+	<div id = "debug" >
+		<div id="menuGeocoderMessage" style="background-color: white; " ></div>
+		<details open>
+		<div id="heightmap" ></div>
+		<div id="raster" ></div>
 		</details>
 
 	</div>
 
 <script>
 
-//Sydney, Australia
+	var placeDefault = 'Sydney, Australia';
 	var defaultLatitude = -33.8675;
 	var defaultLongitude = 151.207;
-	var defaultOffsetUTC = 600;
+	var offsetThere = 10;
 
-// San Francisco
 	var defaultLatitude = 37.796;
 	var defaultLongitude = -122.398;
 	var defaultOffsetUTC = -420;
+
+// Coit Tower
+//	var defaultLatitude = 37.8024;
+//	var defaultLongitude = -122.4058;
 
 	let sydney = '^latitude^:^-33.8675^,^longitude^:^151.207^,^zoom^:^16^';
 //	let sfHyatt = '{"latitude":"37.796","longitude":"-122.398","zoom":"16"}';
@@ -82,7 +80,7 @@
 
 	let countVertices = 0;
 
-	var lightAmbient, lightDirectional, shadowBox;
+	var lightAmbient, lightDirectional;
 
 	var axisHelper;
 
@@ -114,7 +112,7 @@
 		parent.document.title = 'Analemma2 3D';
 
 
-		title.innerHTML = '<h1><a href="" >' + document.title +'</a> &nbsp; <a href="index.html" target="_blank">&#x1F5D7;</a></h1>';
+		title.innerHTML = '<h1><a href="" >' + document.title +'</a></h1>';
 
 		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true }  );
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -146,20 +144,21 @@
 
 		if ( !location.hash ) {
 
-//			location.hash = santaBarbara; //
-			location.hash = sfHyatt;
+			location.hash = santaBarbara; //
+//			location.hash = sfHyatt; //coit; // alcatraz;
 
 			return;
-
 		}
 
 		scene.remove( object3D, ground, structures );
 		object3D = new THREE.Object3D();
 		structures = new THREE.Object3D();
-		ground = new THREE.Object3D();
 		scene.add( object3D, structures );
 
-		getParametersFromHash();
+		structuresArray = [];
+
+		parameters = getParametersFromHash();
+
 
 	}
 
@@ -167,7 +166,7 @@
 
 	function getParametersFromHash() {
 
-		let hashes, regex, str, params;
+		let hashes, regex, str, params, parameters;
 
 		hashes = location.hash.split( '#' );
 
@@ -179,7 +178,7 @@
 
 		params = JSON.parse( str );
 
-//		params = JSON.parse( hashes );  // chrome only parses JSON hash
+//		params = JSON.parse( hashes );  // chrome only
 
 		parameters = {};
 
@@ -190,19 +189,17 @@
 
 		getOffsetUTC( parameters.latitude, parameters.longitude );
 
-//		parameters.x = lon2tile( parameters.longitude, parameters.zoom );
-//		parameters.y = lat2tile( parameters.latitude, parameters.zoom );
+		parameters.x = lon2tile( parameters.longitude, parameters.zoom );
+		parameters.y = lat2tile( parameters.latitude, parameters.zoom );
 
-		parameters.heightScale = 1;
 		parameters.side = 2;
 		parameters.transparent = true;
 
-		parameters.structuresArray = [];
-
 //console.log( 'parameters', parameters );
 
-	}
+		return parameters;
 
+	}
 
 
 	function getOffsetUTC( lat, lon ) {
@@ -235,9 +232,7 @@
 
 	}
 
-
-
-	function getCalcs( parameters ) {
+	function getCalcs( parameters) {
 
 		mPixel = [ 156412, 78206, 39103, 19551, 9776, 4888, 2444, 1222, 610.984, 305.492, 152.746, 76.373, 38.187,
 			19.093, 9.547, 4.773, 2.387, 1.193, 0.596, 0.298 ]
@@ -245,7 +240,8 @@
 		let tileX, tileY;
 		let latMin, latMax, lonMin, lonMax;
 		let latDelta, lonDelta;
-		let latitude, longitude, zoom;
+
+		menuGeocoderMessage.innerHTML = '';
 
 		latitude = parameters.latitude;
 		longitude = parameters.longitude;
@@ -272,10 +268,8 @@
 		latPixelsPerDegree = 256 / latDelta;
 		lonPixelsPerDegree = 256 / lonDelta;
 
-		metersPerPixel = mPixel[ zoom ];
+		metersPerPixel = mPixel[ zoom ]
 		metersPerTile = metersPerPixel * 256;
-
-		parameters.metersPerPixel = metersPerPixel;
 
 		parameters.latDelta = latDelta;
 		parameters.lonDelta = lonDelta;
@@ -310,37 +304,42 @@
 		parameters.hours =  d.getUTCHours();
 		parameters.minutes = d.getUTCMinutes();
 
-		calculations.innerHTML =
+		menuGeocoderMessage.innerHTML +=
 
-			'<p>Latitude: ' + latitude.toFixed( 4 ) + '</p>' +
-			'<p>Longitude: ' + longitude.toFixed( 4 ) + '</p>' +
-			'<p>UTC Offset: ' + parameters.offsetUTC + '</p>' +
+			'<details>' +
 
-			'<p>' +
-				'zoom: ' + zoom + ' - tile X: ' + tileX + ' - tile Y: ' + tileY +
-			'</p>' +
+				'<summary>Geo Calculations</summary>' +
+				'<p>Latitude: ' + latitude.toFixed( 4 ) + '</p>' +
+				'<p>Longitude: ' + longitude.toFixed( 4 ) + '</p>' +
+				'<p>UTC Offset: ' + parameters.offsetUTC + '</p>' +
 
-			'<p>' +
-				'lat Min: ' + latMin.toFixed( 4 ) + ' - latMax: ' + latMax.toFixed( 4 ) +
-			'</p>' +
+				'<p>' +
+					'zoom: ' + zoom + ' - tile X: ' + tileX + ' - tile Y: ' + tileY +
+				'</p>' +
 
-			'<p>' +
-				'lon Min: ' + lonMin.toFixed( 4 ) + ' - lonMax: ' + lonMax.toFixed( 4 ) +
-			'</p>' +
+				'<p>' +
+					'lat Min: ' + latMin.toFixed( 4 ) + ' - latMax: ' + latMax.toFixed( 4 ) +
+				'</p>' +
 
-			'<p> latDelta: ' + latDelta.toFixed( 6 ) + ' lonDelta: ' + lonDelta.toFixed( 6 ) + '</p>' +
+				'<p>' +
+					'lon Min: ' + lonMin.toFixed( 4 ) + ' - lonMax: ' + lonMax.toFixed( 4 ) +
+				'</p>' +
 
-			'<p> latDegreesPerPixel: ' + latDegreesPerPixel.toFixed( 6 ) + ' lonDegreesPerPixel: ' + lonDegreesPerPixel.toFixed( 6 ) + '</p>' +
+				'<p> latDelta: ' + latDelta.toFixed( 6 ) + ' lonDelta: ' + lonDelta.toFixed( 6 ) + '</p>' +
 
-			'<p> latPixelsPerDegree: ' + latPixelsPerDegree.toFixed( 1 ) + ' lonPixelsPerDegree: ' + lonPixelsPerDegree.toFixed( 1 ) + '</p>' +
+				'<p> latDegreesPerPixel: ' + latDegreesPerPixel.toFixed( 6 ) + ' lonDegreesPerPixel: ' + lonDegreesPerPixel.toFixed( 6 ) + '</p>' +
 
-			'<p>' +
-				'metersPerPixel: ' + metersPerPixel.toFixed( 4 ) +
-			'</p>' +
+				'<p> latPixelsPerDegree: ' + latPixelsPerDegree.toFixed( 1 ) + ' lonPixelsPerDegree: ' + lonPixelsPerDegree.toFixed( 1 ) + '</p>' +
 
-			'<p>' +
-				'metersPerTile: ' + metersPerTile.toFixed( 4 ) +
-			'</p>' +
+				'<p>' +
+					'metersPerPixel: ' + metersPerPixel.toFixed( 4 ) +
+				'</p>' +
+
+				'<p>' +
+					'metersPerTile: ' + metersPerTile.toFixed( 4 ) +
+				'</p>' +
+
+			'</details>' +
 
 		'';
 
@@ -360,7 +359,7 @@
 
 		if ( !lightAmbient ) {
 
-			lightAmbient = new THREE.AmbientLight( 0x888888 );
+			lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
 			scene.add( lightAmbient );
 
 		}
@@ -384,13 +383,11 @@
 		lightDirectional.castShadow = true;
 		sun.add( lightDirectional );
 
-		shadowBox = new THREE.CameraHelper( lightDirectional.shadow.camera )
-		sun.add( shadowBox );
+		sun.add( new THREE.CameraHelper( lightDirectional.shadow.camera ) );
 		lightDirectional.target = analemma;
 
 		setSunPosition();
 	}
-
 
 
 	function setSunPosition() {
@@ -409,6 +406,13 @@
 	}
 
 
+	function setHours() {
+
+		parameters.hours = parseInt( parent.inpHours.value, 10 );
+		setSunPosition();
+console.log( '', parameters.hours );
+
+	}
 
 	function drawAnalemma() {
 
@@ -632,9 +636,7 @@
 		let heightmapCanvas, heightmapContext;
 		let scaleTerrain, data, vertices, r, g, b;
 
-		scaleTerrain = parameters.heightScale * 100 / ( 256 * parameters.metersPerPixel );
-
-//console.log( 'scaleTerrain', scaleTerrain, parameters.metersPerPixel);
+		scaleTerrain = 0.1; //how to calculate this??;
 
 		heightmapCanvas = document.createElement( 'canvas' );
 
@@ -670,18 +672,16 @@
 		geometry.computeVertexNormals();
 //		geometryGround.center();
 		material = new THREE.MeshNormalMaterial();
-		scene.remove( ground );
 		ground = new THREE.Mesh( geometry, material );
 		ground.castShadow = true;
 		ground.receiveShadow = true;
 
-//		scene.add( ground );
+		scene.add( ground );
+
+		setCamera();
 
 		drawMapOverlay();
 		getStructures();
-
-
-		setCamera();
 
 	}
 
@@ -759,8 +759,6 @@
 					ground.material = new THREE.MeshPhongMaterial( { color: 0xffffff, map: texture, side: 2, opacity: opacity , transparent: true } );
 					ground.material.needsUpdate = true;
 
-					scene.add( ground );
-
 				}
 
 			}
@@ -773,14 +771,6 @@
 
 	function getStructures() {
 
-
-		if ( parameters.zoom < 15 || parameters.zoom > 16 ) {
-
-			logIntersect.innerHTML = 'No structures at this zoom level - yet'
-
-			return;
-
-		}
 
 		urlJSON = 'https://b.data.osmbuildings.org/0.2/anonymous/tile/' + parameters.zoom  + '/' + parameters.x + '/' + parameters.y + '.json';
 
@@ -904,6 +894,7 @@ console.log( 'json', i, json.features[ i ] );
 		}
 
 	}
+
 
 
 

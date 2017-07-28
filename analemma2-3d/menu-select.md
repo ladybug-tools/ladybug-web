@@ -5,7 +5,7 @@ Ladybug Web
 
 ***
 
-[<span class="button" style=background-color:#999; >Select</span>]( #menu.md ) [<span class="button">Locate</span>]( #menu-geocoder.md )
+[<span class="button" style=background-color:#999; >Select</span>]( #menu.md ) [<span class="button">Locate</span>]( #menu-locate.md )
 
 <a href="javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='http://rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()" title="Mr.doob's Stats.js" >Show statistics</a>
 
@@ -16,13 +16,15 @@ Ladybug Web
 Full screen [Analemma2 3D]( analemma2-3d-r1.html )
 
 
-### [Downtown San Francisco / Hyatt Embarcadero]( #analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ "86 structures" )
+### [Downtown San Francisco / Hyatt Embarcadero]( #analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ "86 structures" ) [&#x1F5D7;]( analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ )
 
 <!--
 ### [San Francisco ]( #analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ "86 structures" )
+
+[&#x1F5D7;](  )
 -->
 
-### [Marin]( #analemma2-3d-r1.html#^latitude^:^37.826068,^,^longitude^:^-122.479592^,^zoom^:^15^ "10 structures" )
+### [Marin]( #analemma2-3d-r1.html#^latitude^:^37.826068,^,^longitude^:^-122.479592^,^zoom^:^15^ "10 structures" ) [&#x1F5D7;]( analemma2-3d-r1.html#^latitude^:^37.826068,^,^longitude^:^-122.479592^,^zoom^:^15^ )
 
 
 ### [Alcatraz]( #analemma2-3d-r1.html#^latitude^:^37.8270^,^longitude^:^-122.423^,^zoom^:^16^ "12 structures" )

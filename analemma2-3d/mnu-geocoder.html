@@ -31,7 +31,7 @@
 
 // https://developers.google.com/maps/documentation/javascript/examples/geocoding-simple
 
-  let geocoder;
+	let geocoder;
 
 	initGeocoder();
 
@@ -51,7 +51,11 @@
 
 		);
 
-//		parent.main.innerHTML = '<iframe id=mainIframe class=ifr src="analemma2-3d-r1.html" ></iframe>';
+		if ( !parent.mainIframe ) {
+
+			parent.main.innerHTML = '<iframe id=mainIframe class=ifr src="analemma2-3d-r1.html" ></iframe>';
+
+		}
 
 	}
 
@@ -118,9 +122,11 @@
 				'<p>hash<br>' + hash + '</p>' +
 			'';
 
-			parent.mainIframe.contentWindow.location.hash = hash;
+//			parent.mainIframe.contentWindow.location.hash = hash;
 
-			parent.calculations.innerHTML = txt;
+			parent.location.hash = 'analemma2-3d-r1.html#' + hash;
+
+			parent.info.innerHTML = txt;
 
 			parent.place = place;
 			parent.offsetUTC = place.utc_offset
