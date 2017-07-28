@@ -53,9 +53,7 @@ We are here to provide you with mapping code you can tinker with and learn to ha
 
 ## Issues
 
-* 2017-07-26 ~ Not removing geometry and lights properly
-* 2017-07-26 ~ some raster tiles incorrectly offset 
-* 2017-07-24 ~ heights of buildings are frequently incorrectly calculated
+
 * 2017-07-24 ~ Most [geoJson features]( https://en.wikipedia.org/wiki/GeoJSON ) are not yet implemented
 
 Not all tiles have 3D building data
@@ -78,6 +76,13 @@ Not all tiles have 3D building data
 * <https://github.com/jaanga/jaanga.github.io/tree/master/terrain4/terrain-tiles-structures>
 
 ### Change Log
+
+* 2017-07-26 ~ Not removing geometry and lights properly
+* 2017-07-26 ~ some raster tiles incorrectly offset 
+* 2017-07-24 ~ heights of buildings are frequently incorrectly calculated
+
+
+### 2017-07-27 ~ Theo
 
 
 ### 2017-07-26 ~ Theo

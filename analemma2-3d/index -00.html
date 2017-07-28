@@ -23,7 +23,7 @@ a { color: crimson; }
 blockquote, pre { background-color: #eee; padding: 10px; }
 
 
-.center { height: 100%; left: 0; margin: 0 auto; max-width: 600px; padding: 0 0 0 55px; position: absolute; right: 0; }
+.center { height: 100%; left: 0; margin: 0 auto; max-width: 600px; position: absolute; right: 0; }
 
 .ifr { border-width: 0; height: 100%; margin: 0; width: 100%; }
 
@@ -33,7 +33,7 @@ blockquote, pre { background-color: #eee; padding: 10px; }
 .menu a { text-decoration: none; }
 .menu a:hover, .menu a:focus{ color: #f1f1f1; }
 
-.menu h2, .menu h3, .menu h4, .menu p, .menu iframe { color: #555; }
+.menu h2, .menu h3, .menu h4, .menu p, .menu iframe { color: #aaa; }
 
 
 #butEditFile { background-color: #555; color: #fff; opacity: 0.5; padding: 8px; position: fixed; right: 20px; top: 20px; vertical-align: middle; z-index: 1; }
@@ -181,16 +181,8 @@ blockquote, pre { background-color: #eee; padding: 10px; }
 
 	function onWindowResize(){
 
-		if ( window.innerWidth < 1000 ) {
+		butEditFile.style.display = window.innerWidth < 900 ?  'none' : '';
 
-			butEditFile.style.display = 'none';
-			hamburger.innerHTML = '&#9776;';
-
-		} else {
-
-			butEditFile.style.display = '';
-			hamburger.innerHTML = '&#9776; slide';
-		}
 	}
 
 

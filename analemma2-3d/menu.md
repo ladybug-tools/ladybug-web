@@ -16,7 +16,7 @@ Ladybug Web
 Full screen [Analemma2 3D]( analemma2-3d-r1.html )
 
 
-### [Downtown San Francisco / Hyatt Embarcadero]( #analemma2-3d-r1.html "86 structures" )
+### [Downtown San Francisco / Hyatt Embarcadero]( #analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ "86 structures" )
 
 <!--
 ### [San Francisco ]( #analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ "86 structures" )
