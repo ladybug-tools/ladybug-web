@@ -72,7 +72,8 @@
 
 	var defaultZoom = 16;
 
-	var parameters;
+	var parameters = {};
+	parameters.structuresArray = {};
 
 	var analemma;
 	var analemmaRadius = 80;
@@ -193,7 +194,7 @@
 //		parameters.x = lon2tile( parameters.longitude, parameters.zoom );
 //		parameters.y = lat2tile( parameters.latitude, parameters.zoom );
 
-		parameters.heightScale = 1;
+		parameters.heightScale = parameters.heightScale ? parameters.heightScale : 1;
 		parameters.side = 2;
 		parameters.transparent = true;
 
@@ -1185,7 +1186,7 @@ console.timeEnd( 'timer 1' );
 		renderer.render( scene, camera );
 		controls.update();
 
-		if ( structuresArray.length ) { findIntersects(); }
+		if ( parameters.structuresArray.length ) { findIntersects(); }
 
 	}
 
