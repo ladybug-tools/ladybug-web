@@ -1,30 +1,28 @@
-Ladybug Web
-
+<p style=margin:0;padding:0; >Ladybug Web</p>
 ## [Analemma2 3D]( index.html )
 
 
 ***
 
-[<span class="button" style=background-color:#999; >Select</span>]( #menu.md ) [<span class="button">Locate</span>]( #menu-locate.md )
+[<span class="button" style=background-color:#999; >Select</span>]( #menu.md ) [<span class="button">Locate</span>]( #menu-locate.md "Do anywhere on Earth in 3D" )
 
-<a href="javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='http://rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()" title="Mr.doob's Stats.js" >Show statistics</a>
+<a href="javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='http://rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()" title="Mr.doob's Stats.js / frames per second" >Show fps statistics</a>
 
 
 ***
 
-### [Analemma2 3D]( #analemma2-3d-r1.html )
-Full screen [Analemma2 3D]( analemma2-3d-r1.html )
+### [Analemma2 3D]( #analemma2-3d-r1.html "Downtown San Francisco / Hyatt Embarcadero 86 Structures" ) [&#x1F5D7;]( analemma2-3d-r1.html "Full screen" )
 
-
-### [Downtown San Francisco / Hyatt Embarcadero]( #analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ "86 structures" ) [&#x1F5D7;]( analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ )
 
 <!--
+### [Downtown San Francisco / Hyatt Embarcadero]( #analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ "86 structures" ) [&#x1F5D7;]( analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ )
+
 ### [San Francisco ]( #analemma2-3d-r1.html#^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^ "86 structures" )
 
 [&#x1F5D7;](  )
 -->
 
-### [Marin]( #analemma2-3d-r1.html#^latitude^:^37.826068,^,^longitude^:^-122.479592^,^zoom^:^15^ "10 structures" ) [&#x1F5D7;]( analemma2-3d-r1.html#^latitude^:^37.826068,^,^longitude^:^-122.479592^,^zoom^:^15^ )
+### [GG Bridge @ Marin]( #analemma2-3d-r1.html#^latitude^:^37.826068,^,^longitude^:^-122.479592^,^zoom^:^15^ "10 structures" ) [&#x1F5D7;]( analemma2-3d-r1.html#^latitude^:^37.826068,^,^longitude^:^-122.479592^,^zoom^:^15^ )
 
 
 ### [Alcatraz]( #analemma2-3d-r1.html#^latitude^:^37.8270^,^longitude^:^-122.423^,^zoom^:^16^ "12 structures" )
@@ -48,14 +46,9 @@ Full screen [Analemma2 3D]( analemma2-3d-r1.html )
 ### [Tenzing-Hillary Airport, Nepal]( #analemma2-3d-r1.html#^latitude^:^27.68777799999999^,^longitude^:^86.73138360000007^,^zoom^:^15^ "77 structures" )
  
 
-[Full screen Terrain Tiles Structures R2]( analemma2-3d-r1.html )
-
-
 ***
 
-[license]( #license.md )
-
-[code of conduct]( #code-of-conduct.md )
-
-[contributing]( #contributing.md )
+* [license]( #license.md )
+* [code of conduct]( #code-of-conduct.md )
+* [contributing]( #contributing.md )
 

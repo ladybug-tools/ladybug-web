@@ -1,3 +1,6 @@
+<span style=display:none; >[You are now in a GitHub source code view - click this link to view the home page]
+( https://ladybug-tools.github.io/ladybug-web/analemma2-3d/ "View file as a web page." ) </span>
+
 Analemma2 3D Read Me
 ====
 
@@ -45,6 +48,7 @@ We are here to provide you with mapping code you can tinker with and learn to ha
 	* ShowDown for Markdown Conversion
 	* Mapbox for the data tiles
 * Basic code is 700 lines / 17KB
+* Carry out simple Sun-related coding exercises 
 
 
 ### Vision
@@ -62,9 +66,7 @@ We are here to provide you with mapping code you can tinker with and learn to ha
 ## To-Do
 
 
-* 2017-07-25 ~ Sun ranges
 * 2017-07-25 ~ Solar access
-* 2017-07-25 ~ Select source of raster tiles
 * 2017-07-25 ~ Select quality of raster tile display
 
 
@@ -79,9 +81,13 @@ We are here to provide you with mapping code you can tinker with and learn to ha
 
 ### 2017-07-28 ~ Theo
 
+Dealt with
+
 * 2017-07-24 ~ Most [geoJson features]( https://en.wikipedia.org/wiki/GeoJSON ) are not yet implemented
 * 2017-07-25 ~ Sunlight by date, time and location
 * 2017-07-25 ~ Support all zoom levels
+* 2017-07-25 ~ Select source of raster tiles
+* 2017-07-25 ~ Sun ranges
 
 ### 2017-07-27 ~ Theo
 

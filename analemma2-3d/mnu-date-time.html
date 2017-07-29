@@ -16,24 +16,71 @@
 <body>
 
 Month
-<input type="range" id="inpMonth" min=0 max=11 onchange=setMonth(); >
+<input type="range" id="inpMonth" min=0 max=11 onmousemove=setMonth(); >
 
 Date
-<input type="range" id="inpDate" min=0 max=31 onchange=setDate(); >
+<input type="range" id="inpDate" min=0 max=31 onmousemove=setDate(); >
 
 Hour
-<input type="range" id="inpHours" min=0 max=24 onchange=setHours(); >
+<input type="range" id="inpHours" min=0 max=24 onmousemove=setHours(); >
 
 
-<p><input type="checkbox" onclick="toggleMesh('analemma');" checked > Display Analemma<p>
+<p><input type="checkbox" onclick="toggleMesh('analemma');" checked > Display Analemma<br>
 
-<p><input type="checkbox" onclick="toggleMesh('axisHelper');" checked > Display Axis<p>
+<input type="checkbox" onclick="toggleMesh('axisHelper');" checked > Display Axis<br>
 
-<p><input type="checkbox" onclick="toggleMesh('shadowBox');" checked > Display Shadow Box<p>
+<input type="checkbox" onclick="toggleMesh('shadowBox');" checked > Display Shadow Box<br>
+
+</p>
+
+Map Overlay
+<select id=selMap size=5 onchange=setMapOverlay(); ></select>
 
 <script>
 
 
+	var mapTypes = [
+
+		['Google Maps','https://mt1.google.com/vt/x='],
+		['Google Maps Terrain','https://mt1.google.com/vt/lyrs=t&x='],
+		['Google Maps Satellite','https://mt1.google.com/vt/lyrs=s&x='],
+		['Google Maps Hybrid','https://mt1.google.com/vt/lyrs=y&x='],
+		['Open Street Map','http://tile.openstreetmap.org/'],
+		['Open Cycle Map', 'http://tile.opencyclemap.org/cycle/'],
+//		['MapQuest OSM', 'http://otile3.mqcdn.com/tiles/1.0.0/osm/'],
+//		['MapQuest Satellite', 'http://otile3.mqcdn.com/tiles/1.0.0/sat/'],
+		['Stamen terrain background','http://tile.stamen.com/terrain-background/']
+
+	];
+
+
+
+	init()
+
+
+	function init() {
+
+
+		for ( var i = 0; i < mapTypes.length; i++ ) {
+
+			selMap.appendChild( document.createElement( 'option' ) );
+			selMap.children[ i ].text = mapTypes[ i ][ 0 ];
+
+		}
+
+	}
+
+
+
+
+	function setMapOverlay() {
+
+console.log( '', 23 );
+
+		parent.mainIframe.contentWindow.mapType = mapTypes[ selMap.selectedIndex ];
+		parent.mainIframe.contentWindow.selectedIndex = selMap.selectedIndex;
+		parent.mainIframe.contentWindow.drawMapOverlay();
+	}
 
 
 
@@ -44,6 +91,7 @@ Hour
 		pmc[ mesh ].visible = !pmc[ mesh ].visible;
 
 	}
+
 
 
 

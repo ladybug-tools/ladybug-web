@@ -15,7 +15,7 @@
 <meta name=date content="2017-07-25" >
 <style>
 
-	
+
 	body { font: 11pt monospace; margin: 0; overflow: hidden;  }
 	h2 { margin: 0; text-align: center; }
 	#header { left: 0; margin: 0 auto; max-width: 500px; position: absolute; right: 0; text-align: center;}
@@ -32,7 +32,7 @@
 		<div id="title" ></div>
 		<div id="logHeights" ></div>
 		<div id="logIntersect" ></div>
-		
+
 	</div>
 
 	<div id = "menu" >
@@ -78,15 +78,15 @@
 	var analemmaRadius = 80;
 
 	var sun;
+	var suns;
+	var sunHelpers = [];
 	var sunIntensity = 0.5;
-
-	let countVertices = 0;
 
 	var lightAmbient, lightDirectional, shadowBox;
 
 	var axisHelper;
 
-	var mapTypes;
+	var mapType;
 
 	var object3D;
 	var ground;
@@ -211,9 +211,9 @@
 
 		let url = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + now.toString().slice( 0, 10 ) ;
 
-		requestFile( url, callback ) 
+		requestFile( url, callback )
 
-		function callback( xhr ) { 
+		function callback( xhr ) {
 
 			let json = JSON.parse( xhr.target.responseText );
 
@@ -226,6 +226,8 @@
 			drawAnalemma();
 
 			initSunAndLight();
+
+//			drawSunRange();
 
 			drawHelpers();
 
@@ -347,6 +349,98 @@
 	}
 
 
+	function drawSunRange() {
+
+//		var sun, sunHelper, dateThere, d;
+		let geometry, material, mesh;
+		let pud = {};
+
+		pud.sunRangeCount = 7;
+		pud.sunRangeHelpers = 0;
+		pud.sunRangeIntensity = 0.5;
+		pud.sunRangeMinutes = 60;
+		pud.sunRangePlacards = 0;
+		pud.sunRangeRadius = 100;
+		pud.sunRangeStart = 8;
+		pud.offsetThere = -7;
+
+		scene.remove( suns )
+
+		parameters.sunRangeCount = 11;
+
+		lightAmbient = new THREE.AmbientLight( 0x666666 );
+		scene.add( lightAmbient );
+
+
+		suns = new THREE.Object3D();
+
+		for ( var i = 0; i < parameters.sunRangeCount; i++ ) {
+
+			sun = new THREE.DirectionalLight( 0xffffff, 0.5 * pud.sunRangeIntensity );
+
+			d = 100;
+			sun.shadow.camera.left = -d;
+			sun.shadow.camera.right = d;
+			sun.shadow.camera.top = d;
+			sun.shadow.camera.bottom = -d;
+
+			sun.shadow.camera.near = 0;
+			sun.shadow.camera.far = 3 * d;
+
+			sun.shadow.mapSize.width = 2048;  // default 512
+			sun.shadow.mapSize.height = 2048;
+
+			sun.castShadow = true;
+
+			sun.target = ground;
+
+//			scene.add( new THREE.CameraHelper( sun.shadow.camera ) );
+
+			geometry = new THREE.SphereBufferGeometry( 5, 20, 10 );
+			material = new THREE.MeshBasicMaterial( { color: 0xffee00 } );
+			mesh = new THREE.Mesh( geometry, material );
+			sun.add( mesh );
+
+			suns.add( sun, sun.target );
+/*
+			if ( pud.sunRangeHelpers === 1 ) {
+
+				sunHelper = new THREE.CameraHelper( sun.shadow.camera );
+				suns.add( sunHelper );
+
+			}
+
+*/
+
+			pud.year = 2017
+			pud.month = 11;
+			pud.date = 21;
+			pud.minutes = 0;
+
+			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, pud.sunRangeStart - pud.offsetThere, pud.minutes + i * pud.sunRangeMinutes ) );
+
+			sun.userData.position = getSunPositionXYZ( analemmaRadius, dateThere, parameters.latitude, parameters.longitude );
+//console.log( 'sun.userData.position', sun.userData.position);
+
+			sun.position.copy( ground.position.clone().add( sun.userData.position.xyz )  );
+
+			if ( pud.sunRangePlacards === 1 ) {
+
+				txt = ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
+				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 );
+				placard = drawPlacard( txt, 0.05, 120, 0, 10, 0 );
+				sun.add( placard );
+
+			}
+
+		}
+
+		object3D.add( suns );
+
+	}
+
+
+
 
 	function initSunAndLight() {
 
@@ -382,13 +476,17 @@
 		lightDirectional.shadow.mapSize.height = 2048;
 
 		lightDirectional.castShadow = true;
+
+		shadowBox = new THREE.CameraHelper( lightDirectional.shadow.camera );
+
+		sun.add( shadowBox );
+
 		sun.add( lightDirectional );
 
-		shadowBox = new THREE.CameraHelper( lightDirectional.shadow.camera )
-		sun.add( shadowBox );
-		lightDirectional.target = analemma;
+		lightDirectional.target = ground;
 
 		setSunPosition();
+
 	}
 
 
@@ -403,11 +501,14 @@
 		dateThere = new Date( Date.UTC( year, parameters.month, parameters.date, parameters.hours, parameters.minutes, 0 ) );
 		sun.userData.position = getSunPositionXYZ( analemmaRadius, dateThere, parameters.latitude, parameters.longitude );
 		sun.position.copy( sun.userData.position.xyz );
-
+		lightDirectional.position.copy( sun.userData.position.xyz );
 //console.log( 'dateThere', dateThere );
 
-	}
+//		sun.remove( shadowBox, lightDirectional );
+//		shadowBox = new THREE.CameraHelper( lightDirectional.shadow.camera );
+//		sun.add( lightDirectional, shadowBox );
 
+	}
 
 
 	function drawAnalemma() {
@@ -575,7 +676,7 @@
 
 		var sunPosition, x, y, z;
 
-		sunPosition = getSunPosition( timeThere, latitude - 90, longitude );
+		sunPosition = getSunPosition( timeThere, latitude - 90, longitude ); // from solar-calculator ... .js
 
 		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
 		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
@@ -704,9 +805,9 @@
 //		rasterCanvas.style.cssText = 'border: 1px solid gray; left: 0; margin: 10px auto; position: absolute; right: 0; z-index:10;';
 		rasterContext = rasterCanvas.getContext( '2d' );
 
-		if ( !mapTypes ) {
+		if ( !mapType ) {
 
-			mapTypes = [ [ 'Google Maps','https://mt1.google.com/vt/x=' ] ];
+			mapType = [ 'Google Maps','https://mt1.google.com/vt/x=' ];
 			selectedIndex = 0;
 
 		}
@@ -717,7 +818,7 @@
 		tileY = lat2tile( parameters.latitude, zoom ) - parameters.titleOffsetY;
 
 		count = 0;
-		baseURL = mapTypes[ selectedIndex ][ 1 ];
+		baseURL = mapType[ 1 ];
 
 		for ( var x = 0; x < tilesPerSide; x++ ) {
 
@@ -840,9 +941,9 @@ console.time( 'timer 1' );
 
 		for ( feature of json.features ) {
 
-			if ( feature.properties.height ) { 
+			if ( feature.properties.height ) {
 
-				hasHeights = true; 
+				hasHeights = true;
 
 				break;
 
@@ -885,8 +986,6 @@ console.log( 'json', i, json.features[ i ] );
 
 				}
 
-				countVertices += poly.length;
-
 				height = hasHeights ? height : 8;
 
 				structure = drawShape( vertices, height );
@@ -895,7 +994,7 @@ console.log( 'json', i, json.features[ i ] );
 
 					structure.name = i;
 					structures.add( structure );
-					structuresArray.push( structure );
+					parameters.structuresArray.push( structure );
 
 				}
 
@@ -963,7 +1062,7 @@ console.log( 'error', e, shape );
 		vectorFarDown = new THREE.Vector3( 0, -100, 0 );
 		vectorLookUp = new THREE.Vector3( 0, 1, 0 );
 
-		structure = structuresArray.pop();
+		structure = parameters.structuresArray.pop();
 
 		arr = structure.geometry.attributes.position.array;
 		position = new THREE.Vector3( arr[ 0 ], -100, arr[ 2 ] );
@@ -985,7 +1084,7 @@ console.log( 'error', e, shape );
 				structure.add( placard );
 */
 
-		} else if ( !structuresArray.length ) {
+		} else if ( !parameters.structuresArray.length ) {
 
 console.timeEnd( 'timer 1' );
 
@@ -993,7 +1092,7 @@ console.timeEnd( 'timer 1' );
 
 		}
 
-		logIntersect.innerHTML = structuresArray.length + ' of ' + structures.children.length + ' structures remaining';
+		logIntersect.innerHTML = parameters.structuresArray.length + ' of ' + structures.children.length + ' structures remaining';
 
 	}
 
@@ -1054,6 +1153,7 @@ console.timeEnd( 'timer 1' );
 		xhr.send( null );
 
 	}
+
 
 	function onKeyUp ( event ) { //console.log( 'key', event.keyCode );
 
