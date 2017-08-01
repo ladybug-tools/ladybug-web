@@ -103,7 +103,7 @@
 			'^latitude^:^' + place.geometry.location.lat() + '^,' +
 			'^longitude^:^' + place.geometry.location.lng() + '^,' +
 			'^zoom^:^' + '16' + '^,' +
-			'^offsetUTC^,^' + place.utc_offset + '^';
+			'^offsetUTC^:^' + place.utc_offset + '^';
 
 		if ( !place.geometry ) {
 
