@@ -1,15 +1,11 @@
-nnn
-<span style="display: none"> [View as web page]( http://exploratoria.github.io/ 'View file as a web page' ) </span>
-
-
-
-<span style="display: none" > [click this link to view the home page]( http://ladybug-tools.github.io/l 'View file as a web page.' ) </span>
+<span style="display: none" > [click this link to view as a web page]( http://ladybug-tools.github.io/l 'View file as a web page.' ) </span>
 
 Analemma 3D Read Me
 ====
 
 
-<div style="display: none;"><iframe src="analemma3-3d.html" width="600" height="500" style="display: none;"></iframe><i>Downtown San Francisco / Hyatt Embarcadero at center</i></div>
+<iframe style="display: none;" src="analemma3-3d.html" width="600" height="500" ></iframe>
+<div style="display: none;"><i>Downtown San Francisco / Hyatt Embarcadero at center</i></div>
 
 
 This is a work in progress at an early stage.
