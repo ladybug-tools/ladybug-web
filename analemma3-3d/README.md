@@ -1,4 +1,4 @@
-<span style="display: none" > [click this link to view as a web page]( http://ladybug-tools.github.io/ladybug-web/analemma3-3d/ 'View file as a web page.' ) </span>
+<span style="display: none" > [You are now in a GitHub source code view - click this link to view Read Me file as a web page]( http://ladybug-tools.github.io/ladybug-web/analemma3-3d/ 'View file as a web page.' ) </span>
 
 Analemma 3D Read Me
 ====
