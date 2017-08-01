@@ -1,11 +1,13 @@
 nnn
+<span style="display: none"> [View as web page]( http://exploratoria.github.io/ 'View file as a web page' ) </span>
+
+
 
 <span style="display: none" > [You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-tools.github.io/ladybug-web/analemma3-3d/ 'View file as a web page.' ) </span>
+( http://ladybug-tools.github.io/l 'View file as a web page.' ) </span>
 
 Analemma 3D Read Me
 ====
-<span style="display: none"> [View as web page]( http://exploratoria.github.io/ 'View file as a web page' ) </span>
 
 
 <div style="display: none;"><iframe src=analemma3-3d.html width=600 height=500 style="display: none;"></iframe>
