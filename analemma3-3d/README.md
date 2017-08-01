@@ -3,6 +3,8 @@
 
 Analemma 3D Read Me
 ====
+<span style="display: none"> [View as web page]( http://exploratoria.github.io/ 'View file as a web page' ) </span>
+
 
 <div style="display:none;" ><iframe src=analemma3-3d.html width=600 height=500 ></iframe>
 <i>Downtown San Francisco / Hyatt Embarcadero at center</i></div>
