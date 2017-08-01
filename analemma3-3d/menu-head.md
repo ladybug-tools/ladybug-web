@@ -1,4 +1,4 @@
-<p style=margin:0;padding:0; >Ladybug Web</p>
+<p style=margin:0;padding:0; ><a href="https://github.com/ladybug-tools/ladybug-web" target="_blank">Ladybug Web</a></p>
 
 ## [Analemma3 3D]( index.html )
 
