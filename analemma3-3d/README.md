@@ -11,18 +11,29 @@ Analema3 3D showing downtown San Francisco with Hyatt Embarcadero at center
 
 
 
-Click 'Downtown San Francisco / Hyatt Embarcadero' for a quick demo of what this app does.
-
-Click the title in the menu to return to this home page / read me file.
+Click the 'San Francisco' link for a quick demo of what this script can do. Click the title in the menu to return to this home page / read me file.
 
 
-The app has two menus:
+Analemma 3D has several menus:
 
-The **'Select'** menu takes you to pre-selected areas. The tooltip for each item show you the number of structures to be loaded. The greater the number of structures, the longer the file takes to load.
+The **Selected Destinations** menu takes you to pre-selected areas. The tooltip for each item show you the number of structures to be loaded. The greater the number of structures, the longer the file takes to load.
 
-The **'Locate;** menu allows to to enter an address or location anywhere in the world. You can use the on=screen cursor keys to go to the next tiles.
+The **Moving / Travelling** menu allows to to enter an address or location anywhere in the world. You can use the on=screen cursor keys to go to the next tiles.
 
-Wait for the model starts rotating before proceeding further
+The **Map Overlays** allows you to select the type of map images you want displayed over the 3d terrain.
+
+The **Analamma** menu allow displays the hourly analemmas for the given location and time. Analemmas are the traditional figure eight ( or infinity symbol on its side) representation of Sun positions. In 3D with geolocation and maps.
+
+The **Sun Range** menu creates eleven suns casting shadows
+
+The **Solar Access** menu gives you visual details of the exposure of buildings' elevations and public spaces to the sun during a desired period of the year.
+
+Wait for the model starts rotating before proceeding further. Click in the window or press the space bar to stop the rotating.
+
+The 3D views below enable you to rotate and pan using one three fingers or left button, scroll wheel and right button on a mouse.
+
+
+
 
 ## Concept
 
@@ -52,24 +63,50 @@ We are here to provide you with mapping code you can tinker with and learn to ha
 * Carry out simple Sun-related coding exercises 
 
 
+
+### Features
+
+* 3D terrain for the entire Globe
+* Support for 19 levels of zoom
+* 3D buildings at zoom levels 15 and 16
+* Many raster map overlays
+* Go to any location on Earth by entering a plac name or address
+* Display a variety of Solar energy effects
+* Works on tablets and mobile devices
+
+
+
+
+
 ### Vision
 
 * Taking maps to new places
 
+## Things you can do using the script
+
+* Use one/two/three fingers to rotate/zoom/pan the display in 3D
+	* Or left/scroll/right with your pointing device
+* Click the three bars( 'hamburger menu icon' ) to slide the menu in and out
+* Click the [Stats]( https://github.com/mrdoob/stats.js/ ) box in the top corner to toggle FPS / MS / MB views
+* Press Control-U/Command-Option-U to view the source code
+* Press Control-Shift-J/Command-Option-J to see if the JavaScript console reports any errors
+* Click 'Show fps statistics' to see how many frames per second your computer is giving you
+
+
+
+
 ## Issues
 
-
 * Not all tiles have 3D building data
-* Many Tiles with building footprint data only
+* Many tiles have building footprint data only - no height data is provided
 
 
 
 ## To-Do
 
-
-* 2017-07-25 ~ Solar access
+* 2017-07-31 ~ Add credits to Mapbox, Google, Mr.doob, GitHub and many others
+* 2017-07-31 ~ Improve geoJSON reading capabilities
 * 2017-07-25 ~ Select quality of raster tile display
-
 
 
 ### Source code
@@ -78,7 +115,20 @@ We are here to provide you with mapping code you can tinker with and learn to ha
 * <http://jaanga.github.io/terrain4/terrain-tiles-structures/>
 * <https://github.com/jaanga/jaanga.github.io/tree/master/terrain4/terrain-tiles-structures>
 
-### Change Log
+
+## Ladybug Web Solar Calculator 
+
+* http://www.ladybug.tools/ladybug-web/solar-calculator-ladybug-web/#readme.md
+
+
+
+## Change Log
+
+### 2017-07-31 ~ Theo
+
+
+* 2017-07-25 ~ Solar access
+
 
 ### 2017-07-28 ~ Theo
 
