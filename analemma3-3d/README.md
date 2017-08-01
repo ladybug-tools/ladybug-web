@@ -18,7 +18,7 @@ Analemma 3D has several menus:
 
 The **Selected Destinations** menu takes you to pre-selected areas. The tooltip for each item show you the number of structures to be loaded. The greater the number of structures, the longer the file takes to load.
 
-The **Moving / Travelling** menu allows to to enter an address or location anywhere in the world. You can use the on=screen cursor keys to go to the next tiles.
+The **Moving / Travelling** menu allows to to enter an address or location anywhere in the world. You can use the on-screen cursor keys to go to the next tiles.
 
 The **Map Overlays** allows you to select the type of map images you want displayed over the 3d terrain.
 
@@ -59,7 +59,8 @@ We are here to provide you with mapping code you can tinker with and learn to ha
 	* Three.js for 3D
 	* ShowDown for Markdown Conversion
 	* Mapbox for the data tiles
-* Basic code is 700 lines / 17KB
+* Basic code is under 900 lines / 23KB
+* User interface and technical code well separated
 * Carry out simple Sun-related coding exercises 
 
 
@@ -69,10 +70,10 @@ We are here to provide you with mapping code you can tinker with and learn to ha
 * 3D terrain for the entire Globe
 * Support for 19 levels of zoom
 * 3D buildings at zoom levels 15 and 16
-* Many raster map overlays
-* Go to any location on Earth by entering a plac name or address
-* Display a variety of Solar energy effects
-* Works on tablets and mobile devices
+* Many raster map overlays from Mapbox, Google, OSM etc
+* Go to any location on Earth by entering a place name or address
+* Display a variety of Solar parameters analemmas, solar range and solar access
+* Access on tablets and mobile devices
 
 
 
