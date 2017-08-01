@@ -5,7 +5,7 @@ Analemma 3D Read Me
 
 <span style="display: none" > <iframe style="display: none;" src="analemma3-3d.html" width="600" height="500" ></iframe> </span>
 <span style="display: none;">Downtown San Francisco / Hyatt Embarcadero at center</div>
-<button>iiii</button>
+<input type=button value="yyyyyyy" >>
 
 This is a work in progress at an early stage.
 
