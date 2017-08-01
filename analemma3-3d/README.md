@@ -3,8 +3,8 @@
 Analemma 3D Read Me
 ====
 
-<iframe src="analemma3-3d.html" width="600" height="500" ></iframe> </span>
-<button>Downtown San Francisco / Hyatt Embarcadero at center</button>
+<iframe src="analemma3-3d.html" width="600" height="500" >gggg</iframe>
+<input type=button value="Downtown San Francisco / Hyatt Embarcadero at center" >
 
 
 This is a work in progress at an early stage.
