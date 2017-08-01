@@ -3,7 +3,9 @@
 Analemma 3D Read Me
 ====
 
-<script> document.write = '<iframe src="analemma3-3d.html" width="600" height="500" >gggg</iframe>' </script>
+<details>
+<iframe src="analemma3-3d.html" width="600" height="500" >gggg</iframe>
+</details>
 <input type=button value="Downtown San Francisco / Hyatt Embarcadero at center" >
 
 ```diff
