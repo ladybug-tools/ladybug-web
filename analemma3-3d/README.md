@@ -9,8 +9,7 @@ Analemma 3D Read Me
 ====
 
 
-<div style="display: none;"><iframe src=analemma3-3d.html width=600 height=500 style="display: none;"></iframe>
-<i>Downtown San Francisco / Hyatt Embarcadero at center</i></div>
+<div style="display: none;"><iframe src="analemma3-3d.html" width="600" height="500" style="display: none;"></iframe><i>Downtown San Francisco / Hyatt Embarcadero at center</i></div>
 
 
 This is a work in progress at an early stage.
