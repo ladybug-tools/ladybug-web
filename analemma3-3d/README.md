@@ -3,10 +3,7 @@
 Analemma 3D Read Me
 ====
 
-<details open>
-<iframe src="analemma3-3d.html" width="600" height="500" >gggg</iframe>
-</details>
-<input type=button value="Downtown San Francisco / Hyatt Embarcadero at center" >
+<iframe src="analemma3-3d.html" width="600" height="500" ><img src="../images/ladybug-logo.png" ></iframe>
 
 ```diff
 + this will be highlighted in green
