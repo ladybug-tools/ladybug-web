@@ -9,16 +9,16 @@
 <!-- Mr.doob
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 -->
-<title>Analemma2 3D</title>
+<title>Analemma3 3D</title>
 <meta name=description content="3D in your browser" >
-<meta name=keywords content="Three.js,WebGLJavaScript,HTML,CSS,GitHub,FOSS" >
+<meta name=keywords content="MapBox,Google,Three.js,WebGL,JavaScript,HTML,CSS,GitHub,FOSS" >
 <meta name=date content="2017-07-25" >
-<style>
+<style = "foo" >
 
 
 	body { font: 11pt monospace; margin: 0; overflow: hidden;  }
 	h2 { margin: 0; text-align: center; }
-	#header { left: 0; margin: 0 auto; max-width: 500px; position: absolute; right: 0; text-align: center;}
+	#header { left: 0; margin: 0 auto; max-width: 600px; position: absolute; right: 0; text-align: center;}
 	#menu { left: 0; margin: 20px; position: absolute; top: 50px; z-index: 10; }
 
 </style>
@@ -26,7 +26,6 @@
 <body>
 <script src = "https://cdn.rawgit.com/mrdoob/three.js/dev/build/three.min.js" ></script>
 <script src = "https://cdn.rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js" ></script>
-<script src = "https://rawgit.com/ladybug-tools/ladybug-web/gh-pages/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js" ></script>
 
 	<div id="header" >
 		<div id="title" ></div>
@@ -61,29 +60,19 @@
 	var defaultLongitude = -122.398;
 	var defaultOffsetUTC = -420;
 
-	let sydney = '^latitude^:^-33.8675^,^longitude^:^151.207^,^zoom^:^16^';
-//	let sfHyatt = '{"latitude":"37.796","longitude":"-122.398","zoom":"16"}';
-	let sfHyatt = '^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^';
-//	let alcatraz = '{"latitude":"37.8270","longitude":"-122.423","zoom":"16"}';
-	let alcatraz = '^latitude^:^37.8270^,^longitude^:^-122.423^,^zoom^:^16^';
-//	let coit = '{"latitude":"37.8024","longitude":"-122.4058","zoom":"16"}';
-	let coit = '^latitude^:^37.8024^,^longitude^:^-122.4058^,^zoom^:^16^';
-	let santaBarbara = '^latitude^:^34.4208305^,^longitude^:^-119.69819^,^zoom^:^16^';
+	let sydney = '^latitude^:^-33.8675^,^longitude^:^151.207^,^zoom^:^16^,^offsetUTC^:^-600^';
+	let sfHyatt = '^latitude^:^37.796^,^longitude^:^-122.398^,^zoom^:^16^,^offsetUTC^:^-420^';
+	let alcatraz = '^latitude^:^37.8270^,^longitude^:^-122.423^,^zoom^:^16^,^offsetUTC^:^-420^';
+	let coit = '^latitude^:^37.8024^,^longitude^:^-122.4058^,^zoom^:^16^,^offsetUTC^:^-420^';
+	let santaBarbara = '^latitude^:^34.4208305^,^longitude^:^-119.69819^,^zoom^:^16^,^offsetUTC^:^-420^';
 
 	var defaultZoom = 16;
 
 	var parameters = {};
 	parameters.structuresArray = {};
 
-	var analemma;
-	var analemmaRadius = 80;
-
-	var sun;
-	var suns;
-	var sunHelpers = [];
-	var sunIntensity = 0.5;
-
-	var lightAmbient, lightDirectional, shadowBox;
+	var lights;
+	var lightAmbient, lightPointCamera, lightDirectional, cameraHelper;
 
 	var axisHelper;
 
@@ -111,9 +100,14 @@
 
 	function init() {
 
-		parent.projectName = 'ladybug-web';
-		parent.document.title = 'Analemma2 3D';
+		parent.projectName = 'Ladybug Web';
+		parent.document.title = 'Analemma 3D';
 
+		if ( parent.document.getElementById( 'foo' ) ) {
+
+			parent.document.getElementById( 'foo' ).innerHTML += "h3 { margin: 0}";
+
+		}
 
 		title.innerHTML = '<h1><a href="" >' + document.title +'</a> &nbsp; <a href="index.html" target="_blank">&#x1F5D7;</a></h1>';
 
@@ -128,6 +122,7 @@
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
 
 		scene = new THREE.Scene();
+		scene.add( camera );
 
 		window.addEventListener( 'resize', onWindowResize, false );
 		onWindowResize();
@@ -147,7 +142,6 @@
 
 		if ( !location.hash ) {
 
-//			location.hash = santaBarbara; //
 			location.hash = sfHyatt;
 
 			return;
@@ -156,11 +150,25 @@
 
 		scene.remove( object3D, ground, structures );
 		object3D = new THREE.Object3D();
+		object3D.name = 'object3D';
+
 		structures = new THREE.Object3D();
-		ground = new THREE.Object3D();
+		structures.name = 'structures';
+//		ground = new THREE.Object3D();
+//		ground.name = 'ground';
 		scene.add( object3D, structures );
 
 		getParametersFromHash();
+
+		scene.remove( lights );
+		camera.remove( lightPointCamera );
+
+		lights = addLights();
+		scene.add( lights );
+
+		drawHelpers();
+
+		drawTerrain();
 
 	}
 
@@ -183,61 +191,22 @@
 //		params = JSON.parse( hashes );  // chrome only parses JSON hash
 
 		parameters = {};
+		parameters.structuresArray = [];
 
-		parameters.zoom = params.zoom ? parseInt( params.zoom, 10 ) : defaultZoom;
 		parameters.latitude = params.latitude ? parseFloat( params.latitude ) : defaultLatitude;
 		parameters.longitude = params.longitude ? parseFloat( params.longitude ) : defaultLongitude;
-//		parameters.offsetUTC = params.offsetutc ? parseFloat( params.offsetutc ) : defaultOffsetUTC;
-
-		getOffsetUTC( parameters.latitude, parameters.longitude );
-
-//		parameters.x = lon2tile( parameters.longitude, parameters.zoom );
-//		parameters.y = lat2tile( parameters.latitude, parameters.zoom );
+		parameters.zoom = params.zoom ? parseInt( params.zoom, 10 ) : defaultZoom;
+		parameters.offsetUTC = params.offsetUTC ? parseInt( params.offsetUTC, 10 ) : defaultOffsetUTC;
 
 		parameters.heightScale = parameters.heightScale ? parameters.heightScale : 1;
 		parameters.side = 2;
 		parameters.transparent = true;
 
-		parameters.structuresArray = [];
+		getCalcs( parameters );
 
-//console.log( 'parameters', parameters );
-
-	}
-
-
-
-	function getOffsetUTC( lat, lon ) {
-
-		let now = Date.now();
-
-		let url = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + lat + ',' + lon + '&timestamp=' + now.toString().slice( 0, 10 ) ;
-
-		requestFile( url, callback )
-
-		function callback( xhr ) {
-
-			let json = JSON.parse( xhr.target.responseText );
-
-			parameters.offsetUTC = ( json.rawOffset + json.dstOffset ) / 60
-
-//console.log( '', json, parameters.offsetUTC  );
-
-			getCalcs( parameters );
-
-			drawAnalemma();
-
-			initSunAndLight();
-
-//			drawSunRange();
-
-			drawHelpers();
-
-			drawTerrain();
-
-		}
+//console.log( 'parameters', params );
 
 	}
-
 
 
 	function getCalcs( parameters ) {
@@ -306,383 +275,79 @@
 //console.log( 'parameters.titleOffsetX', parameters.titleOffsetX, lonDiff.toFixed( 2 ) );
 //console.log( 'parameters.titleOffsetY', parameters.titleOffsetY, latDiff.toFixed( 2 ) );
 
+/*
 		d = new Date();
 
 		parameters.month = d.getUTCMonth();
 		parameters.date = d.getUTCDate();
 		parameters.hours =  d.getUTCHours();
 		parameters.minutes = d.getUTCMinutes();
+*/
 
 		calculations.innerHTML =
 
 			'<p>Latitude: ' + latitude.toFixed( 4 ) + '</p>' +
 			'<p>Longitude: ' + longitude.toFixed( 4 ) + '</p>' +
 			'<p>UTC Offset: ' + parameters.offsetUTC + '</p>' +
-
-			'<p>' +
-				'zoom: ' + zoom + ' - tile X: ' + tileX + ' - tile Y: ' + tileY +
-			'</p>' +
-
-			'<p>' +
-				'lat Min: ' + latMin.toFixed( 4 ) + ' - latMax: ' + latMax.toFixed( 4 ) +
-			'</p>' +
-
-			'<p>' +
-				'lon Min: ' + lonMin.toFixed( 4 ) + ' - lonMax: ' + lonMax.toFixed( 4 ) +
-			'</p>' +
-
+			'<p>zoom: ' + zoom + ' - tile X: ' + tileX + ' - tile Y: ' + tileY + '</p>' +
+			'<p>lat Min: ' + latMin.toFixed( 4 ) + ' - latMax: ' + latMax.toFixed( 4 ) + '</p>' +
+			'<p>lon Min: ' + lonMin.toFixed( 4 ) + ' - lonMax: ' + lonMax.toFixed( 4 ) + '</p>' +
 			'<p> latDelta: ' + latDelta.toFixed( 6 ) + ' lonDelta: ' + lonDelta.toFixed( 6 ) + '</p>' +
-
 			'<p> latDegreesPerPixel: ' + latDegreesPerPixel.toFixed( 6 ) + ' lonDegreesPerPixel: ' + lonDegreesPerPixel.toFixed( 6 ) + '</p>' +
-
 			'<p> latPixelsPerDegree: ' + latPixelsPerDegree.toFixed( 1 ) + ' lonPixelsPerDegree: ' + lonPixelsPerDegree.toFixed( 1 ) + '</p>' +
-
-			'<p>' +
-				'metersPerPixel: ' + metersPerPixel.toFixed( 4 ) +
-			'</p>' +
-
-			'<p>' +
-				'metersPerTile: ' + metersPerTile.toFixed( 4 ) +
-			'</p>' +
+			'<p>metersPerPixel: ' + metersPerPixel.toFixed( 4 ) + '</p>' +
+			'<p>metersPerTile: ' + metersPerTile.toFixed( 4 ) + '</p>' +
 
 		'';
 
 	}
 
 
-	function drawSunRange() {
 
-//		var sun, sunHelper, dateThere, d;
-		let geometry, material, mesh;
-		let pud = {};
+	function addLights( size ) {
 
-		pud.sunRangeCount = 7;
-		pud.sunRangeHelpers = 0;
-		pud.sunRangeIntensity = 0.5;
-		pud.sunRangeMinutes = 60;
-		pud.sunRangePlacards = 0;
-		pud.sunRangeRadius = 100;
-		pud.sunRangeStart = 8;
-		pud.offsetThere = -7;
+// 2017-04-02 ~ http://jaanga.github.io/cookbook-threejs/templates/add-lights/template-threejs-lights-r2.html
 
-		scene.remove( suns )
+		size = size ? size : 100;
 
-		parameters.sunRangeCount = 11;
+		var lights = new THREE.Object3D();
+		lights.name = 'lights';
 
-		lightAmbient = new THREE.AmbientLight( 0x666666 );
-		scene.add( lightAmbient );
+//		if ( !lightAmbient ) { 
 
+			lightAmbient = new THREE.AmbientLight( 0x444444 );
+			lights.add( lightAmbient );
 
-		suns = new THREE.Object3D();
+//		}
 
-		for ( var i = 0; i < parameters.sunRangeCount; i++ ) {
+//		if ( !lightPointCamera ) { 
 
-			sun = new THREE.DirectionalLight( 0xffffff, 0.5 * pud.sunRangeIntensity );
+			lightPointCamera = new THREE.PointLight( 0xffffff, 0.5 );
+			camera.add( lightPointCamera );
 
-			d = 100;
-			sun.shadow.camera.left = -d;
-			sun.shadow.camera.right = d;
-			sun.shadow.camera.top = d;
-			sun.shadow.camera.bottom = -d;
+			lightPointCamera.position = new THREE.Vector3( 0, 0, 1 );
 
-			sun.shadow.camera.near = 0;
-			sun.shadow.camera.far = 3 * d;
+//		}
 
-			sun.shadow.mapSize.width = 2048;  // default 512
-			sun.shadow.mapSize.height = 2048;
+//		if ( !lightDirectional ) { 
 
-			sun.castShadow = true;
+			lightDirectional = new THREE.DirectionalLight( 0xffffff, 0.5 );
+			lightDirectional.position.set( -size + 0.5 * groundSize, size, size + 0.5 * groundSize );
+			lightDirectional.shadow.camera.scale.set( 13, 15, 0.5 );
 
-			sun.target = ground;
+			lightDirectional.shadow.mapSize.width = 2048;  // default 512
+			lightDirectional.shadow.mapSize.height = 2048;
 
-//			scene.add( new THREE.CameraHelper( sun.shadow.camera ) );
+			lightDirectional.castShadow = true;
 
-			geometry = new THREE.SphereBufferGeometry( 5, 20, 10 );
-			material = new THREE.MeshBasicMaterial( { color: 0xffee00 } );
-			mesh = new THREE.Mesh( geometry, material );
-			sun.add( mesh );
+			lights.add( lightDirectional );
 
-			suns.add( sun, sun.target );
-/*
-			if ( pud.sunRangeHelpers === 1 ) {
+			cameraHelper = new THREE.CameraHelper( lightDirectional.shadow.camera );
+			lights.add( cameraHelper );
 
-				sunHelper = new THREE.CameraHelper( sun.shadow.camera );
-				suns.add( sunHelper );
+//		}
 
-			}
-
-*/
-
-			pud.year = 2017
-			pud.month = 11;
-			pud.date = 21;
-			pud.minutes = 0;
-
-			dateThere = new Date( Date.UTC( pud.year, pud.month, pud.date, pud.sunRangeStart - pud.offsetThere, pud.minutes + i * pud.sunRangeMinutes ) );
-
-			sun.userData.position = getSunPositionXYZ( analemmaRadius, dateThere, parameters.latitude, parameters.longitude );
-//console.log( 'sun.userData.position', sun.userData.position);
-
-			sun.position.copy( ground.position.clone().add( sun.userData.position.xyz )  );
-
-			if ( pud.sunRangePlacards === 1 ) {
-
-				txt = ( '0' + ( pud.sunRangeStart + Math.floor( i * pud.sunRangeMinutes / 60 ) ) ).slice( - 2 ) +
-				':' + ( '0' + ( i * pud.sunRangeMinutes % 60 ) ).slice( -2 );
-				placard = drawPlacard( txt, 0.05, 120, 0, 10, 0 );
-				sun.add( placard );
-
-			}
-
-		}
-
-		object3D.add( suns );
-
-	}
-
-
-
-	function initSunAndLight() {
-
-		var geometry, material, d;
-
-		geometry = new THREE.SphereBufferGeometry( 3, 20, 10 );
-		material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-		sun = new THREE.Mesh( geometry, material );
-		sun.position.set( 0, 149597870700, 0 ); // 1 astronomical unit but we'll likely reposition it later
-		object3D.add( sun );
-
-		if ( !lightAmbient ) {
-
-			lightAmbient = new THREE.AmbientLight( 0x888888 );
-			scene.add( lightAmbient );
-
-		}
-
-
-		lightDirectional = new THREE.DirectionalLight( 0xffffff, sunIntensity );
-
-		d = 100;
-		lightDirectional.shadow.camera.left = -d;
-		lightDirectional.shadow.camera.right = d;
-		lightDirectional.shadow.camera.top = d;
-		lightDirectional.shadow.camera.bottom = -d;
-
-		lightDirectional.shadow.camera.near = 0;
-		lightDirectional.shadow.camera.far = 3 * d;
-
-		lightDirectional.shadow.bias = -0.001; // default 0 ~ distance from corners?
-		lightDirectional.shadow.mapSize.width = 2048;  // default 512
-		lightDirectional.shadow.mapSize.height = 2048;
-
-		lightDirectional.castShadow = true;
-
-		shadowBox = new THREE.CameraHelper( lightDirectional.shadow.camera );
-
-		sun.add( shadowBox );
-
-		sun.add( lightDirectional );
-
-		lightDirectional.target = ground;
-
-		setSunPosition();
-
-	}
-
-
-
-	function setSunPosition() {
-
-		let d, year, dateThere;
-
-		d = new Date();
-		year = d.getUTCFullYear();
-
-		dateThere = new Date( Date.UTC( year, parameters.month, parameters.date, parameters.hours, parameters.minutes, 0 ) );
-		sun.userData.position = getSunPositionXYZ( analemmaRadius, dateThere, parameters.latitude, parameters.longitude );
-		sun.position.copy( sun.userData.position.xyz );
-		lightDirectional.position.copy( sun.userData.position.xyz );
-//console.log( 'dateThere', dateThere );
-
-//		sun.remove( shadowBox, lightDirectional );
-//		shadowBox = new THREE.CameraHelper( lightDirectional.shadow.camera );
-//		sun.add( lightDirectional, shadowBox );
-
-	}
-
-
-	function drawAnalemma() {
-
-		let year, month, date, hours, hour, i;
-		let geometry, vertices, material, line;
-		let analemmaDateUTC, analemmaSunPosition, analemmaColor, placard;
-		let dateUTC;
-		let colors;
-
-		colors = [ 'bisque', 'deeppink', 'sienna', 'darkorange', 'indigo', 'lime',
-		'purple', 'honeydew', 'coral', 'gold', 'gray', 'maroon' ];
-
-		let daysOfMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
-
-		analemma = new THREE.Object3D();
-
-		year = ( new Date() ).getUTCFullYear();
-
-		for ( hours = 0; hours < 24; hours++ ) {
-
-			geometry = new THREE.Geometry();
-			vertices = geometry.vertices;
-			hour = hours - parameters.offsetUTC / 60;
-			i = 0;
-
-			for ( month = 0; month < 12; month++ ) {
-
-				for ( date = 1; date < daysOfMonth[ month ]; date++ ) {
-
-					analemmaDateUTC = new Date( Date.UTC( year, month, date, hour, 0, 0 ) );
-
-					analemma.sunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, parameters.latitude, parameters.longitude );
-
-					vertices.push( analemma.sunPosition.xyz );
-
-					geometry.colors[ i++ ] = new THREE.Color(  colors[ month ] );
-
-				}
-
-			}
-
-			analemmaColor = hours === 0 ? 200 : 120;
-			analemmaColor = hours === 12 ? 60 : analemmaColor;
-
-			material = new THREE.LineBasicMaterial( {
-
-				linewidth: 2,
-//				color: 0xffffff,
-				vertexColors: THREE.VertexColors
-
-			} );
-
-			line = new THREE.Line( geometry, material );
-			analemma.add( line );
-
-			placard = drawPlacard( '' + hours, 0.05, analemmaColor, vertices[ 0 ].x, vertices[ 0 ].y, vertices[ 0 ].z );
-			analemma.add( placard );
-
-		}
-
-		material = new THREE.LineBasicMaterial( { color: 0xbbbbbb } );
-
-		for ( month = 5; month < 12; month++ ) {
-
-			geometry = new THREE.Geometry();
-			vertices = geometry.vertices;
-
-			for ( hours = 0; hours < 24; hours++ ) {
-
-				analemmaDateUTC = new Date( Date.UTC( year, month, 21, hours, 0, 0 ) );
-				analemmaSunPosition = getSunPositionXYZ( analemmaRadius, analemmaDateUTC, parameters.latitude, parameters.longitude );
-
-				vertices.push( analemmaSunPosition.xyz );
-
-			}
-
-			vertices.push( vertices[ 0 ] );
-
-			line = new THREE.Line( geometry, material );
-			analemma.add( line );
-
-		}
-
-		object3D.add( analemma );
-
-//		dateUTC = new Date( Date.UTC( year, 5, 21, 12 - rawOffset / 3600, 0, 0 ) );  // vernal equinox
-
-	}
-
-
-
-	function drawPlacard( text, scale, color, x, y, z ) {
-
-// 2016-02-27 ~ https://github.com/jaanga/jaanga.github.io/tree/master/cookbook-threejs/functions/placards
-
-		let placard = new THREE.Object3D();
-		var texture = canvasMultilineText( text, { backgroundColor: color }   );
-		let spriteMaterial = new THREE.SpriteMaterial( { map: texture, opacity: 0.9, transparent: true } );
-		let sprite = new THREE.Sprite( spriteMaterial );
-		sprite.position.set( x * 1.1, y * 1.1, z * 1.1 ) ;
-		sprite.scale.set( scale * texture.image.width, scale * texture.image.height );
-/*
-		let geometry = new THREE.Geometry();
-		geometry.vertices = [ v( 0, 0, 0 ),  v( x, y, z ) ];
-		let material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );
-		let line = new THREE.Line( geometry, material );
-*/
-		placard.add( sprite /*,  line */ );
-
-		return placard;
-
-		function canvasMultilineText( textArray, parameters ) {
-
-			parameters = parameters || {} ;
-
-			let canvas = document.createElement( 'canvas' );
-			let context = canvas.getContext( '2d' );
-			let width = parameters.width ? parameters.width : 0;
-			let font = parameters.font ? parameters.font : '48px monospace';
-			let color = parameters.backgroundColor ? parameters.backgroundColor : 120 ;
-
-			if ( typeof textArray === 'string' ) textArray = [ textArray ];
-
-			context.font = font;
-
-			for ( let i = 0; i < textArray.length; i++) {
-
-				width = context.measureText( textArray[ i ] ).width > width ? context.measureText( textArray[ i ] ).width : width;
-
-			}
-
-			canvas.width = width + 20;
-			canvas.height =  parameters.height ? parameters.height : textArray.length * 60;
-
-			context.fillStyle = 'hsl( ' + color + ', 80%, 50% )' ;
-			context.fillRect( 0, 0, canvas.width, canvas.height);
-
-			context.lineWidth = 1 ;
-			context.strokeStyle = '#000';
-			context.strokeRect( 0, 0, canvas.width, canvas.height );
-
-			context.fillStyle = '#000' ;
-			context.font = font;
-
-			for ( i = 0; i < textArray.length; i++) {
-
-				context.fillText( textArray[ i ], 10, 48  + i * 60 );
-
-			}
-
-			let texture = new THREE.Texture( canvas );
-			texture.minFilter = texture.magFilter = THREE.NearestFilter;
-			texture.needsUpdate = true;
-
-			return texture;
-
-		}
-
-	}
-
-
-
-	function getSunPositionXYZ( radius, timeThere, latitude, longitude ) {
-
-		var sunPosition, x, y, z;
-
-		sunPosition = getSunPosition( timeThere, latitude - 90, longitude ); // from solar-calculator ... .js
-
-		x = radius * Math.cos( sunPosition.altitude * d2r ) * Math.sin( sunPosition.azimuth * d2r );
-		y = radius * Math.cos( sunPosition.altitude * d2r ) * Math.cos( sunPosition.azimuth * d2r );
-		z = radius * Math.sin( sunPosition.altitude * d2r );
-
-		return { xyz: new THREE.Vector3( x, y, z ), azimuth: sunPosition.azimuth, altitude: ( sunPosition.altitude > 0 ? 90 - sunPosition.altitude: sunPosition.altitude ) };
+		return lights;
 
 	}
 
@@ -690,11 +355,8 @@
 
 	function drawHelpers() {
 
-//		gridHelper = new THREE.GridHelper( 150, 10 );
-//		gridHelper.position.set( 0, 0.1, 0 );
-//		scene.add( gridHelper );
-
 		axisHelper = new THREE.AxisHelper( 100 );
+		axisHelper.name = 'axisHelper';
 		object3D.add( axisHelper );
 
 	}
@@ -728,7 +390,8 @@
 
 	function getHeightMapData( map ) {
 
-//	height = -10000 + ((R * 256 * 256 + G * 256 + B) * 0.1)
+//	height = -10000 + ((R * 256 * 256 + G * 256 + B) * 0.1) - from mapbox 
+
 		let geometry, material;
 		let heightmapCanvas, heightmapContext;
 		let scaleTerrain, data, vertices, r, g, b;
@@ -753,7 +416,7 @@
 
 		geometry = new THREE.PlaneBufferGeometry( groundSize, groundSize, 255, 255 );
 		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
-		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 50 , 0, 50 ) );
+		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0.5 * groundSize, 0, 0.5 * groundSize ) );
 		vertices = geometry.attributes.position.array;
 
 		for ( let i = 1, j = 0; i < vertices.length; i += 3 ) {
@@ -773,14 +436,19 @@
 		material = new THREE.MeshNormalMaterial();
 		scene.remove( ground );
 		ground = new THREE.Mesh( geometry, material );
+		ground.name = 'ground';
 		ground.castShadow = true;
 		ground.receiveShadow = true;
 
 //		scene.add( ground );
 
 		drawMapOverlay();
-		getStructures();
 
+		if ( parameters.zoom === 15 || parameters.zoom === 16 ) {
+
+			getStructures();
+
+		}
 
 		setCamera();
 
@@ -791,7 +459,7 @@
 	function drawMapOverlay() {
 
 		let baseURL, tileX, tileY, tileOffset, count;
-		let opacity = 0.8;
+		let opacity = 1;
 		var zoom =  parameters.zoom + 2;
 
 		var pixelsPerTile = 256;
@@ -828,10 +496,15 @@
 
 					loadImage( baseURL + ( x + tileX ) + '&y=' + ( y + tileY ) + '&z=' + zoom, x, y );
 
+				} else if ( selectedIndex === 7 ) {
+
+					loadImage( baseURL + zoom + '/' + ( y + tileY ) + '/' + ( x + tileX ) + '.jpg', x , y );
+//console.log( 'esri', baseURL + zoom + '/' + ( y + tileY ) + '/' + ( x + tileX ) + '.jpg' );
+
 				} else {
 
 					loadImage( baseURL + zoom + '/' + ( x + tileX ) + '/' + ( y + tileY ) + '.png', x , y );
-
+//console.log( '', selectedIndex, baseURL + zoom + '/' + ( x + tileX ) + '/' + ( y + tileY ) + '.png' );
 				}
 
 			}
@@ -927,7 +600,7 @@ console.log( 'callbackGeoJSON error', e );
 
 		}
 
-console.time( 'timer 1' );
+//console.time( 'timer 1' );
 
 	}
 
@@ -1010,6 +683,8 @@ console.log( 'json', i, json.features[ i ] );
 
 		let geometry, shape, material, mesh;
 
+// um...
+
 		height = height ? height / 5 : height;
 
 //console.log( 'shape height', height );
@@ -1086,9 +761,9 @@ console.log( 'error', e, shape );
 
 		} else if ( !parameters.structuresArray.length ) {
 
-console.timeEnd( 'timer 1' );
+//console.timeEnd( 'timer 1' );
 
-//		controls.autoRotate = true;
+			controls.autoRotate = true;
 
 		}
 
@@ -1132,10 +807,14 @@ console.timeEnd( 'timer 1' );
 		ground.geometry.computeBoundingSphere();
 		center = ground.geometry.boundingSphere.center;
 		controls.target.copy( center );
-		camera.position.copy( controls.target.clone().add( new THREE.Vector3( 0, 100, 100 ) ) );
-//		lightDirectional.position.copy( controls.target.clone().add( v( 100, 100, 100 ) ) );
+		camera.position.copy( controls.target.clone().add( new THREE.Vector3( 0, groundSize, groundSize ) ) );
+
+		lightDirectional.position.copy( controls.target.clone().add( new THREE.Vector3( -groundSize, groundSize, groundSize ) ) );
+		lightDirectional.target = axisHelper;
 
 		object3D.position.copy( center );
+
+//console.log( 'center', center );
 
 	}
 
