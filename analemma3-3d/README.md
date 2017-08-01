@@ -3,12 +3,11 @@
 Analemma 3D Read Me
 ====
 
-<iframe src="analemma3-3d.html" width="600" height="500" ><img src="../images/ladybug-logo.png" ></iframe>
+<iframe src="analemma3-3d.html" width="600" height="500" >
+<img src="../images/ladybug-logo.png" >
+Analema3 3D showing downtown San Francisco with Hyatt Embarcadero at center
+</iframe>
 
-```diff
-+ this will be highlighted in green
-- this will be highlighted in red
-```
 This is a work in progress at an early stage.
 
 Click 'Downtown San Francisco / Hyatt Embarcadero' for a quick demo of what this app does.
