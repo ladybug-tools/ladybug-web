@@ -13,9 +13,26 @@ Wikipedia: [Solar Access]( https://en.wikipedia.org/wiki/Solar_access )
 To supply free, open source online apps to help you measure and display Solar Access for any object or structure at any latitude and longitude and any data and time.
 
 
+### Features
+
+Givens
+
+* Eleven light sources - the positions of the Sun from 8 am to 6 pm
+* Any number of structures/models in 3D
+* Any latitude / longitude
+* Any day of the year
+* A ground area divided into a 512 x 512 grid of triangular faces
+* The ground may be of any typical terrain-like shape 
+
+calculate
+
+For every cell in the ground, for each of the eleven suns, determine if any of the 3D structures intersects the path between current Sun and current cell.
+
+Color each cell according to the number of intersections with white indicating no intersections and dark blue indicating eleven intersections
+
 ## To Do
 
-* 2017-07-31 ~ fix the logic issues ~ maybe something as simple as reversing x and z ~ might be backwards
+
 * 2017-07-31 ~ Export Solar Access output as JSON and PNG files
 * 2017-07-31 ~ Make it faster!
 * 2017-07-31 ~ Copy results to a new plane - so you can see ground and Solar Access data
@@ -27,6 +44,13 @@ To supply free, open source online apps to help you measure and display Solar Ac
 
 
 _The following are early notes when Analemma 3D was just starting. In the future changes will be noted in the main Analemma 3D file unless very Solar Access specific_
+
+
+### 2017-08-02 ~ 
+
+Dealt with
+
+* 2017-07-31 ~ fix the logic issues ~ maybe something as simple as reversing x and z ~ might be backwards
 
 ### 2017-07-15 ~ Theo
 
