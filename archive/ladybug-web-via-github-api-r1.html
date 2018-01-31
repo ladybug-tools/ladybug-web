@@ -14,8 +14,8 @@
 
 	var urlAPIContents = 'https://api.github.com/repos/ladybug-analysis-tools/ladybug-web/git/trees/gh-pages?recursive=1';
 
-//	var urlSource = 'http://ladybug-analysis-tools.github.io/ladybug-web/';
-	var urlSource = './';
+//	var urlSource = 'http://ladybug-tools.github.io/ladybug-web/';
+	var urlSource = '../';
 
 	var iframeContainers = [];
 	var iframesActive = [];
@@ -55,7 +55,7 @@
 		'';
 
 		contents = document.body.appendChild( document.createElement( 'div' ) );
-		contents.innerHTML = 
+		contents.innerHTML =
 
 			'<div id=header ></div>' +
 			'<div id=container ></div>' +
@@ -113,7 +113,7 @@
 
 		for ( var i = 0; i < files.length; i++ ) {
 
-			container.innerHTML += 
+			container.innerHTML +=
 
 				'<div class=ifr id=' + i + ' ></div>' +
 				'<div class=txt ></div>' +
@@ -177,7 +177,7 @@
 				'<b>Description</b>' + b + description + b +
 				'<b>Keywords</b>' + b + keywords + b +
 				'<b>Date</b>' + b + date + b +
-				'<b>Sull screen: <a href=index.html#' + folder + 'readme.md >Read Me</a></b>' +
+				'<b>Full screen: <a href=index.html#' + folder + 'readme.md >Read Me</a></b>' +
 			'</div>' +
 			'<div class=readme id=readme' + index + ' ></div>' +
 
