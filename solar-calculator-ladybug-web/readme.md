@@ -1,15 +1,15 @@
 ﻿<span style=display:none; >
 [You are now in a GitHub source code view - click this link to view the home page]
-( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md "View file as a web page." ) </span>
-<input type=button onclick=window.location.href='https://github.com/ladybug-analysis-tools/ladybug-web/tree/gh-pages/solar-calculator-ladybug-web/';
+( https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md "View file as a web page." ) </span>
+<input type=button onclick=window.location.href='https://github.com/ladybug-tools/ladybug-web/tree/gh-pages/solar-calculator-ladybug-web/';
 value='You are now in the home page view - Click this button to view the read me file and the source code' >
 
-[Ladybug Analysis Tools]( https://ladybug-analysis-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-analysis-tools.github.io/ladybug-web/ ) »
+[Ladybug Tools]( https://ladybug-tools.github.io/ ) » [Ladybug Web ]( https://ladybug-tools.github.io/ladybug-web/ ) »
 
-[Solar Calculator Ladybug Web Read Me]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md )
+[Solar Calculator Ladybug Web Read Me]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/#readme.md )
 ===
 
-## [Solar Calculator Ladybug Web Viewer]( https://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-ladybug-web/index.html )
+## [Solar Calculator Ladybug Web Viewer]( https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/index.html )
 
 
 ## Mission

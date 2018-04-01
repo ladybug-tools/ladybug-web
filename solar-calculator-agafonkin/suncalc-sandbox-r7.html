@@ -76,7 +76,7 @@
 
 			'<h2>' +
 			'	<a href="" >' + document.title + '</a>' +
-			'	<a href=http://ladybug-analysis-tools.github.io/ladybug-web/solar-calculator-agafonkin/#readme.md >&#x24D8;</a>' +
+			'	<a href=http://ladybug-tools.github.io/ladybug-web/solar-calculator-agafonkin/#readme.md >&#x24D8;</a>' +
 			'</h2>' +
 
 			'<p>' +
@@ -135,7 +135,7 @@
 
 		utcYear = hashes[ 3 ];
 		utcMonth = hashes[ 4 ];
-		utcDate = hashes[ 5 ]; 
+		utcDate = hashes[ 5 ];
 
 		utcHours = hashes[ 6 ];
 		utcMinutes = hashes[ 7 ];
@@ -200,7 +200,7 @@
 
 //console.log( 'time ', remoteTime );
 
-			info.innerHTML = 
+			info.innerHTML =
 				'<h2>Time ZoneID:<br>' + time.timeZoneId + '</h2>' +
 
 				'<p> Given a UTC time of ' + utcHours + ':' + utcMinutes + '</p>' +
@@ -243,7 +243,7 @@
 
 	function updateData() {
 
-		timeString = 
+		timeString =
 			utcYear + '-' +
 			( '0' + utcMonth ).slice( -2 ) + '-' +
 			( '0' + utcDate ).slice( -2 ) + 'T' +
@@ -271,7 +271,7 @@
 
 		for ( var i = 0; i < keys.length; i++ ) {
 
-			time = calculateLocalTime2( offset, utcYear, utcMonth, utcDate, sunTimes[ keys[ i ] ].getUTCHours(), sunTimes[ keys[ i ] ].getUTCMinutes() ) 
+			time = calculateLocalTime2( offset, utcYear, utcMonth, utcDate, sunTimes[ keys[ i ] ].getUTCHours(), sunTimes[ keys[ i ] ].getUTCMinutes() )
 			txt += '<tr><td>' + keys[ i ] + ' </td>' +
 				'<td> ' + sunTimes[ keys[ i ] ].toISOString() + ' ~ </td>' +
 				'<td> ' + ( '0' + time.getHours() ).slice( -2 ) + ':' + ( '0' + time.getMinutes() ).slice( -2 ) + '</td>' +
