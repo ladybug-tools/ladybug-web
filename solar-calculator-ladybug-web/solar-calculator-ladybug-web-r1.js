@@ -11,7 +11,7 @@
 	var pi2 = 2 * pi;
 	var pi05 = 0.5 * pi;
 	var d2r = pi / 180; // degrees to radians
-	var r2d = 180 / pi; // radiand to degrees
+	var r2d = 180 / pi; // radians to degrees
 	var century, now;
 
 
@@ -74,8 +74,8 @@
 
 		}
 
-// in degrees
-		return { azimuth: azimuth * r2d, altitude: 90 - zenith * r2d, century: century };
+		// in degrees
+		return { azimuth: azimuth * r2d, altitude: 90 - zenith * r2d, century: century, phi: azimuth, theta: zenith };
 
 	}
 
