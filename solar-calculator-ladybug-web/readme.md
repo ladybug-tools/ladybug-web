@@ -44,7 +44,30 @@ value='You are now in the home page view - Click this button to view the read me
 * JavaScript file usable by any app on the web
 * Viewer files provides detailed example of functions and variables
 
+## Usage
 
+	<!doctype html>
+	<html lang=en >
+	<head>
+	<meta charset=utf-8 />
+	</head>
+	<body>
+	<script src= https://ladybug-tools.github.io/ladybug-web/solar-calculator-ladybug-web/solar-calculator-ladybug-web-r1.js ></script>
+	<script>
+
+		const date = new Date();
+		const latitude = 37.796
+		const longitude = -122.398;
+
+		const position = getSunPosition( date, latitude, longitude );
+
+		console.log( 'position', position );
+
+		// {azimuth: 273.7677670190359, altitude: 3.5450909885719994, century: 0.18249396886930566}
+
+	</script>
+	</body>
+</html>
 ## Issues
 
 * There seems to be a minor time discrepancy - something with minutes?
